@@ -1,46 +1,29 @@
-<script lang='ts'>
+<script lang="ts">
+  import { ModeWatcher } from 'mode-watcher'
 
-	// Most of your app wide CSS should be put in this file
-	import '../app.postcss';
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+  import gamesJson from '$lib/assets/games.json'
+  import Nav from '$lib/components/nav.svelte'
+  import { Games } from '$lib/schemas'
+  import { games } from '$lib/stores'
+  import { parse } from 'valibot'
+  import '../app.postcss'
+
+  try {
+    const validGames = parse(Games, gamesJson.data)
+
+    $games = validGames ?? []
+
+    console.log('🚀 ~ $games:', $games)
+  } catch (error) {
+    console.error('🚀 ~ error:', error)
+  }
 </script>
 
-<!-- App Shell -->
-<AppShell>
-	<svelte:fragment slot="header">
-		<!-- App Bar -->
-		<AppBar>
-			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">Skeleton</strong>
-			</svelte:fragment>
-			<svelte:fragment slot="trail">
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://discord.gg/EXqV7W8MtY"
-					target="_blank"
-					rel="noreferrer"
-				>
-					Discord
-				</a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://twitter.com/SkeletonUI"
-					target="_blank"
-					rel="noreferrer"
-				>
-					Twitter
-				</a>
-				<a
-					class="btn btn-sm variant-ghost-surface"
-					href="https://github.com/skeletonlabs/skeleton"
-					target="_blank"
-					rel="noreferrer"
-				>
-					GitHub
-				</a>
-			</svelte:fragment>
-		</AppBar>
-	</svelte:fragment>
-	<!-- Page Route Content -->
-	<slot />
-</AppShell>
+<ModeWatcher />
+
+<main class="h-full">
+  <div class="h-full">
+    <slot />
+  </div>
+  <Nav />
+</main>
