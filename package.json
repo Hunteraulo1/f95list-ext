@@ -9,9 +9,9 @@
     "@typescript-eslint/eslint-plugin": "7.10.0",
     "@typescript-eslint/parser": "7.10.0",
     "autoprefixer": "^10.4.19",
-    "bits-ui": "0.21.8",
+    "bits-ui": "^0.21.10",
     "clsx": "2.1.1",
-    "config-aeryle": "github:VincentBriand44/config-aeryle",
+    "config-aeryle": "1.0.1",
     "eslint": "^9.3.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.29.1",
@@ -24,7 +24,7 @@
     "prettier-plugin-svelte": "^3.2.3",
     "svelte": "^4.2.17",
     "svelte-check": "3.7.1",
-    "svelte-radix": "1.1.0",
+    "svelte-radix": "^1.1.0",
     "sveltekit-adapter-chrome-extension": "2.0.1",
     "tailwind-merge": "2.3.0",
     "tailwind-variants": "0.2.1",
@@ -59,5 +59,11 @@
     "esbuild",
     "svelte-preprocess"
   ],
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@tanstack/query-persist-client-core": "5.40.0",
+    "@tanstack/query-sync-storage-persister": "5.40.0",
+    "@tanstack/svelte-query": "5.40.0",
+    "cmdk-sv": "^0.0.17"
+  }
 }

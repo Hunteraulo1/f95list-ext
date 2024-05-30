@@ -1,5 +1,8 @@
 import { writable } from 'svelte/store'
 
-import type { GamesType } from './schemas'
+import type { GameType } from './schemas'
+import type { Update } from './types'
 
-export const games = writable<GamesType>([])
+export const games = writable<GameType[]>([])
+
+export const updates = writable<Update[]>([])

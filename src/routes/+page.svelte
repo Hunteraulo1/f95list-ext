@@ -1,25 +1,23 @@
 <script lang="ts">
-  import * as Card from '$lib/components/ui/card'
+  import Filter from '$lib/components/filter.svelte'
+  import GameBox from '$lib/components/gameBox.svelte'
   import { games } from '$lib/stores'
-  import { lazyLoad } from '$lib/utils/lazyload'
+  import Reload from 'svelte-radix/Reload.svelte'
+  import Button from './../lib/components/ui/button/button.svelte'
 </script>
 
-<div class="flex flex-col gap-2 overflow-scroll max-h-full px-2">
+<div class="flex flex-col gap-2 overflow-scroll max-h-full p-2 relative">
   {#if $games.length > 0}
-    {#each $games as { image, name, version }, index}
-      <a href="/details/{index}">
-        <Card.Root class="relative">
-          {#if image}
-            <img alt={name} class="w-full h-full absolute object-cover rounded-xl" use:lazyLoad={image} />
-          {/if}
-          <Card.CardContent
-            class="h-20 relative p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/30"
-          >
-            <Card.Title>{name}</Card.Title>
-            <Card.Description>{version}</Card.Description>
-          </Card.CardContent>
-        </Card.Root>
-      </a>
+    {#each $games as game, index}
+      <GameBox {game} {index} />
     {/each}
+    <Filter />
+  {:else}
+    <div class="flex justify-center items-center h-screen w-full">
+      <Button>
+        <Reload class="mr-2 h-4 w-4 animate-spin" />
+        Veuillez patienter
+      </Button>
+    </div>
   {/if}
 </div>

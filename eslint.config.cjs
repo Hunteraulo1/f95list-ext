@@ -9,7 +9,7 @@ const {
 } = require('config-aeryle/eslint/configs/index.cjs')
 const tsEslint = require('typescript-eslint')
 
-const eslintConfigIgnores = require('./.eslint/ignores.cjs')
+const eslintConfigIgnores = require('.eslint/ignores.cjs')
 
 module.exports = tsEslint.config(
   eslint.configs.recommended,
