@@ -1,61 +1,75 @@
 <script lang="ts">
-  import { Button, buttonVariants } from '$lib/components/ui/button/index.js'
-  import * as Dialog from '$lib/components/ui/dialog/index.js'
-  import type { GameType } from '$lib/schemas'
+  import { Button } from '$lib/components/ui/button/index.js'
+  import * as Command from '$lib/components/ui/command/index.js'
+  import * as Popover from '$lib/components/ui/popover/index.js'
+  import { filter, filteredGames, games } from '$lib/stores'
+  import { cn } from '$lib/utils'
   import { tick } from 'svelte'
-  import Input from './ui/input/input.svelte'
-  import Label from './ui/label/label.svelte'
+  import { Check, ChevronDown } from 'svelte-radix'
 
-  const types: GameType['type'][] = [
-    'RenPy',
-    'RPGM',
-    'Unreal',
-    'HTLM',
-    'Flash',
-    'QSP',
-    'RenPy/RPGM',
-    'RenPy/Unity',
-    'Autre',
-  ]
-  const status: GameType['status'][] = ['ABANDONNÉ', 'EN COURS', 'TERMINÉ']
+  const closeAndFocusTrigger = (triggerId: string) => {
+    for (let item of $filter) {
+      item.open = false
+    }
 
-  let open = false
-  let value = ''
+    $filteredGames = $games.filter(game => {
+      return $filter.every(({ title, selectedValues }) => {
+        return selectedValues.every(value => game[title] === value)
+      })
+    })
 
-  $: selectedValue = types.find(f => f === value) ?? 'Types...'
-
-  // We want to refocus the trigger button when the user selects
-  // an item from the list so users can continue navigating the
-  // rest of the form with the keyboard.
-  function closeAndFocusTrigger(triggerId: string) {
-    open = false
     tick().then(() => {
       document.getElementById(triggerId)?.focus()
     })
   }
 </script>
 
-<div class="sticky bottom-0 flex justify-center max-w-[300px]">
-  <Dialog.Root>
-    <Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>Edit Profile</Dialog.Trigger>
-    <Dialog.Content>
-      <Dialog.Header>
-        <Dialog.Title>Edit profile</Dialog.Title>
-        <Dialog.Description>Make changes to your profile here. Click save when you're done.</Dialog.Description>
-      </Dialog.Header>
-      <div class="grid gap-4 py-4">
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="name" class="text-right">Name</Label>
-          <Input id="name" value="Pedro Duarte" class="col-span-3" />
-        </div>
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="username" class="text-right">Username</Label>
-          <Input id="username" value="@peduarte" class="col-span-3" />
-        </div>
+<div class="sticky bottom-0 mx-auto">
+  <Popover.Root>
+    <Popover.Trigger>
+      <Button variant="secondary">Filtrer</Button>
+    </Popover.Trigger>
+    <Popover.Content side="top">
+      <div class="flex flex-col gap-2">
+        {#each $filter as { title, open, selectedValues, values }}
+          <Popover.Root bind:open let:ids>
+            <Popover.Trigger asChild let:builder>
+              <Button
+                builders={[builder]}
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                class="w-full flex justify-between"
+              >
+                <p class="truncate">{selectedValues.length > 0 ? selectedValues : `Filtrer par ${title}...`}</p>
+                <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </Popover.Trigger>
+            <Popover.Content class="w-[200px] p-0">
+              <Command.Root>
+                <Command.Input placeholder="Rechercher..." />
+                <Command.Empty>Aucun {title} trouvé</Command.Empty>
+                <Command.Group>
+                  {#each values as value}
+                    <Command.Item
+                      {value}
+                      onSelect={currentValue => {
+                        if (!selectedValues.includes(currentValue)) selectedValues.push(currentValue)
+                        else selectedValues.splice(selectedValues.indexOf(currentValue), 1)
+
+                        closeAndFocusTrigger(ids.trigger)
+                      }}
+                    >
+                      <Check class={cn('mr-2 h-4 w-4', !selectedValues.includes(value) && 'text-transparent')} />
+                      {value}
+                    </Command.Item>
+                  {/each}
+                </Command.Group>
+              </Command.Root>
+            </Popover.Content>
+          </Popover.Root>
+        {/each}
       </div>
-      <Dialog.Footer>
-        <Button type="submit">Save changes</Button>
-      </Dialog.Footer>
-    </Dialog.Content>
-  </Dialog.Root>
+    </Popover.Content>
+  </Popover.Root>
 </div>
