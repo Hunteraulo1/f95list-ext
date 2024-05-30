@@ -3,19 +3,21 @@
   import { UpdatesData, type UpdateType } from '$lib/schemas'
   import { games, updates } from '$lib/stores'
   import type { Update } from '$lib/types'
-  import { createQuery } from '@tanstack/svelte-query'
+  import { useQuery } from '@sveltestack/svelte-query'
   import { parse } from 'valibot'
 
-  const query = createQuery<{ data: UpdateType[] }>({
+  const query = useQuery<{ data: UpdateType[] }>({
     queryFn: () => {
+      console.log('🚀 ~ queryFn: ~ fetch')
       return fetch(
         'https://script.google.com/macros/s/AKfycbwnX4ViF-q-1fzm7MjUezZ08fXqnOfsu1w_5bu3lZKUEP7BUBJswtAn9bg27IwPaew/exec'
       ).then(res => res.json())
     },
-    queryKey: ['updates'],
+    queryKey: 'updates',
+    cacheTime: 1000 * 60 * 60 * 6,
   })
 
-  $: if ($query.isSuccess) {
+  if ($query.data) {
     const result: Update[] = []
 
     const validUpdates = parse(UpdatesData, $query.data.data)
@@ -26,7 +28,9 @@
         date: new Date(update.date),
         type: update.type,
         games: update.names.map(name => {
-          return $games.find(game => game.name === name) ?? name
+          const res = $games.findIndex(game => game.name === name)
+
+          return res === -1 ? name : res
         }),
       })
     }

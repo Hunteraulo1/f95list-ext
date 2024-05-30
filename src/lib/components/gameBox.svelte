@@ -3,18 +3,24 @@
   import * as Card from '$lib/components/ui/card'
   import type { GameType } from '$lib/schemas'
   import { games } from '$lib/stores'
+  import { getGameIndex } from '$lib/utils/getGameIndex'
   import { lazyLoad } from '$lib/utils/lazyload'
   import { Tooltip } from 'bits-ui'
 
-  export let index: number | null = null
-  export let game: GameType | string
+  export let game: GameType | number | string
+  let findGame: GameType | undefined
+  let index: number | undefined
 
-  if (!index && typeof game !== 'string') {
-    index = $games.findIndex(g => g.name === game.name)
+  if (typeof game === 'number') {
+    index = game
+    game = $games[index]
+  } else if (typeof game !== 'string') {
+    index = getGameIndex(game)
   }
+  console.log('🚀 ~ game:', game)
 </script>
 
-{#if typeof game !== 'string'}
+{#if findGame}
   <a href="/details/{index}">
     <Card.Root class="relative">
       {#if game.image}
