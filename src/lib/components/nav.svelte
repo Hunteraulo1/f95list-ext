@@ -8,7 +8,7 @@
   ]
 </script>
 
-<ul class="flex w-full justify-around bg-primary/75 p-2">
+<ul class="flex w-full justify-around bg-secondary/75 p-2">
   {#each nav as { name, href }}
     <li>
       <a {href}>

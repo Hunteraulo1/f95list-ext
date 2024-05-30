@@ -1,7 +1,7 @@
 import { array, boolean, type InferOutput, nullable, object, picklist, string } from 'valibot'
 
 const Game = object({
-  domain: picklist(['f95zone.to', 'lewdcorner.com', 'Autre']) /* change domain */,
+  domain: picklist(['F95z', 'LewdCorner', 'Autre']) /* change domain */,
   name: string(),
   version: string(),
   tversion: string(),
@@ -26,11 +26,19 @@ const Game = object({
   image: nullable(string()),
 })
 
+const UpdateData = object({
+  date: string(),
+  type: picklist(['AJOUT DE JEU', 'MISE À JOUR']),
+  names: array(Game.entries.name),
+})
+
 const Games = array(Game)
 
-export { Game, Games }
+const UpdatesData = array(UpdateData)
+
+export { Game, Games, UpdateData, UpdatesData }
 
 type GameType = InferOutput<typeof Game>
-type GamesType = InferOutput<typeof Games>
+type UpdateType = InferOutput<typeof UpdateData>
 
-export type { GamesType, GameType }
+export type { GameType, UpdateType }
