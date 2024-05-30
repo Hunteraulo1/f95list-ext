@@ -46,11 +46,11 @@
           <Tooltip.Content>
             <Badge variant="secondary">
               {#if game.tversion === game.version}
-                À jours
+                À jour
               {:else if game.tversion === 'n/a'}
                 Pas de traduction
               {:else}
-                N'est pas à jours (${game.version})
+                N'est pas à jour ({game.version})
               {/if}
             </Badge>
           </Tooltip.Content>
@@ -65,14 +65,14 @@
         {/if}
       {/each}
       {#if game.tags.length > 5}
-        <button class="text-xs font-bold text-secondary-foreground/50" on:click={() => (hideTags = !hideTags)}
-          >{hideTags ? 'afficher plus...' : 'cacher'}</button
-        >
+        <button class="text-xs font-bold text-secondary-foreground/50" on:click={() => (hideTags = !hideTags)}>
+          {hideTags ? 'afficher plus...' : 'cacher'}
+        </button>
       {/if}
     </div>
     <p class="text-sm">
       <span class="font-bold">Traducteur:</span>
-      <a href={game.trlink} class={game.trlink ? 'underline text-blue-500 hover:text-blue-700' : ''}>
+      <a href={game.trlink} class:traductor={game.trlink}>
         {game.traductor ?? 'Aucun'}
       </a>
       <span class="text-secondary-foreground/50 text-xs">({game.ttype})</span>
@@ -105,3 +105,9 @@
 {:else}
   <h1>Game not found</h1>
 {/if}
+
+<style lang="postcss">
+  .traductor {
+    @apply underline text-blue-500 hover:text-blue-700;
+  }
+</style>
