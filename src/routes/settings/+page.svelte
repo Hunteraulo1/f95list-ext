@@ -12,6 +12,7 @@
 <div class="p-2 flex flex-col gap-8">
   <div class="flex flex-col gap-2">
     <h1 class="text-center mb-2 font-bold">Paramètres</h1>
+
     <div class="flex justify-center items-center gap-2">
       <Label for="theme">Thème de l'application:</Label>
       <Button id="theme" on:click={toggleMode} variant="outline" size="icon">
@@ -20,21 +21,24 @@
         <span class="sr-only">Toggle theme</span>
       </Button>
     </div>
+
     <div class="flex justify-center items-center gap-2">
       <Label for="tagsHide">Cacher les tags par défault:</Label>
       <Switch id="tagsHide" />
     </div>
+
     <div class="flex justify-center items-center gap-2">
       <Label for="intergrateFeature">Activer l'intégration F95:</Label>
       <Switch id="intergrateFeature" />
     </div>
+
     <div class="flex justify-center items-center gap-2">
       <Button variant="outline">Actualiser la liste</Button>
     </div>
   </div>
 
   <div>
-    <h1 class="text-center mb-2 font-bold">En savoir plus</h1>
+    <h2 class="text-center mb-2 font-bold">En savoir plus</h2>
     <div class="flex justify-center items-center flex-col">
       <a href="/traductors">
         <Button variant="outline">Voir les traducteurs</Button>
