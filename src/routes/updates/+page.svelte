@@ -1,5 +1,5 @@
 <script lang="ts">
-  import GameBox from '$lib/components/gameBox.svelte'
+  import GameBox from '$lib/components/GameBox.svelte'
   import { UpdatesData, type UpdateType } from '$lib/schemas'
   import { games, updates } from '$lib/stores'
   import type { Update } from '$lib/types'

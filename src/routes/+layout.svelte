@@ -1,6 +1,6 @@
 <script lang="ts">
   import gamesJson from '$lib/assets/games.json'
-  import Nav from '$lib/components/nav.svelte'
+  import Nav from '$lib/components/Nav.svelte'
   import { Games } from '$lib/schemas'
   import { filteredGames, games } from '$lib/stores'
   import { ScrollArea } from 'bits-ui'
