@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Filter from '$lib/components/filter.svelte'
-  import GameBox from '$lib/components/gameBox.svelte'
+  import Filter from '$lib/components/Filter.svelte'
+  import GameBox from '$lib/components/GameBox.svelte'
   import { filteredGames, games } from '$lib/stores'
   import Reload from 'svelte-radix/Reload.svelte'
   import Button from './../lib/components/ui/button/button.svelte'
@@ -8,10 +8,8 @@
 
 <div class="flex flex-col gap-2 overflow-scroll max-h-full p-2 relative">
   {#if $games.length > 0}
-    {#if $filteredGames.length > 0}
-      {#each $filteredGames as game}
-        <GameBox {game} />
-      {/each}
+    {#each $filteredGames as game}
+      <GameBox {game} />
     {:else}
       <div class="flex justify-center items-center h-screen w-full">
         <Button>
@@ -19,7 +17,7 @@
           Aucun jeu ne correspond à vos critères
         </Button>
       </div>
-    {/if} ()
+    {/each}
   {:else}
     <div class="flex justify-center items-center h-screen w-full">
       <Button>
