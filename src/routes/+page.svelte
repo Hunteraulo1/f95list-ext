@@ -20,7 +20,7 @@
     {:else}
       <div class="flex justify-center items-center h-screen w-full">
         <Button>
-          <Reload class="mr-2 h-4 w-4 animate-spin" />
+          <Reload class="h-4 w-full animate-spin" />
           Aucun jeu ne correspond à vos critères
         </Button>
       </div>
