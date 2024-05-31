@@ -14,6 +14,7 @@
 
     $filteredGames = $games.filter(game => {
       return $filter.every(({ title, selectedValues }) => {
+        if (title === 'tags') return selectedValues.every(value => game.tags.includes(value))
         return selectedValues.every(value => game[title] === value)
       })
     })
