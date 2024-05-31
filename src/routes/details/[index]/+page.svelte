@@ -95,11 +95,7 @@
       {/if}
     </div>
   </div>
-  <Button
-    class="flex gap-1 opacity-50 absolute top-2 left-2"
-    variant="secondary"
-    on:click={() => window.history.back()}
-  >
+  <Button class="flex gap-1 opacity-50 absolute top-2 left-2" variant="secondary" on:click={() => history.back()}>
     <ArrowLeft />
   </Button>
 {:else}

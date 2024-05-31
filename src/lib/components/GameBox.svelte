@@ -13,31 +13,31 @@
 
   if (typeof game === 'number') {
     index = game
-    game = $games[index]
+    findGame = $games[index]
   } else if (typeof game !== 'string') {
     index = getGameIndex(game)
+    findGame = $games[index]
   }
-  console.log('🚀 ~ game:', game)
 </script>
 
 {#if findGame}
-  <a href="/details/{index}">
+  <a href="/details/{index}" data-sveltekit-noscroll>
     <Card.Root class="relative">
-      {#if game.image}
-        <img alt={game.name} class="w-full h-full absolute object-cover rounded-xl" use:lazyLoad={game.image} />
+      {#if findGame.image}
+        <img alt={findGame.name} class="w-full h-full absolute object-cover rounded-xl" use:lazyLoad={findGame.image} />
       {/if}
       <Card.CardContent class="h-20 relative p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20">
-        <Card.Title>{game.name}</Card.Title>
+        <Card.Title>{findGame.name}</Card.Title>
         <Card.Description>
           <Tooltip.Root>
             <Tooltip.Trigger
-              class="text-xs font-bold {game.tversion === game.version ? 'text-green-700' : 'text-red-700'}"
+              class="text-xs font-bold {findGame.tversion === findGame.version ? 'text-green-700' : 'text-red-700'}"
             >
-              {game.tversion}
+              {findGame.tversion}
             </Tooltip.Trigger>
             <Tooltip.Content>
               <Badge variant="secondary">
-                <p>{game.tversion === game.version ? 'À jours' : `N'est pas à jours (${game.version})`}</p>
+                <p>{findGame.tversion === findGame.version ? 'À jours' : `N'est pas à jours (${findGame.version})`}</p>
               </Badge>
             </Tooltip.Content>
           </Tooltip.Root>
