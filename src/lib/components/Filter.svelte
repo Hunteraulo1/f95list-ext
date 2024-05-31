@@ -46,7 +46,7 @@
                 <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </Popover.Trigger>
-            <Popover.Content class="w-[200px] p-0">
+            <Popover.Content class="w-full p-0">
               <Command.Root>
                 <Command.Input placeholder="Rechercher..." />
                 <Command.Empty>Aucun {title} trouvé</Command.Empty>
