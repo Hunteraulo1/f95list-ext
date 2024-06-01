@@ -31,7 +31,8 @@
       <Button variant="secondary">Filtrer</Button>
     </Popover.Trigger>
     <Popover.Content side="top">
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 items-center">
+        <h1 class="font-bold">Filtrer la liste</h1>
         {#each $filter as { title, open, selectedValues, values }}
           <Popover.Root bind:open let:ids>
             <Popover.Trigger asChild let:builder>

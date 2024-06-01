@@ -1,12 +1,11 @@
 <script lang="ts">
+  import { Button } from '$lib/components/ui/button/index.js'
   import { toggleMode } from 'mode-watcher'
   import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
   import Moon from 'svelte-radix/Moon.svelte'
   import Sun from 'svelte-radix/Sun.svelte'
   import Label from './../../lib/components/ui/label/label.svelte'
   import Switch from './../../lib/components/ui/switch/switch.svelte'
-
-  import { Button } from '$lib/components/ui/button/index.js'
 </script>
 
 <div class="p-2 flex flex-col gap-8">
@@ -14,11 +13,11 @@
     <h1 class="text-center mb-2 font-bold">Paramètres</h1>
 
     <div class="flex justify-center items-center gap-2">
-      <Label for="theme">Thème de l'application:</Label>
+      <Label for="theme">Thème de l'extension:</Label>
       <Button id="theme" on:click={toggleMode} variant="outline" size="icon">
         <Sun class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
         <Moon class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-        <span class="sr-only">Toggle theme</span>
+        <span class="sr-only">Changer le thème</span>
       </Button>
     </div>
 

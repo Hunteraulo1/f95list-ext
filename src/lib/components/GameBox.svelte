@@ -1,43 +1,45 @@
 <script lang="ts">
   import Badge from '$lib/components/ui/badge/badge.svelte'
   import * as Card from '$lib/components/ui/card'
-  import type { GameType } from '$lib/schemas'
-  import { games } from '$lib/stores'
+  import { Game, type GameType } from '$lib/schemas'
   import { getGameIndex } from '$lib/utils/getGameIndex'
   import { lazyLoad } from '$lib/utils/lazyload'
   import { Tooltip } from 'bits-ui'
+  import { safeParse } from 'valibot'
 
-  export let game: GameType | number | string
-  let findGame: GameType | undefined
-  let index: number | undefined
-
-  if (typeof game === 'number') {
-    index = game
-    findGame = $games[index]
-  } else if (typeof game !== 'string') {
-    index = getGameIndex(game)
-    findGame = $games[index]
+  interface Props {
+    game: GameType | { name: GameType['name'] }
   }
+
+  const { game }: Props = $props()
+
+  const parse = safeParse(Game, game)
+
+  const validGame = parse.success ? parse.output : false
 </script>
 
-{#if findGame}
-  <a href="/details/{index}" data-sveltekit-noscroll>
+{#if validGame}
+  <a href="/details/{getGameIndex(validGame)}" data-sveltekit-noscroll>
     <Card.Root class="relative">
-      {#if findGame.image}
-        <img alt={findGame.name} class="w-full h-full absolute object-cover rounded-xl" use:lazyLoad={findGame.image} />
+      {#if validGame.image}
+        <img
+          alt={validGame.name}
+          class="w-full h-full absolute object-cover rounded-xl"
+          use:lazyLoad={validGame.image}
+        />
       {/if}
       <Card.CardContent class="h-20 relative p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20">
-        <Card.Title>{findGame.name}</Card.Title>
+        <Card.Title>{validGame.name}</Card.Title>
         <Card.Description>
           <Tooltip.Root>
             <Tooltip.Trigger
-              class="text-xs font-bold {findGame.tversion === findGame.version ? 'text-green-700' : 'text-red-700'}"
+              class="text-xs font-bold {validGame.tversion === validGame.version ? 'text-green-700' : 'text-red-700'}"
             >
-              {findGame.tversion}
+              {validGame.tversion}
             </Tooltip.Trigger>
             <Tooltip.Content>
               <Badge variant="secondary">
-                <p>{findGame.tversion === findGame.version ? 'À jours' : `N'est pas à jours (${findGame.version})`}</p>
+                {validGame.tversion === validGame.version ? 'À jours' : `N'est pas à jours (${validGame.version})`}
               </Badge>
             </Tooltip.Content>
           </Tooltip.Root>
@@ -48,7 +50,7 @@
 {:else}
   <Card.Root class="relative">
     <Card.CardContent class="h-20 relative p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20">
-      <Card.Title>{game}</Card.Title>
+      <Card.Title>{game.name}</Card.Title>
       <Card.Description>Jeu introuvable</Card.Description>
     </Card.CardContent>
   </Card.Root>
