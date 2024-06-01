@@ -78,7 +78,7 @@
   <div>
     <h2 class="text-center mb-2 font-bold">En savoir plus</h2>
     <div class="flex justify-center items-center flex-col">
-      <Button variant="outline" on:click={() => goto('/traductors')}>Voir les traducteurs</Button>
+      <Button variant="outline" on:click={() => goto('/traductors')}>Voir les traducteurs/relecteurs</Button>
 
       {#each links as { title, href }}
         <a {href} target="_blank">

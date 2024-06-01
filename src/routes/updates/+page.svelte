@@ -1,7 +1,9 @@
 <script lang="ts">
   import GameBox from '$lib/components/GameBox.svelte'
+  import { UpdatesData } from '$lib/schemas'
   import { games, updates, updatesData } from '$lib/stores'
   import type { Update } from '$lib/types'
+  import { parse } from 'valibot'
 
   // const query = useQuery<{ data: UpdateType[] }>({
   //   queryFn: () => {
@@ -17,17 +19,14 @@
   if (/*$query.data*/ $updatesData) {
     const result: Update[] = $state([])
 
-    const validUpdates = $updatesData /*parse(UpdatesData, $query.data.data)*/
+    const validUpdates = parse(UpdatesData, $updatesData /*$query.data.data*/)
 
     for (const update of validUpdates) {
       result.push({
         date: new Date(update.date),
         type: update.type,
         games: update.names.map(name => {
-          const res = $games.find(game => game.name === name) ?? { name }
-          console.log('🚀 ~ res:', res)
-
-          return res
+          return $games.find(game => game.name === name) ?? { name }
         }),
       })
     }
