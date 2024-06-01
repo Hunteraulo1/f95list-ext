@@ -1,42 +1,38 @@
 <script lang="ts">
   import GameBox from '$lib/components/GameBox.svelte'
-  import { UpdatesData, type UpdateType } from '$lib/schemas'
-  import { games, updates } from '$lib/stores'
+  import { games, updates, updatesData } from '$lib/stores'
   import type { Update } from '$lib/types'
-  import { useQuery } from '@sveltestack/svelte-query'
-  import { parse } from 'valibot'
 
-  const query = useQuery<{ data: UpdateType[] }>({
-    queryFn: () => {
-      console.log('🚀 ~ queryFn: ~ fetch')
-      return fetch(
-        'https://script.google.com/macros/s/AKfycbwnX4ViF-q-1fzm7MjUezZ08fXqnOfsu1w_5bu3lZKUEP7BUBJswtAn9bg27IwPaew/exec'
-      ).then(res => res.json())
-    },
-    queryKey: 'updates',
-    cacheTime: 1000 * 60 * 60 * 6,
-  })
+  // const query = useQuery<{ data: UpdateType[] }>({
+  //   queryFn: () => {
+  //     console.log('🚀 ~ queryFn: ~ fetch')
+  //     return fetch(
+  //       'https://script.google.com/macros/s/AKfycbwnX4ViF-q-1fzm7MjUezZ08fXqnOfsu1w_5bu3lZKUEP7BUBJswtAn9bg27IwPaew/exec'
+  //     ).then(res => res.json())
+  //   },
+  //   queryKey: 'updates',
+  //   cacheTime: 1000 * 60 * 60 * 6,
+  // })
 
-  if ($query.data) {
-    const result: Update[] = []
+  if (/*$query.data*/ $updatesData) {
+    const result: Update[] = $state([])
 
-    const validUpdates = parse(UpdatesData, $query.data.data)
-    console.log('🚀 ~ validUpdates:', validUpdates)
+    const validUpdates = $updatesData /*parse(UpdatesData, $query.data.data)*/
 
     for (const update of validUpdates) {
       result.push({
         date: new Date(update.date),
         type: update.type,
         games: update.names.map(name => {
-          const res = $games.findIndex(game => game.name === name)
+          const res = $games.find(game => game.name === name) ?? { name }
+          console.log('🚀 ~ res:', res)
 
-          return res === -1 ? name : res
+          return res
         }),
       })
     }
 
     $updates = result
-    console.log('🚀 ~ $updates:', $updates)
   }
 </script>
 

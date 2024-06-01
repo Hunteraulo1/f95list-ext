@@ -1,8 +1,9 @@
 <script lang="ts">
   import gamesJson from '$lib/assets/games.json'
+  import updatesJson from '$lib/assets/updates.json'
   import Nav from '$lib/components/Nav.svelte'
-  import { Games } from '$lib/schemas'
-  import { filteredGames, games } from '$lib/stores'
+  import { Games, UpdatesData } from '$lib/schemas'
+  import { filteredGames, games, updatesData } from '$lib/stores'
   import { ScrollArea } from 'bits-ui'
   import { ModeWatcher } from 'mode-watcher'
   import { parse } from 'valibot'
@@ -17,9 +18,12 @@
 
   try {
     const validGames = parse(Games, gamesJson.data)
+    const validUpdates = parse(UpdatesData, updatesJson.data)
 
     $games = validGames ?? []
     $filteredGames = validGames ?? []
+
+    $updatesData = validUpdates ?? []
 
     console.log('🚀 ~ $games:', $games)
   } catch (error) {

@@ -10,10 +10,10 @@
   import { parse } from 'valibot'
   import type { PageData } from './$types'
 
-  export let data: PageData
+  let { data }: { data: PageData } = $props()
 
-  let game: GameType | null = null
-  let hideTags = true
+  let game: GameType | undefined = $state()
+  let hideTags = $state(true)
 
   const index = parseInt(data.props.index)
   const gameData = gamesJson.data[index]
@@ -21,8 +21,6 @@
   if (gameData) {
     const validGames = parse(Game, gameData)
     game = validGames ?? null
-
-    console.log(game)
   }
 </script>
 
@@ -65,7 +63,7 @@
         {/if}
       {/each}
       {#if game.tags.length > 5}
-        <button class="text-xs font-bold text-secondary-foreground/50" on:click={() => (hideTags = !hideTags)}>
+        <button class="text-xs font-bold text-secondary-foreground/50" onclick={() => (hideTags = !hideTags)}>
           {hideTags ? 'afficher plus...' : 'cacher'}
         </button>
       {/if}

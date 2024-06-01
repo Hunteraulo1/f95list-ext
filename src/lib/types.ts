@@ -1,9 +1,9 @@
 import type { GameType, UpdateType } from './schemas'
 
 export interface Update {
-  type: UpdateType['type']
   date: Date
-  games: (GameType | number | string)[]
+  type: UpdateType['type']
+  games: (GameType | { name: GameType['name'] })[]
 }
 
 export interface ComboBox {

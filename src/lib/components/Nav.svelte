@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
   import Button from './ui/button/button.svelte'
 
   const nav = [
@@ -11,11 +12,9 @@
 <ul class="flex w-full justify-around bg-secondary/75 p-2">
   {#each nav as { name, href }}
     <li>
-      <a {href}>
-        <Button variant="outline">
-          {name}
-        </Button>
-      </a>
+      <Button variant="outline" on:click={() => goto(href)}>
+        {name}
+      </Button>
     </li>
   {/each}
 </ul>

@@ -5,7 +5,7 @@
   import Reload from 'svelte-radix/Reload.svelte'
   import Button from './../lib/components/ui/button/button.svelte'
 
-  let maxLength = 25
+  let maxLength = $state(25)
 </script>
 
 <div class="flex flex-col gap-2 overflow-scroll max-h-full p-2 relative">
