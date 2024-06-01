@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store'
 
 import tags from '$lib/assets/tags.json'
-import type { GameType, UpdateType } from './schemas'
+import type { GameType, TraductorType, UpdateType } from './schemas'
 import type { ComboBox, Update } from './types'
 
 export const games = writable<GameType[]>([])
@@ -36,3 +36,5 @@ export const filter = writable<ComboBox[]>([
 
 export const updates = writable<Update[]>([])
 export const updatesData = writable<UpdateType[]>([])
+
+export const traductors = writable<TraductorType[]>([])

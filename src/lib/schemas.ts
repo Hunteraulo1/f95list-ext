@@ -1,4 +1,4 @@
-import { array, boolean, type InferOutput, nullable, object, picklist, string } from 'valibot'
+import { array, boolean, type InferOutput, nullable, number, object, picklist, string } from 'valibot'
 
 const Game = object({
   domain: picklist(['F95z', 'LewdCorner', 'Autre']),
@@ -32,13 +32,28 @@ const UpdateData = object({
   names: array(Game.entries.name),
 })
 
+const Traductor = object({
+  name: Game.entries.traductor,
+  pages: array(
+    object({
+      title: string(),
+      link: string(),
+    })
+  ),
+  tradCount: number(),
+  readCount: number(),
+  score: number(),
+})
+
 const Games = array(Game)
 
 const UpdatesData = array(UpdateData)
+const TraductorsData = array(Traductor)
 
-export { Game, Games, UpdateData, UpdatesData }
+export { Game, Games, TraductorsData, UpdateData, UpdatesData }
 
 type GameType = InferOutput<typeof Game>
 type UpdateType = InferOutput<typeof UpdateData>
+type TraductorType = InferOutput<typeof Traductor>
 
-export type { GameType, UpdateType }
+export type { GameType, TraductorType, UpdateType }
