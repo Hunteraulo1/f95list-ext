@@ -26,12 +26,12 @@
 </script>
 
 <div class="flex flex-col gap-4 overflow-scroll max-h-full p-2 relative">
-  {#each $traductors as { name, pages }}
+  {#each $traductors as { name, pages, tradCount, readCount }}
     <Card.Root class="relative">
       <Card.CardContent class="p-2 min-h-20">
-        <p class="font-bold">{name}</p>
+        <p class="font-bold text-center">{name}</p>
 
-        <div class="flex text-sm items-center">
+        <div class="flex text-sm items-center justify-center">
           <p class="font-bold text-secondary-foreground/50">Liens:</p>
           {#each pages as { title, link }}
             <Button variant="link" on:click={() => goto(link)} class="px-1">
@@ -40,6 +40,14 @@
           {:else}
             <p class="px-1 py-2">Aucun lien</p>
           {/each}
+        </div>
+        <div class="flex justify-around w-full">
+          <p class="text-sm font-bold text-secondary-foreground/50">
+            Traduction: <span class="text-secondary-foreground">{tradCount}</span>
+          </p>
+          <p class="text-sm font-bold text-secondary-foreground/50">
+            Relecture: <span class="text-secondary-foreground">{readCount}</span>
+          </p>
         </div>
       </Card.CardContent>
     </Card.Root>
