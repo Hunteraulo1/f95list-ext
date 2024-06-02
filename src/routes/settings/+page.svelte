@@ -19,7 +19,7 @@
       id: 'theme',
     },
     {
-      title: 'Cacher les tags par défault:',
+      title: 'Cacher les tags (par défault):',
       id: 'tagsHide',
     },
     {
