@@ -4,7 +4,17 @@
 
 [Extension Development Basics](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
 
-## Developing
+## Installation
+
+Pour installer les dépendences :
+
+Bun:
+
+```bash
+bun install
+```
+
+## Développement
 
 Pour démarrez un serveur de développement :
 
@@ -14,7 +24,7 @@ Bun:
 bun run dev
 ```
 
-## Building
+## Production
 
 Pour créer une version de production de l'extension:
 
