@@ -1,66 +1,37 @@
-# SvelteKit Extension Template
+# Extension de F95 France
 
-By Luke Hagar
-
-Built with [Sveltekit](https://kit.svelte.dev) and [Skeleton](https://www.skeleton.dev)
-
-Out of the box Includes:
-
-- [x] Skeleton
-- [x] Tailwind
-- [x] Chrome Types
-- [x] ESlint
-- [x] Prettier
-- [x] TypeScript
-- [x] Vite
-- [x] Vitest
-
-## Reference Documentation
+## Documentation de réference
 
 [Extension Development Basics](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Pour démarrez un serveur de développement :
 
-NPM:
-
-```bash
-npm run dev
-```
-
-Yarn:
+Bun:
 
 ```bash
-yarn dev
-```
-
-pnpm:
-
-```bash
-pnpm dev
+bun run dev
 ```
 
 ## Building
 
-To create a production version of your app:
+Pour créer une version de production de l'extension:
 
-NPM:
-
-```bash
-npm run build
-```
-
-Yarn:
+Firefox:
 
 ```bash
-yarn build
+bun run build:firefox
 ```
 
-pnpm:
+Chrome:
 
 ```bash
-pnpm build
+bun run build:chrome
 ```
 
-> To deploy your app, you can load it as an unpacked chrome extension, instructions are in [Extension Development Basics](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
+Firefox + Chrome:
+
+```bash
+bun run build
+```
