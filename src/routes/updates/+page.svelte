@@ -26,7 +26,7 @@
         date: new Date(update.date),
         type: update.type,
         games: update.names.map(name => {
-          return $games.find(game => game.name === name) ?? { name }
+          return $games.findLast(game => game.name === name) ?? { name }
         }),
       })
     }
