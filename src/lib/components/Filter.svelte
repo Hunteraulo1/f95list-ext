@@ -1,27 +1,31 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button/index.js'
   import * as Command from '$lib/components/ui/command/index.js'
+  import { Input } from '$lib/components/ui/input/index.js'
   import * as Popover from '$lib/components/ui/popover/index.js'
-  import { filter, filteredGames, games } from '$lib/stores'
+  import { filter, filteredGames, games, search } from '$lib/stores'
   import { cn } from '$lib/utils'
   import { tick } from 'svelte'
   import { Check, ChevronDown } from 'svelte-radix'
 
-  const closeAndFocusTrigger = (triggerId: string) => {
+  const closeAndFocusTrigger = (triggerId?: string) => {
     for (let item of $filter) {
       item.open = false
     }
 
-    $filteredGames = $games.filter(game => {
-      return $filter.every(({ title, selectedValues }) => {
-        if (title === 'tags') return selectedValues.every(value => game.tags.includes(value))
-        return selectedValues.every(value => game[title] === value)
+    $filteredGames = $games
+      .filter(game => game.name.toLowerCase().includes($search))
+      .filter(game => {
+        return $filter.every(({ title, selectedValues }) => {
+          if (title === 'tags') return selectedValues.every(value => game.tags.includes(value))
+          return selectedValues.every(value => game[title] === value)
+        })
       })
-    })
 
-    tick().then(() => {
-      document.getElementById(triggerId)?.focus()
-    })
+    triggerId &&
+      tick().then(() => {
+        document.getElementById(triggerId)?.focus()
+      })
   }
 </script>
 
@@ -33,8 +37,19 @@
     <Popover.Content side="top">
       <div class="flex flex-col gap-2 items-center">
         <h1 class="font-bold">Filtrer la liste</h1>
+        <Input
+          type="text"
+          placeholder="Rechercher un nom"
+          class="w-full"
+          value={$search}
+          on:input={({ currentTarget }) => {
+            $search = currentTarget.value.toLowerCase()
+            closeAndFocusTrigger()
+          }}
+        />
+
         {#each $filter as { title, open, selectedValues, values }}
-          <Popover.Root bind:open let:ids>
+          <Popover.Root let:ids>
             <Popover.Trigger asChild let:builder>
               <Button
                 builders={[builder]}

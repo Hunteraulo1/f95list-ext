@@ -1,6 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { Button } from '$lib/components/ui/button/index.js'
+  import { settings } from '$lib/stores'
+  import type { Settings } from '$lib/types'
   import { toggleMode } from 'mode-watcher'
   import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
   import Moon from 'svelte-radix/Moon.svelte'
@@ -8,12 +10,12 @@
   import Label from './../../lib/components/ui/label/label.svelte'
   import Switch from './../../lib/components/ui/switch/switch.svelte'
 
-  interface Setting {
+  interface SettingItem {
     title: string
-    id: string
+    id: keyof Settings
   }
 
-  const settings: Setting[] = [
+  const settingsItems: SettingItem[] = [
     {
       title: "Thème de l'extension:",
       id: 'theme',
@@ -23,7 +25,7 @@
       id: 'tagsHide',
     },
     {
-      title: "Activer l'intégration F95:",
+      title: "Activer l'intégration F95 (WIP):",
       id: 'intergrateFeature',
     },
   ]
@@ -46,18 +48,32 @@
       href: 'https://discord.gg/QXd9kr3ewW',
     },
   ]
+
+  $settings = JSON.parse(
+    localStorage.getItem('settings') ||
+      JSON.stringify({
+        tagsHide: true,
+        intergrateFeature: true,
+      })
+  )
+
+  const handleSettings = (id: keyof Settings) => {
+    const result = { ...$settings, [id]: !$settings[id] }
+    $settings = result
+    localStorage.setItem('settings', JSON.stringify(result))
+  }
 </script>
 
 <div class="p-2 flex flex-col gap-8">
   <div class="flex flex-col gap-2">
     <h1 class="text-center mb-2 font-bold">Paramètres</h1>
 
-    {#each settings as { title, id }}
+    {#each settingsItems as { title, id }}
       <div class="flex justify-center items-center gap-2">
         <Label for={id}>{title}</Label>
 
         {#if id !== 'theme'}
-          <Switch {id} />
+          <Switch {id} onclick={() => handleSettings(id)} checked={$settings[id]} />
         {:else}
           <Button {id} on:click={toggleMode} variant="outline" size="icon">
             <Sun class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -70,9 +86,9 @@
       </div>
     {/each}
 
-    <div class="flex justify-center items-center gap-2">
+    <!-- <div class="flex justify-center items-center gap-2">
       <Button variant="outline">Actualiser la liste</Button>
-    </div>
+    </div> -->
   </div>
 
   <div>
