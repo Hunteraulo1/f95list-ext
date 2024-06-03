@@ -12,3 +12,9 @@ export interface ComboBox {
   values: (GameType['domain' | 'status' | 'type'] | string)[]
   selectedValues: string[]
 }
+
+export interface Settings {
+  theme?: undefined
+  tagsHide: boolean
+  intergrateFeature: boolean
+}

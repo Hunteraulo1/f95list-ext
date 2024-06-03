@@ -3,17 +3,19 @@
   import { Badge } from '$lib/components/ui/badge'
   import { Button } from '$lib/components/ui/button/index.js'
   import type { GameType } from '$lib/schemas'
+  import { settings } from '$lib/stores'
   import { statusColor, typeColor } from '$lib/utils/badgeColor'
   import { Tooltip } from 'bits-ui'
   import { ArrowLeft } from 'svelte-radix'
 
   interface Props {
     game: GameType
-    open: any
+    open: boolean
   }
 
+  let tagsHide = $state($settings.tagsHide)
+
   let { game, open = $bindable() }: Props = $props()
-  let hideTags = $state(true)
 </script>
 
 <div class="fixed top-0 left-0 w-full h-full max-w-[300px] max-h-[450px] z-20 bg-black overflow-scroll">
@@ -51,13 +53,13 @@
       <div class="flex gap-1 flex-wrap">
         <span class="font-bold text-sm">Tags:</span>
         {#each game.tags as tag, index}
-          {#if index < 5 || !hideTags}
+          {#if index < 5 || !tagsHide}
             <Badge variant="outline">{tag}</Badge>
           {/if}
         {/each}
         {#if game.tags.length > 5}
-          <button class="text-xs font-bold text-secondary-foreground/50" onclick={() => (hideTags = !hideTags)}>
-            {hideTags ? 'afficher plus...' : 'cacher'}
+          <button class="text-xs font-bold text-secondary-foreground/50" onclick={() => (tagsHide = !tagsHide)}>
+            {tagsHide ? 'afficher plus...' : 'cacher'}
           </button>
         {/if}
       </div>
