@@ -10,7 +10,7 @@
 
   let maxLength = $state(25)
 
-  const queryResult = useQuery<{ data: GameType[] }>({
+  const queryResult = useQuery<GameType[]>({
     queryFn: async () => {
       console.log('🚀 ~ queryFn: ~ fetch')
       try {
@@ -25,11 +25,12 @@
       }
     },
     queryKey: 'games',
-    onSuccess: data => {
-      console.log('🚀 ~ data:', data)
+    select(data: any) {
       const validGames = parse(Games, data.data)
       $games = validGames
       $filteredGames = validGames
+
+      return validGames
     },
   })
 </script>

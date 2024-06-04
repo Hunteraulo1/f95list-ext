@@ -1,8 +1,7 @@
 <script lang="ts">
-  import gamesJson from '$lib/assets/games.json'
   import GameBox from '$lib/components/GameBox.svelte'
-  import { Updates } from '$lib/schemas'
-  import { updates } from '$lib/stores'
+  import { Updates, type UpdateType } from '$lib/schemas'
+  import { games } from '$lib/stores'
   import { useQuery } from '@sveltestack/svelte-query'
   import { parse } from 'valibot'
 
@@ -12,7 +11,7 @@
     names: string[]
   }
 
-  const queryResult = useQuery<{ data: UpdatesData[] }>({
+  const queryResult = useQuery<UpdateType[]>({
     queryFn: async () => {
       console.log('🚀 ~ queryFn: ~ fetch')
       try {
@@ -27,7 +26,7 @@
       }
     },
     queryKey: 'updates',
-    onSuccess(data) {
+    select(data: any) {
       const defaultGame = {
         name: '',
         ac: false,
@@ -53,12 +52,12 @@
           date: new Date(update.date),
           type: update.type,
           games: update.names.map((name: string) => {
-            return gamesJson.data.findLast(game => game.name === name) ?? { ...defaultGame, name } // gamesJson.data => $query
+            return $games.findLast(game => game.name === name) ?? { ...defaultGame, name }
           }),
         }
       })
 
-      $updates = parse(Updates, updatesData)
+      return parse(Updates, updatesData)
     },
     cacheTime: 1000 * 60, // 1 minute
   })
@@ -66,9 +65,9 @@
 
 {#if $queryResult.isSuccess}
   <div class="flex flex-col gap-4 overflow-scroll max-h-full p-2 relative">
-    {#each $updates as update, index}
+    {#each $queryResult.data as update, index}
       <div class="flex flex-col gap-2">
-        {#if index === 0 || $updates[index - 1].date.getTime() !== update.date.getTime()}
+        {#if index === 0 || $queryResult.data[index - 1].date.getTime() !== update.date.getTime()}
           <h2 class="text-center font-bold leading-none">
             {new Date(update.date).toLocaleDateString('fr-FR', { timeZone: 'Europe/Paris' })}
           </h2>
