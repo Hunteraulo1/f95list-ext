@@ -4,6 +4,7 @@
   import * as Card from '$lib/components/ui/card'
   import { TraductorsData, type TraductorType } from '$lib/schemas'
   import { useQuery } from '@sveltestack/svelte-query'
+  import { Reload } from 'svelte-radix'
   import { parse } from 'valibot'
 
   const queryResult = useQuery<TraductorType[]>({
@@ -24,6 +25,7 @@
     select(data: any) {
       return parse(TraductorsData, data.data)
     },
+    cacheTime: 1000 * 60 * 60 * 6, // 6 hours
   })
 </script>
 
@@ -55,5 +57,12 @@
         </Card.CardContent>
       </Card.Root>
     {/each}
+  </div>
+{:else}
+  <div class="flex justify-center items-center h-full">
+    <Button>
+      <Reload class="mr-2 h-4 w-4 animate-spin" />
+      Veuillez patienter
+    </Button>
   </div>
 {/if}
