@@ -1,8 +1,10 @@
 <script lang="ts">
   import GameBox from '$lib/components/GameBox.svelte'
+  import { Button } from '$lib/components/ui/button'
   import { Updates, type UpdateType } from '$lib/schemas'
   import { games } from '$lib/stores'
   import { useQuery } from '@sveltestack/svelte-query'
+  import { Reload } from 'svelte-radix'
   import { parse } from 'valibot'
 
   interface UpdatesData {
@@ -59,7 +61,7 @@
 
       return parse(Updates, updatesData)
     },
-    cacheTime: 1000 * 60, // 1 minute
+    cacheTime: 1000 * 60 * 60 * 6, // 6 hours
   })
 </script>
 
@@ -78,5 +80,12 @@
         {/each}
       </div>
     {/each}
+  </div>
+{:else}
+  <div class="flex justify-center items-center h-full">
+    <Button>
+      <Reload class="mr-2 h-4 w-4 animate-spin" />
+      Veuillez patienter
+    </Button>
   </div>
 {/if}

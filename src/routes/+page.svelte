@@ -32,6 +32,7 @@
 
       return validGames
     },
+    cacheTime: 1000 * 60 * 60 * 6, // 6 hours
   })
 </script>
 
@@ -55,8 +56,10 @@
     <Filter />
   </div>
 {:else}
-  <Button>
-    <Reload class="mr-2 h-4 w-4 animate-spin" />
-    Veuillez patienter
-  </Button>
+  <div class="flex justify-center items-center h-full">
+    <Button>
+      <Reload class="mr-2 h-4 w-4 animate-spin" />
+      Veuillez patienter
+    </Button>
+  </div>
 {/if}
