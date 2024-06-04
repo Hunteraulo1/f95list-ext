@@ -1,12 +1,7 @@
 <script lang="ts">
-  import gamesJson from '$lib/assets/games.json'
-  import updatesJson from '$lib/assets/updates.json'
   import Nav from '$lib/components/Nav.svelte'
-  import { Games, UpdatesData } from '$lib/schemas'
-  import { filteredGames, games, updatesData } from '$lib/stores'
   import { ScrollArea } from 'bits-ui'
   import { ModeWatcher } from 'mode-watcher'
-  import { parse } from 'valibot'
   import '../app.postcss'
 
   import {
@@ -16,41 +11,32 @@
     persistQueryClient,
   } from '@sveltestack/svelte-query'
 
-  try {
-    const validGames = parse(Games, gamesJson.data)
-    const validUpdates = parse(UpdatesData, updatesJson.data)
-
-    $games = validGames ?? []
-    $filteredGames = validGames ?? []
-
-    $updatesData = validUpdates ?? []
-
-    console.log('🚀 ~ $games:', $games)
-  } catch (error) {
-    console.error('🚀 ~ error:', error)
-  }
-
-  const client = new QueryClient({
+  const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         cacheTime: 1000 * 60 * 60 * 6, // 6 hours
+        staleTime: 1000 * 60 * 60 * 6, // 6 hours
       },
     },
   })
 
-  const persistor = createWebStoragePersistor({
+  const localStoragePersistor = createWebStoragePersistor({
     storage: window.localStorage,
+    key: 'f95list-ext',
+    throttleTime: 1000,
+    deserialize: data => JSON.parse(data),
+    serialize: data => JSON.stringify(data),
   })
 
   persistQueryClient({
-    queryClient: client,
-    persistor,
+    queryClient,
+    persistor: localStoragePersistor,
   })
 </script>
 
 <ModeWatcher />
 
-<QueryClientProvider {client}>
+<QueryClientProvider client={queryClient}>
   <main class="h-full flex flex-col relative">
     <ScrollArea.Root class="relative h-full">
       <ScrollArea.Viewport class="h-full w-full">
