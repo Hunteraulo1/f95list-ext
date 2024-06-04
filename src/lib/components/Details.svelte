@@ -2,6 +2,7 @@
   import noImage from '$lib/assets/no-image.png'
   import { Badge } from '$lib/components/ui/badge'
   import { Button } from '$lib/components/ui/button/index.js'
+  import { ScrollArea } from '$lib/components/ui/scroll-area/index.js'
   import type { GameType } from '$lib/schemas'
   import { settings } from '$lib/stores'
   import { statusColor, typeColor } from '$lib/utils/badgeColor'
@@ -18,7 +19,7 @@
   let { game, open = $bindable() }: Props = $props()
 </script>
 
-<div class="fixed top-0 left-0 w-full h-full max-w-[300px] max-h-[450px] z-20 bg-black overflow-scroll">
+<ScrollArea class="fixed top-0 left-0 w-full h-full max-w-[300px] max-h-[450px] z-20 bg-black">
   {#if game}
     <img src={game.image ?? noImage} alt={game.name} class="h-32 w-full object-cover" />
 
@@ -94,7 +95,7 @@
   <Button class="flex gap-1 opacity-50 absolute top-2 left-2" variant="secondary" on:click={() => (open = false)}>
     <ArrowLeft />
   </Button>
-</div>
+</ScrollArea>
 
 <style lang="postcss">
   .traductor {
