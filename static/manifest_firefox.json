@@ -4,12 +4,12 @@
   "version": "0.0.1",
   "manifest_version": 2,
   "icons": {
-    "32": "favicon.png"
+    "128": "favicon.png"
   },
   "browser_action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "favicon.png"
+      "128": "favicon.png"
     },
     "default_title": "sveltekit-extension-template"
   }
