@@ -3,11 +3,10 @@
   import { Button } from '$lib/components/ui/button'
   import * as Card from '$lib/components/ui/card'
   import { TraductorsData, type TraductorType } from '$lib/schemas'
-  import { traductors } from '$lib/stores'
   import { useQuery } from '@sveltestack/svelte-query'
   import { parse } from 'valibot'
 
-  const queryResult = useQuery<{ data: TraductorType[] }>({
+  const queryResult = useQuery<TraductorType[]>({
     queryFn: async () => {
       console.log('🚀 ~ queryFn: ~ fetch')
       try {
@@ -22,15 +21,15 @@
       }
     },
     queryKey: 'traductors',
-    onSuccess(data) {
-      $traductors = parse(TraductorsData, data.data)
+    select(data: any) {
+      return parse(TraductorsData, data.data)
     },
   })
 </script>
 
 {#if $queryResult.isSuccess}
   <div class="flex flex-col gap-4 overflow-scroll max-h-full p-2 relative">
-    {#each $traductors as { name, pages, tradCount, readCount }}
+    {#each $queryResult.data as { name, pages, tradCount, readCount }}
       <Card.Root class="relative">
         <Card.CardContent class="p-2 min-h-20">
           <p class="font-bold text-center">{name}</p>
