@@ -8,7 +8,7 @@
   import { parse } from 'valibot'
   import Button from './../lib/components/ui/button/button.svelte'
 
-  let maxLength = $state(25)
+  let maxLength = 25
 
   const queryResult = useQuery<GameType[]>({
     queryFn: async () => {
