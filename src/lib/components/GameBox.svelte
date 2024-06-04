@@ -6,13 +6,9 @@
   import { Tooltip } from 'bits-ui'
   import Details from './Details.svelte'
 
-  interface Props {
-    game: GameType
-  }
+  export let game: GameType
 
-  const { game }: Props = $props()
-
-  let open: boolean = $state(false)
+  let open: boolean = false
 </script>
 
 {#if open && game.domain !== 'Unknow'}

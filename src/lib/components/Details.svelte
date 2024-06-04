@@ -9,14 +9,9 @@
   import { Tooltip } from 'bits-ui'
   import { ArrowLeft } from 'svelte-radix'
 
-  interface Props {
-    game: GameType
-    open: boolean
-  }
+  let tagsHide = $settings.tagsHide
 
-  let tagsHide = $state($settings.tagsHide)
-
-  let { game, open = $bindable() }: Props = $props()
+  export let game: GameType, open: boolean
 </script>
 
 <ScrollArea class="fixed top-0 left-0 w-full h-full max-w-[300px] max-h-[450px] z-20 bg-black">
@@ -59,7 +54,7 @@
           {/if}
         {/each}
         {#if game.tags.length > 5}
-          <button class="text-xs font-bold text-secondary-foreground/50" onclick={() => (tagsHide = !tagsHide)}>
+          <button class="text-xs font-bold text-secondary-foreground/50" on:click={() => (tagsHide = !tagsHide)}>
             {tagsHide ? 'afficher plus...' : 'cacher'}
           </button>
         {/if}

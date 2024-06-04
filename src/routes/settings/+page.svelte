@@ -3,9 +3,8 @@
   import { Button } from '$lib/components/ui/button/index.js'
   import { settings } from '$lib/stores'
   import type { Settings } from '$lib/types'
-  import { useQueryClient, type QueryClient } from '@sveltestack/svelte-query'
+  import { useQueryClient } from '@sveltestack/svelte-query'
   import { toggleMode } from 'mode-watcher'
-  import { onMount } from 'svelte'
   import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
   import Moon from 'svelte-radix/Moon.svelte'
   import Sun from 'svelte-radix/Sun.svelte'
@@ -16,11 +15,6 @@
     title: string
     id: keyof Settings
   }
-
-  let queryClient: QueryClient
-  onMount(() => {
-    queryClient = useQueryClient()
-  })
 
   const settingsItems: SettingItem[] = [
     {
@@ -69,6 +63,11 @@
     $settings = result
     localStorage.setItem('settings', JSON.stringify(result))
   }
+
+  const queryClient = useQueryClient()
+  const handleReload = () => {
+    queryClient.invalidateQueries()
+  }
 </script>
 
 <div class="p-2 flex flex-col gap-8">
@@ -80,7 +79,7 @@
         <Label for={id}>{title}</Label>
 
         {#if id !== 'theme'}
-          <Switch {id} onclick={() => handleSettings(id)} checked={$settings[id]} />
+          <Switch {id} on:click={() => handleSettings(id)} checked={$settings[id]} />
         {:else}
           <Button {id} on:click={toggleMode} variant="outline" size="icon">
             <Sun class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -94,7 +93,7 @@
     {/each}
 
     <div class="flex justify-center items-center gap-2">
-      <Button variant="outline" onclick={() => queryClient.invalidateQueries()}>Actualiser la liste</Button>
+      <Button variant="outline" on:click={() => handleReload()}>Actualiser la liste</Button>
     </div>
   </div>
 
