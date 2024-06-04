@@ -3,7 +3,9 @@
   import { Button } from '$lib/components/ui/button/index.js'
   import { settings } from '$lib/stores'
   import type { Settings } from '$lib/types'
+  import { useQueryClient, type QueryClient } from '@sveltestack/svelte-query'
   import { toggleMode } from 'mode-watcher'
+  import { onMount } from 'svelte'
   import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
   import Moon from 'svelte-radix/Moon.svelte'
   import Sun from 'svelte-radix/Sun.svelte'
@@ -14,6 +16,11 @@
     title: string
     id: keyof Settings
   }
+
+  let queryClient: QueryClient
+  onMount(() => {
+    queryClient = useQueryClient()
+  })
 
   const settingsItems: SettingItem[] = [
     {
@@ -86,9 +93,9 @@
       </div>
     {/each}
 
-    <!-- <div class="flex justify-center items-center gap-2">
-      <Button variant="outline">Actualiser la liste</Button>
-    </div> -->
+    <div class="flex justify-center items-center gap-2">
+      <Button variant="outline" onclick={() => queryClient.invalidateQueries()}>Actualiser la liste</Button>
+    </div>
   </div>
 
   <div>
