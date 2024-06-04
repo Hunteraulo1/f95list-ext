@@ -37,7 +37,7 @@
 </script>
 
 {#if $queryResult.isSuccess}
-  <div class="flex flex-col gap-2 overflow-scroll max-h-full p-2 relative">
+  <div class="flex flex-col gap-2 max-h-full p-2 relative">
     {#each $filteredGames as game, index (game.name + game.version)}
       {#if index < maxLength}
         <GameBox {game} />

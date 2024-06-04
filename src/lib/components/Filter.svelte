@@ -29,7 +29,7 @@
   }
 </script>
 
-<div class="sticky bottom-0 mx-auto">
+<div class="sticky bottom-2 mx-auto">
   <Popover.Root>
     <Popover.Trigger>
       <Button variant="secondary">Filtrer</Button>

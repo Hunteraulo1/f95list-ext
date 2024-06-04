@@ -30,7 +30,7 @@
 </script>
 
 {#if $queryResult.isSuccess}
-  <div class="flex flex-col gap-4 overflow-scroll max-h-full p-2 relative">
+  <div class="flex flex-col gap-4 max-h-full p-2 relative">
     {#each $queryResult.data as { name, pages, tradCount, readCount }}
       <Card.Root class="relative">
         <Card.CardContent class="p-2 min-h-20">
