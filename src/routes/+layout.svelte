@@ -1,15 +1,17 @@
 <script lang="ts">
   import Nav from '$lib/components/Nav.svelte'
-  import { ScrollArea } from 'bits-ui'
-  import { ModeWatcher } from 'mode-watcher'
-  import '../app.postcss'
-
+  import getData from '$lib/utils/getData'
   import {
     QueryClient,
     QueryClientProvider,
     createWebStoragePersistor,
     persistQueryClient,
   } from '@sveltestack/svelte-query'
+  import { ScrollArea } from 'bits-ui'
+  import { ModeWatcher } from 'mode-watcher'
+  import '../app.postcss'
+
+  getData()
 
   const queryClient = new QueryClient({
     defaultOptions: {

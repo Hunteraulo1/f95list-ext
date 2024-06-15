@@ -66,7 +66,7 @@
               <Command.Root>
                 <Command.Input placeholder="Rechercher..." />
                 <Command.Empty>Aucun {title} trouvé</Command.Empty>
-                <Command.Group>
+                <Command.Group class="max-h-60">
                   {#each values as value}
                     <Command.Item
                       {value}

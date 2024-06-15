@@ -11,11 +11,11 @@
   let open: boolean = false
 </script>
 
-{#if open && game.domain !== 'Unknow'}
+{#if open && game.domain !== 'Unknown'}
   <Details {game} bind:open />
 {/if}
 
-{#if game.domain !== 'Unknow'}
+{#if game.domain !== 'Unknown'}
   <Card.Root class="relative" on:click={() => (open = true)}>
     {#if game.image}
       <img alt={game.name} class="w-full h-full absolute object-cover rounded-xl" use:lazyLoad={game.image} />

@@ -49,49 +49,17 @@
     },
   ]
 
-  $settings = JSON.parse(
-    localStorage.getItem('settings') ||
-      JSON.stringify({
-        tagsHide: true,
-        intergrateFeature: true,
-      })
-  )
+  const defaultSettings = JSON.stringify({
+    tagsHide: true,
+    intergrateFeature: true,
+  })
+
+  $settings = JSON.parse(localStorage.getItem('settings') || defaultSettings)
 
   const handleSettings = (id: keyof Settings) => {
     const result = { ...$settings, [id]: !$settings[id] }
     $settings = result
     localStorage.setItem('settings', JSON.stringify(result))
-  }
-
-  function onError(error: string) {
-    console.error(`Error: ${error}`)
-  }
-
-  function sendMessageToTabs(tabs: any) {
-    const storage = JSON.parse(window.localStorage.getItem('f95list-ext') ?? '')
-
-    if (!storage) return
-
-    const queries = storage.clientState.queries
-
-    const gamesQuery = queries.find((query: any) => query.queryKey === 'games')
-
-    const games = gamesQuery.state.data.data
-
-    for (let tab of tabs) {
-      // check url f95
-      chrome.tabs.sendMessage(tab.id, { greeting: JSON.stringify(games) }).catch(onError)
-    }
-  }
-
-  const handleReload = () => {
-    chrome.tabs
-      .query({
-        currentWindow: true,
-        active: true,
-      })
-      .then(sendMessageToTabs)
-      .catch(onError)
   }
 </script>
 
@@ -114,14 +82,6 @@
         {/if}
       </div>
     {/each}
-
-    <div class="flex justify-center items-center gap-2">
-      <Button variant="outline" on:click={() => handleReload()}>Actualiser la liste</Button>
-    </div>
-
-    <div class="flex justify-center items-center gap-2">
-      <Button variant="outline" on:click={() => handleReload()}>Inject Script</Button>
-    </div>
   </div>
 
   <div>

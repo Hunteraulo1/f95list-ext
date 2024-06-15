@@ -25,7 +25,7 @@ const config = {
             pages: 'builds/chrome',
             assets: 'builds/chrome',
             fallback: null,
-            precompress: false,
+            precompress: true,
             manifest: 'manifest_chrome.json',
           }
     ),

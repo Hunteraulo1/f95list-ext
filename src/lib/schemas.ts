@@ -2,7 +2,7 @@ import { array, boolean, date, type InferOutput, nullable, number, object, pickl
 
 const Game = object({
   id: nullable(number()),
-  domain: picklist(['F95z', 'LewdCorner', 'Autre', 'Unknow']),
+  domain: picklist(['F95z', 'LewdCorner', 'Autre', 'Unknown']),
   hostname: nullable(picklist(['f95zone.to', 'lewdcorner.com'])),
   name: string(),
   version: string(),
