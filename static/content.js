@@ -1,82 +1,80 @@
-chrome.runtime.onMessage.addListener(request => {
-  console.log('🚀 ~ request:', request)
-  window.localStorage.setItem('f95list-ext', request.greeting)
-  return Promise.resolve()
-})
+;(async () => {
+  try {
+    const data = await chrome.runtime.sendMessage('f95list-script')
 
-// let games = JSON.parse(window.localStorage.getItem('f95list-ext') || '[]')
-// console.log('🚀 ~ games:', games)
+    const mutationCallback = async mutationsList => {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+          insert(data)
+        }
+      }
+    }
 
-// console.log('Integrating F95Zone')
+    const observer = new MutationObserver(mutationCallback)
+    const config = { childList: true, subtree: true }
 
-// const hostname = window.location.hostname
+    observer.observe(document.body, config)
 
-// const insert = () => {
-//   if (games.length > 0) {
-//     console.log(typeof games)
-//     const pathname = window.location.pathname
+    console.info('[F95ListFR] Injecting script successful !')
+  } catch (error) {
+    console.error(error)
+  }
+})()
 
-//     if (pathname === '/sam/latest_alpha/') {
-//       latest('.resource-tile_link')
-//     } else if (pathname.startsWith('/latest-updates/')) {
-//       latest('.porta-article-header')
-//     } else if (pathname.startsWith('/threads/')) {
-//       const tileId = parseInt(window.location.pathname.split('/')[2].split('.')[1])
+const hostname = window.location.hostname
 
-//       if (games.find(game => game.id == tileId && game.hostname === hostname)) {
-//         const parent = document.querySelector('.p-title-value')
+const insert = games => {
+  if (games && games.length > 0) {
+    const pathname = window.location.pathname
 
-//         if (parent && !parent?.classList.contains('flag-inserted')) {
-//           createFlag(parent)
+    if (pathname === '/sam/latest_alpha/') {
+      latest('.resource-tile_link', games)
+    } else if (pathname.startsWith('/latest-updates/')) {
+      latest('.porta-article-header', games)
+    } else if (pathname.startsWith('/threads/')) {
+      const tileId = parseInt(window.location.pathname.split('/')[2].split('.')[1])
 
-//           parent?.classList.add('flag-inserted')
-//         }
-//       }
-//     }
-//   }
-// }
+      if (games.find(game => game.id == tileId && game.hostname === hostname)) {
+        const parent = document.querySelector('.p-title-value')
 
-// const latest = query => {
-//   const tiles = document.querySelectorAll(query)
+        if (parent && !parent?.classList.contains('flag-inserted')) {
+          createFlag(parent)
 
-//   for (let tile of tiles) {
-//     const tileId =
-//       hostname === 'f95zone.to'
-//         ? parseInt(tile.pathname.split('/')[2])
-//         : parseInt(tile.pathname.split('/')[2].split('.')[1])
+          parent?.classList.add('flag-inserted')
+        }
+      }
+    }
+  }
+}
 
-//     if (games.find(game => game.id === tileId && game.hostname === hostname)) {
-//       if (!tile.classList.contains('flag-inserted')) {
-//         createFlag(hostname === 'f95zone.to' ? tile.children[1].children[0] : tile.children[1].children[1])
-//         tile.classList.add('flag-inserted')
-//       }
-//     }
-//   }
-// }
+const latest = (query, games) => {
+  const tiles = document.querySelectorAll(query)
 
-// const createFlag = parent => {
-//   const img = document.createElement('img')
+  for (let tile of tiles) {
+    const tileId =
+      hostname === 'f95zone.to'
+        ? parseInt(tile.pathname.split('/')[2])
+        : parseInt(tile.pathname.split('/')[2].split('.')[1])
 
-//   img.style.width = '32px'
-//   img.style.marginRight = '4px'
-//   img.style.borderRadius = '4px'
-//   img.style.float = 'inherit'
-//   img.style.verticalAlign = 'middle'
-//   img.src =
-//     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAELBAMAAAAFMM1/AAAAGFBMVEX///8AI5XtKTmerNf6yMwAGJDtKDjsITLN9eOpAAAA9ElEQVR42u3P0QAAQAgFsBRO4WQCyCB/iCDe72awerGpWO9PiYiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIJA7ZdJrTjvyKSgAAAABJRU5ErkJggg=='
+    if (games.find(game => game.id === tileId && game.hostname === hostname)) {
+      if (!tile.classList.contains('flag-inserted')) {
+        createFlag(hostname === 'f95zone.to' ? tile.children[1].children[0] : tile.children[1].children[1])
+        tile.classList.add('flag-inserted')
+      }
+    }
+  }
+}
 
-//   parent.prepend(img)
-// }
+const createFlag = parent => {
+  const img = document.createElement('img')
 
-// const mutationCallback = mutationsList => {
-//   for (let mutation of mutationsList) {
-//     if (mutation.type === 'childList') {
-//       insert()
-//     }
-//   }
-// }
+  img.style.width = '32px'
+  img.style.marginRight = '4px'
+  img.style.borderRadius = '4px'
+  img.style.float = 'inherit'
+  img.style.verticalAlign = 'middle'
+  img.src =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAELBAMAAAAFMM1/AAAAGFBMVEX///8AI5XtKTmerNf6yMwAGJDtKDjsITLN9eOpAAAA9ElEQVR42u3P0QAAQAgFsBRO4WQCyCB/iCDe72awerGpWO9PiYiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIJA7ZdJrTjvyKSgAAAABJRU5ErkJggg=='
 
-// const observer = new MutationObserver(mutationCallback)
-// const config = { childList: true, subtree: true }
-
-// observer.observe(document.body, config)
+  parent.prepend(img)
+}
