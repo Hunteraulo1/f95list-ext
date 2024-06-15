@@ -1,6 +1,7 @@
 {
-  "name": "sveltekit-extension-template",
-  "description": "Example Chrome extension built with Sveltekit and Skeleton",
+  "name": "f95list-ext",
+  "description": "Extension of F95 France community",
+  "author": "Hunteraulo",
   "version": "0.0.1",
   "manifest_version": 3,
   "icons": {
@@ -11,6 +12,31 @@
     "default_icon": {
       "128": "favicon.png"
     },
-    "default_title": "sveltekit-extension-template"
+    "default_title": "f95list-ext"
+  },
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab",
+    "unlimitedStorage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://f95zone.to/sam/latest_alpha/*",
+        "*://f95zone.to/threads/*",
+        "*://lewdcorner.com/latest-updates/*",
+        "*://lewdcorner.com/threads/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
   }
 }

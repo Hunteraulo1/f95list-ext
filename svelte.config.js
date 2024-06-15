@@ -18,7 +18,7 @@ const config = {
             pages: 'builds/firefox',
             assets: 'builds/firefox',
             fallback: null,
-            precompress: false,
+            precompress: true,
             manifest: 'manifest_firefox.json',
           }
         : {

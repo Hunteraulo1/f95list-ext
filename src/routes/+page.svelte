@@ -3,6 +3,7 @@
   import GameBox from '$lib/components/GameBox.svelte'
   import { Games, type GameType } from '$lib/schemas'
   import { filteredGames, games } from '$lib/stores'
+  import { sendMessage } from '$lib/utils/sendMessage'
   import { useQuery } from '@sveltestack/svelte-query'
   import Reload from 'svelte-radix/Reload.svelte'
   import { parse } from 'valibot'
@@ -26,9 +27,12 @@
     },
     queryKey: 'games',
     select(data: any) {
+      console.log('🚀 ~ queryFn: ~ data:', data)
       const validGames = parse(Games, data.data)
       $games = validGames
       $filteredGames = validGames
+
+      sendMessage(validGames)
 
       return validGames
     },
@@ -37,7 +41,7 @@
 </script>
 
 {#if $queryResult.isSuccess}
-  <div class="flex flex-col gap-2 max-h-full p-2 relative">
+  <div class="flex flex-col gap-2 p-2 relative">
     {#each $filteredGames as game, index (game.name + game.version)}
       {#if index < maxLength}
         <GameBox {game} />

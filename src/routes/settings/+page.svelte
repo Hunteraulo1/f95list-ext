@@ -3,7 +3,6 @@
   import { Button } from '$lib/components/ui/button/index.js'
   import { settings } from '$lib/stores'
   import type { Settings } from '$lib/types'
-  import { useQueryClient } from '@sveltestack/svelte-query'
   import { toggleMode } from 'mode-watcher'
   import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
   import Moon from 'svelte-radix/Moon.svelte'
@@ -64,9 +63,35 @@
     localStorage.setItem('settings', JSON.stringify(result))
   }
 
-  const queryClient = useQueryClient()
+  function onError(error: string) {
+    console.error(`Error: ${error}`)
+  }
+
+  function sendMessageToTabs(tabs: any) {
+    const storage = JSON.parse(window.localStorage.getItem('f95list-ext') ?? '')
+
+    if (!storage) return
+
+    const queries = storage.clientState.queries
+
+    const gamesQuery = queries.find((query: any) => query.queryKey === 'games')
+
+    const games = gamesQuery.state.data.data
+
+    for (let tab of tabs) {
+      // check url f95
+      chrome.tabs.sendMessage(tab.id, { greeting: JSON.stringify(games) }).catch(onError)
+    }
+  }
+
   const handleReload = () => {
-    queryClient.invalidateQueries()
+    chrome.tabs
+      .query({
+        currentWindow: true,
+        active: true,
+      })
+      .then(sendMessageToTabs)
+      .catch(onError)
   }
 </script>
 
@@ -82,10 +107,8 @@
           <Switch {id} on:click={() => handleSettings(id)} checked={$settings[id]} />
         {:else}
           <Button {id} on:click={toggleMode} variant="outline" size="icon">
-            <Sun class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon
-              class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-            />
+            <Sun class="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon class="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span class="sr-only">Changer le thème</span>
           </Button>
         {/if}
@@ -94,6 +117,10 @@
 
     <div class="flex justify-center items-center gap-2">
       <Button variant="outline" on:click={() => handleReload()}>Actualiser la liste</Button>
+    </div>
+
+    <div class="flex justify-center items-center gap-2">
+      <Button variant="outline" on:click={() => handleReload()}>Inject Script</Button>
     </div>
   </div>
 

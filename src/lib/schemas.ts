@@ -1,8 +1,9 @@
 import { array, boolean, date, type InferOutput, nullable, number, object, picklist, string } from 'valibot'
 
 const Game = object({
-  id: number(),
+  id: nullable(number()),
   domain: picklist(['F95z', 'LewdCorner', 'Autre', 'Unknow']),
+  hostname: nullable(picklist(['f95zone.to', 'lewdcorner.com'])),
   name: string(),
   version: string(),
   tversion: string(),
