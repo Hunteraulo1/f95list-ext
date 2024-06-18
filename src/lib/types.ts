@@ -9,8 +9,10 @@ export interface Update {
 export interface ComboBox {
   title: keyof GameType
   open: boolean
-  values: (GameType['domain' | 'status' | 'type'] | string)[]
-  selectedValues: string[]
+  values: {
+    value: GameType['domain' | 'status' | 'type'] | string
+    checked: boolean
+  }[]
 }
 
 export interface Settings {

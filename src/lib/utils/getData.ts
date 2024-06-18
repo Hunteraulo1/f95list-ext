@@ -57,7 +57,6 @@ const getData = async () => {
         }),
       }
     })
-    console.log('🚀 ~ updatesData ~ updatesData:', updatesData)
 
     const validUpdates = parse(Updates, updatesData)
 

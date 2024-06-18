@@ -3,7 +3,8 @@
   import * as Command from '$lib/components/ui/command/index.js'
   import { Input } from '$lib/components/ui/input/index.js'
   import * as Popover from '$lib/components/ui/popover/index.js'
-  import { filter, filteredGames, games, search } from '$lib/stores'
+  import { ScrollArea } from '$lib/components/ui/scroll-area/index'
+  import { defaultFilters, filter, filteredGames, games, search } from '$lib/stores'
   import { cn } from '$lib/utils'
   import { tick } from 'svelte'
   import { Check, ChevronDown } from 'svelte-radix'
@@ -16,9 +17,15 @@
     $filteredGames = $games
       .filter(game => game.name.toLowerCase().includes($search))
       .filter(game => {
-        return $filter.every(({ title, selectedValues }) => {
-          if (title === 'tags') return selectedValues.every(value => game.tags.includes(value))
-          return selectedValues.every(value => game[title] === value)
+        return $filter.every(({ title, values }) => {
+          if (title === 'tags')
+            return values.every(value => {
+              return value.checked ? game[title].includes(value.value) : true
+            })
+
+          return values.every(value => {
+            return value.checked ? game[title] === value.value : true
+          })
         })
       })
 
@@ -30,9 +37,8 @@
 
   const handleReset = () => {
     $search = ''
-    $filter.forEach(({ selectedValues }) => {
-      selectedValues.splice(0, selectedValues.length)
-    })
+    $filter = defaultFilters
+
     closeAndFocusTrigger()
   }
 </script>
@@ -56,7 +62,7 @@
           }}
         />
 
-        {#each $filter as { title, open, selectedValues, values }}
+        {#each $filter as { title, open, values }}
           <Popover.Root let:ids>
             <Popover.Trigger asChild let:builder>
               <Button
@@ -66,7 +72,14 @@
                 aria-expanded={open}
                 class="w-full flex justify-between"
               >
-                <p class="truncate">{selectedValues.length > 0 ? selectedValues : `Filtrer par ${title}...`}</p>
+                <p class="truncate">
+                  {values.some(({ checked }) => checked)
+                    ? values
+                        .filter(value => value.checked)
+                        .map(({ value }) => value)
+                        .join(', ')
+                    : `Filtrer par ${title}...`}
+                </p>
                 <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </Popover.Trigger>
@@ -74,21 +87,22 @@
               <Command.Root>
                 <Command.Input placeholder="Rechercher..." />
                 <Command.Empty>Aucun {title} trouvé</Command.Empty>
-                <Command.Group class="max-h-60">
-                  {#each values as value}
-                    <Command.Item
-                      {value}
-                      onSelect={currentValue => {
-                        if (!selectedValues.includes(currentValue)) selectedValues.push(currentValue)
-                        else selectedValues.splice(selectedValues.indexOf(currentValue), 1)
+                <Command.Group class="max-h-60 relative">
+                  <ScrollArea class="{values.length > 7 ? 'h-screen' : ''} max-h-60">
+                    {#each values as { value, checked }}
+                      <Command.Item
+                        {value}
+                        onSelect={() => {
+                          checked = !checked
 
-                        closeAndFocusTrigger(ids.trigger)
-                      }}
-                    >
-                      <Check class={cn('mr-2 h-4 w-4', !selectedValues.includes(value) && 'text-transparent')} />
-                      {value}
-                    </Command.Item>
-                  {/each}
+                          closeAndFocusTrigger(ids.trigger)
+                        }}
+                      >
+                        <Check class={cn('mr-2 h-4 w-4', !checked && 'text-transparent')} />
+                        {value}
+                      </Command.Item>
+                    {/each}
+                  </ScrollArea>
                 </Command.Group>
               </Command.Root>
             </Popover.Content>
