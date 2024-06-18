@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { goto } from '$app/navigation'
   import { Button } from '$lib/components/ui/button'
-  import * as Card from '$lib/components/ui/card'
   import { TraductorsData, type TraductorType } from '$lib/schemas'
   import { useQuery } from '@sveltestack/svelte-query'
   import { Reload } from 'svelte-radix'
@@ -29,7 +27,7 @@
   })
 </script>
 
-{#if $queryResult.isSuccess}
+<!-- {#if $queryResult.isSuccess}
   <div class="flex flex-col gap-4 max-h-full p-2 relative">
     {#each $queryResult.data as { name, pages, tradCount, readCount }}
       <Card.Root class="relative">
@@ -58,11 +56,11 @@
       </Card.Root>
     {/each}
   </div>
-{:else}
-  <div class="flex justify-center items-center h-full">
-    <Button>
-      <Reload class="mr-2 h-4 w-4 animate-spin" />
-      Veuillez patienter
-    </Button>
-  </div>
-{/if}
+{:else} -->
+<div class="flex justify-center items-center min-h-full">
+  <Button>
+    <Reload class="mr-2 h-4 w-4 animate-spin" />
+    Veuillez patienter
+  </Button>
+</div>
+<!-- {/if} -->

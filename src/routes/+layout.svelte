@@ -1,5 +1,6 @@
 <script lang="ts">
   import Nav from '$lib/components/Nav.svelte'
+  import { ScrollArea } from '$lib/components/ui/scroll-area/index'
   import getData from '$lib/utils/getData'
   import {
     QueryClient,
@@ -7,7 +8,6 @@
     createWebStoragePersistor,
     persistQueryClient,
   } from '@sveltestack/svelte-query'
-  import { ScrollArea } from 'bits-ui'
   import { ModeWatcher } from 'mode-watcher'
   import '../app.postcss'
 
@@ -39,23 +39,10 @@
 <ModeWatcher />
 
 <QueryClientProvider client={queryClient}>
-  <main class="h-full flex flex-col relative">
-    <ScrollArea.Root class="relative h-full">
-      <ScrollArea.Viewport class="h-full w-full">
-        <ScrollArea.Content class="h-full !block">
-          <slot />
-        </ScrollArea.Content>
-      </ScrollArea.Viewport>
-      <ScrollArea.Scrollbar
-        orientation="vertical"
-        class="flex h-full w-2.5 touch-none select-none rounded-full border-l border-l-transparent p-px transition-all hover:w-3 hover:bg-dark-10"
-      >
-        <ScrollArea.Thumb
-          class="relative flex-1 rounded-full bg-muted-foreground opacity-40 transition-opacity hover:opacity-100"
-        />
-      </ScrollArea.Scrollbar>
-      <ScrollArea.Corner />
-    </ScrollArea.Root>
+  <main class="h-full max-h-full flex flex-col relative">
+    <ScrollArea class="relative h-full min-h-full">
+      <slot />
+    </ScrollArea>
     <Nav />
   </main>
 </QueryClientProvider>
