@@ -27,6 +27,14 @@
         document.getElementById(triggerId)?.focus()
       })
   }
+
+  const handleReset = () => {
+    $search = ''
+    $filter.forEach(({ selectedValues }) => {
+      selectedValues.splice(0, selectedValues.length)
+    })
+    closeAndFocusTrigger()
+  }
 </script>
 
 <div class="sticky bottom-2 mx-auto">
@@ -86,6 +94,7 @@
             </Popover.Content>
           </Popover.Root>
         {/each}
+        <Button on:click={handleReset}>Réinitialiser les filtres</Button>
       </div>
     </Popover.Content>
   </Popover.Root>
