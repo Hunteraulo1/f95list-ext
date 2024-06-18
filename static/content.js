@@ -2,6 +2,8 @@
   try {
     const data = await chrome.runtime.sendMessage('f95list-script')
 
+    insert(data)
+
     const mutationCallback = async mutationsList => {
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList') {
