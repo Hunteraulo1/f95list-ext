@@ -14,7 +14,7 @@
   export let game: GameType, open: boolean
 </script>
 
-<ScrollArea class="fixed top-0 left-0 w-full h-full max-w-[300px] max-h-[450px] z-20 bg-black">
+<ScrollArea class="fixed top-0 left-0 w-full h-full max-w-[300px] max-h-[500px] z-20 bg-black">
   {#if game}
     <img src={game.image ?? noImage} alt={game.name} class="h-32 w-full object-cover" />
 

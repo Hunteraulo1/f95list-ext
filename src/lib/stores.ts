@@ -1,38 +1,55 @@
 import { writable } from 'svelte/store'
 
-import tags from '$lib/assets/tags.json'
 import type { GameType, TraductorType } from './schemas'
 import type { ComboBox, Settings, Update } from './types'
+
+import tags from '$lib/assets/tags.json'
 
 export const games = writable<GameType[]>([])
 export const filteredGames = writable<GameType[]>([])
 
-export const filter = writable<ComboBox[]>([
+export const defaultFilters: ComboBox[] = [
   {
     title: 'domain',
     open: false,
-    values: ['F95z', 'LewdCorner', 'Autre'],
-    selectedValues: [],
+    values: [
+      { value: 'F95z', checked: false },
+      { value: 'LewdCorner', checked: false },
+      { value: 'Autre', checked: false },
+    ],
   },
   {
     title: 'status',
     open: false,
-    values: ['EN COURS', 'ABANDONNÉ', 'TERMINÉ'],
-    selectedValues: [],
+    values: [
+      { value: 'EN COURS', checked: false },
+      { value: 'ABANDONNÉ', checked: false },
+      { value: 'TERMINÉ', checked: false },
+    ],
   },
   {
     title: 'type',
     open: false,
-    values: ['RenPy', 'RPGM', 'Unreal', 'HTLM', 'Flash', 'QSP', 'RenPy/RPGM', 'RenPy/Unity', 'Autre'],
-    selectedValues: [],
+    values: [
+      { value: 'RenPy', checked: false },
+      { value: 'RPGM', checked: false },
+      { value: 'Unreal', checked: false },
+      { value: 'HTLM', checked: false },
+      { value: 'Flash', checked: false },
+      { value: 'QSP', checked: false },
+      { value: 'RenPy/RPGM', checked: false },
+      { value: 'RenPy/Unity', checked: false },
+      { value: 'Autre', checked: false },
+    ],
   },
   {
     title: 'tags',
     open: false,
-    values: tags,
-    selectedValues: [],
+    values: tags.map(tag => ({ value: tag, checked: false })),
   },
-])
+]
+
+export const filter = writable<ComboBox[]>(defaultFilters)
 export const search = writable<string>('')
 
 export const updates = writable<Update[]>([])
