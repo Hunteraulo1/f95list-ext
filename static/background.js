@@ -1,9 +1,8 @@
-chrome.runtime.onStartup.addListener(async () => {
+chrome.runtime.onMessage.addListener(async () => {
   const date = new Date()
   const expriredTime = await chrome.storage.local.get(['f95list_ext_time']).then(result => result.f95list_ext_time ?? 0)
 
   if (date >= expriredTime) {
-    // TODO: delete boolean
     const queryData = await query()
 
     await chrome.storage.local.set({ f95list_ext_data: queryData })
