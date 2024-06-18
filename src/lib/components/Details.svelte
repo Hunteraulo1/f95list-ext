@@ -21,7 +21,7 @@
     <div class="p-2 flex flex-col gap-2">
       <h2>
         <span class="font-bold text-sm">Site:</span>
-        <a href={game.link}>
+        <a href={game.link} target="_blank">
           <Badge variant="secondary">{game.domain}</Badge>
         </a>
       </h2>
