@@ -18,14 +18,14 @@ const config = {
             pages: 'builds/firefox',
             assets: 'builds/firefox',
             fallback: null,
-            precompress: true,
+            precompress: false,
             manifest: 'manifest_firefox.json',
           }
         : {
             pages: 'builds/chrome',
             assets: 'builds/chrome',
             fallback: null,
-            precompress: true,
+            precompress: false,
             manifest: 'manifest_chrome.json',
           }
     ),
