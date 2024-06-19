@@ -61,7 +61,7 @@
       </div>
       <p class="text-sm">
         <span class="font-bold">Traducteur:</span>
-        <a href={game.trlink} class:traductor={game.trlink}>
+        <a href={game.trlink} class:traductor={game.trlink} target="_blank">
           {game.traductor ?? 'Aucun'}
         </a>
         <span class="text-secondary-foreground/50 text-xs">({game.ttype})</span>

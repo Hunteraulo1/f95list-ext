@@ -18,10 +18,11 @@
       .filter(game => game.name.toLowerCase().includes($search))
       .filter(game => {
         return $filter.every(({ title, values }) => {
-          if (title === 'tags')
+          if (title === 'tags') {
             return values.every(value => {
               return value.checked ? game[title].includes(value.value) : true
             })
+          }
 
           return values.every(value => {
             return value.checked ? game[title] === value.value : true
