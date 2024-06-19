@@ -1,6 +1,19 @@
 {
   "name": "sveltekit-extension-template",
   "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "npm run build:chrome && npm run build:firefox",
+    "build:firefox": "BUILD_MODE=firefox vite build",
+    "build:chrome": "BUILD_MODE=chrome vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "test:unit": "vitest",
+    "lint": "bunx @biomejs/biome lint --write .",
+    "format": "bunx @biomejs/biome format --write ."
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.8.1",
     "@eslint/js": "^9.4.0",
@@ -34,27 +47,7 @@
     "vite-plugin-tailwind-purgecss": "^0.3.3",
     "vitest": "^1.6.0"
   },
-  "private": true,
-  "scripts": {
-    "dev": "vite dev",
-    "build": "npm run build:chrome && npm run build:firefox",
-    "build:firefox": "BUILD_MODE=firefox vite build",
-    "build:chrome": "BUILD_MODE=chrome vite build",
-    "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "test:unit": "vitest",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
-  },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "@deepkit/type-compiler",
-    "@sveltejs/kit",
-    "esbuild",
-    "svelte-preprocess"
-  ],
+  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
   "type": "module",
   "dependencies": {
     "cmdk-sv": "^0.0.17"

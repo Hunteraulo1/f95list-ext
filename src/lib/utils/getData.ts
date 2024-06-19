@@ -1,6 +1,6 @@
 import { parse } from 'valibot'
 
-import { Games, Updates, type GameType } from '../schemas'
+import { type GameType, Games, Updates } from '../schemas'
 import { filteredGames, games, updates } from '../stores'
 
 import gamesJson from '$lib/assets/games.json' // DEV Data

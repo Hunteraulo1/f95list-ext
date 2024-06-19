@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Button } from '$lib/components/ui/button'
 import * as Card from '$lib/components/ui/card'
-import { TraductorsData, type TraductorType } from '$lib/schemas'
+import { type TraductorType, TraductorsData } from '$lib/schemas'
 import { onMount } from 'svelte'
 import { Reload } from 'svelte-radix'
 import { parse } from 'valibot'
@@ -24,7 +24,7 @@ onMount(async () => {
 })
 
 const query = async (): Promise<TraductorType[]> => {
-  console.log('🚀 ~ queryFn: ~ fetch')
+  console.info('🚀 ~ queryFn: ~ fetch')
 
   try {
     const response = await fetch(
