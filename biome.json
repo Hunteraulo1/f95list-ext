@@ -36,7 +36,7 @@
       },
       "correctness": {
         "noPrecisionLoss": "error",
-        "noUnusedVariables": "off",
+        "noUnusedVariables": "error",
         "useArrayLiterals": "off"
       },
       "style": {
@@ -183,7 +183,13 @@
   },
   "overrides": [
     {
-      "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts", "**/*.svelte"],
+      "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.mts",
+        "**/*.cts",
+        "**/*.svelte"
+      ],
       "linter": {
         "rules": {
           "correctness": {
@@ -216,15 +222,15 @@
       }
     },
     {
-      "include": ["**/*.cjs"],
+      "include": [
+        "**/*.svelte"
+      ],
       "linter": {
-        "rules": {}
-      }
-    },
-    {
-      "include": ["**/*.{js,mjs,ts,svelte}"],
-      "linter": {
-        "rules": {}
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          }
+        }
       }
     }
   ]
