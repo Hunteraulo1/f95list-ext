@@ -1,66 +1,66 @@
 <script lang="ts">
-  import { goto } from '$app/navigation'
-  import { Button } from '$lib/components/ui/button/index.js'
-  import { settings } from '$lib/stores'
-  import type { Settings } from '$lib/types'
-  import { toggleMode } from 'mode-watcher'
-  import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
-  import Moon from 'svelte-radix/Moon.svelte'
-  import Sun from 'svelte-radix/Sun.svelte'
-  import Label from './../../lib/components/ui/label/label.svelte'
-  import Switch from './../../lib/components/ui/switch/switch.svelte'
+import { goto } from '$app/navigation'
+import { Button } from '$lib/components/ui/button/index.js'
+import { settings } from '$lib/stores'
+import type { Settings } from '$lib/types'
+import { toggleMode } from 'mode-watcher'
+import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
+import Moon from 'svelte-radix/Moon.svelte'
+import Sun from 'svelte-radix/Sun.svelte'
+import Label from './../../lib/components/ui/label/label.svelte'
+import Switch from './../../lib/components/ui/switch/switch.svelte'
 
-  interface SettingItem {
-    title: string
-    id: keyof Settings
-  }
+interface SettingItem {
+  title: string
+  id: keyof Settings
+}
 
-  const settingsItems: SettingItem[] = [
-    {
-      title: "Thème de l'extension:",
-      id: 'theme',
-    },
-    {
-      title: 'Cacher les tags (par défault):',
-      id: 'tagsHide',
-    },
-    {
-      title: "Activer l'intégration F95 (WIP):",
-      id: 'intergrateFeature',
-    },
-  ]
-  interface Link {
-    title: string
-    href: string
-  }
+const settingsItems: SettingItem[] = [
+  {
+    title: "Thème de l'extension:",
+    id: 'theme',
+  },
+  {
+    title: 'Cacher les tags (par défault):',
+    id: 'tagsHide',
+  },
+  {
+    title: "Activer l'intégration F95 (WIP):",
+    id: 'intergrateFeature',
+  },
+]
+interface Link {
+  title: string
+  href: string
+}
 
-  const links: Link[] = [
-    {
-      title: 'Accèder à notre page F95',
-      href: 'https://f95zone.to/threads/26002',
-    },
-    {
-      title: 'Accèder au tableur',
-      href: 'https://docs.google.com/spreadsheets/d/1ELRF0kpF8SoUlslX5ZXZoG4WXeWST6lN9bLws32EPfs',
-    },
-    {
-      title: 'Accèder au Discord',
-      href: 'https://discord.gg/QXd9kr3ewW',
-    },
-  ]
+const links: Link[] = [
+  {
+    title: 'Accèder à notre page F95',
+    href: 'https://f95zone.to/threads/26002',
+  },
+  {
+    title: 'Accèder au tableur',
+    href: 'https://docs.google.com/spreadsheets/d/1ELRF0kpF8SoUlslX5ZXZoG4WXeWST6lN9bLws32EPfs',
+  },
+  {
+    title: 'Accèder au Discord',
+    href: 'https://discord.gg/QXd9kr3ewW',
+  },
+]
 
-  const defaultSettings = JSON.stringify({
-    tagsHide: true,
-    intergrateFeature: true,
-  })
+const defaultSettings = JSON.stringify({
+  tagsHide: true,
+  intergrateFeature: true,
+})
 
-  $settings = JSON.parse(localStorage.getItem('settings') || defaultSettings)
+$settings = JSON.parse(localStorage.getItem('settings') || defaultSettings)
 
-  const handleSettings = (id: keyof Settings) => {
-    const result = { ...$settings, [id]: !$settings[id] }
-    $settings = result
-    localStorage.setItem('settings', JSON.stringify(result))
-  }
+const handleSettings = (id: keyof Settings) => {
+  const result = { ...$settings, [id]: !$settings[id] }
+  $settings = result
+  localStorage.setItem('settings', JSON.stringify(result))
+}
 </script>
 
 <div class="p-2 flex flex-col gap-8">

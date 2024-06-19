@@ -1,47 +1,38 @@
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button/index.js'
-  import * as Command from '$lib/components/ui/command/index.js'
-  import { Input } from '$lib/components/ui/input/index.js'
-  import * as Popover from '$lib/components/ui/popover/index.js'
-  import { ScrollArea } from '$lib/components/ui/scroll-area/index'
-  import { defaultFilters, filter, filteredGames, games, search } from '$lib/stores'
-  import { cn } from '$lib/utils'
-  import { tick } from 'svelte'
-  import { Check, ChevronDown } from 'svelte-radix'
+import { Button } from '$lib/components/ui/button/index.js'
+import * as Command from '$lib/components/ui/command/index.js'
+import { Input } from '$lib/components/ui/input/index.js'
+import * as Popover from '$lib/components/ui/popover/index.js'
+import { ScrollArea } from '$lib/components/ui/scroll-area/index'
+import { filter, filteredGames, games, search } from '$lib/stores'
+import { cn } from '$lib/utils'
+import { Check, ChevronDown } from 'svelte-radix'
 
-  const closeAndFocusTrigger = (triggerId?: string) => {
-    for (let item of $filter) {
-      item.open = false
-    }
-
-    $filteredGames = $games
-      .filter(game => game.name.toLowerCase().includes($search))
-      .filter(game => {
-        return $filter.every(({ title, values }) => {
-          if (title === 'tags') {
-            return values.every(value => {
-              return value.checked ? game[title].includes(value.value) : true
-            })
-          }
-
+const reloadList = () => {
+  $filteredGames = $games
+    .filter(game => game.name.toLowerCase().includes($search))
+    .filter(game => {
+      return $filter.every(({ title, values }) => {
+        if (title === 'tags') {
           return values.every(value => {
-            return value.checked ? game[title] === value.value : true
+            return value.checked ? game[title].includes(value.value) : true
           })
+        }
+
+        return values.every(value => {
+          return value.checked ? game[title] === value.value : true
         })
       })
+    })
+}
 
-    triggerId &&
-      tick().then(() => {
-        document.getElementById(triggerId)?.focus()
-      })
-  }
+const handleReset = () => {
+  $search = ''
+  filter.reset()
 
-  const handleReset = () => {
-    $search = ''
-    $filter = defaultFilters
-
-    closeAndFocusTrigger()
-  }
+  reloadList()
+  console.log('🚀 ~ handleReset ~ $filter:', $filter)
+}
 </script>
 
 <div class="sticky bottom-2 mx-auto">
@@ -59,12 +50,13 @@
           value={$search}
           on:input={({ currentTarget }) => {
             $search = currentTarget.value.toLowerCase()
-            closeAndFocusTrigger()
+
+            reloadList()
           }}
         />
 
         {#each $filter as { title, open, values }}
-          <Popover.Root let:ids>
+          <Popover.Root>
             <Popover.Trigger asChild let:builder>
               <Button
                 builders={[builder]}
@@ -96,7 +88,7 @@
                         onSelect={() => {
                           checked = !checked
 
-                          closeAndFocusTrigger(ids.trigger)
+                          reloadList()
                         }}
                       >
                         <Check class={cn('mr-2 h-4 w-4', !checked && 'text-transparent')} />

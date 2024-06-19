@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { goto } from '$app/navigation'
-  import Button from './ui/button/button.svelte'
+import { goto } from '$app/navigation'
+import Button from './ui/button/button.svelte'
 
-  const nav = [
-    { name: 'Liste', href: '/' },
-    { name: 'MàJ', href: '/updates' },
-    { name: 'Paramètres', href: '/settings' },
-  ]
+const nav = [
+  { name: 'Liste', href: '/' },
+  { name: 'MàJ', href: '/updates' },
+  { name: 'Paramètres', href: '/settings' },
+]
 </script>
 
 <ul class="flex w-full justify-around bg-secondary/75 p-2">

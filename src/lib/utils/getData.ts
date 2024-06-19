@@ -53,7 +53,12 @@ const getData = async () => {
         date: new Date(update.date),
         type: update.type,
         games: update.names.map((name: string) => {
-          return validGames.findLast(game => game.name === name) ?? { ...defaultGame, name }
+          return (
+            validGames.findLast(game => game.name === name) ?? {
+              ...defaultGame,
+              name,
+            }
+          )
         }),
       }
     })
