@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button'
+  import * as Card from '$lib/components/ui/card'
   import { TraductorsData, type TraductorType } from '$lib/schemas'
   import { useQuery } from '@sveltestack/svelte-query'
   import { Reload } from 'svelte-radix'
@@ -27,7 +28,7 @@
   })
 </script>
 
-<!-- {#if $queryResult.isSuccess}
+{#if $queryResult.isSuccess}
   <div class="flex flex-col gap-4 max-h-full p-2 relative">
     {#each $queryResult.data as { name, pages, tradCount, readCount }}
       <Card.Root class="relative">
@@ -37,9 +38,11 @@
           <div class="flex text-sm items-center justify-center">
             <p class="font-bold text-secondary-foreground/50">Liens:</p>
             {#each pages as { title, link }}
-              <Button variant="link" on:click={() => goto(link)} class="px-1">
-                {title}
-              </Button>
+              <a href={link} target="_blank">
+                <Button variant="link" class="px-1">
+                  {title}
+                </Button>
+              </a>
             {:else}
               <p class="px-1 py-2">Aucun lien</p>
             {/each}
@@ -56,11 +59,11 @@
       </Card.Root>
     {/each}
   </div>
-{:else} -->
-<div class="flex justify-center items-center min-h-full">
-  <Button>
-    <Reload class="mr-2 h-4 w-4 animate-spin" />
-    Veuillez patienter
-  </Button>
-</div>
-<!-- {/if} -->
+{:else}
+  <div class="flex justify-center items-center min-h-full">
+    <Button>
+      <Reload class="mr-2 h-4 w-4 animate-spin" />
+      Veuillez patienter
+    </Button>
+  </div>
+{/if}

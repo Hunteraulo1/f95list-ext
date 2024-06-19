@@ -59,5 +59,5 @@ export const traductors = writable<TraductorType[]>([])
 const settingsData: string | null = localStorage.getItem('settings')
 
 export const settings = writable<Settings>(
-  settingsData ? JSON.parse(settingsData) : { tagsHide: false, intergrateFeature: false }
+  settingsData ? JSON.parse(settingsData) : { tagsHide: true, intergrateFeature: false }
 )
