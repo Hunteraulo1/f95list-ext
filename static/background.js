@@ -1,26 +1,30 @@
 chrome.runtime.onMessage.addListener(async () => {
   const date = new Date()
-  const expriredTime = await chrome.storage.local.get(['f95list_ext_time']).then(result => result.f95list_ext_time ?? 0)
+  const expiredTime = await chrome.storage.local.get(['f95list_ext_time']).then(result => result.f95list_ext_time ?? 0)
 
-  if (date >= expriredTime) {
-    const queryData = await query()
+  if (date < expiredTime) return
 
-    await chrome.storage.local.set({ f95list_ext_data: queryData })
-    await chrome.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 }) // 6 hours
-  }
+  const queryData = await query()
+
+  await chrome.storage.local.set({ f95list_ext_data: queryData })
+  await chrome.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 }) // 6 hours
 })
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  ;(async () => {
-    const data = await chrome.storage.local.get(['f95list_ext_data']).then(result => result.f95list_ext_data ?? [])
+const responseCall = async (message, sendResponse) => {
+  const data = await chrome.storage.local.get(['f95list_ext_data']).then(result => result.f95list_ext_data ?? [])
 
-    switch (message) {
-      case 'f95list-script':
-        return sendResponse(data.games)
-      case 'f95list-ext':
-        return sendResponse(data)
-    }
-  })()
+  switch (message) {
+    case 'f95list-script':
+      sendResponse(data.games)
+      break
+    case 'f95list-ext':
+      sendResponse(data)
+      break
+  }
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  responseCall(message, sendResponse)
 
   return true
 })

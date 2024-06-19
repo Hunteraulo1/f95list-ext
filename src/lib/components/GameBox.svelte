@@ -1,14 +1,14 @@
 <script lang="ts">
-  import Badge from '$lib/components/ui/badge/badge.svelte'
-  import * as Card from '$lib/components/ui/card'
-  import { type GameType } from '$lib/schemas'
-  import { lazyLoad } from '$lib/utils/lazyload'
-  import { Tooltip } from 'bits-ui'
-  import Details from './Details.svelte'
+import Badge from '$lib/components/ui/badge/badge.svelte'
+import * as Card from '$lib/components/ui/card'
+import { type GameType } from '$lib/schemas'
+import { lazyLoad } from '$lib/utils/lazyload'
+import { Tooltip } from 'bits-ui'
+import Details from './Details.svelte'
 
-  export let game: GameType
+export let game: GameType
 
-  let open: boolean = false
+let open: boolean = false
 </script>
 
 {#if open && game.domain !== 'Unknown'}

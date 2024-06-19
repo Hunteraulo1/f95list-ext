@@ -1,8 +1,8 @@
 <script lang="ts">
-  import GameBox from '$lib/components/GameBox.svelte'
-  import { Button } from '$lib/components/ui/button'
-  import { updates } from '$lib/stores'
-  import { Reload } from 'svelte-radix'
+import GameBox from '$lib/components/GameBox.svelte'
+import { Button } from '$lib/components/ui/button'
+import { updates } from '$lib/stores'
+import { Reload } from 'svelte-radix'
 </script>
 
 {#if $updates}

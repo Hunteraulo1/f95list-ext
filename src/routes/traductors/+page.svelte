@@ -1,44 +1,44 @@
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button'
-  import * as Card from '$lib/components/ui/card'
-  import { TraductorsData, type TraductorType } from '$lib/schemas'
-  import { onMount } from 'svelte'
-  import { Reload } from 'svelte-radix'
-  import { parse } from 'valibot'
+import { Button } from '$lib/components/ui/button'
+import * as Card from '$lib/components/ui/card'
+import { TraductorsData, type TraductorType } from '$lib/schemas'
+import { onMount } from 'svelte'
+import { Reload } from 'svelte-radix'
+import { parse } from 'valibot'
 
-  let queryResult: Promise<TraductorType[]> = Promise.resolve([])
+let queryResult: Promise<TraductorType[]> = Promise.resolve([])
 
-  onMount(async () => {
-    const date = Date.now()
+onMount(async () => {
+  const date = Date.now()
 
-    const expriredTime = Date.parse(window.localStorage.getItem('f95list_ext_time') ?? '0')
+  const expriredTime = Date.parse(window.localStorage.getItem('f95list_ext_time') ?? '0')
 
-    if (date >= expriredTime) {
-      const queryData = await query()
+  if (date >= expriredTime) {
+    const queryData = await query()
 
-      window.localStorage.setItem('f95list_ext_data', JSON.stringify(queryData))
-      window.localStorage.setItem('f95list_ext_time', (date + 1000 * 60 * 60 * 24).toString()) // 24 hours
-    }
-
-    queryResult = JSON.parse(window.localStorage.getItem('f95list_ext_data') ?? '[]')
-  })
-
-  const query = async (): Promise<TraductorType[]> => {
-    console.log('🚀 ~ queryFn: ~ fetch')
-
-    try {
-      const response = await fetch(
-        'https://script.google.com/macros/s/AKfycbze5voXSJMnTqnUIgXFgM1gtQ6e13VyAsJK50Evl5Y2HisCRN-eCbbIHXrBaNPhup1J/exec'
-      )
-      const data = await response.json()
-
-      return parse(TraductorsData, data?.data)
-    } catch (error) {
-      console.error(error)
-
-      return []
-    }
+    window.localStorage.setItem('f95list_ext_data', JSON.stringify(queryData))
+    window.localStorage.setItem('f95list_ext_time', (date + 1000 * 60 * 60 * 24).toString()) // 24 hours
   }
+
+  queryResult = JSON.parse(window.localStorage.getItem('f95list_ext_data') ?? '[]')
+})
+
+const query = async (): Promise<TraductorType[]> => {
+  console.log('🚀 ~ queryFn: ~ fetch')
+
+  try {
+    const response = await fetch(
+      'https://script.google.com/macros/s/AKfycbze5voXSJMnTqnUIgXFgM1gtQ6e13VyAsJK50Evl5Y2HisCRN-eCbbIHXrBaNPhup1J/exec'
+    )
+    const data = await response.json()
+
+    return parse(TraductorsData, data?.data)
+  } catch (error) {
+    console.error(error)
+
+    return []
+  }
+}
 </script>
 
 {#await queryResult then traductors}

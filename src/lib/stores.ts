@@ -8,7 +8,7 @@ import tags from '$lib/assets/tags.json'
 export const games = writable<GameType[]>([])
 export const filteredGames = writable<GameType[]>([])
 
-export const defaultFilters: ComboBox[] = [
+const defaultFilters = (): ComboBox[] => [
   {
     title: 'domain',
     open: false,
@@ -49,7 +49,19 @@ export const defaultFilters: ComboBox[] = [
   },
 ]
 
-export const filter = writable<ComboBox[]>(defaultFilters)
+const filterFn = () => {
+  const { subscribe, set, update } = writable<ComboBox[]>(defaultFilters())
+
+  return {
+    subscribe,
+    set,
+    update,
+    reset: () => set(defaultFilters()),
+  }
+}
+
+export const filter = filterFn()
+
 export const search = writable<string>('')
 
 export const updates = writable<Update[]>([])
