@@ -1,7 +1,7 @@
 {
   "name": "sveltekit-extension-template",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
   "scripts": {
     "dev": "vite dev",
     "build": "npm run build:chrome && npm run build:firefox",
