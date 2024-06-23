@@ -1,32 +1,59 @@
-chrome.runtime.onMessage.addListener(async () => {
-  const date = new Date()
-  const expiredTime = await chrome.storage.local.get(['f95list_ext_time']).then(result => result.f95list_ext_time ?? 0)
+const init = async () => {
+  const date = new Date().getTime()
+  let expiredTime
+
+  if (localStorage) {
+    expiredTime = localStorage.getItem('f95list_ext_time') ?? 0
+  } else {
+    expiredTime = await chrome.storage.local.get(['f95list_ext_time']).then(result => result.f95list_ext_time ?? 0)
+  }
 
   if (date < expiredTime) return
 
   const queryData = await query()
+  const timing = date + 1000 * 60 * 60 * 6 // 6 hours
 
-  await chrome.storage.local.set({ f95list_ext_data: queryData })
-  await chrome.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 }) // 6 hours
-})
-
-const response = async (message, sendResponse) => {
-  const data = await chrome.storage.local.get(['f95list_ext_data']).then(result => result.f95list_ext_data ?? [])
-
-  switch (message) {
-    case 'f95list-script':
-      sendResponse(data.games)
-      break
-    case 'f95list-ext':
-      sendResponse(data)
-      break
+  if (localStorage) {
+    localStorage.setItem('f95list_ext_data', JSON.stringify(queryData))
+    localStorage.setItem('f95list_ext_time', timing) // 6 hours
+  } else {
+    await chrome.storage.local.set({ f95list_ext_data: queryData })
+    await chrome.storage.local.set({ f95list_ext_time: timing }) // 6 hours
   }
 }
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  response(message, sendResponse)
+const response = async message => {
+  let data
 
-  return true
+  if (localStorage) {
+    data = JSON.parse(localStorage.getItem('f95list_ext_data')) ?? []
+  } else {
+    data = await chrome.storage.local.get(['f95list_ext_data']).then(result => result.f95list_ext_data ?? [])
+  }
+
+  switch (message) {
+    case 'f95list-script':
+      return data.games
+    case 'f95list-ext':
+      return data
+    default:
+      return true
+  }
+}
+
+chrome.runtime.onMessage.addListener(async (message, _sender, sendResponse) => {
+  await init()
+
+  if (localStorage) {
+    return await response(message)
+  } else {
+    const response = await response(message)
+
+    if (!response) return true
+
+    sendResponse(response)
+    return true
+  }
 })
 
 const query = async () => {
