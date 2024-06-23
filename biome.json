@@ -183,13 +183,7 @@
   },
   "overrides": [
     {
-      "include": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.mts",
-        "**/*.cts",
-        "**/*.svelte"
-      ],
+      "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts", "**/*.svelte"],
       "linter": {
         "rules": {
           "correctness": {
@@ -222,9 +216,7 @@
       }
     },
     {
-      "include": [
-        "**/*.svelte"
-      ],
+      "include": ["*.svelte"],
       "linter": {
         "rules": {
           "correctness": {

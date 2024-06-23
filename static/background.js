@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener(async () => {
   await chrome.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 }) // 6 hours
 })
 
-const responseCall = async (message, sendResponse) => {
+const response = async (message, sendResponse) => {
   const data = await chrome.storage.local.get(['f95list_ext_data']).then(result => result.f95list_ext_data ?? [])
 
   switch (message) {
@@ -24,7 +24,7 @@ const responseCall = async (message, sendResponse) => {
 }
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  responseCall(message, sendResponse)
+  response(message, sendResponse)
 
   return true
 })

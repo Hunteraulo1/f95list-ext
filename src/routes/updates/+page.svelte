@@ -11,10 +11,16 @@ import { Reload } from 'svelte-radix'
       <div class="flex flex-col gap-2">
         {#if index === 0 || $updates[index - 1].date.getTime() !== update.date.getTime()}
           <h2 class="text-center font-bold leading-none">
-            {new Date(update.date).toLocaleDateString('fr-FR', { timeZone: 'Europe/Paris' })}
+            {new Date(update.date).toLocaleDateString("fr-FR", {
+              timeZone: "Europe/Paris",
+            })}
           </h2>
         {/if}
-        <h3 class="text-[.7rem] text-center text-secondary-foreground/50 leading-none">{update.type}</h3>
+        <h3
+          class="text-[.7rem] text-center text-secondary-foreground/50 leading-none"
+        >
+          {update.type}
+        </h3>
         {#each update.games as game}
           <GameBox {game} />
         {/each}
