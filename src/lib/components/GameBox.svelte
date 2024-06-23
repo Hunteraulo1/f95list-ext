@@ -16,7 +16,7 @@ let open: boolean = false
 {/if}
 
 {#if game.domain !== 'Unknown'}
-  <Card.Root class="relative" on:click={() => (open = true)}>
+  <Card.Root class="relative cursor-pointer" on:click={() => (open = true)}>
     {#if game.image}
       <img alt={game.name} class="w-full h-full absolute object-cover rounded-xl" use:lazyLoad={game.image} />
     {/if}
