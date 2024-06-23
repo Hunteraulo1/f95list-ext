@@ -3,6 +3,7 @@ import { parse } from 'valibot'
 import { type GameType, Games, Updates } from '../schemas'
 import { filteredGames, games, updates } from '../stores'
 
+import { building } from '$app/environment'
 import gamesJson from '$lib/assets/games.json' // DEV Data
 
 interface UpdatesData {
@@ -18,9 +19,14 @@ interface GetData {
 
 const getData = async () => {
   try {
-    // const data: GetData = await chrome.runtime.sendMessage('f95list-ext')
-    // @ts-expect-errors are here because of the fake data
-    const data: GetData = gamesJson.data // DEV Data
+    let data: GetData
+
+    if (building) {
+      data = await chrome.runtime.sendMessage('f95list-ext')
+    } else {
+      // @ts-expect-errors are here because of the fake data
+      data = gamesJson.data // DEV Data
+    }
 
     const validGames = parse(Games, data.games)
 
