@@ -1,5 +1,5 @@
 {
-  "name": "F95 France Extension",
+  "name": "F95 France - Extension",
   "description": "Extension of F95 France community",
   "author": "Hunteraulo",
   "version": "0.0.1",
@@ -12,7 +12,7 @@
     "default_icon": {
       "128": "favicon.png"
     },
-    "default_title": "F95 France Extension"
+    "default_title": "F95 France - Extension"
   },
   "permissions": [
     "storage",
