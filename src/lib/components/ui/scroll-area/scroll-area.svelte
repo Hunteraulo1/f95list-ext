@@ -18,7 +18,7 @@ export let scrollbarYClasses: string = ''
 
 <ScrollAreaPrimitive.Root {...$$restProps} class={cn('relative overflow-hidden', className)}>
   <ScrollAreaPrimitive.Viewport class="h-full w-full rounded-[inherit]">
-    <ScrollAreaPrimitive.Content class="h-full">
+    <ScrollAreaPrimitive.Content class="h-full !block">
       <slot />
     </ScrollAreaPrimitive.Content>
   </ScrollAreaPrimitive.Viewport>
