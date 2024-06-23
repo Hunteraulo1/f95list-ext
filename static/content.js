@@ -8,6 +8,7 @@
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList') {
           insert(data)
+          console.log('🚀 ~ mutationCallback ~ data:', data)
         }
       }
     }
