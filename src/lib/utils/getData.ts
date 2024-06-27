@@ -12,11 +12,6 @@ interface UpdatesData {
   names: string[]
 }
 
-interface GetData {
-  games: GameType[]
-  updates: UpdatesData[]
-}
-
 const getData = async () => {
   try {
     const data = dev ? gamesJson.data : await chrome.runtime.sendMessage('f95list-ext')
