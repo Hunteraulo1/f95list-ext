@@ -2,15 +2,15 @@
   "name": "F95 France - Extension",
   "description": "Extension de F95 France",
   "author": "Hunteraulo",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "manifest_version": 2,
   "icons": {
     "128": "favicon.png"
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "ext@f95list",
-      "strict_min_version": "42.0"
+      "id": "{9f7488b3-d704-4894-bac8-5dc3068fd6b9}",
+      "strict_min_version": "79.0"
     }
   },
   "browser_action": {
