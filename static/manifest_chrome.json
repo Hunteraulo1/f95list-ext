@@ -2,7 +2,7 @@
   "name": "F95 France - Extension",
   "description": "Extension of F95 France community",
   "author": "Hunteraulo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "manifest_version": 3,
   "icons": {
     "128": "favicon.png"
@@ -14,7 +14,10 @@
     },
     "default_title": "F95 France - Extension"
   },
-  "permissions": ["storage", "unlimitedStorage"],
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
   "content_scripts": [
     {
       "matches": [
@@ -23,7 +26,9 @@
         "*://lewdcorner.com/latest-updates/*",
         "*://lewdcorner.com/threads/*"
       ],
-      "js": ["content.js"],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     }
