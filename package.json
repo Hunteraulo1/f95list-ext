@@ -47,13 +47,7 @@
     "vite-plugin-tailwind-purgecss": "^0.3.3",
     "vitest": "^1.6.0"
   },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "@deepkit/type-compiler",
-    "@sveltejs/kit",
-    "esbuild",
-    "svelte-preprocess"
-  ],
+  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
   "type": "module",
   "dependencies": {
     "cmdk-sv": "^0.0.17"
