@@ -1,9 +1,11 @@
 const init = async () => {
+  console.log('🚀 ~ init')
   const date = new Date().getTime()
   let expiredTime
 
   if (localStorage) {
     expiredTime = localStorage.getItem('f95list_ext_time') ?? 0
+    console.log('🚀 ~ init ~ expiredTime:', expiredTime)
   } else {
     expiredTime = await chrome.storage.local.get(['f95list_ext_time']).then(result => result.f95list_ext_time ?? 0)
   }
@@ -11,18 +13,20 @@ const init = async () => {
   if (date < expiredTime) return
 
   const queryData = await query()
+  console.log('🚀 ~ init ~ queryData:', queryData)
   const timing = date + 1000 * 60 * 60 * 6 // 6 hours
 
   if (localStorage) {
     localStorage.setItem('f95list_ext_data', JSON.stringify(queryData))
-    localStorage.setItem('f95list_ext_time', timing) // 6 hours
+    localStorage.setItem('f95list_ext_time', timing)
   } else {
     await chrome.storage.local.set({ f95list_ext_data: queryData })
-    await chrome.storage.local.set({ f95list_ext_time: timing }) // 6 hours
+    await chrome.storage.local.set({ f95list_ext_time: timing })
   }
 }
 
 const response = async message => {
+  console.log('🚀 ~ response')
   let data
 
   if (localStorage) {
@@ -30,6 +34,7 @@ const response = async message => {
   } else {
     data = await chrome.storage.local.get(['f95list_ext_data']).then(result => result.f95list_ext_data ?? [])
   }
+  console.log('🚀 ~ response ~ data:', data)
 
   switch (message) {
     case 'f95list-script':
