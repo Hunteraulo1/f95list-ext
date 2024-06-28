@@ -16,7 +16,6 @@ const getData = async () => {
   try {
     const data = dev ? gamesJson.data : await chrome.runtime.sendMessage('f95list-ext')
 
-    console.log('🚀 ~ getData ~ dev:', dev)
     console.log('🚀 ~ getData ~ data:', await data)
 
     const validGames = parse(Games, data.games)
