@@ -3,7 +3,7 @@ const init = async () => {
   const date = new Date().getTime()
   let expiredTime
 
-  if (localStorage) {
+  if (typeof localStorage !== 'undefined') {
     expiredTime = localStorage.getItem('f95list_ext_time') ?? 0
     console.log('🚀 ~ init ~ expiredTime:', expiredTime)
   } else {
@@ -16,7 +16,7 @@ const init = async () => {
   console.log('🚀 ~ init ~ queryData:', queryData)
   const timing = date + 1000 * 60 * 60 * 6 // 6 hours
 
-  if (localStorage) {
+  if (typeof localStorage !== 'undefined') {
     localStorage.setItem('f95list_ext_data', JSON.stringify(queryData))
     localStorage.setItem('f95list_ext_time', timing)
   } else {
@@ -29,7 +29,7 @@ const response = async message => {
   console.log('🚀 ~ response')
   let data
 
-  if (localStorage) {
+  if (typeof localStorage !== 'undefined') {
     data = JSON.parse(localStorage.getItem('f95list_ext_data')) ?? []
   } else {
     data = await chrome.storage.local.get(['f95list_ext_data']).then(result => result.f95list_ext_data ?? [])
@@ -46,19 +46,22 @@ const response = async message => {
   }
 }
 
-chrome.runtime.onMessage.addListener(async (message, _sender, sendResponse) => {
-  await init()
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  ;(async () => {
+    init()
 
-  if (localStorage) {
-    return await response(message)
-  } else {
-    const response = await response(message)
+    if (typeof localStorage !== 'undefined') {
+      return await response(message)
+    }
 
-    if (!response) return true
+    const responseData = await response(message)
 
-    sendResponse(response)
-    return true
-  }
+    if (!responseData) return true
+
+    sendResponse(responseData)
+  })()
+
+  return true
 })
 
 const query = async () => {
