@@ -32,7 +32,7 @@ export let game: GameType, open: boolean
         <span class="text-xs font-bold {game.tversion === game.version ? 'text-green-700' : 'text-red-700'}">
           <Tooltip.Root>
             <Tooltip.Trigger>{game.tversion}</Tooltip.Trigger>
-            <Tooltip.Content>
+            <Tooltip.Content class="bg-transparent">
               <Badge variant="secondary">
                 {#if game.tversion === game.version}
                   À jour

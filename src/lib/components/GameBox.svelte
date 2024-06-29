@@ -1,9 +1,9 @@
 <script lang="ts">
 import Badge from '$lib/components/ui/badge/badge.svelte'
 import * as Card from '$lib/components/ui/card'
+import * as Tooltip from '$lib/components/ui/tooltip'
 import { type GameType } from '$lib/schemas'
 import { lazyLoad } from '$lib/utils/lazyload'
-import { Tooltip } from 'bits-ui'
 import Details from './Details.svelte'
 
 export let game: GameType
@@ -29,7 +29,7 @@ let open: boolean = false
           >
             {game.tversion}
           </Tooltip.Trigger>
-          <Tooltip.Content>
+          <Tooltip.Content class="bg-transparent">
             <Badge variant="secondary">
               {game.tversion === game.version ? 'À jours' : `N'est pas à jours (${game.version})`}
             </Badge>
