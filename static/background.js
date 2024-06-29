@@ -2,16 +2,13 @@ const storage = typeof browser === 'undefined' ? chrome.storage : browser.storag
 const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
 
 const init = async () => {
-  console.log('🚀 ~ init')
   const date = new Date().getTime()
   const { f95list_ext_time } = await storage.local.get(['f95list_ext_time'])
 
   if (f95list_ext_time && date < f95list_ext_time) return
 
-  await storage.local.set({
-    f95list_ext_time: date + 1000 * 60 * 60 * 6,
-    f95list_ext_data: await query(),
-  })
+  storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 })
+  await storage.local.set({ f95list_ext_data: await query() })
 
   console.log(await storage.local.get(['f95list_ext_time', 'f95list_ext_data']))
 }
@@ -21,7 +18,6 @@ runtime.onMessage.addListener((message, _sender, sendResponse) => {
     await init()
 
     const { f95list_ext_data } = await storage.local.get(['f95list_ext_data'])
-    console.log('🚀 ~ response ~ data:', f95list_ext_data)
 
     switch (message) {
       case 'f95list-script':

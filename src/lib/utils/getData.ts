@@ -4,18 +4,18 @@ import { type GameType, Games, Updates } from '../schemas'
 import { filteredGames, games, updates } from '../stores'
 
 import { dev } from '$app/environment'
-import gamesJson from '$lib/assets/games.json' // DEV Data
-
-interface UpdatesData {
-  date: string
-  type: 'AJOUT DE JEU' | 'MISE À JOUR'
-  names: string[]
-}
+import gamesJson from '$lib/assets/games.json'
 
 const getData = async () => {
   try {
-    const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
-    const data = dev ? gamesJson.data : await runtime.sendMessage('f95list-ext')
+    let data
+
+    if (!dev) {
+      const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
+      await runtime.sendMessage('f95list-ext')
+    } else data = gamesJson.data
+
+    if (!data) return
 
     const validGames = parse(Games, data.games)
     console.log('🚀 ~ getData ~ validGames:', validGames)
@@ -44,7 +44,7 @@ const getData = async () => {
       tversion: '',
     }
 
-    const updatesData = data.updates.map((update: UpdatesData) => {
+    const updatesData = data.updates.map(update => {
       return {
         date: new Date(update.date),
         type: update.type,
