@@ -1,64 +1,36 @@
+const storage = typeof browser === 'undefined' ? chrome.storage : browser.storage
+const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
+
 const init = async () => {
   console.log('🚀 ~ init')
   const date = new Date().getTime()
-  let expiredTime
+  const { f95list_ext_time } = await storage.local.get(['f95list_ext_time'])
 
-  if (typeof localStorage !== 'undefined') {
-    expiredTime = localStorage.getItem('f95list_ext_time') ?? 0
-    console.log('🚀 ~ init ~ expiredTime:', expiredTime)
-  } else {
-    expiredTime = await chrome.storage.local.get(['f95list_ext_time']).then(result => result.f95list_ext_time ?? 0)
-  }
+  if (f95list_ext_time && date < f95list_ext_time) return
 
-  if (date < expiredTime) return
+  await storage.local.set({
+    f95list_ext_time: date + 1000 * 60 * 60 * 6,
+    f95list_ext_data: await query(),
+  })
 
-  const queryData = await query()
-  console.log('🚀 ~ init ~ queryData:', queryData)
-  const timing = date + 1000 * 60 * 60 * 6 // 6 hours
-
-  if (typeof localStorage !== 'undefined') {
-    localStorage.setItem('f95list_ext_data', JSON.stringify(queryData))
-    localStorage.setItem('f95list_ext_time', timing)
-  } else {
-    await chrome.storage.local.set({ f95list_ext_data: queryData })
-    await chrome.storage.local.set({ f95list_ext_time: timing })
-  }
+  console.log(await storage.local.get(['f95list_ext_time', 'f95list_ext_data']))
 }
 
-const response = async message => {
-  console.log('🚀 ~ response')
-  let data
-
-  if (typeof localStorage !== 'undefined') {
-    data = JSON.parse(localStorage.getItem('f95list_ext_data')) ?? []
-  } else {
-    data = await chrome.storage.local.get(['f95list_ext_data']).then(result => result.f95list_ext_data ?? [])
-  }
-  console.log('🚀 ~ response ~ data:', data)
-
-  switch (message) {
-    case 'f95list-script':
-      return data.games
-    case 'f95list-ext':
-      return data
-    default:
-      return true
-  }
-}
-
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+runtime.onMessage.addListener((message, _sender, sendResponse) => {
   ;(async () => {
-    init()
+    await init()
 
-    if (typeof localStorage !== 'undefined') {
-      return await response(message)
+    const { f95list_ext_data } = await storage.local.get(['f95list_ext_data'])
+    console.log('🚀 ~ response ~ data:', f95list_ext_data)
+
+    switch (message) {
+      case 'f95list-script':
+        sendResponse(f95list_ext_data.games)
+        break
+      case 'f95list-ext':
+        sendResponse(f95list_ext_data)
+        break
     }
-
-    const responseData = await response(message)
-
-    if (!responseData) return true
-
-    sendResponse(responseData)
   })()
 
   return true
@@ -66,12 +38,13 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 const query = async () => {
   try {
-    console.info('🚀 ~ queryFn: ~ fetch')
+    console.info('🚀 ~ query: ~ fetch')
 
     const response = await fetch(
       'https://script.google.com/macros/s/AKfycbwb8C1478tnW30d77HtECYTxjJ2EpB1OrtQUueFeZ0tZPz3Uuze5s2FAQAnQOKShEzD/exec'
     )
     const data = await response.json()
+    console.log('🚀 ~ query ~ data:', data)
 
     return data?.data
   } catch (error) {

@@ -14,9 +14,8 @@ interface UpdatesData {
 
 const getData = async () => {
   try {
-    const data = dev ? gamesJson.data : await chrome.runtime.sendMessage('f95list-ext')
-
-    console.log('🚀 ~ getData ~ data:', await data)
+    const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
+    const data = dev ? gamesJson.data : await runtime.sendMessage('f95list-ext')
 
     const validGames = parse(Games, data.games)
     console.log('🚀 ~ getData ~ validGames:', validGames)
