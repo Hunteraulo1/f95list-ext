@@ -8,7 +8,7 @@ import Button from './../lib/components/ui/button/button.svelte'
 let maxLength = 25
 </script>
 
-{#if $games}
+{#if $games.length > 0}
   <div class="flex flex-col gap-2 p-2 relative">
     {#each $filteredGames as game, index (game.name + game.version)}
       {#if index < maxLength}

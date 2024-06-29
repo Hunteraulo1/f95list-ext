@@ -8,3 +8,8 @@
 //  interface Error {}
 //  interface Platform {}
 // }
+
+// biome-ignore lint/style/noNamespace: <explanation>
+declare namespace browser {
+  const runtime: chrome.runtime
+}
