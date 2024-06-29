@@ -8,12 +8,11 @@ import gamesJson from '$lib/assets/games.json'
 
 const getData = async () => {
   try {
-    let data
-
-    if (!dev) {
-      const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
-      await runtime.sendMessage('f95list-ext')
-    } else data = gamesJson.data
+    const data = dev
+      ? gamesJson.data
+      : typeof browser === 'undefined'
+        ? await chrome.runtime.sendMessage('f95list-ext')
+        : await browser.runtime.sendMessage('f95list-ext')
 
     if (!data) return
 
@@ -44,7 +43,13 @@ const getData = async () => {
       tversion: '',
     }
 
-    const updatesData = data.updates.map(update => {
+    interface UpdateData {
+      date: string
+      type: string
+      names: string[]
+    }
+
+    const updatesData = data.updates.map((update: UpdateData) => {
       return {
         date: new Date(update.date),
         type: update.type,
