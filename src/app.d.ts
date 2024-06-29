@@ -12,4 +12,5 @@
 // biome-ignore lint/style/noNamespace: <explanation>
 declare namespace browser {
   const runtime: chrome.runtime
+  const storage: chrome.storage
 }
