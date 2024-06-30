@@ -63,7 +63,7 @@ const handleSettings = (id: keyof Settings) => {
 }
 </script>
 
-<div class="p-2 flex flex-col gap-8">
+<div class="p-2 flex flex-col gap-8" id="0">
   <div class="flex flex-col gap-2">
     <h1 class="text-center mb-2 font-bold">Paramètres</h1>
 
@@ -95,7 +95,7 @@ const handleSettings = (id: keyof Settings) => {
   <div>
     <h2 class="text-center mb-2 font-bold">En savoir plus</h2>
     <div class="flex justify-center items-center flex-col">
-      <Button variant="outline" on:click={() => goto("/traductors")}
+      <Button variant="outline" on:click={() => goto("/traductors#0")}
         >Voir les traducteurs/relecteurs</Button
       >
 
