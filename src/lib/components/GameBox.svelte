@@ -25,13 +25,19 @@ let open: boolean = false
       <Card.Description>
         <Tooltip.Root>
           <Tooltip.Trigger
-            class="text-xs font-bold {game.tversion === game.version ? 'text-green-700' : 'text-red-700'}"
+            class="text-xs font-bold {game.tversion === 'Intégrée' || game.tversion === game.version ? 'text-green-700' : 'text-red-700'}"
           >
             {game.tversion}
           </Tooltip.Trigger>
           <Tooltip.Content class="bg-transparent">
             <Badge variant="secondary">
-              {game.tversion === game.version ? 'À jours' : `N'est pas à jours (${game.version})`}
+              {#if game.tversion === 'Intégrée'}
+                À jours ({game.version})
+              {:else if game.tversion === game.version}
+                À jours
+              {:else}
+                N'est pas à jours ({game.version})
+              {/if}
             </Badge>
           </Tooltip.Content>
         </Tooltip.Root>
