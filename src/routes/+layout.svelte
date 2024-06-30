@@ -11,7 +11,7 @@ getData()
 <ModeWatcher />
 
 <main class="flex flex-col">
-  <ScrollArea class="relative h-[448px] max-h-[448px]">
+  <ScrollArea class="relative h-[448px] min-h-[448px] max-h-[448px]">
     <slot />
   </ScrollArea>
   <Nav />
