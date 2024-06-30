@@ -18,9 +18,9 @@ let open: boolean = false
 {#if game.domain !== 'Unknown'}
   <Card.Root class="relative cursor-pointer" on:click={() => (open = true)}>
     {#if game.image}
-      <img alt={game.name} class="w-full h-full absolute object-cover rounded-xl" use:lazyLoad={game.image} />
+      <img alt={game.name} class="absolute object-cover w-full h-full rounded-xl" use:lazyLoad={game.image} />
     {/if}
-    <Card.CardContent class="h-20 relative p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20">
+    <Card.CardContent class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20">
       <Card.Title>{game.name}</Card.Title>
       <Card.Description>
         <Tooltip.Root>
@@ -46,7 +46,7 @@ let open: boolean = false
   </Card.Root>
 {:else}
   <Card.Root class="relative">
-    <Card.CardContent class="h-20 relative p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20">
+    <Card.CardContent class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20">
       <Card.Title>{game.name}</Card.Title>
       <Card.Description>Jeu introuvable</Card.Description>
     </Card.CardContent>
