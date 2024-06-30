@@ -3,8 +3,8 @@ import { goto } from '$app/navigation'
 import Button from './ui/button/button.svelte'
 
 const nav = [
-  { name: 'Liste', href: '/' },
-  { name: 'MàJ', href: '/updates' },
+  { name: 'Liste', href: '/#0' },
+  { name: 'MàJ', href: '/updates#0' },
   { name: 'Paramètres', href: '/settings' },
 ]
 </script>
