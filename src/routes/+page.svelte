@@ -9,7 +9,7 @@ let maxLength = 25
 </script>
 
 {#if $games.length > 0}
-  <div class="flex flex-col gap-2 p-2 relative">
+  <div class="flex flex-col gap-2 p-2 relative" id="0">
     {#each $filteredGames as game, index (game.name + game.version)}
       {#if index < maxLength}
         <GameBox {game} />
