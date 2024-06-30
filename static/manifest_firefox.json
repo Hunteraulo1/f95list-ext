@@ -5,7 +5,10 @@
   "version": "1.0.10",
   "manifest_version": 2,
   "icons": {
-    "128": "favicon.png"
+    "16": "favicon_16.png",
+    "32": "favicon_32.png",
+    "64": "favicon_64.png",
+    "128": "favicon_128.png"
   },
   "browser_specific_settings": {
     "gecko": {
@@ -16,7 +19,10 @@
   "browser_action": {
     "default_popup": "index.html",
     "default_icon": {
-      "128": "favicon.png"
+      "16": "favicon_16.png",
+      "32": "favicon_32.png",
+      "64": "favicon_64.png",
+      "128": "favicon_128.png"
     },
     "default_title": "F95 France - Extension"
   },
