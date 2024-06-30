@@ -43,7 +43,7 @@ const query = async (): Promise<TraductorType[]> => {
 
 {#await queryResult then traductors}
   {#if traductors.length > 0}
-    <div class="flex flex-col gap-4 max-h-full p-2 relative">
+    <div class="flex flex-col gap-4 max-h-full p-2 relative" id="0">
       {#each traductors as { name, pages, tradCount, readCount }}
         <Card.Root class="relative">
           <Card.CardContent class="p-2 min-h-20">

@@ -5,7 +5,7 @@ import Button from './ui/button/button.svelte'
 const nav = [
   { name: 'Liste', href: '/#0' },
   { name: 'MàJ', href: '/updates#0' },
-  { name: 'Paramètres', href: '/settings' },
+  { name: 'Paramètres', href: '/settings#0' },
 ]
 </script>
 
