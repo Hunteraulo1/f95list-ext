@@ -6,7 +6,7 @@ import { Reload } from 'svelte-radix'
 </script>
 
 {#if $updates}
-  <div class="flex flex-col gap-4 max-h-full p-2 relative">
+  <div class="flex flex-col gap-4 max-h-full p-2 relative" id="0">
     {#each $updates as update, index}
       <div class="flex flex-col gap-2">
         {#if index === 0 || $updates[index - 1].date.getTime() !== update.date.getTime()}
