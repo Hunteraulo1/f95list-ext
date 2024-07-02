@@ -38,7 +38,7 @@ const handleReset = () => {
 <div class="sticky bottom-2 mx-auto">
   <Popover.Root>
     <Popover.Trigger>
-      <Button variant="secondary">Filtrer</Button>
+      <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
     <Popover.Content side="top">
       <div class="flex flex-col gap-2 items-center">
