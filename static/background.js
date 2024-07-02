@@ -45,5 +45,7 @@ const query = async () => {
     return data?.data
   } catch (error) {
     console.error(error)
+
+    storage.local.set({ f95list_ext_time: 0 })
   }
 }
