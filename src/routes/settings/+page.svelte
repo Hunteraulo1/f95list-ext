@@ -47,6 +47,10 @@ const links: Link[] = [
     title: 'Accèder au Discord',
     href: 'https://discord.gg/QXd9kr3ewW',
   },
+  {
+    title: 'Dépot Github',
+    href: 'https://github.com/Hunteraulo1/f95list-ext',
+  },
 ]
 
 const defaultSettings = JSON.stringify({
