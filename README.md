@@ -1,5 +1,11 @@
 # Extension de F95 France
 
+## Fonctionnalités de l'extension
+
+- Lister tous les jeux de F95France
+- Lister les mises à jour de la liste
+- Ajouter un drapeau sur les jeux traduit _(sur f95)_
+
 ## Installation de l'extension
 
 Lien de téléchargement: [Accèder à l'extension](https://github.com/Hunteraulo1/f95list-ext/releases) _(Regarder dans Assets)_
