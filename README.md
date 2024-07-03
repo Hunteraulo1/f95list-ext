@@ -21,12 +21,12 @@ Lien de téléchargement: [Accèder à l'extension](https://github.com/Hunteraul
 
 ## Documentation de réference
 
-[Extension Development Basics](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
-[Adapter Chrome Extension](https://github.com/michmich112/sveltekit-adapter-chrome-extension#readme)
-[Svelte](https://svelte.dev/docs/)
-[Sveltekit](https://kit.svelte.dev/docs/)
-[Tailwind](https://tailwindcss.com/docs/)
-[Valibot](https://valibot.dev/guides/)
+- [Extension Development Basics](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
+- [Adapter Chrome Extension](https://github.com/michmich112/sveltekit-adapter-chrome-extension#readme)
+- [Svelte](https://svelte.dev/docs/)
+- [Sveltekit](https://kit.svelte.dev/docs/)
+- [Tailwind](https://tailwindcss.com/docs/)
+- [Valibot](https://valibot.dev/guides/)
 
 ## Installation (développement)
 
