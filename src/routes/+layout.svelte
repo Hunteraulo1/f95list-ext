@@ -1,12 +1,10 @@
 <script lang="ts">
 import Nav from '$lib/components/Nav.svelte'
-import badgeCount from '$lib/utils/badgeCount'
 import getData from '$lib/utils/getData'
 import { ModeWatcher } from 'mode-watcher'
 import '../app.postcss'
 
 getData()
-badgeCount()
 </script>
 
 <ModeWatcher />
