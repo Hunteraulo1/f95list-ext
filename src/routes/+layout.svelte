@@ -1,6 +1,5 @@
 <script lang="ts">
 import Nav from '$lib/components/Nav.svelte'
-import { ScrollArea } from '$lib/components/ui/scroll-area/index'
 import badgeCount from '$lib/utils/badgeCount'
 import getData from '$lib/utils/getData'
 import { ModeWatcher } from 'mode-watcher'
@@ -12,9 +11,7 @@ badgeCount()
 
 <ModeWatcher />
 
-<main class="flex flex-col">
-  <ScrollArea class="relative h-[50vh] min-h-[500px] max-h-[100%]">
-    <slot />
-  </ScrollArea>
-  <Nav />
+<main class="flex flex-col h-[50vh] min-h-[500px] max-h-[100%]">
+  <slot />
 </main>
+<Nav />
