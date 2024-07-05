@@ -69,7 +69,7 @@ const handleSettings = (id: keyof Settings) => {
 </script>
 
 <div class="p-2 flex flex-col gap-8" id="0">
-  <ScrollArea class="relative">
+  <ScrollArea class="relative pb-2">
     <div class="flex flex-col gap-2">
       <h1 class="text-center mb-2 font-bold">Paramètres</h1>
 
