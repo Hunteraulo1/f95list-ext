@@ -7,7 +7,7 @@ import { Reload } from 'svelte-radix'
 </script>
 
 {#if $updates}
-  <ScrollArea class="relative">
+  <ScrollArea class="relative pb-2">
     <div class="flex flex-col gap-4 max-h-full p-2 relative" id="0">
       {#each $updates as update, index}
         <div class="flex flex-col gap-2">
