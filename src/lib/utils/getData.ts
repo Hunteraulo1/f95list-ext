@@ -6,18 +6,27 @@ import { filteredGames, games, updates } from '../stores'
 import { dev } from '$app/environment'
 import gamesJson from '$lib/assets/games.json'
 
+const callWorker = async () => {
+  if (dev) return gamesJson.data
+
+  const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
+
+  const data = await runtime.sendMessage('f95list-ext')
+
+  if (!data) {
+    setTimeout(() => getData(), 10 * 1000) // Wait 10 seconds
+
+    throw new Error('worker not data')
+  }
+
+  if (data) return data
+}
+
 const getData = async () => {
   try {
-    const data = dev
-      ? gamesJson.data
-      : typeof browser === 'undefined'
-        ? await chrome.runtime.sendMessage('f95list-ext')
-        : await browser.runtime.sendMessage('f95list-ext')
-
-    if (!data) return
+    const data = await callWorker()
 
     const validGames = parse(Games, data.games)
-    console.log('🚀 ~ getData ~ validGames:', validGames)
 
     games.set(validGames)
     filteredGames.set(validGames)

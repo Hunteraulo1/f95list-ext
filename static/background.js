@@ -34,9 +34,9 @@ const badgeState = async () => {
 
   const updatesData = await badgeData()
   const { f95list_ext_badge } = await storage.local.get(['f95list_ext_badge'])
-  const text = updatesData?.toString() === f95list_ext_badge?.toString() ? '' : '!'
+  const text = updatesData?.toString() === f95list_ext_badge?.toString() ? '' : '+'
 
-  browserAction.setBadgeBackgroundColor({ color: '#CC0000' })
+  await browserAction.setBadgeBackgroundColor({ color: '#CC0000' })
   await browserAction.setBadgeTextColor({ color: '#FFFFFF' })
   await browserAction.setBadgeText({ text })
 }
@@ -94,9 +94,11 @@ const query = async () => {
     )
     const data = await response.json()
 
+    if (!data?.data) throw new Error('fetch not data')
+
     badgeState()
 
-    return data?.data
+    return data.data
   } catch (error) {
     console.error(error)
 
