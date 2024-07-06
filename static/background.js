@@ -94,9 +94,11 @@ const query = async () => {
     )
     const data = await response.json()
 
+    if (!data?.data) return storage.local.set({ f95list_ext_time: 0 })
+
     badgeState()
 
-    return data?.data
+    return data.data
   } catch (error) {
     console.error(error)
 
