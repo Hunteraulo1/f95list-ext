@@ -94,7 +94,7 @@ const query = async () => {
     )
     const data = await response.json()
 
-    if (!data?.data) return storage.local.set({ f95list_ext_time: 0 })
+    if (!data?.data) throw new Error('fetch not data')
 
     badgeState()
 
