@@ -6,13 +6,15 @@ import { ScrollArea } from '$lib/components/ui/scroll-area'
 import { updates } from '$lib/stores'
 import { Reload } from 'svelte-radix'
 
-!dev && typeof browser === 'undefined'
-  ? chrome.runtime.sendMessage('f95list-badge')
-  : browser.runtime.sendMessage('f95list-badge')
+if (!dev) {
+  typeof browser === 'undefined'
+    ? chrome.runtime.sendMessage('f95list-badge')
+    : browser.runtime.sendMessage('f95list-badge')
+}
 </script>
 
 {#if $updates}
-  <ScrollArea class="relative pb-2">
+  <ScrollArea class="relative pb-2 min-h-[448px]">
     <div class="flex flex-col gap-4 max-h-full p-2 relative" id="0">
       {#each $updates as update, index}
         <div class="flex flex-col gap-2">

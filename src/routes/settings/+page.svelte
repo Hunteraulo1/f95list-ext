@@ -68,8 +68,7 @@ const handleSettings = (id: keyof Settings) => {
 }
 </script>
 
-<div class="p-2 flex flex-col gap-8" id="0">
-  <ScrollArea class="relative pb-2">
+  <ScrollArea class="p-2 flex flex-col gap-8 relative pb-2 min-h-[448px]" id="0">
     <div class="flex flex-col gap-2">
       <h1 class="text-center mb-2 font-bold">Paramètres</h1>
 
@@ -120,4 +119,3 @@ const handleSettings = (id: keyof Settings) => {
       </div>
     </div>
   </ScrollArea>
-</div>
