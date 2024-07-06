@@ -15,7 +15,6 @@ const callWorker = async () => {
 
   if (!data) {
     setTimeout(() => getData(), 10 * 1000) // Wait 10 seconds
-    console.log('🚀 ~ wait')
 
     throw new Error('worker not data')
   }
@@ -26,10 +25,8 @@ const callWorker = async () => {
 const getData = async () => {
   try {
     const data = await callWorker()
-    console.log('🚀 ~ getData ~ data:', await data)
 
     const validGames = parse(Games, data.games)
-    console.log('🚀 ~ getData ~ validGames:', validGames)
 
     games.set(validGames)
     filteredGames.set(validGames)
