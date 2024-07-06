@@ -34,7 +34,7 @@ const badgeState = async () => {
 
   const updatesData = await badgeData()
   const { f95list_ext_badge } = await storage.local.get(['f95list_ext_badge'])
-  const text = updatesData?.toString() === f95list_ext_badge?.toString() ? '' : '!'
+  const text = updatesData?.toString() === f95list_ext_badge?.toString() ? '' : '+'
 
   await browserAction.setBadgeBackgroundColor({ color: '#CC0000' })
   await browserAction.setBadgeTextColor({ color: '#FFFFFF' })
