@@ -10,7 +10,7 @@ let maxLength = 25
 </script>
 
 {#if $games.length > 0}
-  <ScrollArea class="relative">
+  <ScrollArea class="relative min-h-[448px]">
     <div class="flex flex-col gap-2 p-2 relative" id="0">
       {#each $filteredGames as game, index (game.name + game.version)}
         {#if index < maxLength}
