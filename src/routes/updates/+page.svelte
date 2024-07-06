@@ -1,9 +1,14 @@
 <script lang="ts">
+import { dev } from '$app/environment'
 import GameBox from '$lib/components/GameBox.svelte'
 import { Button } from '$lib/components/ui/button'
 import { ScrollArea } from '$lib/components/ui/scroll-area'
 import { updates } from '$lib/stores'
 import { Reload } from 'svelte-radix'
+
+!dev && typeof browser === 'undefined'
+  ? chrome.runtime.sendMessage('f95list-badge')
+  : browser.runtime.sendMessage('f95list-badge')
 </script>
 
 {#if $updates}
