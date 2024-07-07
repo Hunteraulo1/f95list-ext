@@ -9,21 +9,19 @@ import { cn } from '$lib/utils'
 import { Check, ChevronDown } from 'svelte-radix'
 
 const reloadList = () => {
-  $filteredGames = $games
-    .filter(game => game.name.toLowerCase().includes($search))
-    .filter(game => {
-      return $filter.every(({ title, values }) => {
-        if (title === 'tags') {
-          return values.every(value => {
-            return value.checked ? game[title].includes(value.value) : true
-          })
-        }
+  $filteredGames = $games.filter(game => {
+    if (!game.name.toLowerCase().includes($search)) return false
 
-        return values.every(value => {
-          return value.checked ? game[title] === value.value : true
-        })
-      })
+    return $filter.every(({ title, values }) => {
+      if (!values.some(value => value.checked)) return true
+
+      if (title === 'tags') {
+        return values.every(value => !value.checked || game[title].includes(value.value))
+      }
+
+      return values.some(value => value.checked && game[title] === value.value)
     })
+  })
 }
 
 const handleReset = () => {
@@ -41,9 +39,10 @@ const handleReset = () => {
       <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
     <Popover.Content side="top">
-      <div class="flex flex-col gap-2 items-center">
-        <h1 class="font-bold">Filtrer la liste</h1>
+      <div class="flex flex-col gap-2">
+        <label for="name" class="font-bold text-xs">Nom: </label>
         <Input
+          id="name"
           type="text"
           placeholder="Rechercher un nom"
           class="w-full"
@@ -56,6 +55,7 @@ const handleReset = () => {
         />
 
         {#each $filter as { title, open, values }}
+          <label for={title} class="font-bold text-xs capitalize leading-none mt-2">{title}: </label>
           <Popover.Root>
             <Popover.Trigger asChild let:builder>
               <Button
@@ -101,7 +101,7 @@ const handleReset = () => {
             </Popover.Content>
           </Popover.Root>
         {/each}
-        <Button on:click={handleReset}>Réinitialiser les filtres</Button>
+        <Button class="self-center mt-2" on:click={handleReset}>Réinitialiser les filtres</Button>
       </div>
     </Popover.Content>
   </Popover.Root>
