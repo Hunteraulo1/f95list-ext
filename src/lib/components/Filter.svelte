@@ -29,7 +29,6 @@ const handleReset = () => {
   filter.reset()
 
   reloadList()
-  console.log('🚀 ~ handleReset ~ $filter:', $filter)
 }
 </script>
 
@@ -39,13 +38,13 @@ const handleReset = () => {
       <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
     <Popover.Content side="top">
-      <div class="flex flex-col gap-2">
-        <label for="name" class="font-bold text-xs">Nom: </label>
+      <div class="flex flex-col gap-1">
+        <label for="name" class="font-bold text-xs leading-none">Nom: </label>
         <Input
           id="name"
           type="text"
           placeholder="Rechercher un nom"
-          class="w-full"
+          class="w-full h-8"
           value={$search}
           on:input={({ currentTarget }) => {
             $search = currentTarget.value.toLowerCase()
@@ -61,6 +60,7 @@ const handleReset = () => {
               <Button
                 builders={[builder]}
                 variant="outline"
+                size="sm"
                 role="combobox"
                 aria-expanded={open}
                 class="w-full flex justify-between"

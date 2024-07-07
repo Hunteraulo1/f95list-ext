@@ -19,15 +19,6 @@ const defaultFilters = (): ComboBox[] => [
     ],
   },
   {
-    title: 'status',
-    open: false,
-    values: [
-      { value: 'EN COURS', checked: false },
-      { value: 'ABANDONNÉ', checked: false },
-      { value: 'TERMINÉ', checked: false },
-    ],
-  },
-  {
     title: 'type',
     open: false,
     values: [
@@ -40,6 +31,15 @@ const defaultFilters = (): ComboBox[] => [
       { value: 'RenPy/RPGM', checked: false },
       { value: 'RenPy/Unity', checked: false },
       { value: 'Autre', checked: false },
+    ],
+  },
+  {
+    title: 'status',
+    open: false,
+    values: [
+      { value: 'EN COURS', checked: false },
+      { value: 'ABANDONNÉ', checked: false },
+      { value: 'TERMINÉ', checked: false },
     ],
   },
   {
