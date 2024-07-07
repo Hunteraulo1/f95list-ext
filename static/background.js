@@ -47,7 +47,6 @@ const badgeReset = async () => {
 
     await storage.local.set({ f95list_ext_badge: updatesData })
     badgeState()
-    console.log('🚀 ~ badgeReset ~ badgeReset')
   } catch (error) {
     console.error(error)
   }

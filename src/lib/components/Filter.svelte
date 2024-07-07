@@ -29,7 +29,6 @@ const handleReset = () => {
   filter.reset()
 
   reloadList()
-  console.log('🚀 ~ handleReset ~ $filter:', $filter)
 }
 </script>
 
