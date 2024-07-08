@@ -1,15 +1,15 @@
 <script lang="ts">
-import { goto } from '$app/navigation'
-import { Button } from '$lib/components/ui/button/index.js'
-import Label from '$lib/components/ui/label/label.svelte'
-import { ScrollArea } from '$lib/components/ui/scroll-area'
-import Switch from '$lib/components/ui/switch/switch.svelte'
-import { settings } from '$lib/stores'
-import type { Settings } from '$lib/types'
-import { toggleMode } from 'mode-watcher'
-import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
-import Moon from 'svelte-radix/Moon.svelte'
-import Sun from 'svelte-radix/Sun.svelte'
+import { goto } from '$app/navigation';
+import { Button } from '$lib/components/ui/button/index.js';
+import Label from '$lib/components/ui/label/label.svelte';
+import { ScrollArea } from '$lib/components/ui/scroll-area';
+import Switch from '$lib/components/ui/switch/switch.svelte';
+import { settings } from '$lib/stores';
+import type { Settings } from '$lib/types';
+import { toggleMode } from 'mode-watcher';
+import DiscordLogo from 'svelte-radix/DiscordLogo.svelte';
+import Moon from 'svelte-radix/Moon.svelte';
+import Sun from 'svelte-radix/Sun.svelte';
 
 interface SettingItem {
   title: string
@@ -68,7 +68,7 @@ const handleSettings = (id: keyof Settings) => {
 }
 </script>
 
-  <ScrollArea class="p-2 pb-2 min-h-[448px]" id="0">
+  <ScrollArea class="p-2 pb-2 min-h-[448px]">
     <div class="flex flex-col gap-8">
       <div class="flex flex-col gap-2">
         <h1 class="text-center mb-2 font-bold">Paramètres</h1>

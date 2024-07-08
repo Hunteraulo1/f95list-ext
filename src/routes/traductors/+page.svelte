@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Button } from '$lib/components/ui/button'
-import * as Card from '$lib/components/ui/card'
-import { ScrollArea } from '$lib/components/ui/scroll-area'
-import { type TraductorType, TraductorsData } from '$lib/schemas'
-import { onMount } from 'svelte'
-import { Reload } from 'svelte-radix'
-import { parse } from 'valibot'
+import { Button } from '$lib/components/ui/button';
+import * as Card from '$lib/components/ui/card';
+import { ScrollArea } from '$lib/components/ui/scroll-area';
+import { type TraductorType, TraductorsData } from '$lib/schemas';
+import { onMount } from 'svelte';
+import { Reload } from 'svelte-radix';
+import { parse } from 'valibot';
 
 let queryResult: Promise<TraductorType[]> = Promise.resolve([])
 
@@ -45,7 +45,7 @@ const query = async (): Promise<TraductorType[]> => {
 {#await queryResult then traductors}
   {#if traductors.length > 0}
     <ScrollArea class="relative pb-2 min-h-[448px]">
-      <div class="flex flex-col gap-4 max-h-full p-2 relative" id="0">
+      <div class="flex flex-col gap-4 max-h-full p-2 relative">
         {#each traductors as { name, pages, tradCount, readCount }}
           <Card.Root class="relative">
             <Card.CardContent class="p-2 min-h-20">
