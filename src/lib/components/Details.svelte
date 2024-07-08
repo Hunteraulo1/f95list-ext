@@ -7,6 +7,7 @@ import * as Tooltip from '$lib/components/ui/tooltip';
 import type { GameType } from '$lib/schemas';
 import { settings } from '$lib/stores';
 import { statusColor, typeColor } from '$lib/utils/badgeColor';
+import { lazyLoad } from '$lib/utils/lazyload';
 import { ArrowLeft } from 'svelte-radix';
 
 let tagsHide = $settings.tagsHide
@@ -24,7 +25,7 @@ let closed = false
       <ArrowLeft />
     </Button>
     {#if game}
-      <img src={game.image ?? noImage} alt={game.name} class="h-32 w-full object-cover" />
+      <img alt={game.name} class="h-32 w-full object-cover" use:lazyLoad={game.image ?? noImage} />
       <div class="p-2 flex flex-col gap-2">
         <h2>
           <span class="font-bold text-sm">Site:</span>
