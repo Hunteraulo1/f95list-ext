@@ -1,11 +1,11 @@
 <script lang="ts">
-import Badge from '$lib/components/ui/badge/badge.svelte'
-import * as Card from '$lib/components/ui/card'
-import * as Tooltip from '$lib/components/ui/tooltip'
-import { type GameType } from '$lib/schemas'
-import { lazyLoad } from '$lib/utils/lazyload'
-import { mode } from 'mode-watcher'
-import Details from './Details.svelte'
+import Badge from '$lib/components/ui/badge/badge.svelte';
+import * as Card from '$lib/components/ui/card';
+import * as Tooltip from '$lib/components/ui/tooltip';
+import { type GameType } from '$lib/schemas';
+import { lazyLoad } from '$lib/utils/lazyload';
+import { mode } from 'mode-watcher';
+import Details from './Details.svelte';
 
 export let game: GameType
 
@@ -19,7 +19,7 @@ let open: boolean = false
 {#if game.domain !== 'Unknown'}
   <Card.Root class="relative cursor-pointer" on:click={() => (open = true)}>
     {#if game.image}
-      <img alt={game.name} class="absolute object-cover w-full h-full rounded-xl" use:lazyLoad={game.image} />
+      <img alt={game.name} class="absolute object-cover w-full h-full rounded-xl" use:lazyLoad={game.image} style="image-rendering: smooth;" />
     {/if}
     <Card.CardContent class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none {$mode === 'dark' ? 'bg-secondary/20' : ''}">
       <Card.Title>{game.name}</Card.Title>
