@@ -71,8 +71,8 @@ const config: Config = {
         }
       },
       animation: {
-        'toDown': 'toDown .6s ease-in-out',
-        'toUp': 'toUp .6s ease-in-out'
+        'toDown': 'toDown .6s ease-in-out forwards',
+        'toUp': 'toUp .6s ease-in-out forwards'
       }
     },
   },
