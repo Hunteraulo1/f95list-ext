@@ -60,6 +60,20 @@ const config: Config = {
       backdropBlur: {
         xs: '1px',
       },
+      keyframes: {
+        'toDown': {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(0%)' }
+        },
+        'toUp': {
+          '0%': { transform: 'translateY(0%)' },
+          '100%': { transform: 'translateY(-100%)' }
+        }
+      },
+      animation: {
+        'toDown': 'toDown .6s ease-in-out forwards',
+        'toUp': 'toUp .6s ease-in-out forwards'
+      }
     },
   },
 }
