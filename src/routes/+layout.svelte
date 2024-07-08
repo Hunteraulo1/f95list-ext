@@ -7,7 +7,7 @@ import '../app.postcss'
 getData()
 </script>
 
-<ModeWatcher />
+<ModeWatcher  defaultMode={"system"} />
 
 <main class="flex flex-col h-[50vh] min-h-[500px] max-h-[100%]">
   <slot />
