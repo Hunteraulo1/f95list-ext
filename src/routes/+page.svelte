@@ -13,7 +13,7 @@ let maxLength = 50
   <ScrollArea class="relative min-h-[448px]">
     <div class="flex flex-col gap-2 p-2 relative">
       {#each $filteredGames as game, index (game.name + game.version)}
-        {#if index < maxLength}
+        {#if index <= maxLength}
           <GameBox {game} />
         {/if}
         {#if index !== $filteredGames.length - 1 && index === maxLength - 1}
