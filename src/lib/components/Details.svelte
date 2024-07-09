@@ -1,14 +1,14 @@
 <script lang="ts">
-import noImage from '$lib/assets/no-image.png';
-import { Badge } from '$lib/components/ui/badge';
-import { Button } from '$lib/components/ui/button/index.js';
-import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
-import * as Tooltip from '$lib/components/ui/tooltip';
-import type { GameType } from '$lib/schemas';
-import { settings } from '$lib/stores';
-import { statusColor, typeColor } from '$lib/utils/badgeColor';
-import { lazyLoad } from '$lib/utils/lazyload';
-import { ArrowLeft } from 'svelte-radix';
+import noImage from '$lib/assets/no-image.png'
+import { Badge } from '$lib/components/ui/badge'
+import { Button } from '$lib/components/ui/button/index.js'
+import { ScrollArea } from '$lib/components/ui/scroll-area/index.js'
+import * as Tooltip from '$lib/components/ui/tooltip'
+import type { GameType } from '$lib/schemas'
+import { settings } from '$lib/stores'
+import { statusColor, typeColor } from '$lib/utils/badgeColor'
+import { lazyLoad } from '$lib/utils/lazyload'
+import { ArrowLeft } from 'svelte-radix'
 
 let tagsHide = $settings.tagsHide
 

@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Button } from '$lib/components/ui/button';
-import * as Card from '$lib/components/ui/card';
-import { ScrollArea } from '$lib/components/ui/scroll-area';
-import { type TraductorType, TraductorsData } from '$lib/schemas';
-import { onMount } from 'svelte';
-import { Reload } from 'svelte-radix';
-import { parse } from 'valibot';
+import { Button } from '$lib/components/ui/button'
+import * as Card from '$lib/components/ui/card'
+import { ScrollArea } from '$lib/components/ui/scroll-area'
+import { type TraductorType, TraductorsData } from '$lib/schemas'
+import { onMount } from 'svelte'
+import { Reload } from 'svelte-radix'
+import { parse } from 'valibot'
 
 let queryResult: Promise<TraductorType[]> = Promise.resolve([])
 
