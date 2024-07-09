@@ -1,11 +1,11 @@
 <script lang="ts">
-import Badge from '$lib/components/ui/badge/badge.svelte';
-import * as Card from '$lib/components/ui/card';
-import * as Tooltip from '$lib/components/ui/tooltip';
-import { type GameType } from '$lib/schemas';
-import { lazyLoad } from '$lib/utils/lazyload';
-import { mode } from 'mode-watcher';
-import Details from './Details.svelte';
+import Badge from '$lib/components/ui/badge/badge.svelte'
+import * as Card from '$lib/components/ui/card'
+import * as Tooltip from '$lib/components/ui/tooltip'
+import { type GameType } from '$lib/schemas'
+import { lazyLoad } from '$lib/utils/lazyload'
+import { mode } from 'mode-watcher'
+import Details from './Details.svelte'
 
 export let game: GameType
 
