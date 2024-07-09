@@ -1,6 +1,6 @@
 {
   "name": "sveltekit-extension-template",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "private": false,
   "scripts": {
     "dev": "vite dev",
@@ -43,7 +43,13 @@
     "vite-plugin-tailwind-purgecss": "^0.3.3",
     "vitest": "^2.0.1"
   },
-  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@deepkit/type-compiler",
+    "@sveltejs/kit",
+    "esbuild",
+    "svelte-preprocess"
+  ],
   "type": "module",
   "dependencies": {
     "cmdk-sv": "^0.0.17"
