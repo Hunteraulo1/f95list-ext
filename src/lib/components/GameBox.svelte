@@ -19,7 +19,7 @@ let open: boolean = false
 {#if game.domain !== 'Unknown'}
   <Card.Root class="relative cursor-pointer" on:click={() => (open = true)}>
     {#if game.image}
-      <img alt={game.name} class="absolute object-cover w-full h-full rounded-xl" use:lazyLoad={game.image} />
+      <img alt={game.name} class="absolute object-cover w-full h-full rounded-xl" use:lazyLoad={game.image} style="image-rendering: smooth; image-resolution: snap;" />
     {/if}
     <Card.CardContent class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none {$mode === 'dark' ? 'bg-secondary/20' : ''}">
       <Card.Title>{game.name}</Card.Title>
