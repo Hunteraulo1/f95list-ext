@@ -16,7 +16,7 @@ let maxLength = 50
         {#if index <= maxLength}
           <GameBox {game} />
         {/if}
-        {#if index !== $filteredGames.length - 1 && index === maxLength - 1}
+        {#if index !== $filteredGames.length && index === maxLength}
           <Button variant="link" on:click={() => (maxLength += 50)}>Voir plus</Button>
         {/if}
       {:else}
