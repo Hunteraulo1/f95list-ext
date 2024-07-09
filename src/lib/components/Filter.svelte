@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Button } from '$lib/components/ui/button/index.js'
+import { Checkbox } from '$lib/components/ui/checkbox/index.js'
 import * as Command from '$lib/components/ui/command/index.js'
 import { Input } from '$lib/components/ui/input/index.js'
 import * as Popover from '$lib/components/ui/popover/index.js'
@@ -8,9 +9,12 @@ import { filter, filteredGames, games, search } from '$lib/stores'
 import { cn } from '$lib/utils'
 import { Check, ChevronDown } from 'svelte-radix'
 
+let checked = false
+
 const reloadList = () => {
   $filteredGames = $games.filter(game => {
     if (!game.name.toLowerCase().includes($search)) return false
+    if (checked && game.version !== game.tversion && game.tversion !== 'Intégrée') return false
 
     return $filter.every(({ title, values }) => {
       if (!values.some(value => value.checked)) return true
@@ -26,6 +30,7 @@ const reloadList = () => {
 
 const handleReset = () => {
   $search = ''
+  checked = false
   filter.reset()
 
   reloadList()
@@ -44,7 +49,7 @@ const handleReset = () => {
           id="name"
           type="text"
           placeholder="Rechercher un nom"
-          class="w-full h-8"
+          class="w-full h-6"
           value={$search}
           on:input={({ currentTarget }) => {
             $search = currentTarget.value.toLowerCase()
@@ -52,6 +57,14 @@ const handleReset = () => {
             reloadList()
           }}
         />
+        
+        <div class="flex items-center gap-1 mt-2">
+          <Checkbox id="updated" bind:checked on:click={() => {
+            checked = !checked
+            reloadList()
+          }}/>
+          <label for="updated" class="font-bold text-xs leading-none">Traduction à jour </label>
+        </div>
 
         {#each $filter as { title, open, values }}
           <label for={title} class="font-bold text-xs capitalize leading-none mt-2">{title}: </label>
@@ -63,7 +76,7 @@ const handleReset = () => {
                 size="sm"
                 role="combobox"
                 aria-expanded={open}
-                class="w-full flex justify-between"
+                class="w-full flex justify-between h-6"
               >
                 <p class="truncate">
                   {values.some(({ checked }) => checked)
@@ -101,7 +114,7 @@ const handleReset = () => {
             </Popover.Content>
           </Popover.Root>
         {/each}
-        <Button class="self-center mt-2" on:click={handleReset}>Réinitialiser les filtres</Button>
+        <Button class="self-center mt-2 h-6" on:click={handleReset} size="sm">Réinitialiser les filtres</Button>
       </div>
     </Popover.Content>
   </Popover.Root>
