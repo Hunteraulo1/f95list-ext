@@ -1,12 +1,12 @@
 <script lang="ts">
-import Filter from '$lib/components/Filter.svelte';
-import GameBox from '$lib/components/GameBox.svelte';
-import { ScrollArea } from '$lib/components/ui/scroll-area';
-import { filteredGames, games } from '$lib/stores';
-import Reload from 'svelte-radix/Reload.svelte';
-import Button from './../lib/components/ui/button/button.svelte';
+import Filter from '$lib/components/Filter.svelte'
+import GameBox from '$lib/components/GameBox.svelte'
+import { ScrollArea } from '$lib/components/ui/scroll-area'
+import { filteredGames, games } from '$lib/stores'
+import Reload from 'svelte-radix/Reload.svelte'
+import Button from './../lib/components/ui/button/button.svelte'
 
-let maxLength = 25
+let maxLength = 50
 </script>
 
 {#if $games.length > 0}
@@ -17,7 +17,7 @@ let maxLength = 25
           <GameBox {game} />
         {/if}
         {#if index !== $filteredGames.length - 1 && index === maxLength - 1}
-          <Button variant="link" on:click={() => (maxLength += 25)}>Voir plus</Button>
+          <Button variant="link" on:click={() => (maxLength += 50)}>Voir plus</Button>
         {/if}
       {:else}
         <div class="flex justify-center items-center h-screen w-full">
