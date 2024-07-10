@@ -41,7 +41,7 @@
     "vite": "^5.3.3",
     "vite-plugin-svelte": "^3.0.1",
     "vite-plugin-tailwind-purgecss": "^0.3.3",
-    "vitest": "^2.0.1"
+    "vitest": "^2.0.2"
   },
   "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
   "type": "module",
