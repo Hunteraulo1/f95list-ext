@@ -1,7 +1,7 @@
 import { parse } from 'valibot'
 
 import { type GameType, Games, TraductorsData, Updates } from '../schemas'
-import { filteredGames, games, traductors, updates } from '../stores'
+import { filter, filteredGames, games, traductors, updates } from '../stores'
 
 import { dev } from '$app/environment'
 import apiJson from '$lib/assets/api.json'
@@ -83,6 +83,8 @@ const getData = async () => {
     const validTraductors = parse(TraductorsData, data.traductors)
 
     traductors.set(validTraductors)
+
+    filter.reset()
   } catch (error) {
     console.error(error)
   }
