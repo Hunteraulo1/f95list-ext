@@ -15,7 +15,6 @@ const buttonVariants = tv({
     },
     size: {
       default: 'h-9 px-4 py-2',
-      sm: 'h-8 rounded-md px-3 text-xs',
       lg: 'h-10 rounded-md px-8',
       icon: 'h-9 w-9',
     },
@@ -37,12 +36,12 @@ type Props = ButtonPrimitive.Props & {
 type Events = ButtonPrimitive.Events
 
 export {
-  Root,
-  type Props,
-  type Events,
   //
   Root as Button,
-  type Props as ButtonProps,
-  type Events as ButtonEvents,
+  Root,
   buttonVariants,
+  type Events as ButtonEvents,
+  type Props as ButtonProps,
+  type Events,
+  type Props,
 }
