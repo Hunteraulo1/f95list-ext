@@ -89,7 +89,7 @@ const query = async () => {
     console.info('🚀 ~ query: ~ fetch')
 
     const response = await fetch(
-      'https://script.google.com/macros/s/AKfycbwb8C1478tnW30d77HtECYTxjJ2EpB1OrtQUueFeZ0tZPz3Uuze5s2FAQAnQOKShEzD/exec'
+      'https://script.google.com/macros/s/AKfycby5xl0a0XW6X8UNGmu_19z9Qau25jFluW76LiGhfB8/dev'
     )
     const data = await response.json()
 
