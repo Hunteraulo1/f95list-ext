@@ -27,10 +27,7 @@
     },
     "default_title": "F95 France - Extension"
   },
-  "permissions": [
-    "storage",
-    "unlimitedStorage"
-  ],
+  "permissions": ["storage", "unlimitedStorage"],
   "content_scripts": [
     {
       "matches": [
@@ -39,16 +36,12 @@
         "*://lewdcorner.com/latest-updates/*",
         "*://lewdcorner.com/threads/*"
       ],
-      "js": [
-        "content.js"
-      ],
+      "js": ["content.js"],
       "run_at": "document_idle",
       "all_frames": false
     }
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "scripts": ["background.js"]
   }
 }
