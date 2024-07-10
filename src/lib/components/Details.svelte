@@ -1,5 +1,6 @@
 <script lang="ts">
 import noImage from '$lib/assets/no-image.png'
+import * as Alert from '$lib/components/ui/alert/index.js'
 import { Badge } from '$lib/components/ui/badge'
 import { Button } from '$lib/components/ui/button/index.js'
 import { ScrollArea } from '$lib/components/ui/scroll-area/index.js'
@@ -8,7 +9,7 @@ import type { GameType } from '$lib/schemas'
 import { settings } from '$lib/stores'
 import { statusColor, typeColor } from '$lib/utils/badgeColor'
 import { lazyLoad } from '$lib/utils/lazyload'
-import { ArrowLeft } from 'svelte-radix'
+import { ArrowLeft, ExclamationTriangle } from 'svelte-radix'
 
 let tagsHide = $settings.tagsHide
 
@@ -79,6 +80,24 @@ let closed = false
             <span class="font-bold">Relecteur:</span>
             {game.proofreader}
           </p>
+        {/if}
+        {#if game.tname === 'Traduction (mod inclus)'}
+          <Alert.Root class="text-red-600">
+            <ExclamationTriangle class="h-4 w-4" />
+            <Alert.Title>Attention !</Alert.Title>
+            <Alert.Description>
+              Un mod peut-être nécessaire au bon fonctionnement de cette traduction. Veuillez lire les instructions du traducteur.
+            </Alert.Description>
+          </Alert.Root>
+        {:else if game.tname === 'Pas de traduction'}
+          <Alert.Root class="text-red-600">
+              <ExclamationTriangle class="h-4 w-4" />
+              <Alert.Title>Attention !</Alert.Title>
+              <Alert.Description>
+                Cette traduction à disparue.
+                Veuillez nous contacter si vous en possédez une version.
+              </Alert.Description>
+            </Alert.Root>
         {/if}
         <div class="flex justify-center mt-2">
           {#if game.tname === 'Pas de traduction'}

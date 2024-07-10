@@ -1,13 +1,13 @@
 import { parse } from 'valibot'
 
-import { type GameType, Games, Updates } from '../schemas'
-import { filteredGames, games, updates } from '../stores'
+import { type GameType, Games, TraductorsData, Updates } from '../schemas'
+import { filter, filteredGames, games, traductors, updates } from '../stores'
 
 import { dev } from '$app/environment'
-import gamesJson from '$lib/assets/games.json'
+import apiJson from '$lib/assets/api.json'
 
 const callWorker = async () => {
-  if (dev) return gamesJson.data
+  if (dev) return apiJson.data
 
   const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
 
@@ -26,11 +26,13 @@ const getData = async () => {
   try {
     const data = await callWorker()
 
+    // Games
     const validGames = parse(Games, data.games)
 
     games.set(validGames)
     filteredGames.set(validGames)
 
+    // Updates
     const defaultGame: GameType = {
       id: null,
       name: '',
@@ -76,6 +78,13 @@ const getData = async () => {
     const validUpdates = parse(Updates, updatesData)
 
     updates.set(validUpdates)
+
+    // Traductors
+    const validTraductors = parse(TraductorsData, data.traductors)
+
+    traductors.set(validTraductors)
+
+    filter.reset()
   } catch (error) {
     console.error(error)
   }
