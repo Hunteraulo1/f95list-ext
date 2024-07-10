@@ -7,7 +7,8 @@ export interface Update {
 }
 
 export interface ComboBox {
-  title: keyof GameType
+  title: string
+  name: keyof GameType
   open: boolean
   values: {
     value: GameType['domain' | 'status' | 'type'] | string
