@@ -1,4 +1,5 @@
 <script lang="ts">
+import { dev } from '$app/environment'
 import { goto } from '$app/navigation'
 import { Button } from '$lib/components/ui/button/index.js'
 import Label from '$lib/components/ui/label/label.svelte'
@@ -10,7 +11,6 @@ import { toggleMode } from 'mode-watcher'
 import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
 import Moon from 'svelte-radix/Moon.svelte'
 import Sun from 'svelte-radix/Sun.svelte'
-import { dev } from '$app/environment'
 
 interface SettingItem {
   title: string
@@ -67,10 +67,10 @@ const handleSettings = (id: keyof Settings) => {
   $settings = result
   localStorage.setItem('settings', JSON.stringify(result))
 
-  if (id === "integrate" && !dev) {
+  if (id === 'intergrateFeature' && !dev) {
     const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
 
-    runtime.sendMessage(`f95list-integrate_${result[id]}`)
+    runtime.sendMessage(`f95list-integrate_${result['intergrateFeature'].toString()}`)
   }
 }
 </script>
