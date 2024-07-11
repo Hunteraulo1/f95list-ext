@@ -78,6 +78,12 @@ runtime.onMessage.addListener((message, _sender, sendResponse) => {
       case 'f95list-badge':
         badgeReset()
         break
+      case 'f95list-integrate_true':
+        await storage.local.set({ f95list-integrate: true })
+        break
+      case 'f95list-integrate_false':
+        await storage.local.set({ f95list-integrate: false })
+        break
     }
   })()
 

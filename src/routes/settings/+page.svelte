@@ -10,6 +10,7 @@ import { toggleMode } from 'mode-watcher'
 import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
 import Moon from 'svelte-radix/Moon.svelte'
 import Sun from 'svelte-radix/Sun.svelte'
+import { dev } from '$app/environment'
 
 interface SettingItem {
   title: string
@@ -65,6 +66,12 @@ const handleSettings = (id: keyof Settings) => {
   const result = { ...$settings, [id]: !$settings[id] }
   $settings = result
   localStorage.setItem('settings', JSON.stringify(result))
+
+  if (id === "integrate" && !dev) {
+    const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
+
+    runtime.sendMessage(`f95list-integrate_${result[id]}`)
+  }
 }
 </script>
 
@@ -75,13 +82,7 @@ const handleSettings = (id: keyof Settings) => {
         {#each settingsItems as { title, id }}
           <div class="flex justify-center items-center gap-2">
             <Label for={id}>{title}</Label>
-            {#if id !== "theme"}
-              <Switch
-                {id}
-                on:click={() => handleSettings(id)}
-                checked={$settings[id]}
-              />
-            {:else}
+            {#if id === "theme"}
               <Button {id} on:click={toggleMode} variant="outline" size="icon">
                 <Sun
                   class="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
@@ -91,6 +92,12 @@ const handleSettings = (id: keyof Settings) => {
                 />
                 <span class="sr-only">Changer le thème</span>
               </Button>
+            {:else}
+              <Switch
+                {id}
+                on:click={() => handleSettings(id)}
+                checked={$settings[id]}
+              />
             {/if}
           </div>
         {/each}
