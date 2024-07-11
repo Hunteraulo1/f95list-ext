@@ -70,6 +70,12 @@ runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
     switch (message) {
       case 'f95list-script':
+        const { f95list_ext_integrate } = await storage.local.get(['f95list_ext_integrate'])
+
+        if (!f95list_ext_integrate) return
+
+        console.log('integrate data')
+
         sendResponse(f95list_ext_data.games)
         break
       case 'f95list-ext':
@@ -79,10 +85,10 @@ runtime.onMessage.addListener((message, _sender, sendResponse) => {
         badgeReset()
         break
       case 'f95list-integrate_true':
-        await storage.local.set({ f95list-integrate: true })
+        await storage.local.set({ f95list_ext_integrate: true })
         break
       case 'f95list-integrate_false':
-        await storage.local.set({ f95list-integrate: false })
+        await storage.local.set({ f95list_ext_integrate: false })
         break
     }
   })()
