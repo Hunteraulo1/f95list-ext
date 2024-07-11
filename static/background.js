@@ -74,8 +74,6 @@ runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
         if (!f95list_ext_integrate) return
 
-        console.log('integrate data')
-
         sendResponse(f95list_ext_data.games)
         break
       case 'f95list-ext':
