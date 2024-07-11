@@ -26,10 +26,10 @@ const settingsItems: SettingItem[] = [
     title: 'Cacher les tags (par défault):',
     id: 'tagsHide',
   },
-  // {
-  //   title: "Activer l'intégration F95 (WIP):",
-  //   id: 'intergrateFeature',
-  // },
+  {
+    title: "Activer l'intégration F95/LC:",
+    id: 'intergrateFeature',
+  },
 ]
 interface Link {
   title: string
