@@ -12,9 +12,15 @@ export let game: GameType
 
 let open: boolean = false
 
-const browserAPI = typeof browser !== 'undefined' ? browser : chrome
+let browserAPI = undefined
 
-browserAPI.tabs.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
+if (typeof browser !== 'undefined') {
+  browserAPI = browser
+} else if (typeof chrome !== 'undefined') {
+  browserAPI = chrome
+}
+
+browserAPI?.tabs.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
   const { url } = tabs[0]
 
   if (!game.ac || !url?.startsWith('https://f95zone.to/threads/')) return
