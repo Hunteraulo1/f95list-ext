@@ -25,6 +25,7 @@ const Game = object({
   link: string(),
   tlink: nullable(string()),
   trlink: nullable(string()),
+  prlink: nullable(string()),
   image: nullable(string()),
 })
 
