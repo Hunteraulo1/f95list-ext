@@ -1,4 +1,5 @@
 <script lang="ts">
+import { dev } from '$app/environment'
 import { goto } from '$app/navigation'
 import { Button } from '$lib/components/ui/button/index.js'
 import Label from '$lib/components/ui/label/label.svelte'
@@ -25,10 +26,10 @@ const settingsItems: SettingItem[] = [
     title: 'Cacher les tags (par défault):',
     id: 'tagsHide',
   },
-  // {
-  //   title: "Activer l'intégration F95 (WIP):",
-  //   id: 'intergrateFeature',
-  // },
+  {
+    title: "Activer l'intégration F95/LC:",
+    id: 'intergrateFeature',
+  },
 ]
 interface Link {
   title: string
@@ -65,6 +66,12 @@ const handleSettings = (id: keyof Settings) => {
   const result = { ...$settings, [id]: !$settings[id] }
   $settings = result
   localStorage.setItem('settings', JSON.stringify(result))
+
+  if (id === 'intergrateFeature' && !dev) {
+    const browserAPI = typeof browser !== 'undefined' ? browser : chrome
+
+    browserAPI.runtime.sendMessage(`f95list-integrate_${result['intergrateFeature'].toString()}`)
+  }
 }
 </script>
 
@@ -75,13 +82,7 @@ const handleSettings = (id: keyof Settings) => {
         {#each settingsItems as { title, id }}
           <div class="flex justify-center items-center gap-2">
             <Label for={id}>{title}</Label>
-            {#if id !== "theme"}
-              <Switch
-                {id}
-                on:click={() => handleSettings(id)}
-                checked={$settings[id]}
-              />
-            {:else}
+            {#if id === "theme"}
               <Button {id} on:click={toggleMode} variant="outline" size="icon">
                 <Sun
                   class="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
@@ -91,6 +92,12 @@ const handleSettings = (id: keyof Settings) => {
                 />
                 <span class="sr-only">Changer le thème</span>
               </Button>
+            {:else}
+              <Switch
+                {id}
+                on:click={() => handleSettings(id)}
+                checked={$settings[id]}
+              />
             {/if}
           </div>
         {/each}
