@@ -19,10 +19,7 @@ browserAPI.tabs.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) 
 
   if (!game.ac || !url?.startsWith('https://f95zone.to/threads/')) return
 
-  if (url?.includes(`.${game.id}`)) {
-    open = true
-    console.log(game.ac, url?.startsWith('https://f95zone.to/threads/'))
-  }
+  if (url?.includes(`.${game.id}`)) open = true
 })
 </script>
 
