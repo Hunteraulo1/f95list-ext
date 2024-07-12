@@ -45,6 +45,7 @@ const getData = async () => {
       status: 'TERMINÉ',
       image: '',
       proofreader: '',
+      prlink: '',
       tags: [],
       tlink: '',
       tname: 'Pas de traduction',

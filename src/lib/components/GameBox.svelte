@@ -10,6 +10,17 @@ import Details from './Details.svelte'
 export let game: GameType
 
 let open: boolean = false
+
+chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+  const { url } = tabs[0]
+
+  if (!game.ac || !url?.startsWith('https://f95zone.to/threads/')) return
+
+  if (url?.includes(`.${game.id}`)) {
+    open = true
+    console.log(game.ac, url?.startsWith('https://f95zone.to/threads/'))
+  }
+})
 </script>
 
 {#if open && game.domain !== 'Unknown'}
