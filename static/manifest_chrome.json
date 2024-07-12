@@ -20,7 +20,7 @@
     },
     "default_title": "F95 France - Extension"
   },
-  "permissions": ["storage", "unlimitedStorage"],
+  "permissions": ["storage", "unlimitedStorage", "activeTab"],
   "content_scripts": [
     {
       "matches": [

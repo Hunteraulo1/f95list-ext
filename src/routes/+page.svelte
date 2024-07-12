@@ -5,20 +5,13 @@ import { ScrollArea } from '$lib/components/ui/scroll-area'
 import { filteredGames, games } from '$lib/stores'
 import Reload from 'svelte-radix/Reload.svelte'
 import Button from './../lib/components/ui/button/button.svelte'
-
-let maxLength = 50
 </script>
 
 {#if $games.length > 0}
   <ScrollArea class="relative min-h-[448px]">
     <div class="flex flex-col gap-2 p-2 relative">
       {#each $filteredGames as game, index (game.name + game.version)}
-        {#if index <= maxLength}
-          <GameBox {game} />
-        {/if}
-        {#if index !== $filteredGames.length && index === maxLength}
-          <Button variant="link" on:click={() => (maxLength += 50)}>Voir plus</Button>
-        {/if}
+        <GameBox {game} />
       {:else}
         <div class="flex justify-center items-center h-screen w-full">
           <Button>
