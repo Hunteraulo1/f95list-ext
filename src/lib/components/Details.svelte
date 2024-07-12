@@ -78,7 +78,9 @@ let closed = false
         {#if game.proofreader}
           <p class="text-sm">
             <span class="font-bold">Relecteur:</span>
-            {game.proofreader}
+            <a href={game.trlink} class:traductor={game.trlink} target="_blank">
+              {game.proofreader}
+            </a>
           </p>
         {/if}
         {#if game.tname === 'Traduction (mod inclus)'}
