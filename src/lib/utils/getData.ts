@@ -9,9 +9,9 @@ import apiJson from '$lib/assets/api.json'
 const callWorker = async () => {
   if (dev) return apiJson.data
 
-  const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
+  const browserAPI = typeof browser === 'undefined' ? chrome : browser
 
-  const data = await runtime.sendMessage('f95list-ext')
+  const data = await browserAPI.runtime.sendMessage('f95list-ext')
 
   if (!data) {
     setTimeout(() => getData(), 2000) // Wait 2 seconds

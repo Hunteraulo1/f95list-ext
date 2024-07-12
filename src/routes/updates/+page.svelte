@@ -7,9 +7,9 @@ import { updates } from '$lib/stores'
 import { Reload } from 'svelte-radix'
 
 if (!dev) {
-  typeof browser === 'undefined'
-    ? chrome.runtime.sendMessage('f95list-badge')
-    : browser.runtime.sendMessage('f95list-badge')
+  const browserAPI = typeof browser === 'undefined' ? chrome : browser
+
+  browserAPI.runtime.sendMessage('f95list-badge')
 }
 </script>
 
