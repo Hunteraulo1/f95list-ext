@@ -1,6 +1,10 @@
+import { browser } from '$app/environment'
+
+const browserAPI = typeof browser === 'undefined' ? chrome : browser
+//
 ;(async () => {
   try {
-    const data = await chrome.runtime.sendMessage('f95list-script')
+    const data = await browserAPI.runtime.sendMessage('f95list-script')
 
     insert(data)
 

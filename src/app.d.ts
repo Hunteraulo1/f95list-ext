@@ -13,4 +13,5 @@
 declare namespace browser {
   const runtime: chrome.runtime
   const storage: chrome.storage
+  const tabs: chrome.tabs
 }

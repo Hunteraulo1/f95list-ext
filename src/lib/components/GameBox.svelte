@@ -5,13 +5,16 @@ import * as Tooltip from '$lib/components/ui/tooltip'
 import { type GameType } from '$lib/schemas'
 import { lazyLoad } from '$lib/utils/lazyload'
 import { mode } from 'mode-watcher'
+import type { Tabs } from 'webextension-polyfill'
 import Details from './Details.svelte'
 
 export let game: GameType
 
 let open: boolean = false
 
-chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+const browserAPI = typeof browser !== 'undefined' ? browser : chrome
+
+browserAPI.tabs.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
   const { url } = tabs[0]
 
   if (!game.ac || !url?.startsWith('https://f95zone.to/threads/')) return

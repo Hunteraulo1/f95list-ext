@@ -68,9 +68,9 @@ const handleSettings = (id: keyof Settings) => {
   localStorage.setItem('settings', JSON.stringify(result))
 
   if (id === 'intergrateFeature' && !dev) {
-    const runtime = typeof browser === 'undefined' ? chrome.runtime : browser.runtime
+    const browserAPI = typeof browser !== 'undefined' ? browser : chrome
 
-    runtime.sendMessage(`f95list-integrate_${result['intergrateFeature'].toString()}`)
+    browserAPI.runtime.sendMessage(`f95list-integrate_${result['intergrateFeature'].toString()}`)
   }
 }
 </script>
