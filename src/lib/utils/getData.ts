@@ -14,7 +14,7 @@ const callWorker = async () => {
   const data = await runtime.sendMessage('f95list-ext')
 
   if (!data) {
-    setTimeout(() => getData(), 10 * 1000) // Wait 10 seconds
+    setTimeout(() => getData(), 2000) // Wait 2 seconds
 
     throw new Error('worker not data')
   }
