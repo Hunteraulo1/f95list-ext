@@ -1,6 +1,7 @@
 const browserAPI = typeof browser === 'undefined' ? chrome : browser
 
 browserAPI.runtime.onInstalled.addListener(async () => {
+  await browserAPI.storage.local.remove('f95list_ext_data')
   await dataInit()
   await browserAPI.storage.local.set({ f95list_ext_integrate: true })
 
