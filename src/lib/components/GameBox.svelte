@@ -14,15 +14,9 @@ export let list: boolean = false
 
 let open: boolean = false
 
-let browserAPI = undefined
+let browserAPI = typeof browser === 'undefined' ? chrome : browser
 
-if (typeof browser !== 'undefined') {
-  browserAPI = browser
-} else if (typeof chrome !== 'undefined') {
-  browserAPI = chrome
-}
-
-browserAPI?.tabs.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
+browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
   const { url } = tabs[0]
 
   if (!list || !game.ac || !$settings.autoFocusGame || !url?.startsWith('https://f95zone.to/threads/')) return
