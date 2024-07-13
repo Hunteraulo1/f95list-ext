@@ -10,6 +10,7 @@ import type { Tabs } from 'webextension-polyfill'
 import Details from './Details.svelte'
 
 export let game: GameType
+export let list: boolean = false
 
 let open: boolean = false
 
@@ -24,7 +25,7 @@ if (typeof browser !== 'undefined') {
 browserAPI?.tabs.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
   const { url } = tabs[0]
 
-  if (!game.ac || !$settings.autoFocusGame || !url?.startsWith('https://f95zone.to/threads/')) return
+  if (!list || !game.ac || !$settings.autoFocusGame || !url?.startsWith('https://f95zone.to/threads/')) return
 
   if (url?.includes(`.${game.id}`)) open = true
 })
