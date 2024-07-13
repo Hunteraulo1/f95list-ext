@@ -3,29 +3,35 @@ import Badge from '$lib/components/ui/badge/badge.svelte'
 import * as Card from '$lib/components/ui/card'
 import * as Tooltip from '$lib/components/ui/tooltip'
 import { type GameType } from '$lib/schemas'
+import { settings } from '$lib/stores'
 import { lazyLoad } from '$lib/utils/lazyload'
 import { mode } from 'mode-watcher'
 import type { Tabs } from 'webextension-polyfill'
 import Details from './Details.svelte'
 
 export let game: GameType
+export let list: boolean = false
 
 let open: boolean = false
 
 let browserAPI = undefined
 
-if (typeof browser !== 'undefined') {
-  browserAPI = browser
-} else if (typeof chrome !== 'undefined') {
+if (typeof chrome !== 'undefined') {
   browserAPI = chrome
+} else if (typeof browser !== 'undefined') {
+  browserAPI = browser
 }
 
-browserAPI?.tabs.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
+browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
   const { url } = tabs[0]
 
-  if (!game.ac || !url?.startsWith('https://f95zone.to/threads/')) return
+  if (!list || !$settings.autoFocusGame) return
 
-  if (url?.includes(`.${game.id}`)) open = true
+  if (game.ac && game.domain === 'F95z' && url?.startsWith('https://f95zone.to/threads/')) {
+    if (url?.includes(`.${game.id}`)) open = true
+  } else if (game.domain === 'LewdCorner' && url?.startsWith('https://lewdcorner.com/threads/')) {
+    if (url?.includes(`.${game.id}`)) open = true
+  }
 })
 </script>
 

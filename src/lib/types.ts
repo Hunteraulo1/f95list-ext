@@ -20,4 +20,5 @@ export interface Settings {
   theme?: undefined
   tagsHide: boolean
   intergrateFeature: boolean
+  autoFocusGame: boolean
 }
