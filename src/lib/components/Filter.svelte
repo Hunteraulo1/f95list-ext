@@ -67,8 +67,10 @@ const handleReset = () => {
     <Popover.Content side="top" class="p-0">
       <ScrollArea class="h-80 w-full p-4">
         <section class="flex flex-col gap-1">
-          <Popover.Close class="flex justify-end">
-            <Cross2 />
+          <Popover.Close class="flex justify-end pr-6">
+            <div class="rounded-full p-1 hover:bg-primary-foreground">
+              <Cross2 />
+            </div>
           </Popover.Close>
           <label for="name" class="font-bold text-xs leading-none">Nom: </label>
           <Input
