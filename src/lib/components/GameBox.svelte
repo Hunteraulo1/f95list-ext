@@ -19,9 +19,13 @@ let browserAPI = typeof browser === 'undefined' ? chrome : browser
 browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
   const { url } = tabs[0]
 
-  if (!list || !game.ac || !$settings.autoFocusGame || !url?.startsWith('https://f95zone.to/threads/')) return
+  if (!list || !$settings.autoFocusGame) return
 
-  if (url?.includes(`.${game.id}`)) open = true
+  if (game.ac && game.domain === 'F95z' && url?.startsWith('https://f95zone.to/threads/')) {
+    if (url?.includes(`.${game.id}`)) open = true
+  } else if (game.domain === 'LewdCorner' && url?.startsWith('https://lewdcorner.com/threads/')) {
+    if (url?.includes(`.${game.id}`)) open = true
+  }
 })
 </script>
 
