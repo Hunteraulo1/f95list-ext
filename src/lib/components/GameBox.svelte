@@ -14,7 +14,13 @@ export let list: boolean = false
 
 let open: boolean = false
 
-let browserAPI = typeof browser === 'undefined' ? chrome : browser
+let browserAPI = undefined
+
+if (typeof chrome !== 'undefined') {
+  browserAPI = chrome
+} else if (typeof browser !== 'undefined') {
+  browserAPI = browser
+}
 
 browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
   const { url } = tabs[0]
