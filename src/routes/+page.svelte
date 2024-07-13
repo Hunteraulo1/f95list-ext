@@ -11,7 +11,7 @@ import Button from './../lib/components/ui/button/button.svelte'
   <ScrollArea class="relative min-h-[448px]">
     <div class="flex flex-col gap-2 p-2 relative">
       {#each $filteredGames as game, index (game.name + game.version)}
-        <GameBox {game} />
+        <GameBox {game} list />
       {:else}
         <div class="flex justify-center items-center h-screen w-full">
           <Button>
