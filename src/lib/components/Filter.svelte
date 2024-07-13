@@ -4,7 +4,7 @@ import { Checkbox } from '$lib/components/ui/checkbox/index.js'
 import * as Command from '$lib/components/ui/command/index.js'
 import { Input } from '$lib/components/ui/input/index.js'
 import * as Popover from '$lib/components/ui/popover/index.js'
-import { ScrollArea } from '$lib/components/ui/scroll-area/index'
+import { ScrollArea } from '$lib/components/ui/scroll-area/index.js'
 import { filter, filteredGames, games, search } from '$lib/stores'
 import { cn } from '$lib/utils'
 import { Check, ChevronDown, Cross2 } from 'svelte-radix'
@@ -46,81 +46,81 @@ const handleReset = () => {
     <Popover.Trigger >
       <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
-    <Popover.Content side="top" class="flex flex-col gap-1 max-h-80 overflow-scroll">
-      <Popover.Close class="flex justify-end">
-        <Cross2 />
-      </Popover.Close>
-
-      <label for="name" class="font-bold text-xs leading-none">Nom: </label>
-      <Input
-        id="name"
-        type="text"
-        placeholder="Rechercher un nom"
-        class="w-full"
-        value={$search}
-        on:input={({ currentTarget }) => {
-          $search = currentTarget.value.toLowerCase()
-
-          reloadList()
-        }}
-      />
-      
-      <div class="flex items-center gap-1 mt-2">
-        <Checkbox id="updated" bind:checked on:click={() => {
-          checked = !checked
-          reloadList()
-        }}/>
-        <label for="updated" class="font-bold text-xs leading-none">Traduction à jour </label>
-      </div>
-
-      {#each $filter as { title, open, values }}
-        <label for={title} class="font-bold text-xs capitalize leading-none mt-2">{title}: </label>
-        <Popover.Root>
-          <Popover.Trigger asChild let:builder>
-            <Button
-              builders={[builder]}
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              class="w-full flex justify-between"
-            >
-              <p class="truncate">
-                {values.some(({ checked }) => checked)
-                  ? values
-                      .filter(value => value.checked)
-                      .map(({ value }) => value)
-                      .join(', ')
-                  : `Filtrer par ${title}...`}
-              </p>
-              <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </Popover.Trigger>
-          <Popover.Content class="max-w-full w-auto p-0">
-            <Command.Root>
-              <Command.Input placeholder="Rechercher..." />
-              <Command.Empty>Aucun {title} trouvé</Command.Empty>
-              <Command.Group class="max-h-60 relative">
-                <ScrollArea class="{values.length > 7 ? 'h-screen' : ''} max-h-60 max-w-full">
-                  {#each values as { value, checked }}
-                    <Command.Item
-                      {value}
-                      onSelect={() => {
-                        checked = !checked
-
-                        reloadList()
-                      }}
-                    >
-                      <Check class={cn('mr-2 h-4 w-4', !checked && 'text-transparent')} />
-                      {value}
-                    </Command.Item>
-                  {/each}
-                </ScrollArea>
-              </Command.Group>
-            </Command.Root>
-          </Popover.Content>
-        </Popover.Root>
-      {/each}
-      <Button class="self-center mt-2" on:click={handleReset}>Réinitialiser les filtres</Button>
+    <Popover.Content side="top" class="p-0">
+      <ScrollArea class="h-80 w-full p-4">
+        <section class="flex flex-col gap-1">
+          <Popover.Close class="flex justify-end">
+            <Cross2 />
+          </Popover.Close>
+          <label for="name" class="font-bold text-xs leading-none">Nom: </label>
+          <Input
+            id="name"
+            type="text"
+            placeholder="Rechercher un nom"
+            class="w-full"
+            value={$search}
+            on:input={({ currentTarget }) => {
+              $search = currentTarget.value.toLowerCase()
+              reloadList()
+            }}
+          />
+          
+          <div class="flex items-center gap-1 mt-2">
+            <Checkbox id="updated" bind:checked on:click={() => {
+              checked = !checked
+              reloadList()
+            }}/>
+            <label for="updated" class="font-bold text-xs leading-none">Traduction à jour </label>
+          </div>
+          {#each $filter as { title, open, values }}
+            <label for={title} class="font-bold text-xs capitalize leading-none mt-2">{title}: </label>
+            <Popover.Root>
+              <Popover.Trigger asChild let:builder>
+                <Button
+                  builders={[builder]}
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  class="w-full flex justify-between"
+                >
+                  <p class="truncate">
+                    {values.some(({ checked }) => checked)
+                      ? values
+                          .filter(value => value.checked)
+                          .map(({ value }) => value)
+                          .join(', ')
+                      : `Filtrer par ${title}...`}
+                  </p>
+                  <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </Popover.Trigger>
+              <Popover.Content class="max-w-full w-auto p-0">
+                <Command.Root>
+                  <Command.Input placeholder="Rechercher..." />
+                  <Command.Empty>Aucun {title} trouvé</Command.Empty>
+                  <Command.Group class="max-h-60 relative">
+                    <ScrollArea class="{values.length > 7 ? 'h-screen' : ''} max-h-60 max-w-full">
+                      {#each values as { value, checked }}
+                        <Command.Item
+                          {value}
+                          onSelect={() => {
+                            checked = !checked
+                            reloadList()
+                          }}
+                        >
+                          <Check class={cn('mr-2 h-4 w-4', !checked && 'text-transparent')} />
+                          {value}
+                        </Command.Item>
+                      {/each}
+                    </ScrollArea>
+                  </Command.Group>
+                </Command.Root>
+              </Popover.Content>
+            </Popover.Root>
+          {/each}
+          <Button class="self-center mt-2" on:click={handleReset}>Réinitialiser les filtres</Button>
+        </section>
+      </ScrollArea>
     </Popover.Content>
   </Popover.Root>
 </div>
