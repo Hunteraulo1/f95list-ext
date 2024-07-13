@@ -22,6 +22,16 @@ const defaultFilters = (): ComboBox[] => [
     ],
   },
   {
+    title: 'Statut de la traduction',
+    name: 'version',
+    open: false,
+    values: [
+      { value: 'À jour', checked: false },
+      { value: 'Intégrée', checked: false },
+      { value: 'Pas à jour', checked: false },
+    ],
+  },
+  {
     title: 'Type',
     name: 'type',
     open: false,
