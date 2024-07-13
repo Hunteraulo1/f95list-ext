@@ -30,6 +30,10 @@ const settingsItems: SettingItem[] = [
     title: "Activer l'intégration F95/LC:",
     id: 'intergrateFeature',
   },
+  {
+    title: 'Ouverture automatique des jeux:',
+    id: 'autoFocusGame',
+  },
 ]
 interface Link {
   title: string
