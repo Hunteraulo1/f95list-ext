@@ -3,6 +3,7 @@ import Badge from '$lib/components/ui/badge/badge.svelte'
 import * as Card from '$lib/components/ui/card'
 import * as Tooltip from '$lib/components/ui/tooltip'
 import { type GameType } from '$lib/schemas'
+import { settings } from '$lib/stores'
 import { lazyLoad } from '$lib/utils/lazyload'
 import { mode } from 'mode-watcher'
 import type { Tabs } from 'webextension-polyfill'
@@ -23,7 +24,7 @@ if (typeof browser !== 'undefined') {
 browserAPI?.tabs.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
   const { url } = tabs[0]
 
-  if (!game.ac || !url?.startsWith('https://f95zone.to/threads/')) return
+  if (!game.ac || !$settings.autoFocusGame || !url?.startsWith('https://f95zone.to/threads/')) return
 
   if (url?.includes(`.${game.id}`)) open = true
 })
