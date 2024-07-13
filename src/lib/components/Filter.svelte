@@ -1,6 +1,5 @@
 <script lang="ts">
 import { Button } from '$lib/components/ui/button/index.js'
-import { Checkbox } from '$lib/components/ui/checkbox/index.js'
 import * as Command from '$lib/components/ui/command/index.js'
 import { Input } from '$lib/components/ui/input/index.js'
 import * as Popover from '$lib/components/ui/popover/index.js'
@@ -9,12 +8,10 @@ import { filter, filteredGames, games, search } from '$lib/stores'
 import { cn } from '$lib/utils'
 import { Check, ChevronDown, Cross2 } from 'svelte-radix'
 
-let checked = false
-
 const reloadList = () => {
   $filteredGames = $games.filter(game => {
     if (!game.name.toLowerCase().includes($search)) return false
-    if (checked && game.version !== game.tversion && game.tversion !== 'Intégrée') return false
+    // if (checked && game.version !== game.tversion && game.tversion !== 'Intégrée') return false
 
     return $filter.every(({ name, values }) => {
       if (!values.some(value => value.checked)) return true
@@ -27,6 +24,28 @@ const reloadList = () => {
         return values.some(value => value.checked && game['traductor']?.includes(value.value))
       }
 
+      if (name === 'version') {
+        return values.some(value => {
+          if (!value.checked) return false
+
+          switch (value.value) {
+            case 'À jour':
+              if (game.version !== game.tversion && game.tversion !== 'Intégrée') return false
+              break
+            case 'Intégrée':
+              if (game.tversion !== 'Intégrée') return false
+              break
+            case 'Pas à jour':
+              if (game.version === game.tversion || game.tversion === 'Intégrée') return false
+              break
+            default:
+              return false
+          }
+
+          return true
+        })
+      }
+
       return values.some(value => value.checked && game[name] === value.value)
     })
   })
@@ -34,7 +53,6 @@ const reloadList = () => {
 
 const handleReset = () => {
   $search = ''
-  checked = false
   filter.reset()
 
   reloadList()
@@ -64,14 +82,6 @@ const handleReset = () => {
               reloadList()
             }}
           />
-          
-          <div class="flex items-center gap-1 mt-2">
-            <Checkbox id="updated" bind:checked on:click={() => {
-              checked = !checked
-              reloadList()
-            }}/>
-            <label for="updated" class="font-bold text-xs leading-none">Traduction à jour </label>
-          </div>
           {#each $filter as { title, open, values }}
             <label for={title} class="font-bold text-xs capitalize leading-none mt-2">{title}: </label>
             <Popover.Root>
