@@ -1,6 +1,7 @@
 const browserAPI = typeof browser === 'undefined' ? chrome : browser
 
 browserAPI.runtime.onInstalled.addListener(async () => {
+  await browserAPI.storage.local.remove('f95list_ext_data')
   await dataInit()
   await browserAPI.storage.local.set({ f95list_ext_integrate: true })
 
@@ -54,9 +55,12 @@ const badgeReset = async () => {
 
 const dataInit = async () => {
   const date = new Date().getTime()
-  const { f95list_ext_time } = await browserAPI.storage.local.get(['f95list_ext_time'])
+  const { f95list_ext_time, f95list_ext_data } = await browserAPI.storage.local.get([
+    'f95list_ext_time',
+    'f95list_ext_data',
+  ])
 
-  if (f95list_ext_time && date < f95list_ext_time) return
+  if (f95list_ext_data && f95list_ext_time && date < f95list_ext_time) return
 
   browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 })
   await browserAPI.storage.local.set({ f95list_ext_data: await query() })
