@@ -60,7 +60,7 @@ const handleReset = () => {
 </script>
 
 <div class="sticky bottom-2 mx-auto">
-  <Popover.Root open>
+  <Popover.Root>
     <Popover.Trigger >
       <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
