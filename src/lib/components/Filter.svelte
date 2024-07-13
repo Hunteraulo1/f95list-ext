@@ -7,7 +7,7 @@ import * as Popover from '$lib/components/ui/popover/index.js'
 import { ScrollArea } from '$lib/components/ui/scroll-area/index'
 import { filter, filteredGames, games, search } from '$lib/stores'
 import { cn } from '$lib/utils'
-import { Check, ChevronDown } from 'svelte-radix'
+import { Check, ChevronDown, Cross2 } from 'svelte-radix'
 
 let checked = false
 
@@ -43,10 +43,14 @@ const handleReset = () => {
 
 <div class="sticky bottom-2 mx-auto">
   <Popover.Root>
-    <Popover.Trigger>
+    <Popover.Trigger >
       <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
     <Popover.Content side="top" class="flex flex-col gap-1 max-h-80 overflow-scroll">
+      <Popover.Close class="flex justify-end">
+        <Cross2 />
+      </Popover.Close>
+
       <label for="name" class="font-bold text-xs leading-none">Nom: </label>
       <Input
         id="name"
