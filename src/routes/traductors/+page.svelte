@@ -28,10 +28,10 @@ import { Reload } from 'svelte-radix'
             </div>
             <div class="flex justify-around w-full">
               <p class="text-sm font-bold text-secondary-foreground/50">
-                Traduction: <span class="text-secondary-foreground">{tradCount}</span>
+                Traductions: <span class="text-secondary-foreground">{tradCount}</span>
               </p>
               <p class="text-sm font-bold text-secondary-foreground/50">
-                Relecture: <span class="text-secondary-foreground">{readCount}</span>
+                Relectures: <span class="text-secondary-foreground">{readCount}</span>
               </p>
             </div>
           </Card.CardContent>
