@@ -9,11 +9,11 @@ import { mode } from 'mode-watcher'
 import Details from './Details.svelte'
 
 export let game: GameType
-export let { id, domain }: IdGameBox = { domain: 'Unknown', id: 0 }
+export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
 
 let open: boolean = false
 
-if (game.ac && game.domain === domain && game.id === id) open = true
+if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) open = true
 </script>
 
 {#if open && game.domain !== 'Unknown'}
