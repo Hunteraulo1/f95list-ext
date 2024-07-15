@@ -42,15 +42,15 @@ interface Link {
 
 const links: Link[] = [
   {
-    title: 'Accèder à notre page F95',
+    title: 'Accéder à notre page F95',
     href: 'https://f95zone.to/threads/26002',
   },
   {
-    title: 'Accèder au tableur',
+    title: 'Accéder au tableur',
     href: 'https://docs.google.com/spreadsheets/d/1ELRF0kpF8SoUlslX5ZXZoG4WXeWST6lN9bLws32EPfs',
   },
   {
-    title: 'Accèder au Discord',
+    title: 'Accéder au Discord',
     href: 'https://discord.gg/QXd9kr3ewW',
   },
   {
@@ -114,12 +114,12 @@ const handleSettings = (id: keyof Settings) => {
           >
           {#each links as { title, href }}
             <a {href} target="_blank">
-              {#if title !== "Accèder au Discord"}
+              {#if title !== "Accéder au Discord"}
                 <Button variant="link" class="flex gap-1">{title}</Button>
               {:else}
                 <Button variant="link" class="flex gap-1">
                   <DiscordLogo class="h-6 w-6" />
-                  Accèder au Discord
+                  Accéder au Discord
                 </Button>
               {/if}
             </a>
