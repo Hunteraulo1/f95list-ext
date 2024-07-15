@@ -22,3 +22,8 @@ export interface Settings {
   intergrateFeature: boolean
   autoFocusGame: boolean
 }
+
+export interface IdGameBox {
+  domain: GameType['domain']
+  id: GameType['id']
+}

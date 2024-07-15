@@ -57,6 +57,10 @@
         {
           "version": "1.3.3",
           "update_link": "https://github.com/Hunteraulo1/f95list-ext/releases/download/v1.3.3/f95list_ext-1.3.3_firefox.xpi"
+        },
+        {
+          "version": "1.3.4",
+          "update_link": "https://github.com/Hunteraulo1/f95list-ext/releases/download/v1.3.4/f95list_ext-1.3.4_firefox.xpi"
         }
       ]
     }
