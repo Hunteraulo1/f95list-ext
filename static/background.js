@@ -53,7 +53,12 @@ const badgeReset = async () => {
   }
 }
 
+let wait = false
+
 const dataInit = async () => {
+  if (wait) return
+  wait = true
+
   const date = new Date().getTime()
   const { f95list_ext_time, f95list_ext_data } = await browserAPI.storage.local.get([
     'f95list_ext_time',
@@ -64,6 +69,8 @@ const dataInit = async () => {
 
   browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 })
   await browserAPI.storage.local.set({ f95list_ext_data: await query() })
+
+  wait = false
 }
 
 browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
