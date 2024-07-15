@@ -22,15 +22,27 @@ if (typeof chrome !== 'undefined') {
   browserAPI = browser
 }
 
+function extractId(inputString: string): number {
+  const regex = /\.(\d+)/
+  const match = inputString.match(regex)
+
+  return match ? parseInt(match[1]) : 0
+}
+
 browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
   const { url } = tabs[0]
 
   if (!list || !$settings.autoFocusGame) return
 
-  if (game.ac && game.domain === 'F95z' && url?.startsWith('https://f95zone.to/threads/')) {
-    if (url?.includes(`.${game.id}`)) open = true
-  } else if (game.domain === 'LewdCorner' && url?.startsWith('https://lewdcorner.com/threads/')) {
-    if (url?.includes(`.${game.id}`)) open = true
+  if (!url?.startsWith('https://f95zone.to/threads/') && !url?.startsWith('https://lewdcorner.com/threads/')) return
+
+  const id = extractId(url)
+  console.log('🚀 ~ browserAPI?.tabs?.query ~ id:', id)
+
+  if (game.ac && game.domain === 'F95z') {
+    if (game.id === id) open = true
+  } else if (game.domain === 'LewdCorner') {
+    if (game.id === id) open = true
   }
 })
 </script>
