@@ -2,8 +2,8 @@
 import Filter from '$lib/components/Filter.svelte'
 import GameBox from '$lib/components/GameBox.svelte'
 import { ScrollArea } from '$lib/components/ui/scroll-area'
-import type { GameType } from '$lib/schemas'
 import { filteredGames, games, settings } from '$lib/stores'
+import type { IdGameBox } from '$lib/types'
 import Reload from 'svelte-radix/Reload.svelte'
 import type { Tabs } from 'webextension-polyfill'
 import Button from './../lib/components/ui/button/button.svelte'
@@ -22,11 +22,6 @@ function extractId(inputString: string): number {
   const match = inputString.match(regex)
 
   return match ? parseInt(match[1]) : 0
-}
-
-interface IdGameBox {
-  domain: GameType['domain']
-  id: GameType['id']
 }
 
 browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]): IdGameBox => {

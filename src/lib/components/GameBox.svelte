@@ -3,20 +3,17 @@ import Badge from '$lib/components/ui/badge/badge.svelte'
 import * as Card from '$lib/components/ui/card'
 import * as Tooltip from '$lib/components/ui/tooltip'
 import { type GameType } from '$lib/schemas'
+import type { IdGameBox } from '$lib/types'
 import { lazyLoad } from '$lib/utils/lazyload'
 import { mode } from 'mode-watcher'
 import Details from './Details.svelte'
 
 export let game: GameType
-export let id: number = 0
+export let { id, domain }: IdGameBox = { domain: 'Unknown', id: 0 }
 
 let open: boolean = false
 
-if (game.ac && game.domain === 'F95z') {
-  if (game.id === id) open = true
-} else if (game.domain === 'LewdCorner') {
-  if (game.id === id) open = true
-}
+if (game.ac && game.domain === domain && game.id === id) open = true
 </script>
 
 {#if open && game.domain !== 'Unknown'}
