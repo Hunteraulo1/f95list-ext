@@ -2,6 +2,7 @@
 import Filter from '$lib/components/Filter.svelte'
 import GameBox from '$lib/components/GameBox.svelte'
 import { ScrollArea } from '$lib/components/ui/scroll-area'
+import type { GameType } from '$lib/schemas'
 import { filteredGames, games, settings } from '$lib/stores'
 import Reload from 'svelte-radix/Reload.svelte'
 import type { Tabs } from 'webextension-polyfill'
@@ -23,14 +24,26 @@ function extractId(inputString: string): number {
   return match ? parseInt(match[1]) : 0
 }
 
-browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
+interface IdGameBox {
+  domain: GameType['domain']
+  id: GameType['id']
+}
+
+browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]): IdGameBox => {
   const { url } = tabs[0]
 
-  if (!$settings.autoFocusGame) return
+  const unknown: IdGameBox = { domain: 'Unknown', id: 0 }
 
-  if (!url?.startsWith('https://f95zone.to/threads/') && !url?.startsWith('https://lewdcorner.com/threads/')) return
+  if (!$settings.autoFocusGame) return unknown
 
-  id = extractId(url)
+  if (url?.startsWith('https://f95zone.to/threads/')) {
+    return { domain: 'F95z', id: extractId(url) }
+  }
+  if (url?.startsWith('https://lewdcorner.com/threads/')) {
+    return { domain: 'LewdCorner', id: extractId(url) }
+  }
+
+  return unknown
 })
 </script>
 
