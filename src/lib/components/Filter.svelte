@@ -20,9 +20,9 @@ const handleReset = () => {
       <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
     <Popover.Content side="top" class="p-0">
-      <ScrollArea class="h-80 w-full p-4">
-        <section class="flex flex-col gap-1">
-          <Popover.Close class="flex justify-end pr-6">
+      <ScrollArea class="h-80 w-full p-4 relative">
+        <section class="flex flex-col gap-1 w-full">
+          <Popover.Close class="flex justify-end px-8">
             <div class="rounded-full p-1 hover:bg-primary-foreground">
               <Cross2 />
             </div>
@@ -49,7 +49,7 @@ const handleReset = () => {
                   aria-expanded={open}
                   class="w-full flex justify-between"
                 >
-                  <p class="truncate">
+                  <p class="truncate text-xs">
                     {values.some(({ checked }) => checked)
                       ? values
                           .filter(value => value.checked)
@@ -60,11 +60,11 @@ const handleReset = () => {
                   <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </Popover.Trigger>
-              <Popover.Content class="max-w-full w-auto p-0">
+              <Popover.Content class="max-w-full w-full p-0">
                 <Command.Root>
                   <Command.Input placeholder="Rechercher..." />
                   <Command.Empty>Aucun {title} trouvé</Command.Empty>
-                  <Command.Group class="max-h-60 relative">
+                  <Command.Group class="max-h-full relative">
                     <ScrollArea class="{values.length > 7 ? 'h-screen' : ''} max-h-60 max-w-full">
                       {#each values as { value, checked }}
                         <Command.Item

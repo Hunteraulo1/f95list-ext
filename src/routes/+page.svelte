@@ -38,14 +38,16 @@ browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]
 </script>
 
 <ScrollArea class="relative min-h-[448px]">
-  <div class="flex flex-col gap-2 p-2 relative h-full">
+  <div class="flex flex-col gap-2 p-2 relative h-[448px]">
     {#each $filteredGames as game}
       <GameBox {game} {idGameBox} />
     {:else}
-      <Button class="self-center justify-self-center">
-        <Reload class="h-4 w-full animate-spin" />
-        Aucun jeu ne correspond à vos critères
-      </Button>
+      <div class="flex justify-center items-center h-full">
+        <Button>
+          <Reload class="h-4 w-full animate-spin" />
+          Aucun jeu ne correspond à vos critères
+        </Button>
+      </div>
     {/each}
     <Filter />
   </div>
