@@ -1,17 +1,20 @@
 const browserAPI = typeof browser === 'undefined' ? chrome : browser
 
 browserAPI.runtime.onInstalled.addListener(async () => {
+  const { f95list_ext_integrate } = await browserAPI.storage.local.get(['f95list_ext_integrate'])
+
+  if (f95list_ext_integrate === undefined) await browserAPI.storage.local.set({ f95list_ext_integrate: true })
+
   await browserAPI.storage.local.remove('f95list_ext_data')
   await dataInit()
-  await browserAPI.storage.local.set({ f95list_ext_integrate: true })
 
-  badgeState()
+  await badgeState()
 })
 
 browserAPI.runtime.onStartup.addListener(async () => {
   await dataInit()
 
-  badgeState()
+  await badgeState()
 })
 
 const badgeData = async () => {
@@ -47,7 +50,7 @@ const badgeReset = async () => {
     const updatesData = await badgeData()
 
     await browserAPI.storage.local.set({ f95list_ext_badge: updatesData })
-    badgeState()
+    await badgeState()
   } catch (error) {
     console.error(error)
   }
@@ -67,7 +70,7 @@ const dataInit = async () => {
 
   if (f95list_ext_data && f95list_ext_time && date < f95list_ext_time) return
 
-  browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 })
+  await browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 })
   await browserAPI.storage.local.set({ f95list_ext_data: await query() })
 
   wait = false
@@ -85,13 +88,13 @@ browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
         if (!f95list_ext_integrate) return
 
-        sendResponse(f95list_ext_data.games)
+        await sendResponse(f95list_ext_data.games)
         break
       case 'f95list-ext':
-        sendResponse(f95list_ext_data)
+        await sendResponse(f95list_ext_data)
         break
       case 'f95list-badge':
-        badgeReset()
+        await badgeReset()
         break
       case 'f95list-integrate_true':
         await browserAPI.storage.local.set({ f95list_ext_integrate: true })
@@ -116,12 +119,12 @@ const query = async () => {
 
     if (!data?.data) throw new Error('fetch not data')
 
-    badgeState()
+    await badgeState()
 
     return data.data
   } catch (error) {
     console.error(error)
 
-    browserAPI.storage.local.set({ f95list_ext_time: 0 })
+    await browserAPI.storage.local.set({ f95list_ext_time: 0 })
   }
 }
