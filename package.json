@@ -46,6 +46,6 @@
   "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
   "type": "module",
   "dependencies": {
-    "cmdk-sv": "^0.0.17"
+    "cmdk-sv": "^0.0.18"
   }
 }
