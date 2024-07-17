@@ -4,58 +4,13 @@ import * as Command from '$lib/components/ui/command/index.js'
 import { Input } from '$lib/components/ui/input/index.js'
 import * as Popover from '$lib/components/ui/popover/index.js'
 import { ScrollArea } from '$lib/components/ui/scroll-area/index.js'
-import { filter, filteredGames, games, search } from '$lib/stores'
+import { filter, search } from '$lib/stores'
 import { cn } from '$lib/utils'
 import { Check, ChevronDown, Cross2 } from 'svelte-radix'
-
-const reloadList = () => {
-  $filteredGames = $games.filter(game => {
-    if (!game.name.toLowerCase().includes($search)) return false
-    // if (checked && game.version !== game.tversion && game.tversion !== 'Intégrée') return false
-
-    return $filter.every(({ name, values }) => {
-      if (!values.some(value => value.checked)) return true
-
-      if (name === 'tags') {
-        return values.every(value => !value.checked || game['tags'].includes(value.value))
-      }
-
-      if (name === 'traductor') {
-        return values.some(value => value.checked && game['traductor']?.includes(value.value))
-      }
-
-      if (name === 'version') {
-        return values.some(value => {
-          if (!value.checked) return false
-
-          switch (value.value) {
-            case 'À jour':
-              if (game.version !== game.tversion && game.tversion !== 'Intégrée') return false
-              break
-            case 'Intégrée':
-              if (game.tversion !== 'Intégrée') return false
-              break
-            case 'Pas à jour':
-              if (game.version === game.tversion || game.tversion === 'Intégrée') return false
-              break
-            default:
-              return false
-          }
-
-          return true
-        })
-      }
-
-      return values.some(value => value.checked && game[name] === value.value)
-    })
-  })
-}
 
 const handleReset = () => {
   $search = ''
   filter.reset()
-
-  reloadList()
 }
 </script>
 
@@ -65,9 +20,9 @@ const handleReset = () => {
       <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
     <Popover.Content side="top" class="p-0">
-      <ScrollArea class="h-80 w-full p-4">
-        <section class="flex flex-col gap-1">
-          <Popover.Close class="flex justify-end pr-6">
+      <ScrollArea class="h-80 w-full p-4 relative">
+        <section class="flex flex-col gap-1 w-full">
+          <Popover.Close class="flex justify-end px-8">
             <div class="rounded-full p-1 hover:bg-primary-foreground">
               <Cross2 />
             </div>
@@ -81,7 +36,6 @@ const handleReset = () => {
             value={$search}
             on:input={({ currentTarget }) => {
               $search = currentTarget.value.toLowerCase()
-              reloadList()
             }}
           />
           {#each $filter as { title, open, values }}
@@ -95,7 +49,7 @@ const handleReset = () => {
                   aria-expanded={open}
                   class="w-full flex justify-between"
                 >
-                  <p class="truncate">
+                  <p class="truncate text-xs">
                     {values.some(({ checked }) => checked)
                       ? values
                           .filter(value => value.checked)
@@ -106,18 +60,17 @@ const handleReset = () => {
                   <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </Popover.Trigger>
-              <Popover.Content class="max-w-full w-auto p-0">
+              <Popover.Content class="max-w-full w-full p-0">
                 <Command.Root>
                   <Command.Input placeholder="Rechercher..." />
                   <Command.Empty>Aucun {title} trouvé</Command.Empty>
-                  <Command.Group class="max-h-60 relative">
+                  <Command.Group class="max-h-full relative">
                     <ScrollArea class="{values.length > 7 ? 'h-screen' : ''} max-h-60 max-w-full">
                       {#each values as { value, checked }}
                         <Command.Item
                           {value}
                           onSelect={() => {
                             checked = !checked
-                            reloadList()
                           }}
                         >
                           <Check class={cn('mr-2 h-4 w-4', !checked && 'text-transparent')} />

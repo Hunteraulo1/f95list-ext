@@ -108,7 +108,7 @@ let closed = false
             <Button variant="outline" class="flex gap-1">Traduction intégrée</Button>
           {:else}
             <a href={game.tlink} target="_blank">
-              <Button class="flex gap-1">Accèder à la traduction</Button>
+              <Button class="flex gap-1">Accéder à la traduction</Button>
             </a>
           {/if}
         </div>

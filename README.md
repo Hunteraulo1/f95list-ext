@@ -8,7 +8,7 @@
 
 ## Installation de l'extension
 
-Lien de téléchargement: [Accèder à l'extension](https://github.com/Hunteraulo1/f95list-ext/releases) _(Regarder dans Assets)_
+Lien de téléchargement: [Accéder à l'extension](https://github.com/Hunteraulo1/f95list-ext/releases) _(Regarder dans Assets)_
 
 **Pour Firefox:**
 - Il faut glisser le fichier **.xpi** dans directement sur le navigateur _ou l'ouvrir avec Firefox_.

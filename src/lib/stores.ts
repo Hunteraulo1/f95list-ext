@@ -1,4 +1,4 @@
-import { get, writable } from 'svelte/store'
+import { derived, get, writable } from 'svelte/store'
 
 import type { GameType, TraductorType } from './schemas'
 import type { ComboBox, Settings, Update } from './types'
@@ -6,7 +6,6 @@ import type { ComboBox, Settings, Update } from './types'
 import tags from '$lib/assets/tags.json'
 
 export const games = writable<GameType[]>([])
-export const filteredGames = writable<GameType[]>([])
 
 export const traductors = writable<TraductorType[]>([])
 
@@ -72,7 +71,7 @@ const defaultFilters = (): ComboBox[] => [
 ]
 
 const filterFn = () => {
-  const { subscribe, set, update } = writable<ComboBox[]>(defaultFilters())
+  const { subscribe, set, update } = writable(defaultFilters())
 
   return {
     subscribe,
@@ -84,7 +83,49 @@ const filterFn = () => {
 
 export const filter = filterFn()
 
-export const search = writable<string>('')
+export const search = writable('')
+
+export const filteredGames = derived([games, filter, search], ([$games, $filter, $search]) =>
+  $games.filter(game => {
+    if (!game.name.toLowerCase().includes($search)) return false
+
+    return $filter.every(({ name, values }) => {
+      if (!values.some(value => value.checked)) return true
+
+      if (name === 'tags') {
+        return values.every(value => !value.checked || game.tags.includes(value.value))
+      }
+
+      if (name === 'traductor') {
+        return values.some(value => value.checked && game.traductor?.includes(value.value))
+      }
+
+      if (name === 'version') {
+        return values.some(value => {
+          if (!value.checked) return false
+
+          switch (value.value) {
+            case 'À jour':
+              if (game.version !== game.tversion && game.tversion !== 'Intégrée') return false
+              break
+            case 'Intégrée':
+              if (game.tversion !== 'Intégrée') return false
+              break
+            case 'Pas à jour':
+              if (game.version === game.tversion || game.tversion === 'Intégrée') return false
+              break
+            default:
+              return false
+          }
+
+          return true
+        })
+      }
+
+      return values.some(value => value.checked && game[name] === value.value)
+    })
+  })
+)
 
 export const updates = writable<Update[]>([])
 

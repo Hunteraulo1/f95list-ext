@@ -1,33 +1,30 @@
 const browserAPI = typeof browser === 'undefined' ? chrome : browser
 
 browserAPI.runtime.onInstalled.addListener(async () => {
-  await browserAPI.storage.local.remove('f95list_ext_data')
-  await dataInit()
-  await browserAPI.storage.local.set({ f95list_ext_integrate: true })
+  const { f95list_ext_integrate } = await browserAPI.storage.local.get(['f95list_ext_integrate'])
 
-  badgeState()
+  if (f95list_ext_integrate === undefined) await browserAPI.storage.local.set({ f95list_ext_integrate: true })
+  await dataInit()
+
+  await badgeState()
 })
 
 browserAPI.runtime.onStartup.addListener(async () => {
   await dataInit()
 
-  badgeState()
+  await badgeState()
 })
 
 const badgeData = async () => {
   const { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data'])
 
-  if (!f95list_ext_data) return
-  if (f95list_ext_data.updates.length === 0) throw new Error('no data')
+  if (!f95list_ext_data || f95list_ext_data.updates.length === 0) throw new Error('no data')
 
   const updates = f95list_ext_data.updates
-  let updatesData = [updates[0]]
 
-  if (updates[0].date === updates[1].date) return (updatesData = updates.slice(0, 2))
+  if (updates[0].date === updates[1].date) return updates.slice(0, 2)
 
-  if (!updatesData || updatesData.length === 0) throw new Error('no updatesData')
-
-  return updatesData
+  return [updates[0]]
 }
 
 const badgeState = async () => {
@@ -47,23 +44,35 @@ const badgeReset = async () => {
     const updatesData = await badgeData()
 
     await browserAPI.storage.local.set({ f95list_ext_badge: updatesData })
-    badgeState()
+    await badgeState()
   } catch (error) {
     console.error(error)
   }
 }
 
+let wait = false
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 const dataInit = async () => {
+  while (wait) {
+    await sleep(1000) // 1 second
+  }
+
+  let { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data'])
+
+  wait = true
+
   const date = new Date().getTime()
-  const { f95list_ext_time, f95list_ext_data } = await browserAPI.storage.local.get([
-    'f95list_ext_time',
-    'f95list_ext_data',
-  ])
+  const { f95list_ext_time } = await browserAPI.storage.local.get(['f95list_ext_time'])
 
-  if (f95list_ext_data && f95list_ext_time && date < f95list_ext_time) return
+  if (f95list_ext_data && f95list_ext_time && date < f95list_ext_time) return (wait = false)
 
-  browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 })
+  await browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 }) // 6 hours
   await browserAPI.storage.local.set({ f95list_ext_data: await query() })
+
+  await badgeState()
+
+  wait = false
 }
 
 browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
@@ -76,15 +85,15 @@ browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       case 'f95list-script':
         const { f95list_ext_integrate } = await browserAPI.storage.local.get(['f95list_ext_integrate'])
 
-        if (!f95list_ext_integrate) return
+        if (!f95list_ext_integrate) throw new Error('no integrate')
 
-        sendResponse(f95list_ext_data.games)
+        await sendResponse(f95list_ext_data.games)
         break
       case 'f95list-ext':
-        sendResponse(f95list_ext_data)
+        await sendResponse(f95list_ext_data)
         break
       case 'f95list-badge':
-        badgeReset()
+        await badgeReset()
         break
       case 'f95list-integrate_true':
         await browserAPI.storage.local.set({ f95list_ext_integrate: true })
@@ -109,12 +118,10 @@ const query = async () => {
 
     if (!data?.data) throw new Error('fetch not data')
 
-    badgeState()
-
     return data.data
   } catch (error) {
     console.error(error)
 
-    browserAPI.storage.local.set({ f95list_ext_time: 0 })
+    await browserAPI.storage.local.set({ f95list_ext_time: 0 })
   }
 }
