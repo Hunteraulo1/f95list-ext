@@ -55,7 +55,7 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 const dataInit = async () => {
   while (wait) {
-    await sleep(1000) // Attendre 1 seconde avant de revérifier
+    await sleep(1000) // 1 second
   }
 
   let { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data'])
