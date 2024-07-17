@@ -37,11 +37,11 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
           <Tooltip.Content class="bg-transparent">
             <Badge variant="secondary">
               {#if game.tversion === 'Intégrée'}
-                À jours ({game.version})
+                À jour ({game.version})
               {:else if game.tversion === game.version}
-                À jours
+                À jour
               {:else}
-                N'est pas à jours ({game.version})
+                N'est pas à jour ({game.version})
               {/if}
             </Badge>
           </Tooltip.Content>

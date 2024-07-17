@@ -1,10 +1,16 @@
 import { parse } from 'valibot'
 
 import { type GameType, Games, TraductorsData, Updates } from '../schemas'
-import { filter, filteredGames, games, traductors, updates } from '../stores'
+import { filter, games, traductors, updates } from '../stores'
 
 import { dev } from '$app/environment'
 import apiJson from '$lib/assets/api.json'
+
+interface UpdateData {
+  date: string
+  type: string
+  names: string[]
+}
 
 const callWorker = async () => {
   if (dev) return apiJson.data
@@ -12,12 +18,6 @@ const callWorker = async () => {
   const browserAPI = typeof browser === 'undefined' ? chrome : browser
 
   const data = await browserAPI.runtime.sendMessage('f95list-ext')
-
-  if (!data) {
-    setTimeout(() => getData(), 2000) // Wait 2 seconds
-
-    throw new Error('worker not data')
-  }
 
   if (data) return data
 }
@@ -30,7 +30,6 @@ const getData = async () => {
     const validGames = parse(Games, data.games)
 
     games.set(validGames)
-    filteredGames.set(validGames)
 
     // Updates
     const defaultGame: GameType = {
@@ -53,12 +52,6 @@ const getData = async () => {
       trlink: '',
       ttype: 'À tester',
       tversion: '',
-    }
-
-    interface UpdateData {
-      date: string
-      type: string
-      names: string[]
     }
 
     const updatesData = data.updates.map((update: UpdateData) => {
