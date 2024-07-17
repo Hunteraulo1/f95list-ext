@@ -29,7 +29,7 @@ if (!fs.existsSync(artifactsDir)) {
 }
 
 // Define the output zip file path
-const zipFileName = `f95list_ext-${packageJson.version}.zip`
+const zipFileName = `f95list_ext-${packageJson.version}_chrome.zip`
 const output = fs.createWriteStream(path.join(artifactsDir, zipFileName))
 const archive = archiver('zip', {
   zlib: { level: 9 },
