@@ -15,7 +15,7 @@ fs.readdir(artifactsDir, (err, files) => {
     const newPath = path.join(artifactsDir, xpiFile.replace('.xpi', '_firefox.xpi'))
     fs.rename(oldPath, newPath, err => {
       if (err) throw err
-      console.log(`Renamed ${xpiFile} to ${newPath}`)
+      console.info(`Renamed ${xpiFile} to ${newPath}`)
     })
     return
   }
@@ -35,8 +35,8 @@ const archive = archiver('zip', {
   zlib: { level: 9 },
 })
 
-output.on('close', function () {
-  console.info(archive.pointer() + ' total bytes')
+output.on('close', () => {
+  console.info(`${archive.pointer()} total bytes`)
   console.info('archiver has been finalized and the output file descriptor has closed.')
 })
 
