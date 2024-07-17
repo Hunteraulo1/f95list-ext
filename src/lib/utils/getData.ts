@@ -18,7 +18,6 @@ const callWorker = async () => {
   const browserAPI = typeof browser === 'undefined' ? chrome : browser
 
   const data = await browserAPI.runtime.sendMessage('f95list-ext')
-  console.log('🚀 ~ callWorker ~ data:', data)
 
   if (data) return data
 }

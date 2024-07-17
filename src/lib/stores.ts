@@ -85,12 +85,9 @@ export const filter = filterFn()
 
 export const search = writable('')
 
-export const filteredGames = derived([games, filter, search], ([$games, $filter, $search]) => {
-  console.log('derived')
-
-  return $games.filter(game => {
+export const filteredGames = derived([games, filter, search], ([$games, $filter, $search]) =>
+  $games.filter(game => {
     if (!game.name.toLowerCase().includes($search)) return false
-    // if (checked && game.version !== game.tversion && game.tversion !== 'Intégrée') return false
 
     return $filter.every(({ name, values }) => {
       if (!values.some(value => value.checked)) return true
@@ -128,7 +125,7 @@ export const filteredGames = derived([games, filter, search], ([$games, $filter,
       return values.some(value => value.checked && game[name] === value.value)
     })
   })
-})
+)
 
 export const updates = writable<Update[]>([])
 
