@@ -8,7 +8,7 @@
     "build:chrome": "BUILD_MODE=chrome vite build",
     "build:firefox": "BUILD_MODE=firefox vite build",
     "build:firefox:push": "node loadEnv.cjs",
-    "build:push": "npm run build && rm -rf builds/artifacts && npm run build:firefox:push && node artifact.cjs",
+    "build:push": "npm run build && rm -rf builds/artifacts && npm run build:firefox:push && node artifacts.cjs",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
