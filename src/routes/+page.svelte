@@ -55,7 +55,7 @@
 
 <ScrollArea class="relative min-h-[448px]">
   <div class="flex flex-col gap-2 p-2 relative h-[448px]">
-    {#each $filteredGames as game}
+    {#each $filteredGames as game (game.name + game.version)}
       {#await idGameBoxPromise then value}
         <GameBox {game} idGameBox={value} />
       {/await}
