@@ -1,20 +1,20 @@
 <script lang="ts">
-import noImage from '$lib/assets/no-image.png'
-import * as Alert from '$lib/components/ui/alert/index.js'
-import { Badge } from '$lib/components/ui/badge'
-import { Button } from '$lib/components/ui/button/index.js'
-import { ScrollArea } from '$lib/components/ui/scroll-area/index.js'
-import * as Tooltip from '$lib/components/ui/tooltip'
-import type { GameType } from '$lib/schemas'
-import { settings } from '$lib/stores'
-import { statusColor, typeColor } from '$lib/utils/badgeColor'
-import { lazyLoad } from '$lib/utils/lazyload'
-import { ArrowLeft, ExclamationTriangle } from 'svelte-radix'
+  import noImage from '$lib/assets/no-image.png'
+  import * as Alert from '$lib/components/ui/alert/index.js'
+  import { Badge } from '$lib/components/ui/badge'
+  import { Button } from '$lib/components/ui/button/index.js'
+  import { ScrollArea } from '$lib/components/ui/scroll-area/index.js'
+  import * as Tooltip from '$lib/components/ui/tooltip'
+  import type { GameType } from '$lib/schemas'
+  import { settings } from '$lib/stores'
+  import { statusColor, typeColor } from '$lib/utils/badgeColor'
+  import { lazyLoad } from '$lib/utils/lazyload'
+  import { ArrowLeft, ExclamationTriangle } from 'svelte-radix'
 
-let tagsHide = $settings.tagsHide
+  let tagsHide = $settings.tagsHide
 
-export let game: GameType, open: boolean
-let closed = false
+  export let game: GameType, open: boolean
+  let closed = false
 </script>
 
 <div class="fixed top-0 left-0 w-full h-full max-w-[300px] max-h-[448px] z-20">
@@ -44,12 +44,12 @@ let closed = false
           <span class="font-bold text-sm">Site:</span>
           <a href={game.link} target="_blank">
             <Badge variant="secondary">{game.domain}</Badge>
+            <Button variant="link"
+              >(Accèder {game.hostname
+                ? `à ${game.hostname}`
+                : 'au site'})</Button
+            >
           </a>
-          <Button variant="link"
-            >(Accèder {game.hostname
-              ? `à ${game.hostname}`
-              : 'au site'})</Button
-          >
         </h2>
         <h1>
           <Badge style={typeColor(game.type)} class="text-white font-bold"
