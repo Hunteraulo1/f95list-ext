@@ -44,12 +44,12 @@ let closed = false
           <span class="font-bold text-sm">Site:</span>
           <a href={game.link} target="_blank">
             <Badge variant="secondary">{game.domain}</Badge>
+            <Button variant="link"
+              >(Accèder {game.hostname
+                ? `à ${game.hostname}`
+                : 'au site'})</Button
+            >
           </a>
-          <Button variant="link"
-            >(Accèder {game.hostname
-              ? `à ${game.hostname}`
-              : 'au site'})</Button
-          >
         </h2>
         <h1>
           <Badge style={typeColor(game.type)} class="text-white font-bold"
