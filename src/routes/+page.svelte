@@ -1,4 +1,5 @@
 <script lang="ts">
+import { dev } from '$app/environment'
 import Filter from '$lib/components/Filter.svelte'
 import GameBox from '$lib/components/GameBox.svelte'
 import { ScrollArea } from '$lib/components/ui/scroll-area'
@@ -24,26 +25,28 @@ const extractId = (inputString: string): number => {
 }
 
 const idGameBoxPromise: Promise<IdGameBox> = new Promise(resolve =>
-  browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
-    const { url } = tabs[0]
-    console.log('🚀 ~ browserAPI?.tabs?.query ~ url:', url)
+  dev
+    ? resolve({ domain: 'Unknown', id: 0 })
+    : browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
+        const { url } = tabs[0]
+        console.log('🚀 ~ browserAPI?.tabs?.query ~ url:', url)
 
-    if ($settings.autoFocusGame && url?.startsWith('https://f95zone.to/threads/')) {
-      resolve({ domain: 'F95z', id: extractId(url) })
-    }
+        if ($settings.autoFocusGame && url?.startsWith('https://f95zone.to/threads/')) {
+          resolve({ domain: 'F95z', id: extractId(url) })
+        }
 
-    if ($settings.autoFocusGame && url?.startsWith('https://lewdcorner.com/threads/')) {
-      resolve({ domain: 'LewdCorner', id: extractId(url) })
-    }
+        if ($settings.autoFocusGame && url?.startsWith('https://lewdcorner.com/threads/')) {
+          resolve({ domain: 'LewdCorner', id: extractId(url) })
+        }
 
-    resolve({ domain: 'Unknown', id: 0 })
-  })
+        resolve({ domain: 'Unknown', id: 0 })
+      })
 )
 </script>
 
 <ScrollArea class="relative min-h-[448px]">
   <div class="flex flex-col gap-2 p-2 relative h-[448px]">
-    {#each $filteredGames as game}
+    {#each $filteredGames as game (game.name + game.version)}
       {#await idGameBoxPromise then value}
         <GameBox {game} idGameBox={value} />
       {/await}
