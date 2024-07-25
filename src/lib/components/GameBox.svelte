@@ -23,14 +23,30 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
 {#if game.domain !== 'Unknown'}
   <Card.Root class="relative cursor-pointer" on:click={() => (open = true)}>
     {#if game.image}
-      <img alt={game.name} class="absolute object-cover w-full h-full rounded-xl" use:lazyLoad={game.image} style="image-rendering: smooth; image-resolution: snap;" />
+      <img
+        alt={game.name}
+        class="absolute object-cover w-full h-full rounded-xl"
+        use:lazyLoad={game.image.replace(
+          'attachments.f95zone.to',
+          'preview.f95zone.to'
+        )}
+        style="image-rendering: smooth; image-resolution: snap;"
+      />
     {/if}
-    <Card.CardContent class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none {$mode === 'dark' ? 'bg-secondary/20' : ''}">
+    <Card.CardContent
+      class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none {$mode ===
+      'dark'
+        ? 'bg-secondary/20'
+        : ''}"
+    >
       <Card.Title>{game.name}</Card.Title>
       <Card.Description>
         <Tooltip.Root>
           <Tooltip.Trigger
-            class="text-xs font-bold {game.tversion === 'Intégrée' || game.tversion === game.version ? 'text-green-700' : 'text-red-700'}"
+            class="text-xs cursor-help font-bold {game.tversion ===
+              'Intégrée' || game.tversion === game.version
+              ? 'text-green-700'
+              : 'text-red-700'}"
           >
             {game.tversion}
           </Tooltip.Trigger>
@@ -51,7 +67,9 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
   </Card.Root>
 {:else}
   <Card.Root class="relative">
-    <Card.CardContent class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20">
+    <Card.CardContent
+      class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20"
+    >
       <Card.Title>{game.name}</Card.Title>
       <Card.Description>Jeu introuvable</Card.Description>
     </Card.CardContent>

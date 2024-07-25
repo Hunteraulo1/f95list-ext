@@ -44,20 +44,16 @@ let closed = false
           <span class="font-bold text-sm">Site:</span>
           <a href={game.link} target="_blank">
             <Badge variant="secondary">{game.domain}</Badge>
-            <Button variant="link"
-              >(Accèder {game.hostname
-                ? `à ${game.hostname}`
-                : 'au site'})</Button
-            >
+            <Button variant="link">(Accèder au jeu)</Button>
           </a>
         </h2>
         <h1>
-          <Badge style={typeColor(game.type)} class="text-white font-bold"
-            >{game.type}</Badge
-          >
-          <Badge style={statusColor(game.status)} class="text-white font-bold"
-            >{game.status}</Badge
-          >
+          <Badge style={typeColor(game.type)} class="text-white font-bold">
+            {game.type}
+          </Badge>
+          <Badge style={statusColor(game.status)} class="text-white font-bold">
+            {game.status}
+          </Badge>
           {game.name}
           <span
             class="text-xs font-bold {game.tversion === game.version
@@ -65,7 +61,9 @@ let closed = false
               : 'text-red-700'}"
           >
             <Tooltip.Root>
-              <Tooltip.Trigger>{game.tversion}</Tooltip.Trigger>
+              <Tooltip.Trigger class="cursor-help"
+                >{game.tversion}</Tooltip.Trigger
+              >
               <Tooltip.Content class="bg-transparent">
                 <Badge variant="secondary">
                   {#if game.tversion === game.version}
@@ -101,9 +99,9 @@ let closed = false
           <a href={game.trlink} class:traductor={game.trlink} target="_blank">
             {game.traductor ?? 'Aucun'}
           </a>
-          <span class="text-secondary-foreground/50 text-xs"
-            >({game.ttype})</span
-          >
+          <span class="text-secondary-foreground/50 text-xs">
+            ({game.ttype})
+          </span>
         </p>
         {#if game.proofreader}
           <p class="text-sm">
@@ -137,9 +135,9 @@ let closed = false
             <Button variant="ghost" class="flex gap-1">Aucune traduction</Button
             >
           {:else if game.tname === 'Intégrée'}
-            <Button variant="outline" class="flex gap-1"
-              >Traduction intégrée</Button
-            >
+            <Button variant="outline" class="flex gap-1">
+              Traduction intégrée
+            </Button>
           {:else}
             <a href={game.tlink} target="_blank">
               <Button class="flex gap-1">Accéder à la traduction</Button>
