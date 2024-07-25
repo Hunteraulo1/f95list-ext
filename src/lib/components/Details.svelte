@@ -61,7 +61,9 @@
               : 'text-red-700'}"
           >
             <Tooltip.Root>
-              <Tooltip.Trigger>{game.tversion}</Tooltip.Trigger>
+              <Tooltip.Trigger class="cursor-help"
+                >{game.tversion}</Tooltip.Trigger
+              >
               <Tooltip.Content class="bg-transparent">
                 <Badge variant="secondary">
                   {#if game.tversion === game.version}
