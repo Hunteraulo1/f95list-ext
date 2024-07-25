@@ -44,8 +44,8 @@
       <Card.Description>
         <Tooltip.Root>
           <Tooltip.Trigger
-            class="text-xs font-bold {game.tversion === 'Intégrée' ||
-            game.tversion === game.version
+            class="text-xs cursor-help font-bold {game.tversion ===
+              'Intégrée' || game.tversion === game.version
               ? 'text-green-700'
               : 'text-red-700'}"
           >
