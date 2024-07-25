@@ -1,20 +1,19 @@
 <script lang="ts">
-  import Badge from '$lib/components/ui/badge/badge.svelte'
-  import * as Card from '$lib/components/ui/card'
-  import * as Tooltip from '$lib/components/ui/tooltip'
-  import { type GameType } from '$lib/schemas'
-  import type { IdGameBox } from '$lib/types'
-  import { lazyLoad } from '$lib/utils/lazyload'
-  import { mode } from 'mode-watcher'
-  import Details from './Details.svelte'
+import Badge from '$lib/components/ui/badge/badge.svelte'
+import * as Card from '$lib/components/ui/card'
+import * as Tooltip from '$lib/components/ui/tooltip'
+import { type GameType } from '$lib/schemas'
+import type { IdGameBox } from '$lib/types'
+import { lazyLoad } from '$lib/utils/lazyload'
+import { mode } from 'mode-watcher'
+import Details from './Details.svelte'
 
-  export let game: GameType
-  export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
+export let game: GameType
+export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
 
-  let open: boolean = false
+let open: boolean = false
 
-  if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id)
-    open = true
+if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) open = true
 </script>
 
 {#if open && game.domain !== 'Unknown'}
