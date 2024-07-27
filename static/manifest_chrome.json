@@ -2,7 +2,7 @@
   "name": "F95 France - Extension",
   "description": "Extension of F95 France community",
   "author": "Hunteraulo",
-  "version": "1.3.13",
+  "version": "1.4.0",
   "manifest_version": 3,
   "icons": {
     "16": "favicon_16.png",
