@@ -62,7 +62,8 @@ const links: Link[] = [
 const defaultSettings = JSON.stringify({
   tagsHide: true,
   intergrateFeature: true,
-})
+  autoFocusGame: true,
+} as Settings)
 
 $settings = JSON.parse(localStorage.getItem('settings') || defaultSettings)
 
