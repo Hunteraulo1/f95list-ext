@@ -20,14 +20,12 @@
   },
   "scripts": {
     "dev": "vite dev",
-    "build": "npm run build:chrome && npm run build:firefox",
+    "build": "bun run build:chrome && bun run build:firefox",
     "build:chrome": "BUILD_MODE=chrome vite build",
     "build:firefox": "BUILD_MODE=firefox vite build",
     "build:firefox:push": "node loadEnv.cjs",
-    "build:push": "npm run build && rm -rf builds/artifacts && npm run build:firefox:push && node artifacts.cjs",
-    "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "build:push": "bun run build && rm -rf builds/artifacts && bun run build:firefox:push && node artifacts.cjs",
+    "check": "bunx @biomejs/biome check --write . && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "lint": "bunx @biomejs/biome lint --write .",
     "format": "bunx @biomejs/biome format --write ."
   },
