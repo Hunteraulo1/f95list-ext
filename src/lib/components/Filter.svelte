@@ -14,7 +14,7 @@ const handleReset = () => {
 }
 </script>
 
-<div class="sticky bottom-2 mx-auto">
+<div class="fixed bottom-16 flex justify-center w-full">
   <Popover.Root>
     <Popover.Trigger >
       <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
