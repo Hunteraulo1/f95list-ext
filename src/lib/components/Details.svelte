@@ -131,13 +131,13 @@ let closed = false
           </Alert.Root>
         {/if}
         <div class="flex justify-center mt-2">
-          {#if game.tname === 'Pas de traduction'}
-            <Button variant="ghost" class="flex gap-1">Aucune traduction</Button
-            >
-          {:else if game.tname === 'Intégrée'}
+          {#if game.tname === 'Intégrée'}
             <Button variant="outline" class="flex gap-1">
               Traduction intégrée
             </Button>
+          {:else if game.tname === 'Pas de traduction' || !game.tlink}
+            <Button variant="ghost" class="flex gap-1">Aucune traduction</Button
+            >
           {:else}
             <a href={game.tlink} target="_blank">
               <Button class="flex gap-1">Accéder à la traduction</Button>
