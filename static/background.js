@@ -20,11 +20,7 @@ const badgeData = async () => {
 
   if (!f95list_ext_data || f95list_ext_data.updates.length === 0) throw new Error('no data')
 
-  const updates = f95list_ext_data.updates
-
-  if (updates[0].date === updates[1].date) return updates.slice(0, 2)
-
-  return [updates[0]]
+  return f95list_ext_data.updates
 }
 
 const badgeState = async () => {
@@ -32,7 +28,23 @@ const badgeState = async () => {
 
   const updatesData = await badgeData()
   const { f95list_ext_badge } = await browserAPI.storage.local.get(['f95list_ext_badge'])
-  const text = updatesData?.toString() === f95list_ext_badge?.toString() ? '' : '+'
+
+  let index = 0
+  updatesData?.every(updateData => {
+    const result = updateData.names.findIndex(name => name === f95list_ext_badge)
+
+    if (result > -1) {
+      index += result
+
+      return false
+    }
+
+    index += updateData.names.length
+
+    return true
+  })
+
+  const text = index === 0 ? '' : index.toString()
 
   await browserAction.setBadgeBackgroundColor({ color: '#CC0000' })
   await browserAction.setBadgeTextColor({ color: '#FFFFFF' })
@@ -43,7 +55,7 @@ const badgeReset = async () => {
   try {
     const updatesData = await badgeData()
 
-    await browserAPI.storage.local.set({ f95list_ext_badge: updatesData })
+    await browserAPI.storage.local.set({ f95list_ext_badge: updatesData[0].names[0] })
     await badgeState()
   } catch (error) {
     console.error(error)

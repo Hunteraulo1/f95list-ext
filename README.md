@@ -4,17 +4,17 @@
 
 - Lister tous les jeux de F95France
 - Lister les mises à jour de la liste
-- Ajouter un drapeau sur les jeux traduit _(sur f95)_
+- Ajouter un drapeau sur les jeux traduits _(sur f95)_
 
 ## Installation de l'extension
 
 Lien de téléchargement: [Accéder à l'extension](https://github.com/Hunteraulo1/f95list-ext/releases) _(Regarder dans Assets)_
 
-**Pour Firefox:**
-- Il faut glisser le fichier **.xpi** dans directement sur le navigateur _ou l'ouvrir avec Firefox_.
+## Installation
+**Pour Firefox:** *(mise à jour automatique)*
+- Il faut glisser le fichier **.xpi** sur le navigateur _ou l'ouvrir avec Firefox_.
 
-
-**Pour Chrome:**
+**Pour Chrome:** *(mise à jour manuelle)*
 - Il faut aller dans la page des extensions _(chrome://extensions/)_
 - Cliquer en haut à droite sur **Mode développeur**
 - Puis glisser l'archive **.zip** dans la page
@@ -30,28 +30,27 @@ Lien de téléchargement: [Accéder à l'extension](https://github.com/Hunteraul
 
 ## Installation (développement)
 
-Pour installer les dépendences :
-
-Bun:
+Pour installer les dépendences:
 ```bash
 bun install
 ```
 
 ## Autres commandes
 
-Commandes de lintage :
-
-Bun:
+Commandes de lintage:
 ```bash
 bun run lint
 bun run format
 ```
 
+Svelte-check + Lint + Format:
+```bash
+bun run check
+```
+
 ## Développement
 
-Pour démarrez un serveur de développement :
-
-Bun:
+Pour démarrez un serveur de développement:
 ```bash
 bun run dev
 ```
@@ -73,4 +72,9 @@ bun run build:chrome
 Firefox + Chrome:
 ```bash
 bun run build
+```
+
+Firefox + Chrome (Artifacts):
+```bash
+bun run build:push
 ```
