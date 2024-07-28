@@ -31,18 +31,13 @@ const badgeState = async () => {
 
   let index = 0
   updatesData?.every(updateData => {
-    const result = updateData.names.findIndex(name => name === f95list_ext_badge)
-
-    if (result > -1) {
-      index += result
-
-      return false
-    }
+    if (!f95list_ext_badge || updateData.date < f95list_ext_badge[0].date) return false
 
     index += updateData.names.length
 
     return true
   })
+  f95list_ext_badge?.map(update => (index -= update.names.length))
 
   const text = index === 0 ? '' : index.toString()
 
@@ -55,7 +50,11 @@ const badgeReset = async () => {
   try {
     const updatesData = await badgeData()
 
-    await browserAPI.storage.local.set({ f95list_ext_badge: updatesData[0].names[0] })
+    const result = [updatesData[0]]
+
+    if (updatesData[0].date === updatesData[1].date) result.push(updatesData[1])
+
+    await browserAPI.storage.local.set({ f95list_ext_badge: result })
     await badgeState()
   } catch (error) {
     console.error(error)
