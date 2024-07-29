@@ -22,7 +22,7 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
 {/if}
 
 {#if game.domain !== 'Unknown'}
-<div>
+<div class="relative">
   <Card.Root class="cursor-pointer" on:click={() => (open = true)}>
     {#if game.image}
       <img
