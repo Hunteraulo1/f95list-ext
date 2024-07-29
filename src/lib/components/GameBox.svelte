@@ -67,7 +67,7 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
       </Card.Description>
     </Card.CardContent>
   </Card.Root>
-  <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1 z-50" href={game.link} target="_blank">
+  <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
     <Link1 />
   </a>
 </div>
