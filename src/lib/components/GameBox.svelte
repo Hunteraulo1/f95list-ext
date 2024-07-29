@@ -6,6 +6,7 @@ import { type GameType } from '$lib/schemas'
 import type { IdGameBox } from '$lib/types'
 import { lazyLoad } from '$lib/utils/lazyload'
 import { mode } from 'mode-watcher'
+import { Link1 } from 'svelte-radix'
 import Details from './Details.svelte'
 
 export let game: GameType
@@ -21,24 +22,25 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
 {/if}
 
 {#if game.domain !== 'Unknown'}
-  <Card.Root class="relative cursor-pointer" on:click={() => (open = true)}>
+<div>
+  <Card.Root class="cursor-pointer" on:click={() => (open = true)}>
     {#if game.image}
       <img
         alt={game.name}
-        class="absolute object-cover w-full h-full rounded-xl"
-        use:lazyLoad={game.image.replace(
-          'attachments.f95zone.to',
-          'preview.f95zone.to'
-        )}
-        style="image-rendering: smooth; image-resolution: snap;"
-      />
-    {/if}
-    <Card.CardContent
-      class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none {$mode ===
-      'dark'
+          class="absolute object-cover w-full h-full rounded-xl"
+          use:lazyLoad={game.image.replace(
+            'attachments.f95zone.to',
+            'preview.f95zone.to'
+          )}
+          style="image-rendering: smooth; image-resolution: snap;"
+          />
+          {/if}
+          <Card.CardContent
+          class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none {$mode ===
+        'dark'
         ? 'bg-secondary/20'
         : ''}"
-    >
+      >
       <Card.Title>{game.name}</Card.Title>
       <Card.Description>
         <Tooltip.Root>
@@ -65,6 +67,10 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
       </Card.Description>
     </Card.CardContent>
   </Card.Root>
+  <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1 z-50" href={game.link} target="_blank">
+    <Link1 />
+  </a>
+</div>
 {:else}
   <Card.Root class="relative">
     <Card.CardContent
