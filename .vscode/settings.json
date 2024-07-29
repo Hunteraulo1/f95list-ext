@@ -94,5 +94,6 @@
     "track",
     "width"
   ],
-  "material-icon-theme.activeIconPack": "none"
+  "material-icon-theme.activeIconPack": "none",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
