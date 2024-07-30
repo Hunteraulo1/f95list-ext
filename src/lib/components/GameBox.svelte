@@ -1,4 +1,5 @@
 <script lang="ts">
+import { dev } from '$app/environment'
 import Badge from '$lib/components/ui/badge/badge.svelte'
 import * as Card from '$lib/components/ui/card'
 import * as Tooltip from '$lib/components/ui/tooltip'
@@ -69,7 +70,7 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
   </Card.Root>
   
   <!-- svelte-ignore missing-declaration -->
-  {#if typeof browser}
+  {#if typeof browser || dev}
     <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
       <Link1 />
     </a>
