@@ -9,7 +9,7 @@ const nav = [
 ]
 </script>
 
-<ul class="flex w-full justify-around bg-secondary/75 p-2 fixed bottom-0">
+<ul class="flex w-full justify-around bg-secondary/75 p-2 sticky bottom-0">
   {#each nav as { name, href }}
     <li>
       <Button variant="outline" on:click={() => goto(href)}>
