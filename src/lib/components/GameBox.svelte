@@ -6,6 +6,7 @@ import * as Tooltip from '$lib/components/ui/tooltip'
 import { type GameType } from '$lib/schemas'
 import type { IdGameBox } from '$lib/types'
 import { lazyLoad } from '$lib/utils/lazyload'
+import { isFirefox } from '$lib/utils/polyfill'
 import { mode } from 'mode-watcher'
 import { Link1 } from 'svelte-radix'
 import Details from './Details.svelte'
@@ -70,7 +71,7 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
   </Card.Root>
   
   <!-- svelte-ignore missing-declaration -->
-  {#if typeof browser || dev}
+  {#if isFirefox() || dev}
     <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
       <Link1 />
     </a>
