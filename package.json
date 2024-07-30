@@ -1,6 +1,6 @@
 {
   "name": "f95list-ext",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "private": false,
   "type": "module",
   "author": {
@@ -38,12 +38,12 @@
     "@types/webextension-polyfill": "0.10.7",
     "archiver": "7.0.1",
     "autoprefixer": "10.4.19",
-    "bits-ui": "0.21.12",
+    "bits-ui": "0.21.13",
     "clsx": "2.1.1",
     "cmdk-sv": "0.0.18",
     "cross-env": "7.0.3",
     "dotenv": "16.4.5",
-    "mode-watcher": "0.4.0",
+    "mode-watcher": "0.4.1",
     "postcss": "8.4.40",
     "postcss-import": "16.1.0",
     "svelte": "4.2.18",
