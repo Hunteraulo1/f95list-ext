@@ -5,6 +5,7 @@ import { filter, games, traductors, updates } from '../stores'
 
 import { dev } from '$app/environment'
 import apiJson from '$lib/assets/api.json'
+import { browserAPI } from './polyfill'
 
 interface UpdateData {
   date: string
@@ -15,11 +16,7 @@ interface UpdateData {
 const callWorker = async () => {
   if (dev) return apiJson.data
 
-  const browserAPI = typeof browser === 'undefined' ? chrome : browser
-
-  const data = await browserAPI.runtime.sendMessage('f95list-ext')
-
-  if (data) return data
+  return await browserAPI()?.runtime.sendMessage('f95list-ext')
 }
 
 const getData = async () => {
