@@ -17,7 +17,7 @@ import '../app.postcss'
     </Button>
   </div>
 {:then}
-  <main class="flex flex-col h-[50vh] min-h-[500px] max-h-full">
+  <main class="flex flex-col h-[50vh] min-h-[30rem] max-h-96">
     <slot />
     <Nav />
   </main>
