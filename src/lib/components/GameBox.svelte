@@ -7,7 +7,6 @@ import { type GameType } from '$lib/schemas'
 import type { IdGameBox } from '$lib/types'
 import { lazyLoad } from '$lib/utils/lazyload'
 import { isFirefox } from '$lib/utils/polyfill'
-import { mode } from 'mode-watcher'
 import { Link1 } from 'svelte-radix'
 import Details from './Details.svelte'
 
@@ -29,20 +28,16 @@ if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) ope
     {#if game.image}
       <img
         alt={game.name}
-          class="absolute object-cover w-full h-full rounded-xl"
+          class="absolute top-0 left-0 object-cover w-full h-full rounded-xl"
           use:lazyLoad={game.image.replace(
             'attachments.f95zone.to',
             'preview.f95zone.to'
           )}
           style="image-rendering: smooth; image-resolution: snap;"
-          />
-          {/if}
-          <Card.CardContent
-          class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none {$mode ===
-        'dark'
-        ? 'bg-secondary/20'
-        : ''}"
-      >
+      />
+      {/if}
+    <Card.CardContent
+    class="relative p-6 rounded-xl overflow-hidden hover:scale-[1.03] hover:translate-x-1 transition">
       <Card.Title>{game.name}</Card.Title>
       <Card.Description>
         <Tooltip.Root>

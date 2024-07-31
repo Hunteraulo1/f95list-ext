@@ -14,8 +14,8 @@ if (!dev) {
 </script>
 
 {#if $updates}
-  <ScrollArea class="relative pb-2 min-h-[448px]">
-    <div class="flex flex-col gap-4 max-h-full p-2 relative">
+  <ScrollArea class="pb-2 h-full">
+    <div class="flex flex-col gap-4 h-full p-2">
       {#each $updates as update, index}
         <div class="flex flex-col gap-2">
           {#if index === 0 || $updates[index - 1].date.getTime() !== update.date.getTime()}

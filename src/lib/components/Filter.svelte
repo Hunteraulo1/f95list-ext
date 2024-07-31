@@ -14,10 +14,10 @@ const handleReset = () => {
 }
 </script>
 
-<div class="fixed bottom-16 flex justify-center w-full">
+<div class="relative h-0 flex justify-center w-full">
   <Popover.Root>
     <Popover.Trigger >
-      <Button variant="secondary" class='border-2 border-primary-foreground'>Filtrer</Button>
+      <Button variant="secondary" class='sticky -translate-y-12 border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
     <Popover.Content side="top" class="p-0">
       <ScrollArea class="h-80 w-full p-4 relative">
