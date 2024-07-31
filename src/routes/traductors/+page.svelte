@@ -7,8 +7,8 @@ import { Reload } from 'svelte-radix'
 </script>
 
 {#if $traductors.length > 0}
-  <ScrollArea class="relative pb-2 min-h-[448px]">
-    <div class="flex flex-col gap-4 max-h-full p-2 relative">
+  <ScrollArea class="relative pb-2 h-full">
+    <div class="flex flex-col gap-4 h-full p-2 relative">
       {#each $traductors as { name, pages, tradCount, readCount }}
         <Card.Root class="relative">
           <Card.CardContent class="p-2 min-h-20">

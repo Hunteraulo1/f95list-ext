@@ -44,8 +44,8 @@ const idGameBoxPromise: Promise<IdGameBox> = new Promise(resolve =>
 )
 </script>
 
-<ScrollArea class="relative min-h-[448px]">
-  <div class="flex flex-col gap-2 p-2 relative h-[448px]">
+<ScrollArea class="relative h-full">
+  <div class="flex flex-col gap-2 p-2 relative h-full">
     {#each $filteredGames as game (game.name + game.version)}
       {#await idGameBoxPromise then value}
         <GameBox {game} idGameBox={value} />
@@ -58,6 +58,6 @@ const idGameBoxPromise: Promise<IdGameBox> = new Promise(resolve =>
         </Button>
       </div>
     {/each}
-    <Filter />
   </div>
 </ScrollArea>
+<Filter />
