@@ -9,16 +9,16 @@ import '../app.postcss'
 
 <ModeWatcher  defaultMode="system" />
 
-{#await getData()}
-  <div class="flex justify-center items-center h-full">
-    <Button>
-      <Reload class="mr-2 h-4 w-4 animate-spin" />
-      Veuillez patienter
-    </Button>
-  </div>
-{:then}
-  <main class="flex flex-col h-[50vh] min-h-[30rem] max-h-96">
+<main class="flex flex-col h-[50vh] min-h-[30rem] max-h-96">
+  {#await getData()}
+    <div class="flex justify-center items-center h-full">
+      <Button>
+        <Reload class="mr-2 h-4 w-4 animate-spin" />
+        Veuillez patienter
+      </Button>
+    </div>
+  {:then}
     <slot />
     <Nav />
-  </main>
-{/await}
+  {/await}
+</main>
