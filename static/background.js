@@ -112,8 +112,6 @@ browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       case 'f95list-integrate_false':
         await browserAPI.storage.local.set({ f95list_ext_integrate: false })
         break
-      default:
-        return false
     }
   })()
 
