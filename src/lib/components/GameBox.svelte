@@ -15,7 +15,8 @@ export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
 
 let open: boolean = false
 
-if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) open = true
+if ((game.domain === 'LewdCorner' || game.ac) && game.domain === idGameBox.domain && game.id === idGameBox.id)
+  open = true
 </script>
 
 {#if open && game.domain !== 'Unknown'}
