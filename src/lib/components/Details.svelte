@@ -66,7 +66,9 @@ let closed = false
               >
               <Tooltip.Content class="bg-transparent">
                 <Badge variant="secondary">
-                  {#if game.tversion === game.version}
+                  {#if game.tversion === 'Intégrée'}
+                    À jour ({game.version})
+                  {:else if game.tversion === game.version}
                     À jour
                   {:else if game.tversion === 'n/a'}
                     Pas de traduction
