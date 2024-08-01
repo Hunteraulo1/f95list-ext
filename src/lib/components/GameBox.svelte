@@ -4,6 +4,7 @@ import Badge from '$lib/components/ui/badge/badge.svelte'
 import * as Card from '$lib/components/ui/card'
 import * as Tooltip from '$lib/components/ui/tooltip'
 import { type GameType } from '$lib/schemas'
+import { games } from '$lib/stores'
 import type { IdGameBox } from '$lib/types'
 import { lazyLoad } from '$lib/utils/lazyload'
 import { isFirefox } from '$lib/utils/polyfill'
@@ -15,7 +16,9 @@ export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
 
 let open: boolean = false
 
-if (game.ac && game.domain === idGameBox.domain && game.id === idGameBox.id) open = true
+if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
+  open = $games.filter(game => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1
+}
 </script>
 
 {#if open && game.domain !== 'Unknown'}
