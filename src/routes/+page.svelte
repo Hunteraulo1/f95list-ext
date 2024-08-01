@@ -20,6 +20,7 @@ if (typeof chrome !== 'undefined') {
 const extractId = (inputString: string): number => {
   const regex = /\.(\d+)/
   const match = inputString.match(regex)
+  console.log('🚀 ~ extractId ~ match:', match)
 
   return match ? parseInt(match[1]) : 0
 }
