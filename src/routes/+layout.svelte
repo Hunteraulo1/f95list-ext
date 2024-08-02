@@ -1,12 +1,12 @@
 <script lang="ts">
-import Nav from '$lib/components/Nav.svelte';
-import { Button } from '$lib/components/ui/button';
-import getData from '$lib/utils/getData';
-import { ModeWatcher } from 'mode-watcher';
-import { Reload } from 'svelte-radix';
-import '../app.postcss';
+import Nav from '$lib/components/Nav.svelte'
+import { Button } from '$lib/components/ui/button'
+import getData from '$lib/utils/getData'
+import { ModeWatcher } from 'mode-watcher'
+import { Reload } from 'svelte-radix'
+import '../app.postcss'
 
-import { onNavigate } from '$app/navigation';
+import { onNavigate } from '$app/navigation'
 
 onNavigate(navigation => {
   // @ts-ignore
@@ -22,7 +22,7 @@ onNavigate(navigation => {
 })
 </script>
 
-<ModeWatcher  defaultMode="system" />
+<ModeWatcher defaultMode="system" />
 
 <main class="flex flex-col h-[50vh] min-h-[30rem] max-h-96">
   {#await getData()}
