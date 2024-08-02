@@ -58,6 +58,8 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
                 À jour ({game.version})
               {:else if game.tversion === game.version}
                 À jour
+              {:else if game.tversion === 'n/a'}
+                Pas de traduction
               {:else}
                 N'est pas à jour ({game.version})
               {/if}
