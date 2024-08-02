@@ -32,7 +32,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@eslint/js": "9.8.0",
-    "@sveltejs/kit": "2.5.18",
+    "@sveltejs/kit": "2.5.19",
     "@sveltejs/vite-plugin-svelte": "3.1.1",
     "@types/chrome": "0.0.269",
     "@types/webextension-polyfill": "0.10.7",
