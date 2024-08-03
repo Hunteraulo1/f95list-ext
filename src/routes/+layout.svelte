@@ -5,21 +5,6 @@ import getData from '$lib/utils/getData'
 import { ModeWatcher } from 'mode-watcher'
 import { Reload } from 'svelte-radix'
 import '../app.postcss'
-
-import { onNavigate } from '$app/navigation'
-
-onNavigate(navigation => {
-  // @ts-ignore
-  if (!document.startViewTransition) return
-
-  return new Promise(resolve => {
-    // @ts-ignore
-    document.startViewTransition(async () => {
-      resolve()
-      await navigation.complete
-    })
-  })
-})
 </script>
 
 <ModeWatcher defaultMode="system" />
