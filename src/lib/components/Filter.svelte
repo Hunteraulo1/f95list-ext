@@ -14,19 +14,17 @@ const handleReset = () => {
 }
 </script>
 
-<div class="relative h-0 flex justify-center w-full">
+<div class="h-0 flex justify-center w-full">
   <Popover.Root>
     <Popover.Trigger >
-      <Button variant="secondary" class='sticky -translate-y-12 border-2 border-primary-foreground'>Filtrer</Button>
+      <Button variant="secondary" class='-translate-y-12 border-2 border-primary-foreground'>Filtrer</Button>
     </Popover.Trigger>
-    <Popover.Content side="top" class="p-0">
-      <ScrollArea class="h-80 w-full p-4 relative">
+    <Popover.Content side="top" class="p-0 !top-2 min-h-[26rem]" style="height: calc(50vh - 4rem)">
+      <Popover.Close class="absolute z-50 top-2 right-2 rounded-full p-1 hover:bg-primary-foreground">
+        <Cross2 />
+      </Popover.Close>
+      <ScrollArea class="w-full h-full px-2 pb-4 pt-10">
         <section class="flex flex-col gap-1 w-full">
-          <Popover.Close class="flex justify-end px-8">
-            <div class="rounded-full p-1 hover:bg-primary-foreground">
-              <Cross2 />
-            </div>
-          </Popover.Close>
           <label for="name" class="font-bold text-xs leading-none">Nom: </label>
           <Input
             id="name"
@@ -65,7 +63,7 @@ const handleReset = () => {
                   <Command.Input placeholder="Rechercher..." />
                   <Command.Empty>Aucun {title} trouvé</Command.Empty>
                   <Command.Group class="max-h-full relative">
-                    <ScrollArea class="{values.length > 7 ? 'h-screen' : ''} max-h-60 max-w-full">
+                    <ScrollArea class="{values.length > 7 ? 'h-full' : ''} max-h-60 max-w-full">
                       {#each values as { value, checked }}
                         <Command.Item
                           {value}
