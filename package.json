@@ -1,6 +1,6 @@
 {
   "name": "f95list-ext",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "private": false,
   "type": "module",
   "author": {
@@ -32,12 +32,12 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@eslint/js": "9.8.0",
-    "@sveltejs/kit": "2.5.18",
+    "@sveltejs/kit": "2.5.20",
     "@sveltejs/vite-plugin-svelte": "3.1.1",
     "@types/chrome": "0.0.269",
     "@types/webextension-polyfill": "0.10.7",
     "archiver": "7.0.1",
-    "autoprefixer": "10.4.19",
+    "autoprefixer": "10.4.20",
     "bits-ui": "0.21.13",
     "clsx": "2.1.1",
     "cmdk-sv": "0.0.18",

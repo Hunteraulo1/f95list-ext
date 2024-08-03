@@ -7,9 +7,9 @@ import { Reload } from 'svelte-radix'
 import '../app.postcss'
 </script>
 
-<ModeWatcher  defaultMode="system" />
+<ModeWatcher defaultMode="system" />
 
-<main class="flex flex-col h-[50vh] min-h-[30rem] max-h-96">
+<main class="flex flex-col h-[50vh] min-h-[30rem]">
   {#await getData()}
     <div class="flex justify-center items-center h-full">
       <Button>
