@@ -9,7 +9,7 @@ import '../app.postcss'
 
 <ModeWatcher defaultMode="system" />
 
-<main class="flex flex-col h-[50vh] min-h-[30rem]">
+<main class="flex flex-col h-main">
   {#await getData()}
     <div class="flex justify-center items-center h-full">
       <Button>
