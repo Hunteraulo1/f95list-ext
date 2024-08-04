@@ -75,6 +75,9 @@ const config: Config = {
         toDown: 'toDown .6s ease-in-out forwards',
         toUp: 'toUp .6s ease-in-out forwards',
       },
+      width: {
+        main: '19rem',
+      },
     },
   },
 }
