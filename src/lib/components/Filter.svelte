@@ -58,12 +58,12 @@ const handleReset = () => {
                   <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </Popover.Trigger>
-              <Popover.Content class="max-w-full w-full p-0">
+              <Popover.Content class="w-fit p-0">
                 <Command.Root>
                   <Command.Input placeholder="Rechercher..." />
                   <Command.Empty>Aucun {title} trouvé</Command.Empty>
                   <Command.Group class="max-h-full relative">
-                    <ScrollArea class="{values.length > 7 ? 'h-full' : ''} max-h-60 max-w-full">
+                    <ScrollArea class="h-[16rem]">
                       {#each values as { value, checked }}
                         <Command.Item
                           {value}

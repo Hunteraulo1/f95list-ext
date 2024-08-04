@@ -17,7 +17,7 @@ export let game: GameType, open: boolean
 let closed = false
 </script>
 
-<div class="fixed top-0 left-0 w-full h-full min-h-full z-20">
+<div class="fixed top-0 left-0 w-main h-main z-20">
   <ScrollArea
     class="bg-primary-foreground h-full {closed
       ? 'animate-toUp'
