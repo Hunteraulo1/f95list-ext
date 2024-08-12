@@ -134,5 +134,7 @@ const query = async () => {
     console.error(error)
 
     await browserAPI.storage.local.set({ f95list_ext_time: 0 })
+
+    wait = false
   }
 }
