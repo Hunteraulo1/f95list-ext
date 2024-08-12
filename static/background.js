@@ -71,6 +71,7 @@ const dataInit = async () => {
 
   let { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data'])
 
+  if (wait) return
   wait = true
 
   const date = new Date().getTime()
@@ -134,5 +135,7 @@ const query = async () => {
     console.error(error)
 
     await browserAPI.storage.local.set({ f95list_ext_time: 0 })
+
+    wait = false
   }
 }
