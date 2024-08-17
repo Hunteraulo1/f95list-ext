@@ -181,6 +181,9 @@
       "onmousewheel"
     ]
   },
+  "files": {
+    "maxSize": 18446744073709551615
+  },
   "overrides": [
     {
       "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts", "**/*.svelte"],
