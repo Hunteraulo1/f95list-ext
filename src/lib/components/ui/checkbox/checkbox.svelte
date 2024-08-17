@@ -1,20 +1,20 @@
 <script lang="ts">
-import { cn } from '$lib/utils.js'
-import { Checkbox as CheckboxPrimitive } from 'bits-ui'
-import Check from 'svelte-radix/Check.svelte'
-import Minus from 'svelte-radix/Minus.svelte'
+	import { Checkbox as CheckboxPrimitive } from "bits-ui";
+	import Check from "svelte-radix/Check.svelte";
+	import Minus from "svelte-radix/Minus.svelte";
+	import { cn } from "$lib/utils.js";
 
-type $$Props = CheckboxPrimitive.Props
-type $$Events = CheckboxPrimitive.Events
+	type $$Props = CheckboxPrimitive.Props;
+	type $$Events = CheckboxPrimitive.Events;
 
-let className: $$Props['class'] = undefined
-export let checked: $$Props['checked'] = false
-export { className as class }
+	let className: $$Props["class"] = undefined;
+	export let checked: $$Props["checked"] = false;
+	export { className as class };
 </script>
 
 <CheckboxPrimitive.Root
 	class={cn(
-		"peer box-content h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[disabled=true]:cursor-not-allowed data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[disabled=true]:opacity-50",
+		"border-primary focus-visible:ring-ring data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground peer box-content h-4 w-4 shrink-0 rounded-sm border shadow focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",
 		className
 	)}
 	bind:checked

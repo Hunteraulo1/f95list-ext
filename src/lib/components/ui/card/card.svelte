@@ -1,16 +1,16 @@
 <script lang="ts">
-import { cn } from '$lib/utils.js'
-import type { HTMLAttributes } from 'svelte/elements'
+	import type { HTMLAttributes } from "svelte/elements";
+	import { cn } from "$lib/utils.js";
 
-type $$Props = HTMLAttributes<HTMLDivElement>
+	type $$Props = HTMLAttributes<HTMLDivElement>;
 
-let className: $$Props['class'] = undefined
-export { className as class }
+	let className: $$Props["class"] = undefined;
+	export { className as class };
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class={cn("rounded-xl border bg-card text-card-foreground shadow", className)}
+	class={cn("bg-card text-card-foreground rounded-xl border shadow", className)}
 	{...$$restProps}
 	on:click
 	on:focusin
