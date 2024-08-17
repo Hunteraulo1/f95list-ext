@@ -55,30 +55,29 @@ let closed = false
             {game.status}
           </Badge>
           {game.name}
-          <span
-            class="text-xs font-bold {game.tversion === game.version
-              ? 'text-green-700'
-              : 'text-red-700'}"
-          >
-            <Tooltip.Root>
-              <Tooltip.Trigger class="cursor-help"
-                >{game.tversion}</Tooltip.Trigger
-              >
-              <Tooltip.Content class="bg-transparent">
-                <Badge variant="secondary">
-                  {#if game.tversion === 'Intégrée'}
-                    À jour ({game.version})
-                  {:else if game.tversion === game.version}
-                    À jour
-                  {:else if game.tversion === 'n/a'}
-                    Pas de traduction
-                  {:else}
-                    N'est pas à jour ({game.version})
-                  {/if}
-                </Badge>
-              </Tooltip.Content>
-            </Tooltip.Root>
-          </span>
+          <Tooltip.Root>
+            <Tooltip.Trigger
+              class="text-xs cursor-help font-bold {game.tversion ===
+                'Intégrée' || game.tversion === game.version
+                ? 'text-green-700'
+                : 'text-red-700'}"
+            >
+              {game.tversion}
+            </Tooltip.Trigger>
+            <Tooltip.Content class="bg-transparent">
+              <Badge variant="secondary">
+                {#if game.tversion === 'Intégrée'}
+                  À jour ({game.version})
+                {:else if game.tversion === game.version}
+                  À jour
+                {:else if game.tversion === 'n/a'}
+                  Pas de traduction
+                {:else}
+                  N'est pas à jour ({game.version})
+                {/if}
+              </Badge>
+            </Tooltip.Content>
+          </Tooltip.Root>
         </h1>
         <div class="flex gap-1 flex-wrap">
           <span class="font-bold text-sm">Tags:</span>
