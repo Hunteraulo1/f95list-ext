@@ -14,7 +14,7 @@ let details: GameType | undefined
 </script>
 
 <section class="w-screen min-h-screen flex">
-  <ScrollArea class="relative h-full w-1/3">
+  <ScrollArea class="relative h-full w-1/3 max-w-md">
     <div class="flex flex-col gap-2 p-2 relative h-full">
       {#each $filteredGames as game (game.name + game.version)}
         <button on:click={() => details = game}>
@@ -30,12 +30,12 @@ let details: GameType | undefined
       {/each}
     </div>
   </ScrollArea>
-  <div class="flex flex-col w-2/3">
+  <div class="flex flex-col w-full p-2">
     {#if details}
       <DetailsWebApp game={details} />
     {:else}
-      <div class="flex items-center justify-center h-2/3">
-        No content
+      <div class="flex items-center justify-center h-2/3 bg-primary-foreground w-full rounded-lg p-2">
+        Aucun jeu n'a été sélectionné
       </div>
     {/if}
     <FilterWebApp />

@@ -16,11 +16,12 @@ export let game: GameType
 let closed = false
 </script>
 
-<ScrollArea class="bg-primary-foreground h-2/3 w-full">
+
+<ScrollArea class="bg-primary-foreground h-2/3 w-full rounded-lg">
   {#if game}
     <img
       alt={game.name}
-      class="h-48 w-full object-cover"
+      class="h-64 w-full object-cover"
       src={game.image ?? noImage}
     />
     <div class="p-2 flex flex-col gap-2">
