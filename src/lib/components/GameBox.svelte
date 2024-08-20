@@ -13,6 +13,7 @@ import Details from './Details.svelte'
 
 export let game: GameType
 export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
+export let webapp: boolean = false
 
 let open: boolean = false
 
@@ -21,7 +22,7 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
 }
 </script>
 
-{#if open && game.domain !== 'Unknown'}
+{#if open && !webapp && game.domain !== 'Unknown'}
   <Details {game} bind:open />
 {/if}
 

@@ -2,13 +2,13 @@
 import { dev } from '$app/environment'
 import Filter from '$lib/components/Filter.svelte'
 import GameBox from '$lib/components/GameBox.svelte'
+import Button from '$lib/components/ui/button/button.svelte'
 import { ScrollArea } from '$lib/components/ui/scroll-area'
 import { filteredGames, settings } from '$lib/stores'
 import type { IdGameBox } from '$lib/types'
 import { ExternalLink } from 'svelte-radix'
 import Reload from 'svelte-radix/Reload.svelte'
 import type { Tabs } from 'webextension-polyfill'
-import Button from './../lib/components/ui/button/button.svelte'
 
 let browserAPI = undefined
 
@@ -65,7 +65,7 @@ const idGameBoxPromise: Promise<IdGameBox> = new Promise(resolve =>
 
 <div class="h-0 flex justify-center w-full gap-2">
   <Filter />
-  <a href="/" target="_blank">
+  <a href="/webapp" target="_blank">
     <Button variant="secondary" class="-translate-y-12 border-2 border-primary-foreground">
       <ExternalLink class="h-4 w-full" />
     </Button>

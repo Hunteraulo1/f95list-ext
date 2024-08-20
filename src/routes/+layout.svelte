@@ -19,6 +19,8 @@ import '../app.postcss'
     </div>
   {:then}
     <slot />
-    <Nav />
+    {#if !window.location.pathname.startsWith('/webapp')}
+      <Nav />
+    {/if}
   {/await}
 </main>
