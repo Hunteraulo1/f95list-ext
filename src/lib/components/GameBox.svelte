@@ -39,7 +39,7 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
           )}
           style="image-rendering: smooth; image-resolution: snap;"
       />
-      {/if}
+    {/if}
     <Card.CardContent
     class="relative p-6 rounded-xl overflow-hidden hover:scale-[1.03] hover:translate-x-1 transition">
       <Card.Title>{game.name}</Card.Title>
