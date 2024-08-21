@@ -10,7 +10,7 @@ import { detailGame } from '$lib/stores'
     <div class="max-w-md w-full">
       <slot />
     </div>
-    <div class="flex flex-col h-full w-2/3 p-2">
+    <div class="flex flex-col h-full w-full p-2">
       {#if $detailGame}
       <DetailsWebApp game={$detailGame} />
       {:else}
