@@ -110,7 +110,7 @@ const handleSettings = (id: keyof Settings) => {
     <div>
       <h2 class="text-center mb-2 font-bold">En savoir plus</h2>
       <div class="flex justify-center items-center flex-col">
-        <Button class="mb-2" variant="outline" on:click={() => goto("/traductors#0")}
+        <Button class="mb-2" variant="outline" on:click={() => goto("traductors")}
           >Voir les traducteurs/relecteurs</Button
         >
         {#each links as { title, href }}
