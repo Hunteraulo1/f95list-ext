@@ -9,6 +9,7 @@ import type { IdGameBox } from '$lib/types'
 import { ExternalLink } from 'svelte-radix'
 import Reload from 'svelte-radix/Reload.svelte'
 import type { Tabs } from 'webextension-polyfill'
+import { goto } from '$app/navigation'
 
 let browserAPI = undefined
 
@@ -65,7 +66,7 @@ const idGameBoxPromise: Promise<IdGameBox> = new Promise(resolve =>
 
 <div class="h-0 flex justify-center w-full gap-2">
   <Filter />
-  <a href="/webapp" target="_blank">
+  <a href="/index.html?webapp" target="_blank">
     <Button variant="secondary" class="-translate-y-12 border-2 border-primary-foreground">
       <ExternalLink class="h-4 w-full" />
     </Button>
