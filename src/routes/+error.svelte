@@ -1,9 +1,7 @@
 <script lang="ts">
 import { goto } from '$app/navigation'
 
-export let data;
-
-console.log(data.searchParams);
+export let data
 
 data.searchParams.webapp === '' ? goto('/webapp') : goto('/')
 </script>

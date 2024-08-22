@@ -1,6 +1,6 @@
 <script lang="ts">
 import { goto } from '$app/navigation'
-import { webapp } from '$lib/stores'
+import { pathname } from '$lib/stores'
 import Button from '../ui/button/button.svelte'
 
 const nav = [
@@ -12,7 +12,7 @@ const nav = [
 const handleClick = (href: string) => {
   goto(href)
 
-  $webapp = href === '/webapp'
+  $pathname = href
 }
 </script>
 

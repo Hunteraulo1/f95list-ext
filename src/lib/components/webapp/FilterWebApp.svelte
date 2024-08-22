@@ -4,7 +4,7 @@ import * as Command from '$lib/components/ui/command/index.js'
 import { Input } from '$lib/components/ui/input/index.js'
 import * as Popover from '$lib/components/ui/popover/index.js'
 import { ScrollArea } from '$lib/components/ui/scroll-area/index.js'
-import { filter, search, webapp } from '$lib/stores'
+import { filter, pathname, search } from '$lib/stores'
 import { cn } from '$lib/utils'
 import { Check, ChevronDown } from 'svelte-radix'
 
@@ -14,7 +14,7 @@ const handleReset = () => {
 }
 </script>
 
-{#if $webapp}
+{#if $pathname === '/webapp'}
    <ScrollArea class="justify-center w-full h-1/3 px-2 pb-4 pt-10">
      <label for="name" class="font-bold text-xs leading-none">Nom: </label>
      <div class="flex gap-1">
