@@ -5,6 +5,8 @@ import getData from '$lib/utils/getData'
 import { ModeWatcher } from 'mode-watcher'
 import { Reload } from 'svelte-radix'
 import '../app.postcss'
+
+console.log(window.location.pathname)
 </script>
 
 <ModeWatcher defaultMode="system" />
@@ -19,8 +21,6 @@ import '../app.postcss'
     </div>
   {:then}
     <slot />
-    {#if !window.location.pathname.startsWith('/webapp')}
-      <Nav />
-    {/if}
+    <Nav />
   {/await}
 </main>

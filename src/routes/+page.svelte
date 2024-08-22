@@ -9,7 +9,6 @@ import type { IdGameBox } from '$lib/types'
 import { ExternalLink } from 'svelte-radix'
 import Reload from 'svelte-radix/Reload.svelte'
 import type { Tabs } from 'webextension-polyfill'
-import { goto } from '$app/navigation'
 
 let browserAPI = undefined
 

@@ -139,4 +139,4 @@ export const settings = writable<Settings>(
 
 export const detailGame = writable<GameType | undefined>()
 
-export const webapp = writable<boolean>(window.location.pathname === '/webapp')
+export const pathname = writable<string>(window.location.pathname)
