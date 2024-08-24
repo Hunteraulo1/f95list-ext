@@ -3,7 +3,7 @@ import { dev } from '$app/environment'
 import GameBox from '$lib/components/GameBox.svelte'
 import { Button } from '$lib/components/ui/button'
 import { ScrollArea } from '$lib/components/ui/scroll-area'
-import { updates } from '$lib/stores'
+import { detailGame, updates } from '$lib/stores'
 import { Reload } from 'svelte-radix'
 
 if (!dev) {
@@ -31,7 +31,9 @@ if (!dev) {
             {update.type}
           </h3>
           {#each update.games as game}
-            <GameBox {game} />
+            <button on:click={() => $detailGame = game}>
+              <GameBox {game} webapp />
+            </button>
           {/each}
         </div>
       {/each}
