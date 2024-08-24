@@ -134,3 +134,9 @@ const settingsData: string | null = localStorage.getItem('settings')
 export const settings = writable<Settings>(
   settingsData ? JSON.parse(settingsData) : { tagsHide: true, intergrateFeature: false, autoFocusGame: true }
 )
+
+// Webapp
+
+export const detailGame = writable<GameType | undefined>()
+
+export const pathname = writable<string>(window.location.pathname)

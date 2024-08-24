@@ -13,6 +13,7 @@ import Details from './Details.svelte'
 
 export let game: GameType
 export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
+export let webapp: boolean = false
 
 let open: boolean = false
 
@@ -21,7 +22,7 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
 }
 </script>
 
-{#if open && game.domain !== 'Unknown'}
+{#if open && !webapp && game.domain !== 'Unknown'}
   <Details {game} bind:open />
 {/if}
 
@@ -38,7 +39,7 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
           )}
           style="image-rendering: smooth; image-resolution: snap;"
       />
-      {/if}
+    {/if}
     <Card.CardContent
     class="relative p-6 rounded-xl overflow-hidden hover:scale-[1.03] hover:translate-x-1 transition">
       <Card.Title>{game.name}</Card.Title>
