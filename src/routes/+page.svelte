@@ -1,49 +1,48 @@
 <script lang="ts">
-import { dev } from '$app/environment'
-import Filter from '$lib/components/Filter.svelte'
-import GameBox from '$lib/components/GameBox.svelte'
-import Button from '$lib/components/ui/button/button.svelte'
-import { ScrollArea } from '$lib/components/ui/scroll-area'
-import { filteredGames, settings } from '$lib/stores'
-import type { IdGameBox } from '$lib/types'
-import { ExternalLink } from 'svelte-radix'
-import Reload from 'svelte-radix/Reload.svelte'
-import type { Tabs } from 'webextension-polyfill'
+import { dev } from '$app/environment';
+import Filter from '$lib/components/Filter.svelte';
+import GameBox from '$lib/components/GameBox.svelte';
+import Button from '$lib/components/ui/button/button.svelte';
+import { ScrollArea } from '$lib/components/ui/scroll-area';
+import { filteredGames, settings } from '$lib/stores';
+import type { IdGameBox } from '$lib/types';
+import { ExternalLink } from 'svelte-radix';
+import Reload from 'svelte-radix/Reload.svelte';
 
-let browserAPI = undefined
+let browserAPI = undefined;
 
 if (typeof chrome !== 'undefined') {
-  browserAPI = chrome
+  browserAPI = chrome;
 } else if (typeof browser !== 'undefined') {
-  browserAPI = browser
+  browserAPI = browser;
 }
 
 const extractId = (inputString: string): number => {
-  const regex = /\.(\d+)/
-  const match = inputString.match(regex)
-  console.log('🚀 ~ extractId ~ match:', match)
+  const regex = /\.(\d+)/;
+  const match = inputString.match(regex);
+  console.log('🚀 ~ extractId ~ match:', match);
 
-  return match ? parseInt(match[1]) : 0
-}
+  return match ? Number.parseInt(match[1]) : 0;
+};
 
-const idGameBoxPromise: Promise<IdGameBox> = new Promise(resolve =>
+const idGameBoxPromise: Promise<IdGameBox> = new Promise((resolve) =>
   dev
     ? resolve({ domain: 'Unknown', id: 0 })
-    : browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs: Tabs.Tab[]) => {
-        const { url } = tabs[0]
-        console.log('🚀 ~ browserAPI?.tabs?.query ~ url:', url)
+    : browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+        const { url } = tabs[0];
+        console.log('🚀 ~ browserAPI?.tabs?.query ~ url:', url);
 
         if ($settings.autoFocusGame && url?.startsWith('https://f95zone.to/threads/')) {
-          resolve({ domain: 'F95z', id: extractId(url) })
+          resolve({ domain: 'F95z', id: extractId(url) });
         }
 
         if ($settings.autoFocusGame && url?.startsWith('https://lewdcorner.com/threads/')) {
-          resolve({ domain: 'LewdCorner', id: extractId(url) })
+          resolve({ domain: 'LewdCorner', id: extractId(url) });
         }
 
-        resolve({ domain: 'Unknown', id: 0 })
-      })
-)
+        resolve({ domain: 'Unknown', id: 0 });
+      }),
+);
 </script>
 
 <ScrollArea class="relative h-full">

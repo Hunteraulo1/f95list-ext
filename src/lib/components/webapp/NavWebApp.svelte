@@ -1,19 +1,19 @@
 <script lang="ts">
-import { goto } from '$app/navigation'
-import { pathname } from '$lib/stores'
-import Button from '../ui/button/button.svelte'
+import { goto } from '$app/navigation';
+import { pathname } from '$lib/stores';
+import Button from '../ui/button/button.svelte';
 
 const nav = [
   { name: 'Liste', href: '/webapp' },
   { name: 'Mises à jour', href: '/webapp/updates' },
   { name: 'Paramètres', href: '/webapp/settings' },
-]
+];
 
 const handleClick = (href: string) => {
-  goto(href)
+  goto(href);
 
-  $pathname = href
-}
+  $pathname = href;
+};
 </script>
 
 <ul class="flex w-full justify-around bg-secondary/75 p-2 rounded-lg">

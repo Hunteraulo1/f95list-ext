@@ -1,17 +1,17 @@
 <script lang="ts">
-import { Button } from '$lib/components/ui/button/index.js'
-import * as Command from '$lib/components/ui/command/index.js'
-import { Input } from '$lib/components/ui/input/index.js'
-import * as Popover from '$lib/components/ui/popover/index.js'
-import { ScrollArea } from '$lib/components/ui/scroll-area/index.js'
-import { filter, search } from '$lib/stores'
-import { cn } from '$lib/utils'
-import { Check, ChevronDown, Cross2 } from 'svelte-radix'
+import { Button } from '$lib/components/ui/button/index.js';
+import * as Command from '$lib/components/ui/command/index.js';
+import { Input } from '$lib/components/ui/input/index.js';
+import * as Popover from '$lib/components/ui/popover/index.js';
+import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
+import { filter, search } from '$lib/stores';
+import { cn } from '$lib/utils';
+import { Check, ChevronDown, Cross2 } from 'svelte-radix';
 
 const handleReset = () => {
-  $search = ''
-  filter.reset()
-}
+  $search = '';
+  filter.reset();
+};
 </script>
 
 <Popover.Root>

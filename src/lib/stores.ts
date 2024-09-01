@@ -1,13 +1,13 @@
-import { derived, get, writable } from 'svelte/store'
+import { derived, get, writable } from 'svelte/store';
 
-import type { GameType, TraductorType } from './schemas'
-import type { ComboBox, Settings, Update } from './types'
+import type { GameType, TraductorType } from './schemas';
+import type { ComboBox, Settings, Update } from './types';
 
-import tags from '$lib/assets/tags.json'
+import tags from '$lib/assets/tags.json';
 
-export const games = writable<GameType[]>([])
+export const games = writable<GameType[]>([]);
 
-export const traductors = writable<TraductorType[]>([])
+export const traductors = writable<TraductorType[]>([]);
 
 const defaultFilters = (): ComboBox[] => [
   {
@@ -60,83 +60,83 @@ const defaultFilters = (): ComboBox[] => [
     title: 'Traducteur',
     name: 'traductor',
     open: false,
-    values: get(traductors).map(traductor => ({ value: traductor.name ?? 'NoName', checked: false })),
+    values: get(traductors).map((traductor) => ({ value: traductor.name ?? 'NoName', checked: false })),
   },
   {
     title: 'Tags',
     name: 'tags',
     open: false,
-    values: tags.map(tag => ({ value: tag, checked: false })),
+    values: tags.map((tag) => ({ value: tag, checked: false })),
   },
-]
+];
 
 const filterFn = () => {
-  const { subscribe, set, update } = writable(defaultFilters())
+  const { subscribe, set, update } = writable(defaultFilters());
 
   return {
     subscribe,
     set,
     update,
     reset: () => set(defaultFilters()),
-  }
-}
+  };
+};
 
-export const filter = filterFn()
+export const filter = filterFn();
 
-export const search = writable('')
+export const search = writable('');
 
 export const filteredGames = derived([games, filter, search], ([$games, $filter, $search]) =>
-  $games.filter(game => {
-    if (!game.name.toLowerCase().includes($search)) return false
+  $games.filter((game) => {
+    if (!game.name.toLowerCase().includes($search)) return false;
 
     return $filter.every(({ name, values }) => {
-      if (!values.some(value => value.checked)) return true
+      if (!values.some((value) => value.checked)) return true;
 
       if (name === 'tags') {
-        return values.every(value => !value.checked || game.tags.includes(value.value))
+        return values.every((value) => !value.checked || game.tags.includes(value.value));
       }
 
       if (name === 'traductor') {
-        return values.some(value => value.checked && game.traductor?.includes(value.value))
+        return values.some((value) => value.checked && game.traductor?.includes(value.value));
       }
 
       if (name === 'version') {
-        return values.some(value => {
-          if (!value.checked) return false
+        return values.some((value) => {
+          if (!value.checked) return false;
 
           switch (value.value) {
             case 'À jour':
-              if (game.version !== game.tversion && game.tversion !== 'Intégrée') return false
-              break
+              if (game.version !== game.tversion && game.tversion !== 'Intégrée') return false;
+              break;
             case 'Intégrée':
-              if (game.tversion !== 'Intégrée') return false
-              break
+              if (game.tversion !== 'Intégrée') return false;
+              break;
             case 'Pas à jour':
-              if (game.version === game.tversion || game.tversion === 'Intégrée') return false
-              break
+              if (game.version === game.tversion || game.tversion === 'Intégrée') return false;
+              break;
             default:
-              return false
+              return false;
           }
 
-          return true
-        })
+          return true;
+        });
       }
 
-      return values.some(value => value.checked && game[name] === value.value)
-    })
-  })
-)
+      return values.some((value) => value.checked && game[name] === value.value);
+    });
+  }),
+);
 
-export const updates = writable<Update[]>([])
+export const updates = writable<Update[]>([]);
 
-const settingsData: string | null = localStorage.getItem('settings')
+const settingsData: string | null = localStorage.getItem('settings');
 
 export const settings = writable<Settings>(
-  settingsData ? JSON.parse(settingsData) : { tagsHide: true, intergrateFeature: false, autoFocusGame: true }
-)
+  settingsData ? JSON.parse(settingsData) : { tagsHide: true, intergrateFeature: false, autoFocusGame: true },
+);
 
 // Webapp
 
-export const detailGame = writable<GameType | undefined>()
+export const detailGame = writable<GameType | undefined>();
 
-export const pathname = writable<string>('/webapp')
+export const pathname = writable<string>('/webapp');

@@ -1,20 +1,20 @@
 <script lang="ts">
-import { dev } from '$app/environment'
-import { goto } from '$app/navigation'
-import { Button } from '$lib/components/ui/button/index.js'
-import Label from '$lib/components/ui/label/label.svelte'
-import { ScrollArea } from '$lib/components/ui/scroll-area'
-import Switch from '$lib/components/ui/switch/switch.svelte'
-import { settings } from '$lib/stores'
-import type { Settings } from '$lib/types'
-import { toggleMode } from 'mode-watcher'
-import DiscordLogo from 'svelte-radix/DiscordLogo.svelte'
-import Moon from 'svelte-radix/Moon.svelte'
-import Sun from 'svelte-radix/Sun.svelte'
+import { dev } from '$app/environment';
+import { goto } from '$app/navigation';
+import { Button } from '$lib/components/ui/button/index.js';
+import Label from '$lib/components/ui/label/label.svelte';
+import { ScrollArea } from '$lib/components/ui/scroll-area';
+import Switch from '$lib/components/ui/switch/switch.svelte';
+import { settings } from '$lib/stores';
+import type { Settings } from '$lib/types';
+import { toggleMode } from 'mode-watcher';
+import DiscordLogo from 'svelte-radix/DiscordLogo.svelte';
+import Moon from 'svelte-radix/Moon.svelte';
+import Sun from 'svelte-radix/Sun.svelte';
 
 interface SettingItem {
-  title: string
-  id: keyof Settings
+  title: string;
+  id: keyof Settings;
 }
 
 const settingsItems: SettingItem[] = [
@@ -34,10 +34,10 @@ const settingsItems: SettingItem[] = [
     title: 'Ouverture automatique des jeux:',
     id: 'autoFocusGame',
   },
-]
+];
 interface Link {
-  title: string
-  href: string
+  title: string;
+  href: string;
 }
 
 const links: Link[] = [
@@ -57,27 +57,27 @@ const links: Link[] = [
     title: 'Dépot Github',
     href: 'https://github.com/Hunteraulo1/f95list-ext',
   },
-]
+];
 
 const defaultSettings = JSON.stringify({
   tagsHide: true,
   intergrateFeature: true,
   autoFocusGame: true,
-} as Settings)
+} as Settings);
 
-$settings = JSON.parse(localStorage.getItem('settings') || defaultSettings)
+$settings = JSON.parse(localStorage.getItem('settings') || defaultSettings);
 
 const handleSettings = (id: keyof Settings) => {
-  const result = { ...$settings, [id]: !$settings[id] }
-  $settings = result
-  localStorage.setItem('settings', JSON.stringify(result))
+  const result = { ...$settings, [id]: !$settings[id] };
+  $settings = result;
+  localStorage.setItem('settings', JSON.stringify(result));
 
   if (id === 'intergrateFeature' && !dev) {
-    const browserAPI = typeof browser !== 'undefined' ? browser : chrome
+    const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 
-    browserAPI.runtime.sendMessage(`f95list-integrate_${result['intergrateFeature'].toString()}`)
+    browserAPI.runtime.sendMessage(`f95list-integrate_${result.intergrateFeature.toString()}`);
   }
-}
+};
 </script>
 
 <ScrollArea class="p-2 pb- h-full">

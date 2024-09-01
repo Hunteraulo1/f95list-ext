@@ -1,15 +1,15 @@
 <script lang="ts">
-import { dev } from '$app/environment'
-import GameBox from '$lib/components/GameBox.svelte'
-import { Button } from '$lib/components/ui/button'
-import { ScrollArea } from '$lib/components/ui/scroll-area'
-import { updates } from '$lib/stores'
-import { Reload } from 'svelte-radix'
+import { dev } from '$app/environment';
+import GameBox from '$lib/components/GameBox.svelte';
+import { Button } from '$lib/components/ui/button';
+import { ScrollArea } from '$lib/components/ui/scroll-area';
+import { updates } from '$lib/stores';
+import { Reload } from 'svelte-radix';
 
 if (!dev) {
-  const browserAPI = typeof browser === 'undefined' ? chrome : browser
+  const browserAPI = typeof browser === 'undefined' ? chrome : browser;
 
-  browserAPI.runtime.sendMessage('f95list-badge')
+  browserAPI.runtime.sendMessage('f95list-badge');
 }
 </script>
 

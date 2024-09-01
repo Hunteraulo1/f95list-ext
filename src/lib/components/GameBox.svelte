@@ -1,25 +1,25 @@
 <script lang="ts">
-import { dev } from '$app/environment'
-import Badge from '$lib/components/ui/badge/badge.svelte'
-import * as Card from '$lib/components/ui/card'
-import * as Tooltip from '$lib/components/ui/tooltip'
-import { type GameType } from '$lib/schemas'
-import { games } from '$lib/stores'
-import type { IdGameBox } from '$lib/types'
-import { lazyLoad } from '$lib/utils/lazyload'
-import { isFirefox } from '$lib/utils/polyfill'
-import { mode } from 'mode-watcher'
-import { Link1 } from 'svelte-radix'
-import Details from './Details.svelte'
+import { dev } from '$app/environment';
+import Badge from '$lib/components/ui/badge/badge.svelte';
+import * as Card from '$lib/components/ui/card';
+import * as Tooltip from '$lib/components/ui/tooltip';
+import type { GameType } from '$lib/schemas';
+import { games } from '$lib/stores';
+import type { IdGameBox } from '$lib/types';
+import { lazyLoad } from '$lib/utils/lazyload';
+import { isFirefox } from '$lib/utils/polyfill';
+import { mode } from 'mode-watcher';
+import { Link1 } from 'svelte-radix';
+import Details from './Details.svelte';
 
-export let game: GameType
-export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
-export let webapp: boolean = false
+export let game: GameType;
+export const idGameBox: IdGameBox = { domain: 'Unknown', id: 0 };
+export const webapp: boolean = false;
 
-let open: boolean = false
+let open = false;
 
 if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
-  open = $games.filter(game => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1
+  open = $games.filter((game) => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1;
 }
 </script>
 
