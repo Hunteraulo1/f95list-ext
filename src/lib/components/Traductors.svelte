@@ -1,9 +1,9 @@
 <script lang="ts">
-import { Button } from '$lib/components/ui/button'
-import * as Card from '$lib/components/ui/card'
-import { ScrollArea } from '$lib/components/ui/scroll-area'
-import { traductors } from '$lib/stores'
-import { Reload } from 'svelte-radix'
+import { Button } from '$lib/components/ui/button';
+import * as Card from '$lib/components/ui/card';
+import { ScrollArea } from '$lib/components/ui/scroll-area';
+import { traductors } from '$lib/stores';
+import { Reload } from 'svelte-radix';
 </script>
 
 {#if $traductors.length > 0}

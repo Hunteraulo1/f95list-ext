@@ -1,12 +1,12 @@
 <script lang="ts">
-import GameBox from '$lib/components/GameBox.svelte'
-import Button from '$lib/components/ui/button/button.svelte'
-import { ScrollArea } from '$lib/components/ui/scroll-area'
-import { detailGame, filteredGames } from '$lib/stores'
-import type { IdGameBox } from '$lib/types'
-import Reload from 'svelte-radix/Reload.svelte'
+import GameBox from '$lib/components/GameBox.svelte';
+import Button from '$lib/components/ui/button/button.svelte';
+import { ScrollArea } from '$lib/components/ui/scroll-area';
+import { detailGame, filteredGames } from '$lib/stores';
+import type { IdGameBox } from '$lib/types';
+import Reload from 'svelte-radix/Reload.svelte';
 
-const idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
+const idGameBox: IdGameBox = { domain: 'Unknown', id: 0 };
 </script>
 
 <ScrollArea class="relative h-full">

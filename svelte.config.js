@@ -1,7 +1,7 @@
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
-import adapter from 'sveltekit-adapter-chrome-extension'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import adapter from 'sveltekit-adapter-chrome-extension';
 
-const buildMode = process.env.BUILD_MODE
+const buildMode = process.env.BUILD_MODE;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -17,6 +17,6 @@ const config = {
     }),
     appDir: 'app',
   },
-}
+};
 
-export default config
+export default config;

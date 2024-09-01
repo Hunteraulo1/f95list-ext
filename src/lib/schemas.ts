@@ -1,4 +1,4 @@
-import { type InferOutput, array, boolean, date, nullable, number, object, picklist, string } from 'valibot'
+import { type InferOutput, array, boolean, date, nullable, number, object, picklist, string } from 'valibot';
 
 const Game = object({
   id: nullable(number()),
@@ -27,13 +27,13 @@ const Game = object({
   trlink: nullable(string()),
   prlink: nullable(string()),
   image: nullable(string()),
-})
+});
 
 const Update = object({
   date: date(),
   type: picklist(['AJOUT DE JEU', 'MISE À JOUR']),
   games: array(Game),
-})
+});
 
 const Traductor = object({
   name: Game.entries.traductor,
@@ -41,22 +41,22 @@ const Traductor = object({
     object({
       title: string(),
       link: string(),
-    })
+    }),
   ),
   tradCount: number(),
   readCount: number(),
   score: number(),
-})
+});
 
-const Games = array(Game)
-const Updates = array(Update)
+const Games = array(Game);
+const Updates = array(Update);
 
-const TraductorsData = array(Traductor)
+const TraductorsData = array(Traductor);
 
-export { Game, Games, TraductorsData, Update, Updates }
+export { Game, Games, TraductorsData, Update, Updates };
 
-type GameType = InferOutput<typeof Game>
-type TraductorType = InferOutput<typeof Traductor>
-type UpdateType = InferOutput<typeof Update>
+type GameType = InferOutput<typeof Game>;
+type TraductorType = InferOutput<typeof Traductor>;
+type UpdateType = InferOutput<typeof Update>;
 
-export type { GameType, TraductorType, UpdateType }
+export type { GameType, TraductorType, UpdateType };

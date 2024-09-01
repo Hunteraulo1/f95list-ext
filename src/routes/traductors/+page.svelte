@@ -1,5 +1,5 @@
 <script lang="ts">
-import Traductors from '$lib/components/Traductors.svelte'
+import Traductors from '$lib/components/Traductors.svelte';
 </script>
 
 <Traductors />
