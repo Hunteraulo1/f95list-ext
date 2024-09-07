@@ -12,8 +12,8 @@ import { Link1 } from 'svelte-radix';
 import Details from './Details.svelte';
 
 export let game: GameType;
-export const idGameBox: IdGameBox = { domain: 'Unknown', id: 0 };
-export const webapp: boolean = false;
+export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 };
+export let webapp: boolean = false;
 
 let open = false;
 
@@ -28,7 +28,10 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
 
 {#if game.domain !== 'Unknown'}
 <div class="relative">
-  <Card.Root class="cursor-pointer" on:click={() => (open = true)}>
+  <Card.Root class="cursor-pointer" on:click={() => {if (!webapp) {
+    console.log({webapp})
+    open = true
+    }}}>
     {#if game.image}
       <img
         alt={game.name}
