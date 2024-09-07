@@ -8,7 +8,6 @@ import { games } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { lazyLoad } from '$lib/utils/lazyload';
 import { isFirefox } from '$lib/utils/polyfill';
-import { mode } from 'mode-watcher';
 import { Link1 } from 'svelte-radix';
 import Details from './Details.svelte';
 
@@ -42,8 +41,8 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
       />
     {/if}
     <Card.CardContent
-    class="relative p-6 rounded-xl overflow-hidden hover:scale-[1.03] transition {webapp ? 'text-xl' : 'hover:translate-x-1'}">
-      <Card.Title style="-webkit-text-stroke: .3px {$mode === 'dark' ? 'black' : 'white'}">{game.name}</Card.Title>
+    class="relative p-6 rounded-xl overflow-hidden hover:scale-[1.03] transition backdrop-brightness-90 text-white {webapp ? 'text-xl' : 'hover:translate-x-1'}">
+      <Card.Title>{game.name}</Card.Title>
       <Card.Description>
         <Tooltip.Root>
           <Tooltip.Trigger
