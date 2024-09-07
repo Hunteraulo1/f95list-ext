@@ -13,7 +13,7 @@ import Details from './Details.svelte';
 
 export let game: GameType;
 export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 };
-export let webapp: boolean = false;
+export let webapp = false;
 
 let open = false;
 
