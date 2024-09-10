@@ -1,10 +1,12 @@
 <script lang="ts">
-import Nav from '$lib/components/Nav.svelte'
-import { Button } from '$lib/components/ui/button'
-import getData from '$lib/utils/getData'
-import { ModeWatcher } from 'mode-watcher'
-import { Reload } from 'svelte-radix'
-import '../app.postcss'
+import Nav from '$lib/components/Nav.svelte';
+import { Button } from '$lib/components/ui/button';
+import getData from '$lib/utils/getData';
+import { ModeWatcher } from 'mode-watcher';
+import { Reload } from 'svelte-radix';
+import '../app.postcss';
+
+console.log(window.location.pathname);
 </script>
 
 <ModeWatcher defaultMode="system" />

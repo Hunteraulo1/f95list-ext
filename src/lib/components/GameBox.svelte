@@ -1,33 +1,37 @@
 <script lang="ts">
-import { dev } from '$app/environment'
-import Badge from '$lib/components/ui/badge/badge.svelte'
-import * as Card from '$lib/components/ui/card'
-import * as Tooltip from '$lib/components/ui/tooltip'
-import { type GameType } from '$lib/schemas'
-import { games } from '$lib/stores'
-import type { IdGameBox } from '$lib/types'
-import { lazyLoad } from '$lib/utils/lazyload'
-import { isFirefox } from '$lib/utils/polyfill'
-import { Link1 } from 'svelte-radix'
-import Details from './Details.svelte'
+import { dev } from '$app/environment';
+import Badge from '$lib/components/ui/badge/badge.svelte';
+import * as Card from '$lib/components/ui/card';
+import * as Tooltip from '$lib/components/ui/tooltip';
+import type { GameType } from '$lib/schemas';
+import { games } from '$lib/stores';
+import type { IdGameBox } from '$lib/types';
+import { lazyLoad } from '$lib/utils/lazyload';
+import { isFirefox } from '$lib/utils/polyfill';
+import { Link1 } from 'svelte-radix';
+import Details from './Details.svelte';
 
-export let game: GameType
-export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 }
+export let game: GameType;
+export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 };
+export let webapp = false;
 
-let open: boolean = false
+let open = false;
 
 if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
-  open = $games.filter(game => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1
+  open = $games.filter((game) => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1;
 }
 </script>
 
-{#if open && game.domain !== 'Unknown'}
+{#if open && !webapp && game.domain !== 'Unknown'}
   <Details {game} bind:open />
 {/if}
 
 {#if game.domain !== 'Unknown'}
 <div class="relative">
-  <Card.Root class="cursor-pointer" on:click={() => (open = true)}>
+  <Card.Root class="cursor-pointer" on:click={() => {if (!webapp) {
+    console.log({webapp})
+    open = true
+    }}}>
     {#if game.image}
       <img
         alt={game.name}
@@ -38,9 +42,9 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
           )}
           style="image-rendering: smooth; image-resolution: snap;"
       />
-      {/if}
+    {/if}
     <Card.CardContent
-    class="relative p-6 rounded-xl overflow-hidden hover:scale-[1.03] hover:translate-x-1 transition">
+    class="relative p-6 rounded-xl overflow-hidden hover:scale-[1.03] transition backdrop-brightness-90 text-white {webapp ? 'text-xl' : 'hover:translate-x-1'}">
       <Card.Title>{game.name}</Card.Title>
       <Card.Description>
         <Tooltip.Root>
@@ -48,7 +52,7 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
             class="text-xs cursor-help font-bold {game.tversion ===
               'Intégrée' || game.tversion === game.version
               ? 'text-green-700'
-              : 'text-red-700'}"
+              : 'text-red-700'} {webapp ? 'text-lg' : ''}"
           >
             {game.tversion}
           </Tooltip.Trigger>
