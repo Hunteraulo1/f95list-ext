@@ -1,5 +1,8 @@
 <script lang="ts">
-import { goto } from '$app/navigation'
+import { goto } from '$app/navigation';
+import type { PageData } from './$types';
 
-goto('/')
+export let data: PageData;
+
+data.searchParams.webapp === '' ? goto('/webapp') : goto('/');
 </script>
