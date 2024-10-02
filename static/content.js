@@ -4,18 +4,22 @@
 
     insert(data);
 
-    const mutationCallback = async (mutationsList) => {
-      for (const mutation of mutationsList) {
-        if (mutation.type === 'childList') {
+    const { pathname } = window.location;
+
+    const f95 = pathname === '/sam/latest_alpha/';
+    const lc = pathname.startsWith('/latest-updates/');
+
+    if (f95 || lc) {
+      const mutationCallback = async (mutationsList) => {
+        if ((f95 && mutationsList.length >= 200) || lc) {
           insert(data);
         }
-      }
-    };
+      };
+      const observer = new MutationObserver(mutationCallback);
+      const config = { childList: true, subtree: true };
 
-    const observer = new MutationObserver(mutationCallback);
-    const config = { childList: true, subtree: true };
-
-    observer.observe(document.body, config);
+      observer.observe(document.body, config);
+    }
 
     console.info('[F95ListFR] Injecting script successful !');
   } catch (error) {
@@ -23,30 +27,27 @@
   }
 })();
 
-const hostname = window.location.hostname;
+const { hostname } = window.location;
 
 const insert = (games) => {
-  if (games && games.length > 0) {
-    const pathname = window.location.pathname;
+  if (!(games && games.length > 0)) return;
 
-    if (pathname === '/sam/latest_alpha/') {
-      latest('.resource-tile_link', games);
-    } else if (pathname.startsWith('/latest-updates/')) {
-      latest('.porta-article-header', games);
-    } else if (pathname.startsWith('/threads/')) {
-      console.log('🚀 ~ insert ~ tileId:', window.location.pathname.split('/'));
-      console.log('🚀 ~ insert ~ tileId:', window.location.pathname.split('/')[2].split('.')[1]);
-      console.log('🚀 ~ insert ~ tileId:', Number.parseInt(window.location.pathname.split('/')[2].split('.')[1]));
-      const tileId = Number.parseInt(window.location.pathname.split('/')[2].split('.')[1]);
+  const { pathname } = window.location;
 
-      if (games.find((game) => game.id === tileId && game.hostname === hostname)) {
-        const parent = document.querySelector('.p-title-value');
+  if (pathname === '/sam/latest_alpha/') {
+    latest('.resource-tile_link', games);
+  } else if (pathname.startsWith('/latest-updates/')) {
+    latest('.porta-article-header', games);
+  } else if (pathname.startsWith('/threads/')) {
+    const tileId = Number(window.location.pathname.split('/')[2].split('.')[1]);
 
-        if (parent && !parent?.classList.contains('flag-inserted')) {
-          createFlag(parent);
+    if (games.find((game) => game.id === tileId && game.hostname === hostname)) {
+      const parent = document.querySelector('.p-title-value');
 
-          parent?.classList.add('flag-inserted');
-        }
+      if (parent && !parent?.classList.contains('flag-inserted')) {
+        createFlag(parent);
+
+        parent?.classList.add('flag-inserted');
       }
     }
   }
@@ -58,14 +59,15 @@ const latest = (query, games) => {
   for (const tile of tiles) {
     const tileId =
       hostname === 'f95zone.to'
-        ? Number.parseInt(tile.pathname.split('/')[2])
-        : Number.parseInt(tile.pathname.split('/')[2].split('.')[1]);
+        ? Number(tile.pathname.split('/')[2])
+        : Number(tile.pathname.split('/')[2].split('.')[1]);
 
-    if (games.find((game) => game.id === tileId && game.hostname === hostname)) {
-      if (!tile.classList.contains('flag-inserted')) {
-        createFlag(hostname === 'f95zone.to' ? tile.children[1].children[0] : tile.children[1].children[1]);
-        tile.classList.add('flag-inserted');
-      }
+    if (
+      games.find((game) => game.id === tileId && game.hostname === hostname) &&
+      !tile.classList.contains('flag-inserted')
+    ) {
+      createFlag(hostname === 'f95zone.to' ? tile.children[1].children[0] : tile.children[1].children[1]);
+      tile.classList.add('flag-inserted');
     }
   }
 };
