@@ -4,7 +4,7 @@ import { Button } from '$lib/components/ui/button';
 import getData from '$lib/utils/getData';
 import { ModeWatcher } from 'mode-watcher';
 import { Reload } from 'svelte-radix';
-import '../app.postcss';
+import '../app.pcss';
 
 console.log(window.location.pathname);
 </script>
