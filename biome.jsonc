@@ -21,7 +21,7 @@
     "enabled": true
   },
   "linter": {
-    "ignore": ["**/node_modules/*", "**/dist/*", "**/.svelte-kit/*", "**/build/*"],
+    "ignore": ["**/node_modules/*", "**/dist/*", "**/.svelte-kit/*", "**/build/*", "**/lib/utils.ts"],
     "enabled": true,
     "rules": {
       "recommended": true,
