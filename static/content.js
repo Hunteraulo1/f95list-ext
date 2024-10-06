@@ -11,7 +11,7 @@
 
     if (f95 || lc) {
       const mutationCallback = async (mutationsList) => {
-        if ((f95 && mutationsList.length >= 200) || lc) {
+        if ((f95 && mutationsList.length > 35) || lc) {
           insert(data);
         }
       };
