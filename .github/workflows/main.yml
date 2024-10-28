@@ -104,7 +104,13 @@ jobs:
           git config --local user.name "GitHub Action"
           git add updates.json static/manifest_chrome.json static/manifest_firefox.json
           git commit -m "chore: update version to ${{ steps.get_version.outputs.version }}"
-          git push
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          branch: ${{ github.event.pull_request.base.ref }}
+          force: true
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
