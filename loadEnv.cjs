@@ -1,6 +1,14 @@
 require('dotenv').config();
 const { execSync } = require('node:child_process');
 
+// Synchroniser l'horloge système avant de continuer
+try {
+  console.info('Synchronisation de l\'horloge système...');
+  execSync('sudo ntpdate pool.ntp.org', { stdio: 'inherit' });
+} catch (error) {
+  console.warn('Impossible de synchroniser l\'horloge. Assurez-vous que ntpdate est installé.');
+}
+
 const apiKey = process.env.MOZILLA_API_KEY;
 const apiSecret = process.env.MOZILLA_API_SECRET;
 
