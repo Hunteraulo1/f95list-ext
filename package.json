@@ -1,6 +1,6 @@
 {
   "name": "f95list-ext",
-  "version": "1.6.6",
+  "version": "1.6.7",
   "private": false,
   "type": "module",
   "author": {
@@ -18,7 +18,10 @@
       "path": "cz-emoji"
     },
     "cz-emoji": {
-      "skipQuestions": ["scope", "body"]
+      "skipQuestions": [
+        "scope",
+        "body"
+      ]
     }
   },
   "scripts": {
@@ -64,5 +67,11 @@
     "vite-plugin-svelte": "3.0.1",
     "vite-plugin-tailwind-purgecss": "0.3.3"
   },
-  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"]
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@deepkit/type-compiler",
+    "@sveltejs/kit",
+    "esbuild",
+    "svelte-preprocess"
+  ]
 }
