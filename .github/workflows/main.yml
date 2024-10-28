@@ -98,7 +98,7 @@ jobs:
           cd chrome
           zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
           
-      - name: Commit updated version files
+      - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -108,8 +108,8 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          branch: ${{ github.event.pull_request.base.ref }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
           force: true
         
       - name: Create Release
