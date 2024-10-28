@@ -62,7 +62,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git pull origin main --rebase  # Ajout du pull avec rebase
           git add static/manifest_chrome.json static/manifest_firefox.json
           git commit -m "chore: update manifests version to ${{ steps.get_version.outputs.version }}"
           git push origin main
@@ -116,7 +115,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git pull origin main --rebase  # Ajout du pull avec rebase
           git add updates.json
           git commit -m "chore: update updates.json for version ${{ steps.get_version.outputs.version }}"
           git push origin main
