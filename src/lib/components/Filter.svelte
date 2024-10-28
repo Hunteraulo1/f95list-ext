@@ -1,25 +1,34 @@
 <script lang="ts">
-import { Button } from '$lib/components/ui/button/index.js';
-import * as Command from '$lib/components/ui/command/index.js';
-import { Input } from '$lib/components/ui/input/index.js';
-import * as Popover from '$lib/components/ui/popover/index.js';
-import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
-import { filter, search } from '$lib/stores';
-import { cn } from '$lib/utils';
-import { Check, ChevronDown, Cross2 } from 'svelte-radix';
+  import { Button } from "$lib/components/ui/button/index.js";
+  import * as Command from "$lib/components/ui/command/index.js";
+  import { Input } from "$lib/components/ui/input/index.js";
+  import * as Popover from "$lib/components/ui/popover/index.js";
+  import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
+  import { filter, search } from "$lib/stores";
+  import { cn } from "$lib/utils";
+  import { Check, ChevronDown, Cross2 } from "svelte-radix";
 
-const handleReset = () => {
-  $search = '';
-  filter.reset();
-};
+  const handleReset = () => {
+    $search = "";
+    filter.reset();
+  };
 </script>
 
 <Popover.Root>
-  <Popover.Trigger >
-    <Button variant="secondary" class="-translate-y-12 border-2 border-primary-foreground">Filtrer</Button>
+  <Popover.Trigger>
+    <Button
+      variant="secondary"
+      class="-translate-y-12 border-2 border-primary-foreground">Filtrer</Button
+    >
   </Popover.Trigger>
-  <Popover.Content side="top" class="p-0 !top-2 min-h-[26rem]" style="height: calc(50vh - 4rem)">
-    <Popover.Close class="absolute z-50 top-2 right-2 rounded-full p-1 hover:bg-primary-foreground">
+  <Popover.Content
+    side="top"
+    class="p-0 !top-2 min-h-[26rem]"
+    style="height: calc(50vh - 4rem)"
+  >
+    <Popover.Close
+      class="absolute z-50 top-2 right-2 rounded-full p-1 hover:bg-primary-foreground"
+    >
       <Cross2 />
     </Popover.Close>
     <ScrollArea class="w-full h-full px-2 pb-4 pt-10">
@@ -32,11 +41,15 @@ const handleReset = () => {
           class="w-full"
           value={$search}
           on:input={({ currentTarget }) => {
-            $search = currentTarget.value.toLowerCase()
+            $search = currentTarget.value.toLowerCase();
           }}
         />
         {#each $filter as { title, open, values }}
-          <label for={title} class="font-bold text-xs capitalize leading-none mt-2">{title}: </label>
+          <label
+            for={title}
+            class="font-bold text-xs capitalize leading-none mt-2"
+            >{title}:
+          </label>
           <Popover.Root>
             <Popover.Trigger asChild let:builder>
               <Button
@@ -49,9 +62,9 @@ const handleReset = () => {
                 <p class="truncate text-xs">
                   {values.some(({ checked }) => checked)
                     ? values
-                        .filter(value => value.checked)
+                        .filter((value) => value.checked)
                         .map(({ value }) => value)
-                        .join(', ')
+                        .join(", ")
                     : `Filtrer par ${title}...`}
                 </p>
                 <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -67,10 +80,28 @@ const handleReset = () => {
                       <Command.Item
                         {value}
                         onSelect={() => {
-                          checked = !checked
+                          filter.update(($filter) => {
+                            const currentFilter = $filter.find(
+                              (f) => f.title === title,
+                            );
+                            if (currentFilter) {
+                              const valueToUpdate = currentFilter.values.find(
+                                (v) => v.value === value,
+                              );
+                              if (valueToUpdate) {
+                                valueToUpdate.checked = !valueToUpdate.checked;
+                              }
+                            }
+                            return $filter;
+                          });
                         }}
                       >
-                        <Check class={cn('mr-2 h-4 w-4', !checked && 'text-transparent')} />
+                        <Check
+                          class={cn(
+                            "mr-2 h-4 w-4",
+                            !checked && "text-transparent",
+                          )}
+                        />
                         {value}
                       </Command.Item>
                     {/each}
@@ -80,7 +111,9 @@ const handleReset = () => {
             </Popover.Content>
           </Popover.Root>
         {/each}
-        <Button class="self-center mt-2" on:click={handleReset}>Réinitialiser les filtres</Button>
+        <Button class="self-center mt-2" on:click={handleReset}
+          >Réinitialiser les filtres</Button
+        >
       </section>
     </ScrollArea>
   </Popover.Content>
