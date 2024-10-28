@@ -22,6 +22,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
@@ -46,21 +47,9 @@ jobs:
           PREVIOUS_VERSION=${PREVIOUS_TAG#v}
           echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
 
-      - name: Create version update branch
+      - name: Update manifests version
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
-          git checkout -b update-version-$VERSION
-        
-      - name: Update version in files
-        run: |
-          VERSION=${{ steps.get_version.outputs.version }}
-          
-          # Mise à jour de updates.json
-          jq --arg version "$VERSION" \
-             --arg url "https://github.com/${{ github.repository }}/releases/download/v${VERSION}/f95list_ext-${VERSION}_firefox.xpi" \
-             --arg id "$FIREFOX_EXTENSION_ID" \
-             '.addons[$id].updates[0].version = $version | .addons[$id].updates[0].update_link = $url' \
-             updates.json > updates.json.tmp && mv updates.json.tmp updates.json
           
           # Mise à jour des manifests
           jq --arg version "$VERSION" '.version = $version' static/manifest_chrome.json > static/manifest_chrome.json.tmp \
@@ -68,6 +57,14 @@ jobs:
           
           jq --arg version "$VERSION" '.version = $version' static/manifest_firefox.json > static/manifest_firefox.json.tmp \
             && mv static/manifest_firefox.json.tmp static/manifest_firefox.json
+
+      - name: Commit manifest changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add static/manifest_chrome.json static/manifest_firefox.json
+          git commit -m "chore: update manifests version to ${{ steps.get_version.outputs.version }}"
+          git push origin main
         
       - name: Build extensions
         run: bun run build
@@ -103,39 +100,24 @@ jobs:
           cd chrome
           zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
 
-      - name: Commit changes
+      - name: Update updates.json
+        run: |
+          VERSION=${{ steps.get_version.outputs.version }}
+          
+          # Mise à jour de updates.json
+          jq --arg version "$VERSION" \
+             --arg url "https://github.com/${{ github.repository }}/releases/download/v${VERSION}/f95list_ext-${VERSION}_firefox.xpi" \
+             --arg id "$FIREFOX_EXTENSION_ID" \
+             '.addons[$id].updates[0].version = $version | .addons[$id].updates[0].update_link = $url' \
+             updates.json > updates.json.tmp && mv updates.json.tmp updates.json
+
+      - name: Commit updates.json changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add updates.json static/manifest_chrome.json static/manifest_firefox.json
-          git commit -m "chore: update version to ${{ steps.get_version.outputs.version }}"
-          git push origin update-version-${{ steps.get_version.outputs.version }}
-
-      - name: Create Pull Request
-        id: create-pr
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: "chore: update version files to ${{ steps.get_version.outputs.version }}"
-          body: |
-            Automatic version update in manifest and update files.
-            
-            Changes:
-            - Updated version in manifest_chrome.json
-            - Updated version in manifest_firefox.json
-            - Updated version in updates.json
-          branch: update-version-${{ steps.get_version.outputs.version }}
-          base: main
-          delete-branch: true
-          labels: |
-            automated pr
-            version update
-
-      - name: Auto-approve Pull Request
-        uses: juliangruber/approve-pull-request-action@v2
-        with:
-          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          number: ${{ steps.create-pr.outputs.pull-request-number }}
+          git add updates.json
+          git commit -m "chore: update updates.json for version ${{ steps.get_version.outputs.version }}"
+          git push origin main
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
