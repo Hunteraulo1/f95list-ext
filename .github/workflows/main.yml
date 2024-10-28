@@ -1,0 +1,90 @@
+name: Release Extension
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  build:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        
+      - name: Install dependencies
+        run: bun install
+        
+      - name: Install web-ext
+        run: npm install -g web-ext
+        
+      - name: Get version
+        id: get_version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Get previous version
+        id: get_previous_version
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          PREVIOUS_VERSION=${PREVIOUS_TAG#v}
+          echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
+        
+      - name: Build extensions
+        run: bun run build
+        
+      - name: Sign Firefox extension
+        env:
+          MOZILLA_API_KEY: ${{ secrets.MOZILLA_API_KEY }}
+          MOZILLA_API_SECRET: ${{ secrets.MOZILLA_API_SECRET }}
+        run: |
+          web-ext sign \
+            --api-key ${{ secrets.MOZILLA_API_KEY }} \
+            --api-secret ${{ secrets.MOZILLA_API_SECRET }} \
+            --artifacts-dir builds/artifacts \
+            --channel unlisted \
+            -s builds/firefox
+            
+      - name: Rename Firefox artifact
+        run: |
+          cd builds/artifacts
+          for file in *.xpi; do
+            if [ -f "$file" ]; then
+              mv "$file" "${file%.xpi}_firefox.xpi"
+            fi
+          done
+          
+      - name: Create Chrome artifact
+        run: |
+          VERSION=${{ steps.get_version.outputs.version }}
+          cd builds
+          if [ ! -d "artifacts" ]; then
+            mkdir artifacts
+          fi
+          cd chrome
+          zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
+        
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            builds/artifacts/*_chrome.zip
+            builds/artifacts/*_firefox.xpi
+          tag_name: v${{ steps.get_version.outputs.version }}
+          body: |
+            ## Installation
+            **Pour Firefox:** *(mise à jour automatique)*
+            - Il faut glisser le fichier **.xpi** sur le navigateur _ou l'ouvrir avec Firefox_.
+
+            **Pour Chrome/Opera/Brave/Edge:** *(mise à jour manuelle)*
+            - Il faut aller dans la page des extensions _(chrome://extensions/)_
+            - Cliquer en haut à droite sur **Mode développeur**
+            - Puis glisser l'archive **.zip** dans la page
+
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.get_version.outputs.previous_version }}...v${{ steps.get_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
