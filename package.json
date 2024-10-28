@@ -29,8 +29,6 @@
     "build": "bun run build:chrome && bun run build:firefox",
     "build:chrome": "BUILD_MODE=chrome vite build",
     "build:firefox": "BUILD_MODE=firefox vite build",
-    "build:firefox:push": "node loadEnv.cjs",
-    "build:push": "bun run build && rm -rf builds/artifacts && bun run build:firefox:push && node artifacts.cjs",
     "check": "bunx @biomejs/biome check --write . && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "lint": "bunx @biomejs/biome lint --write .",
     "format": "bunx @biomejs/biome format --write ."
