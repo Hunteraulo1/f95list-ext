@@ -18,10 +18,7 @@
       "path": "cz-emoji"
     },
     "cz-emoji": {
-      "skipQuestions": [
-        "scope",
-        "body"
-      ]
+      "skipQuestions": ["scope", "body"]
     }
   },
   "scripts": {
@@ -65,11 +62,5 @@
     "vite-plugin-svelte": "3.0.1",
     "vite-plugin-tailwind-purgecss": "0.3.3"
   },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "@deepkit/type-compiler",
-    "@sveltejs/kit",
-    "esbuild",
-    "svelte-preprocess"
-  ]
+  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"]
 }
