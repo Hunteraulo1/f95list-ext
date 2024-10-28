@@ -1,10 +1,17 @@
 name: Release Extension
 
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
   pull_request:
     types: [closed]
     branches:
       - main
+
+env:
+  FIREFOX_EXTENSION_ID: "{9f7488b3-d704-4894-bac8-5dc3068fd6b9}"
 
 jobs:
   build:
@@ -25,10 +32,13 @@ jobs:
       - name: Install web-ext
         run: npm install -g web-ext
         
+      - name: Install jq
+        run: sudo apt-get install jq
+        
       - name: Get version
         id: get_version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-
+        
       - name: Get previous version
         id: get_previous_version
         run: |
@@ -36,6 +46,24 @@ jobs:
           PREVIOUS_VERSION=${PREVIOUS_TAG#v}
           echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
         
+      - name: Update version in files
+        run: |
+          VERSION=${{ steps.get_version.outputs.version }}
+          
+          # Mise à jour de updates.json
+          jq --arg version "$VERSION" \
+             --arg url "https://github.com/${{ github.repository }}/releases/download/v${VERSION}/f95list_ext-${VERSION}_firefox.xpi" \
+             --arg id "$FIREFOX_EXTENSION_ID" \
+             '.addons[$id].updates[0].version = $version | .addons[$id].updates[0].update_link = $url' \
+             updates.json > updates.json.tmp && mv updates.json.tmp updates.json
+          
+          # Mise à jour des manifests
+          jq --arg version "$VERSION" '.version = $version' static/manifest_chrome.json > static/manifest_chrome.json.tmp \
+            && mv static/manifest_chrome.json.tmp static/manifest_chrome.json
+          
+          jq --arg version "$VERSION" '.version = $version' static/manifest_firefox.json > static/manifest_firefox.json.tmp \
+            && mv static/manifest_firefox.json.tmp static/manifest_firefox.json
+          
       - name: Build extensions
         run: bun run build
         
@@ -69,6 +97,14 @@ jobs:
           fi
           cd chrome
           zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
+          
+      - name: Commit updated version files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add updates.json static/manifest_chrome.json static/manifest_firefox.json
+          git commit -m "chore: update version to ${{ steps.get_version.outputs.version }}"
+          git push
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -87,6 +123,6 @@ jobs:
             - Cliquer en haut à droite sur **Mode développeur**
             - Puis glisser l'archive **.zip** dans la page
 
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.get_version.outputs.previous_version }}...v${{ steps.get_version.outputs.version }}
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.get_previous_version.outputs.previous_version }}...v${{ steps.get_version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
