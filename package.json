@@ -1,6 +1,6 @@
 {
   "name": "f95list-ext",
-  "version": "1.6.6",
+  "version": "1.6.7",
   "private": false,
   "type": "module",
   "author": {
@@ -18,7 +18,10 @@
       "path": "cz-emoji"
     },
     "cz-emoji": {
-      "skipQuestions": ["scope", "body"]
+      "skipQuestions": [
+        "scope",
+        "body"
+      ]
     }
   },
   "scripts": {
@@ -26,18 +29,16 @@
     "build": "bun run build:chrome && bun run build:firefox",
     "build:chrome": "BUILD_MODE=chrome vite build",
     "build:firefox": "BUILD_MODE=firefox vite build",
-    "build:firefox:push": "node loadEnv.cjs",
-    "build:push": "bun run build && rm -rf builds/artifacts && bun run build:firefox:push && node artifacts.cjs",
     "check": "bunx @biomejs/biome check --write . && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "lint": "bunx @biomejs/biome lint --write .",
     "format": "bunx @biomejs/biome format --write ."
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.3",
-    "@eslint/js": "9.12.0",
-    "@sveltejs/kit": "2.6.2",
-    "@sveltejs/vite-plugin-svelte": "3.1.2",
-    "@types/chrome": "0.0.277",
+    "@biomejs/biome": "1.9.4",
+    "@eslint/js": "9.13.0",
+    "@sveltejs/kit": "2.7.3",
+    "@sveltejs/vite-plugin-svelte": "4.0.0",
+    "@types/chrome": "0.0.279",
     "@types/webextension-polyfill": "0.12.1",
     "archiver": "7.0.1",
     "autoprefixer": "10.4.20",
@@ -49,20 +50,26 @@
     "mode-watcher": "0.4.1",
     "postcss": "8.4.47",
     "postcss-import": "16.1.0",
-    "svelte": "4.2.19",
-    "svelte-check": "4.0.4",
-    "svelte-radix": "^1.1.1",
+    "svelte": "5.1.3",
+    "svelte-check": "4.0.5",
+    "svelte-radix": "^2.0.1",
     "sveltekit-adapter-chrome-extension": "2.0.1",
-    "tailwind-merge": "2.5.3",
+    "tailwind-merge": "2.5.4",
     "tailwind-variants": "0.2.1",
-    "tailwindcss": "3.4.13",
+    "tailwindcss": "3.4.14",
     "ts-node": "10.9.2",
-    "tslib": "2.7.0",
-    "typescript": "5.6.2",
-    "valibot": "1.0.0-beta.0",
-    "vite": "5.4.8",
+    "tslib": "2.8.0",
+    "typescript": "5.6.3",
+    "valibot": "0.42.1",
+    "vite": "5.4.10",
     "vite-plugin-svelte": "3.0.1",
     "vite-plugin-tailwind-purgecss": "0.3.3"
   },
-  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"]
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@deepkit/type-compiler",
+    "@sveltejs/kit",
+    "esbuild",
+    "svelte-preprocess"
+  ]
 }
