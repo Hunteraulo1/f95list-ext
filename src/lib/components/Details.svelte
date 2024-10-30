@@ -1,13 +1,14 @@
 <script lang="ts">
 import noImage from '$lib/assets/no-image.png';
-import * as Alert from '$lib/components/ui/alert/index.js';
-import { Badge } from '$lib/components/ui/badge';
-import { Button } from '$lib/components/ui/button/index.js';
-import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 import type { GameType } from '$lib/schemas';
 import { settings } from '$lib/stores';
 import { statusColor, typeColor } from '$lib/utils/badgeColor';
 import { lazyLoad } from '$lib/utils/lazyload';
+import * as Alert from '$ui/alert';
+import { Badge } from '$ui/badge';
+import { Button } from '$ui/button';
+import { ScrollArea } from '$ui/scroll-area';
+import * as Tooltip from '$ui/tooltip';
 import { ArrowLeft, ExclamationTriangle } from 'svelte-radix';
 
 let tagsHide = $state($settings.tagsHide);
@@ -59,7 +60,8 @@ let closed = $state(false);
             {game.status}
           </Badge>
           {game.name}
-          <!-- <Tooltip.Root>
+          <Tooltip.Provider>
+          <Tooltip.Root>
             <Tooltip.Trigger
               class="text-xs cursor-help font-bold {game.tversion ===
                 'Intégrée' || game.tversion === game.version
@@ -81,7 +83,8 @@ let closed = $state(false);
                 {/if}
               </Badge>
             </Tooltip.Content>
-          </Tooltip.Root> -->
+          </Tooltip.Root>
+        </Tooltip.Provider>
         </h1>
         <div class="flex gap-1 flex-wrap">
           <span class="font-bold text-sm">Tags:</span>

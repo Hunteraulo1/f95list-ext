@@ -1,8 +1,8 @@
 <script lang="ts">
-import { Button } from '$lib/components/ui/button';
-import * as Card from '$lib/components/ui/card';
-import { ScrollArea } from '$lib/components/ui/scroll-area';
 import { traductors } from '$lib/stores';
+import { Button } from '$ui/button';
+import * as Card from '$ui/card';
+import { ScrollArea } from '$ui/scroll-area';
 import { Reload } from 'svelte-radix';
 </script>
 
