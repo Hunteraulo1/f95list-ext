@@ -82,6 +82,7 @@ const filterFn = () => {
 };
 
 export const filter = filterFn();
+export type FilterType = typeof filter;
 
 export const search = writable('');
 
