@@ -19,7 +19,7 @@ const handleClick = (href: string) => {
 <ul class="flex w-full justify-around bg-secondary/75 p-2 rounded-lg">
   {#each nav as { name, href }}
     <li>
-      <Button variant="outline" on:click={() => handleClick(href)}>
+      <Button variant="outline" onclick={() => handleClick(href)}>
         {name}
       </Button>
     </li>

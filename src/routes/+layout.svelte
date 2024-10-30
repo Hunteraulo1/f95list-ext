@@ -5,11 +5,11 @@ import getData from '$lib/utils/getData';
 import { ModeWatcher } from 'mode-watcher';
 import { Reload } from 'svelte-radix';
 import '../app.pcss';
-  interface Props {
-    children?: import('svelte').Snippet;
-  }
+interface Props {
+  children?: import('svelte').Snippet;
+}
 
-  let { children }: Props = $props();
+let { children }: Props = $props();
 
 console.log(window.location.pathname);
 </script>

@@ -3,11 +3,11 @@ import DetailsWebApp from '$lib/components/webapp/DetailsWebApp.svelte';
 import FilterWebApp from '$lib/components/webapp/FilterWebApp.svelte';
 import NavWebApp from '$lib/components/webapp/NavWebApp.svelte';
 import { detailGame } from '$lib/stores';
-  interface Props {
-    children?: import('svelte').Snippet;
-  }
+interface Props {
+  children?: import('svelte').Snippet;
+}
 
-  let { children }: Props = $props();
+let { children }: Props = $props();
 </script>
 
 <section class="flex w-screen min-h-screen h-screen max-h-screen bg-primary-foreground z-10">

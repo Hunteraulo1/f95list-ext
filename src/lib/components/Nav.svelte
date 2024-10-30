@@ -12,7 +12,7 @@ const nav = [
 <ul class="flex w-full justify-around bg-secondary/75 p-2 sticky bottom-0">
   {#each nav as { name, href }}
     <li>
-      <Button variant="outline" on:click={() => goto(href)}>
+      <Button variant="outline" onclick={() => goto(href)}>
         {name}
       </Button>
     </li>

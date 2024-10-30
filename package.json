@@ -18,10 +18,7 @@
       "path": "cz-emoji"
     },
     "cz-emoji": {
-      "skipQuestions": [
-        "scope",
-        "body"
-      ]
+      "skipQuestions": ["scope", "body"]
     }
   },
   "scripts": {
@@ -42,7 +39,7 @@
     "@types/webextension-polyfill": "0.12.1",
     "archiver": "7.0.1",
     "autoprefixer": "10.4.20",
-    "bits-ui": "^0.21.16",
+    "bits-ui": "^1.0.0-next.33",
     "clsx": "2.1.1",
     "cmdk-sv": "^0.0.18",
     "cross-env": "7.0.3",
@@ -65,11 +62,5 @@
     "vite-plugin-svelte": "3.0.1",
     "vite-plugin-tailwind-purgecss": "0.3.3"
   },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "@deepkit/type-compiler",
-    "@sveltejs/kit",
-    "esbuild",
-    "svelte-preprocess"
-  ]
+  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"]
 }

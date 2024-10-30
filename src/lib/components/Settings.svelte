@@ -88,7 +88,7 @@ const handleSettings = (id: keyof Settings) => {
         <div class="flex justify-center items-center gap-2">
           <Label for={id}>{title}</Label>
           {#if id === "theme"}
-            <Button {id} on:click={toggleMode} variant="outline" size="icon">
+            <Button {id} onclick={toggleMode} variant="outline" size="icon">
               <Sun
                 class="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
               />
@@ -100,7 +100,7 @@ const handleSettings = (id: keyof Settings) => {
           {:else}
             <Switch
               {id}
-              on:click={() => handleSettings(id)}
+              onclick={() => handleSettings(id)}
               checked={$settings[id]}
             />
           {/if}
@@ -110,7 +110,7 @@ const handleSettings = (id: keyof Settings) => {
     <div>
       <h2 class="text-center mb-2 font-bold">En savoir plus</h2>
       <div class="flex justify-center items-center flex-col">
-        <Button class="mb-2" variant="outline" on:click={() => goto("traductors")}
+        <Button class="mb-2" variant="outline" onclick={() => goto("traductors")}
           >Voir les traducteurs/relecteurs</Button
         >
         {#each links as { title, href }}
