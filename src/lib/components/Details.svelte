@@ -4,7 +4,6 @@ import * as Alert from '$lib/components/ui/alert/index.js';
 import { Badge } from '$lib/components/ui/badge';
 import { Button } from '$lib/components/ui/button/index.js';
 import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
-import * as Tooltip from '$lib/components/ui/tooltip';
 import type { GameType } from '$lib/schemas';
 import { settings } from '$lib/stores';
 import { statusColor, typeColor } from '$lib/utils/badgeColor';
@@ -13,12 +12,12 @@ import { ArrowLeft, ExclamationTriangle } from 'svelte-radix';
 
 let tagsHide = $state($settings.tagsHide);
 
-  interface Props {
-    game: GameType;
-    open: boolean;
-  }
+interface Props {
+  game: GameType;
+  open: boolean;
+}
 
-  let { game, open = $bindable() }: Props = $props();
+let { game, open = $bindable() }: Props = $props();
 let closed = $state(false);
 </script>
 
@@ -31,9 +30,9 @@ let closed = $state(false);
     <Button
       class="flex gap-1 opacity-50 absolute top-2 left-2"
       variant="secondary"
-      on:click={() => {
+      onclick={() => {
         closed = true
-        setTimeout(() => (open = false), 600)
+        setTimeout(() => {open = false}, 600)
       }}
     >
       <ArrowLeft />
@@ -60,7 +59,7 @@ let closed = $state(false);
             {game.status}
           </Badge>
           {game.name}
-          <Tooltip.Root>
+          <!-- <Tooltip.Root>
             <Tooltip.Trigger
               class="text-xs cursor-help font-bold {game.tversion ===
                 'Intégrée' || game.tversion === game.version
@@ -82,7 +81,7 @@ let closed = $state(false);
                 {/if}
               </Badge>
             </Tooltip.Content>
-          </Tooltip.Root>
+          </Tooltip.Root> -->
         </h1>
         <div class="flex gap-1 flex-wrap">
           <span class="font-bold text-sm">Tags:</span>

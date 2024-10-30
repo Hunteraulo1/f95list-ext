@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Button } from '$lib/components/ui/button/index.js';
+import { Button, buttonVariants } from '$lib/components/ui/button/index.js';
 import * as Command from '$lib/components/ui/command/index.js';
 import { Input } from '$lib/components/ui/input/index.js';
 import * as Popover from '$lib/components/ui/popover/index.js';
@@ -24,11 +24,11 @@ const handleReset = () => {
         placeholder="Rechercher un nom"
         class="w-full"
         value={$search}
-        on:input={({ currentTarget }) => {
+        oninput={({ currentTarget }) => {
           $search = currentTarget.value.toLowerCase();
         }}
       />
-      <Button on:click={handleReset}>Réinitialiser les filtres</Button>
+      <Button onclick={handleReset}>Réinitialiser les filtres</Button>
     </div>
     <section class="grid grid-cols-3 gap-1 w-full">
       {#each $filter as { title, open, values }}
@@ -39,27 +39,15 @@ const handleReset = () => {
             >{title}:
           </label>
           <Popover.Root>
-            <Popover.Trigger asChild >
-              {#snippet children({ builder })}
-                            <Button
-                  builders={[builder]}
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={open}
-                  class="w-full flex justify-between"
-                >
-                  <p class="truncate text-xs">
-                    {values.some(({ checked }) => checked)
-                      ? values
-                          .filter((value) => value.checked)
-                          .map(({ value }) => value)
-                          .join(", ")
-                      : `Filtrer par ${title}...`}
-                  </p>
-                  <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-                                        {/snippet}
-                        </Popover.Trigger>
+            <Popover.Trigger class={buttonVariants({ variant: "outline", className: "w-full flex justify-between" })}>
+              {values.some(({ checked }) => checked)
+                ? values
+                    .filter((value) => value.checked)
+                    .map(({ value }) => value)
+                    .join(", ")
+                : `Filtrer par ${title}...`}
+              <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Popover.Trigger>
             <Popover.Content class="w-fit p-0">
               <Command.Root>
                 <Command.Input placeholder="Rechercher..." />

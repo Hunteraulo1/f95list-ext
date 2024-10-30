@@ -12,11 +12,11 @@ import { ExclamationTriangle } from 'svelte-radix';
 
 const tagsHide = $settings.tagsHide;
 
-  interface Props {
-    game: GameType;
-  }
+interface Props {
+  game: GameType;
+}
 
-  let { game }: Props = $props();
+let { game }: Props = $props();
 const closed = false;
 </script>
 

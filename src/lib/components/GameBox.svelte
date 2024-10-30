@@ -1,8 +1,6 @@
 <script lang="ts">
 import { dev } from '$app/environment';
-import Badge from '$lib/components/ui/badge/badge.svelte';
 import * as Card from '$lib/components/ui/card';
-import * as Tooltip from '$lib/components/ui/tooltip';
 import type { GameType } from '$lib/schemas';
 import { games } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
@@ -11,13 +9,13 @@ import { isFirefox } from '$lib/utils/polyfill';
 import { Link1 } from 'svelte-radix';
 import Details from './Details.svelte';
 
-  interface Props {
-    game: GameType;
-    idGameBox?: IdGameBox;
-    webapp?: boolean;
-  }
+interface Props {
+  game: GameType;
+  idGameBox?: IdGameBox;
+  webapp?: boolean;
+}
 
-  let { game, idGameBox = { domain: 'Unknown', id: 0 }, webapp = false }: Props = $props();
+let { game, idGameBox = { domain: 'Unknown', id: 0 }, webapp = false }: Props = $props();
 
 let open = $state(false);
 
@@ -32,7 +30,7 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
 
 {#if game.domain !== 'Unknown'}
 <div class="relative">
-  <Card.Root class="cursor-pointer" on:click={() => {if (!webapp) {
+  <Card.Root class="cursor-pointer" onclick={() => {if (!webapp) {
     console.log({webapp})
     open = true
     }}}>
@@ -51,7 +49,7 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
     class="relative p-6 rounded-xl overflow-hidden hover:scale-[1.03] transition backdrop-brightness-90 text-white {webapp ? 'text-xl' : 'hover:translate-x-1'}">
       <Card.Title>{game.name}</Card.Title>
       <Card.Description>
-        <Tooltip.Root>
+        <!-- <Tooltip.Root>
           <Tooltip.Trigger
             class="text-xs cursor-help font-bold {game.tversion ===
               'Intégrée' || game.tversion === game.version
@@ -73,7 +71,7 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
               {/if}
             </Badge>
           </Tooltip.Content>
-        </Tooltip.Root>
+        </Tooltip.Root> -->
       </Card.Description>
     </Card.CardContent>
   </Card.Root>
