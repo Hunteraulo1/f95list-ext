@@ -11,10 +11,15 @@ import { statusColor, typeColor } from '$lib/utils/badgeColor';
 import { lazyLoad } from '$lib/utils/lazyload';
 import { ArrowLeft, ExclamationTriangle } from 'svelte-radix';
 
-let tagsHide = $settings.tagsHide;
+let tagsHide = $state($settings.tagsHide);
 
-export let game: GameType, open: boolean;
-let closed = false;
+  interface Props {
+    game: GameType;
+    open: boolean;
+  }
+
+  let { game, open = $bindable() }: Props = $props();
+let closed = $state(false);
 </script>
 
 <div class="fixed top-0 left-0 w-main h-main z-20">
@@ -89,7 +94,7 @@ let closed = false;
           {#if game.tags.length > 5}
             <button
               class="text-xs font-bold text-secondary-foreground/50"
-              on:click={() => (tagsHide = !tagsHide)}
+              onclick={() => (tagsHide = !tagsHide)}
             >
               {tagsHide ? 'afficher plus...' : 'cacher'}
             </button>

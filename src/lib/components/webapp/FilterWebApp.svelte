@@ -39,25 +39,27 @@ const handleReset = () => {
             >{title}:
           </label>
           <Popover.Root>
-            <Popover.Trigger asChild let:builder>
-              <Button
-                builders={[builder]}
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                class="w-full flex justify-between"
-              >
-                <p class="truncate text-xs">
-                  {values.some(({ checked }) => checked)
-                    ? values
-                        .filter((value) => value.checked)
-                        .map(({ value }) => value)
-                        .join(", ")
-                    : `Filtrer par ${title}...`}
-                </p>
-                <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </Popover.Trigger>
+            <Popover.Trigger asChild >
+              {#snippet children({ builder })}
+                            <Button
+                  builders={[builder]}
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  class="w-full flex justify-between"
+                >
+                  <p class="truncate text-xs">
+                    {values.some(({ checked }) => checked)
+                      ? values
+                          .filter((value) => value.checked)
+                          .map(({ value }) => value)
+                          .join(", ")
+                      : `Filtrer par ${title}...`}
+                  </p>
+                  <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+                                        {/snippet}
+                        </Popover.Trigger>
             <Popover.Content class="w-fit p-0">
               <Command.Root>
                 <Command.Input placeholder="Rechercher..." />

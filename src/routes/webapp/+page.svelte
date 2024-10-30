@@ -9,7 +9,7 @@ import Reload from 'svelte-radix/Reload.svelte';
 <ScrollArea class="relative h-full">
   <div class="flex flex-col gap-2 p-2 relative h-full">
     {#each $filteredGames as game (game.name + game.version)}
-      <button on:click={() => $detailGame = game}>
+      <button onclick={() => $detailGame = game}>
         <GameBox {game} webapp />
       </button>
     {:else}

@@ -31,7 +31,7 @@ if (!dev) {
             {update.type}
           </h3>
           {#each update.games as game}
-            <button on:click={() => $detailGame = game}>
+            <button onclick={() => $detailGame = game}>
               <GameBox {game} webapp />
             </button>
           {/each}
