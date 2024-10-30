@@ -2,10 +2,10 @@
 import { dev } from '$app/environment';
 import Filter from '$lib/components/Filter.svelte';
 import GameBox from '$lib/components/GameBox.svelte';
-import Button from '$lib/components/ui/button/button.svelte';
-import { ScrollArea } from '$lib/components/ui/scroll-area';
 import { filteredGames, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
+import { Button } from '$ui/button';
+import { ScrollArea } from '$ui/scroll-area';
 import { ExternalLink } from 'svelte-radix';
 import Reload from 'svelte-radix/Reload.svelte';
 

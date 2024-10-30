@@ -1,13 +1,13 @@
 <script lang="ts">
 import noImage from '$lib/assets/no-image.png';
-import * as Alert from '$lib/components/ui/alert/index.js';
-import { Badge } from '$lib/components/ui/badge';
-import { Button } from '$lib/components/ui/button/index.js';
-import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
-import * as Tooltip from '$lib/components/ui/tooltip';
 import type { GameType } from '$lib/schemas';
 import { settings } from '$lib/stores';
 import { statusColor, typeColor } from '$lib/utils/badgeColor';
+import * as Alert from '$ui/alert';
+import { Badge } from '$ui/badge';
+import { Button } from '$ui/button';
+import { ScrollArea } from '$ui/scroll-area';
+import * as Tooltip from '$ui/tooltip';
 import { ExclamationTriangle } from 'svelte-radix';
 
 const tagsHide = $settings.tagsHide;

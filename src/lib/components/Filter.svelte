@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Button, buttonVariants } from '$lib/components/ui/button/index.js';
-import * as Command from '$lib/components/ui/command/index.js';
-import { Input } from '$lib/components/ui/input/index.js';
-import * as Popover from '$lib/components/ui/popover/index.js';
-import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
 import { filter, search } from '$lib/stores';
 import { cn } from '$lib/utils';
+import { Button, buttonVariants } from '$ui/button';
+import * as Command from '$ui/command';
+import { Input } from '$ui/input';
+import * as Popover from '$ui/popover';
+import { ScrollArea } from '$ui/scroll-area';
 import { Check, ChevronDown, Cross2 } from 'svelte-radix';
 
 const handleReset = () => {

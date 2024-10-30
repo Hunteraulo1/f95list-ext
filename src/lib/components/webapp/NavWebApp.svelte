@@ -1,7 +1,7 @@
 <script lang="ts">
 import { goto } from '$app/navigation';
 import { pathname } from '$lib/stores';
-import Button from '../ui/button/button.svelte';
+import { Button } from '$ui/button';
 
 const nav = [
   { name: 'Liste', href: '/webapp' },

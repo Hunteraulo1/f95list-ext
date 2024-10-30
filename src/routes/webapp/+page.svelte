@@ -1,8 +1,8 @@
 <script lang="ts">
 import GameBox from '$lib/components/GameBox.svelte';
-import Button from '$lib/components/ui/button/button.svelte';
-import { ScrollArea } from '$lib/components/ui/scroll-area';
 import { detailGame, filteredGames } from '$lib/stores';
+import { Button } from '$ui/button';
+import { ScrollArea } from '$ui/scroll-area';
 import Reload from 'svelte-radix/Reload.svelte';
 </script>
 

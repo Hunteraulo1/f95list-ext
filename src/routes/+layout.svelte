@@ -1,7 +1,7 @@
 <script lang="ts">
 import Nav from '$lib/components/Nav.svelte';
-import { Button } from '$lib/components/ui/button';
 import getData from '$lib/utils/getData';
+import { Button } from '$ui/button';
 import { ModeWatcher } from 'mode-watcher';
 import { Reload } from 'svelte-radix';
 import '../app.pcss';
