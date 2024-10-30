@@ -11,11 +11,15 @@ import { isFirefox } from '$lib/utils/polyfill';
 import { Link1 } from 'svelte-radix';
 import Details from './Details.svelte';
 
-export let game: GameType;
-export let idGameBox: IdGameBox = { domain: 'Unknown', id: 0 };
-export let webapp = false;
+  interface Props {
+    game: GameType;
+    idGameBox?: IdGameBox;
+    webapp?: boolean;
+  }
 
-let open = false;
+  let { game, idGameBox = { domain: 'Unknown', id: 0 }, webapp = false }: Props = $props();
+
+let open = $state(false);
 
 if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
   open = $games.filter((game) => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1;
@@ -74,7 +78,7 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
     </Card.CardContent>
   </Card.Root>
   
-  <!-- svelte-ignore missing-declaration -->
+  <!-- svelte-ignore missing_declaration -->
   {#if isFirefox() || dev}
     <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
       <Link1 />
