@@ -41,10 +41,10 @@ let { title, values }: Props = $props();
             {#each values as { value, checked }}
               <Command.Item
                 {value}
-                onSelect={() => {
+                onselect={() => {
                   filter.update((items) => {
-                    return items.map(item => {
-                      if (item.title === title) {
+                    const updatedItems = items.map(item => {
+                      if (item.title.toLowerCase() === title.toLowerCase()) {
                         return {
                           ...item,
                           values: item.values.map(v => {
@@ -59,6 +59,8 @@ let { title, values }: Props = $props();
   
                       return item;
                     });
+                    
+                    return updatedItems;
                   });
                 }}
               >

@@ -2,12 +2,12 @@
 import { dev } from '$app/environment';
 import Filter from '$lib/components/Filter.svelte';
 import GameBox from '$lib/components/GameBox.svelte';
+import LoadingState from '$lib/components/LoadingState.svelte';
 import { filteredGames, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { Button } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
 import { ExternalLink } from 'svelte-radix';
-import Reload from 'svelte-radix/Reload.svelte';
 
 let browserAPI = undefined;
 
@@ -43,21 +43,18 @@ const idGameBoxPromise: Promise<IdGameBox> = new Promise((resolve) =>
         resolve({ domain: 'Unknown', id: 0 });
       }),
 );
+
+let idGameBox = $state<IdGameBox>({ domain: 'Unknown', id: 0 });
 </script>
 
 <ScrollArea class="relative h-full">
   <div class="flex flex-col gap-2 p-2 relative h-full">
     {#each $filteredGames as game (game.name + game.version)}
-      {#await idGameBoxPromise then value}
-        <GameBox {game} idGameBox={value} />
-      {/await}
+      {#key game.id}
+        <GameBox {game} {idGameBox} />
+      {/key}
     {:else}
-      <div class="flex justify-center items-center h-full">
-        <Button>
-          <Reload class="h-4 w-full animate-spin" />
-          Aucun jeu ne correspond à vos critères
-        </Button>
-      </div>
+      <LoadingState />
     {/each}
   </div>
 </ScrollArea>
