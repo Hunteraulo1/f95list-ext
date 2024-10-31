@@ -1,6 +1,6 @@
 <script lang="ts">
+import Filter from '$lib/components/Filter.svelte';
 import DetailsWebApp from '$lib/components/webapp/DetailsWebApp.svelte';
-import FilterWebApp from '$lib/components/webapp/FilterWebApp.svelte';
 import NavWebApp from '$lib/components/webapp/NavWebApp.svelte';
 import { detailGame } from '$lib/stores';
 interface Props {
@@ -22,7 +22,7 @@ let { children }: Props = $props();
         Aucun jeu n'a été sélectionné
       </div>
     {/if}
-    <FilterWebApp />
+    <Filter variant="webapp" />
     <NavWebApp />
   </div>
 </section>

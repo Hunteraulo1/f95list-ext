@@ -88,43 +88,15 @@ export const search = writable('');
 
 export const filteredGames = derived([games, filter, search], ([$games, $filter, $search]) =>
   $games.filter((game) => {
-    if (!game.name.toLowerCase().includes($search)) return false;
-
-    return $filter.every(({ name, values }) => {
-      if (!values.some((value) => value.checked)) return true;
-
-      if (name === 'tags') {
-        return values.every((value) => !value.checked || game.tags.includes(value.value));
-      }
-
-      if (name === 'traductor') {
-        return values.some((value) => value.checked && game.traductor?.includes(value.value));
-      }
-
-      if (name === 'version') {
-        return values.some((value) => {
-          if (!value.checked) return false;
-
-          switch (value.value) {
-            case 'À jour':
-              if (game.version !== game.tversion && game.tversion !== 'Intégrée') return false;
-              break;
-            case 'Intégrée':
-              if (game.tversion !== 'Intégrée') return false;
-              break;
-            case 'Pas à jour':
-              if (game.version === game.tversion || game.tversion === 'Intégrée') return false;
-              break;
-            default:
-              return false;
-          }
-
-          return true;
-        });
-      }
-
-      return values.some((value) => value.checked && game[name] === value.value);
+    const matchesSearch = game.name.toLowerCase().includes($search);
+    const matchesFilters = $filter.every(({ name, values }) => {
+      const activeValues = values.filter((v) => v.checked).map((v) => v.value);
+      return (
+        activeValues.length === 0 ||
+        (game[name as keyof GameType] != null && activeValues.includes(String(game[name as keyof GameType])))
+      );
     });
+    return matchesSearch && matchesFilters;
   }),
 );
 
