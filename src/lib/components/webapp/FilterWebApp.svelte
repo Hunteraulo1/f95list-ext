@@ -29,9 +29,7 @@ const handleReset = () => {
     </div>
     <section class="grid grid-cols-3 gap-1 w-full">
       {#each $filter as { title, values }}
-        <div>
-          <FilterPopover {title} {values} />
-        </div>
+        <FilterPopover {title} {values} />
       {/each}
     </section>
   </ScrollArea>
