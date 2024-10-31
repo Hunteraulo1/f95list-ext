@@ -6,18 +6,20 @@ import { ScrollArea } from '$ui/scroll-area';
 import { Cross2 } from 'svelte-radix';
 import FilterContent from './FilterContent.svelte';
 
-export let variant: 'popup' | 'webapp' = 'popup';
-
 const handleReset = () => {
   $search = '';
   filter.reset();
 };
 
-$: isWebApp = variant === 'webapp';
+interface Props {
+  variant?: 'popup' | 'webapp';
+}
+
+let { variant = 'popup' }: Props = $props();
 </script>
 
-{#if isWebApp}
-  <ScrollArea class="justify-center w-full h-1/3 px-2 pb-4 pt-10">
+{#if variant === 'webapp'}
+  <ScrollArea class="justify-center w-full h-1/3">
     <FilterContent {handleReset} layout="grid" />
   </ScrollArea>
 {:else}
