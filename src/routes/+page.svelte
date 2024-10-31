@@ -2,12 +2,11 @@
 import { dev } from '$app/environment';
 import Filter from '$lib/components/Filter.svelte';
 import GameBox from '$lib/components/GameBox.svelte';
-import LoadingState from '$lib/components/LoadingState.svelte';
 import { filteredGames, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { Button } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
-import { ExternalLink } from 'svelte-radix';
+import { ExternalLink, Reload } from 'svelte-radix';
 
 let browserAPI = undefined;
 
@@ -54,13 +53,18 @@ let idGameBox = $state<IdGameBox>({ domain: 'Unknown', id: 0 });
         <GameBox {game} {idGameBox} />
       {/key}
     {:else}
-      <LoadingState />
+      <div class="flex justify-center items-center h-full">
+        <Button>
+          <Reload class="h-4 w-full animate-spin" />
+          <span>Aucun jeu ne correspond à vos critères</span>
+        </Button>
+      </div> 
     {/each}
   </div>
 </ScrollArea>
 
 <div class="h-0 flex justify-center w-full gap-2">
-  <Filter />
+  <Filter variant="popup" />
   <a href="/index.html?webapp" target="_blank">
     <Button variant="secondary" class="-translate-y-12 border-2 border-primary-foreground">
       <ExternalLink class="h-4 w-full" />

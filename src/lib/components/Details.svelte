@@ -15,33 +15,31 @@ let tagsHide = $state($settings.tagsHide);
 
 interface Props {
   game: GameType;
-  open: boolean;
+  open?: boolean;
+  variant?: 'popup' | 'webapp';
 }
 
-let { game, open = $bindable() }: Props = $props();
-let closed = $state(false);
+let { game, open = $bindable(), variant = 'popup' }: Props = $props();
+let closed = $state<boolean>(variant === 'popup' && false);
 </script>
 
-<div class="fixed top-0 left-0 w-main h-main z-20">
-  <ScrollArea
-    class="bg-primary-foreground h-full {closed
-      ? 'animate-toUp'
-      : 'animate-toDown'}"
-  >
+<div class="top-0 left-0 z-20 {variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main'}">
+  <ScrollArea class="bg-primary-foreground rounded-lg h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
     <Button
       class="flex gap-1 opacity-50 absolute top-2 left-2"
       variant="secondary"
       onclick={() => {
-        closed = true
-        setTimeout(() => {open = false}, 600)
+        closed = true;
+        setTimeout(() => {open = false}, 600);
       }}
     >
       <ArrowLeft />
     </Button>
+
     {#if game}
       <img
         alt={game.name}
-        class="h-32 w-full object-cover"
+        class="h-full w-full object-cover"
         use:lazyLoad={game.image ?? noImage}
       />
       <div class="p-2 flex flex-col gap-2">
