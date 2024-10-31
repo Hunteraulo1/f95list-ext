@@ -22,12 +22,13 @@ let { title, values }: Props = $props();
 </label>
 <Popover.Root>
   <Popover.Trigger class={buttonVariants({ variant: "outline", className: "w-full flex justify-between" })}>
-    {values.some(({ checked }) => checked)
-      ? values
-          .filter((value) => value.checked)
-          .map(({ value }) => value)
-          .join(", ")
-      : `Filtrer par ${title}...`}
+    {#if values.some(({ checked }) => checked)}
+      {values.reduce((acc, { checked, value }) => 
+        checked ? acc ? `${acc}, ${value}` : value : acc
+      , "")}
+    {:else}
+      Filtrer par {title}...
+    {/if}
     <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
   </Popover.Trigger>
   <Popover.Content class="w-fit p-0">
