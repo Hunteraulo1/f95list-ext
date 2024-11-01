@@ -1,7 +1,7 @@
 <script lang="ts">
 import Details from '$lib/components/Details.svelte';
 import Filter from '$lib/components/Filter.svelte';
-import NavWebApp from '$lib/components/webapp/NavWebApp.svelte';
+import Nav from '$lib/components/Nav.svelte';
 import { detailGame } from '$lib/stores';
 interface Props {
   children?: import('svelte').Snippet;
@@ -9,6 +9,12 @@ interface Props {
 
 let { children }: Props = $props();
 const variant = 'webapp';
+
+const nav = [
+  { name: 'Liste', href: '/webapp' },
+  { name: 'Mises à jour', href: '/webapp/updates' },
+  { name: 'Paramètres', href: '/webapp/settings' },
+];
 </script>
 
 <section class="flex w-screen min-h-screen h-screen max-h-screen bg-primary-foreground z-10">
@@ -24,6 +30,6 @@ const variant = 'webapp';
       </div>
     {/if}
     <Filter {variant} />
-    <NavWebApp />
+    <Nav {nav} />
   </div>
 </section>

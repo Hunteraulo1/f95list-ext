@@ -65,7 +65,7 @@ let idGameBox = $state<IdGameBox>({ domain: 'Unknown', id: 0 });
 
 <div class="h-0 flex justify-center w-full gap-2">
   <Filter variant="popup" />
-  <a href="/index.html?webapp" target="_blank">
+  <a href="/webapp" target="_blank">
     <Button variant="secondary" class="-translate-y-12 border-2 border-primary-foreground">
       <ExternalLink class="h-4 w-full" />
     </Button>
