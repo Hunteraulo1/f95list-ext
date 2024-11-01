@@ -24,7 +24,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
 </script>
 
 <div class="top-0 left-0 z-20 {variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main'}">
-  <ScrollArea class="bg-primary-foreground rounded-lg h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
+  <ScrollArea class="bg-primary-foreground h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
     <Button
       class="flex gap-1 opacity-50 absolute top-2 left-2"
       variant="secondary"
@@ -40,6 +40,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
       <img
         alt={game.name}
         class="h-full w-full object-cover"
+        class:rounded-lg={variant === 'webapp'}
         use:lazyLoad={game.image ?? noImage}
       />
       <div class="p-2 flex flex-col gap-2">
