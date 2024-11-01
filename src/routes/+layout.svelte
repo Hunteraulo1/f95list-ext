@@ -11,7 +11,11 @@ interface Props {
 
 let { children }: Props = $props();
 
-console.log(window.location.pathname);
+const nav = [
+  { name: 'Liste', href: '/' },
+  { name: 'MàJ', href: '/updates' },
+  { name: 'Paramètres', href: '/settings' },
+];
 </script>
 
 <ModeWatcher defaultMode="system" />
@@ -26,6 +30,6 @@ console.log(window.location.pathname);
     </div>
   {:then}
     {@render children?.()}
-    <Nav />
+    <Nav {nav} />
   {/await}
 </main>
