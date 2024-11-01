@@ -1,15 +1,8 @@
 <script lang="ts">
-import { filter, search } from '$lib/stores';
 import { buttonVariants } from '$ui/button';
 import * as Popover from '$ui/popover';
-import { ScrollArea } from '$ui/scroll-area';
 import { Cross2 } from 'svelte-radix';
 import FilterContent from './FilterContent.svelte';
-
-const handleReset = () => {
-  $search = '';
-  filter.reset();
-};
 
 interface Props {
   variant?: 'popup' | 'webapp';
@@ -19,9 +12,7 @@ let { variant = 'popup' }: Props = $props();
 </script>
 
 {#if variant === 'webapp'}
-  <ScrollArea class="justify-center w-full h-1/3">
-    <FilterContent {handleReset} layout="grid" />
-  </ScrollArea>
+  <FilterContent {variant} />
 {:else}
   <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "-translate-y-12 border-2 border-primary-foreground" })}>
@@ -36,7 +27,7 @@ let { variant = 'popup' }: Props = $props();
       <Popover.Close class="rounded-full p-2 hover:bg-primary-foreground float-end">
         <Cross2 />
       </Popover.Close>
-      <FilterContent {handleReset} layout="column" />
+      <FilterContent />
     </Popover.Content>
   </Popover.Root>
 {/if}

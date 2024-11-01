@@ -3,9 +3,16 @@ import { filter, search } from '$lib/stores';
 import { Button } from '$ui/button';
 import { Input } from '$ui/input';
 import FilterPopover from './FilterPopover.svelte';
+interface Props {
+  variant?: 'popup' | 'webapp';
+}
 
-export let handleReset: () => void;
-export let layout: 'grid' | 'column' = 'column';
+let { variant = 'popup' }: Props = $props();
+
+const handleReset = () => {
+  $search = '';
+  filter.reset();
+};
 </script>
 
 <section class="flex flex-col gap-1 w-full">
@@ -16,7 +23,7 @@ export let layout: 'grid' | 'column' = 'column';
       type="text"
       placeholder="Rechercher un nom"
       class="w-full"
-      value={$search}
+      value={search}
       oninput={({ currentTarget }: { currentTarget: HTMLInputElement }) => {
         $search = currentTarget.value.toLowerCase();
       }}
@@ -24,7 +31,7 @@ export let layout: 'grid' | 'column' = 'column';
     <Button onclick={handleReset}>Réinitialiser</Button>
   </div>
 
-  <div class={layout === 'grid' ? 'grid grid-cols-3 gap-1' : 'flex flex-col gap-1'}>
+  <div class={variant === 'webapp' ? 'grid grid-cols-3 gap-1' : 'flex flex-col gap-1'}>
     {#each $filter as { title, values }}
       <FilterPopover {title} {values} />
     {/each}
