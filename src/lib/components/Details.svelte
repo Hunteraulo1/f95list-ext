@@ -6,7 +6,7 @@ import { statusColor, typeColor } from '$lib/utils/badgeColor';
 import { lazyLoad } from '$lib/utils/lazyload';
 import * as Alert from '$ui/alert';
 import { Badge } from '$ui/badge';
-import { Button } from '$ui/button';
+import { Button, buttonVariants } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
 import * as Tooltip from '$ui/tooltip';
 import { ArrowLeft, ExclamationTriangle } from 'svelte-radix';
@@ -146,8 +146,8 @@ let closed = $state<boolean>(variant === 'popup' && false);
             <Button variant="ghost" class="flex gap-1">Aucune traduction</Button
             >
           {:else}
-            <a href={game.tlink} target="_blank">
-              <Button class="flex gap-1">Accéder à la traduction</Button>
+            <a href={game.tlink} target="_blank" class={buttonVariants({ variant: "secondary", class: "flex gap-1" })}>
+              Accéder à la traduction
             </a>
           {/if}
         </div>
