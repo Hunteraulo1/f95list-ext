@@ -23,7 +23,7 @@ const handleReset = () => {
       type="text"
       placeholder="Rechercher un nom"
       class="w-full"
-      value={search}
+      value={$search}
       oninput={({ currentTarget }: { currentTarget: HTMLInputElement }) => {
         $search = currentTarget.value.toLowerCase();
       }}
