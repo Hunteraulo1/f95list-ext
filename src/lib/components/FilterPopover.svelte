@@ -12,7 +12,7 @@ type Props = {
   values: Array<{ value: string; checked: boolean }>;
 };
 
-let { title = $bindable(), values = $bindable() }: Props = $props();
+let { title, values }: Props = $props();
 
 const handleSelect = (value: string) => {
   filter.update((items) => {
