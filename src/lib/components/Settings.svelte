@@ -3,11 +3,12 @@ import { dev } from '$app/environment';
 import { goto } from '$app/navigation';
 import { settings } from '$lib/stores';
 import type { Settings } from '$lib/types';
-import { Button } from '$ui/button';
+import { Button, buttonVariants } from '$ui/button';
 import { Label } from '$ui/label';
 import { ScrollArea } from '$ui/scroll-area';
 import { Switch } from '$ui/switch';
 import { toggleMode } from 'mode-watcher';
+import type { Component } from 'svelte';
 import DiscordLogo from 'svelte-radix/DiscordLogo.svelte';
 import Moon from 'svelte-radix/Moon.svelte';
 import Sun from 'svelte-radix/Sun.svelte';
@@ -38,6 +39,7 @@ const settingsItems: SettingItem[] = [
 interface Link {
   title: string;
   href: string;
+  icon?: Component;
 }
 
 const links: Link[] = [
@@ -52,6 +54,7 @@ const links: Link[] = [
   {
     title: 'Accéder au Discord',
     href: 'https://discord.gg/QXd9kr3ewW',
+    icon: DiscordLogo,
   },
   {
     title: 'Dépot Github',
@@ -113,16 +116,13 @@ const handleSettings = (id: keyof Settings) => {
         <Button class="mb-2" variant="outline" onclick={() => goto("traductors")}
           >Voir les traducteurs/relecteurs</Button
         >
-        {#each links as { title, href }}
-          <a {href} target="_blank">
-            {#if title !== "Accéder au Discord"}
-              <Button variant="link" class="flex gap-1">{title}</Button>
-            {:else}
-              <Button variant="link" class="flex gap-1">
-                <DiscordLogo class="h-6 w-6" />
-                Accéder au Discord
-              </Button>
+        {#each links as { title, href, icon }}
+          <a {href} target="_blank" class={buttonVariants({ variant: "link", class: "flex gap-1" })}>
+            {#if icon}
+              <svelte:component this={icon} class="h-6 w-6" />
             {/if}
+
+            {title}
           </a>
         {/each}
       </div>

@@ -1,7 +1,8 @@
 <script lang="ts">
 import { dev } from '$app/environment';
+import noImage from '$lib/assets/no-image.png';
 import type { GameType } from '$lib/schemas';
-import { games } from '$lib/stores';
+import { games, selectedGame } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { lazyLoad } from '$lib/utils/lazyload';
 import { isFirefox } from '$lib/utils/polyfill';
@@ -24,6 +25,11 @@ let open = $state(false);
 if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
   open = $games.filter((game) => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1;
 }
+
+const handleClick = () => {
+  $selectedGame = game;
+  open = true;
+};
 </script>
 
 {#if open && !webapp && game.domain !== 'Unknown'}
@@ -32,20 +38,17 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
 
 {#if game.domain !== 'Unknown'}
   <div class="relative">
-    <Card.Root class="cursor-pointer" onclick={() => {if (!webapp) {
-      open = true
-      }}}>
-      {#if game.image}
-        <img
-          alt={game.name}
-          class="absolute top-0 left-0 object-cover w-full h-full rounded-xl"
-          use:lazyLoad={game.image.replace(
-            'attachments.f95zone.to',
-            'preview.f95zone.to'
-          )}
-          style="image-rendering: smooth; image-resolution: snap;"
-        />
-      {/if}
+    <Card.Root class="cursor-pointer" onclick={handleClick}>
+      <img
+        alt={game.name}
+        class="absolute top-0 left-0 object-cover w-full h-full rounded-xl"
+        use:lazyLoad={game.image?.replace(
+          'attachments.f95zone.to',
+          'preview.f95zone.to'
+        ) ?? noImage}
+        style="image-rendering: smooth; image-resolution: snap;"
+      />
+      
       <Card.CardContent
         class="relative p-6 rounded-xl overflow-hidden transition backdrop-brightness-90 text-white {webapp ? 'text-xl' : 'hover:backdrop-brightness-100'}">
         <Card.Title>{game.name}</Card.Title>

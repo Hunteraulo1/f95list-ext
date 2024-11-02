@@ -12,14 +12,32 @@ type Props = {
   values: Array<{ value: string; checked: boolean }>;
 };
 
-let { title, values }: Props = $props();
+let { title = $bindable(), values = $bindable() }: Props = $props();
+
+const handleSelect = (value: string) => {
+  filter.update((items) => {
+    return items.map((item) => {
+      if (item.title.toLowerCase() !== title.toLowerCase()) return item;
+
+      return {
+        ...item,
+        values: item.values.map((v) => {
+          if (v.value !== value) return v;
+
+          return { ...v, checked: !v.checked };
+        }),
+      };
+    });
+  });
+};
 </script>
 
 <div class="w-full">
   <label
     for={title}
     class="font-bold text-xs capitalize leading-none mt-2"
-    >{title}:
+  >
+    {title}:
   </label>
   <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between" })}>
@@ -41,32 +59,9 @@ let { title, values }: Props = $props();
             {#each values as { value, checked }}
               <Command.Item
                 {value}
-                onselect={() => {
-                  filter.update((items) => {
-                    const updatedItems = items.map(item => {
-                      if (item.title.toLowerCase() === title.toLowerCase()) {
-                        return {
-                          ...item,
-                          values: item.values.map(v => {
-                            if (v.value === value) {
-                              return { ...v, checked: !v.checked };
-                            }
-  
-                            return v;
-                          })
-                        };
-                      }
-  
-                      return item;
-                    });
-                    
-                    return updatedItems;
-                  });
-                }}
+                onSelect={() => handleSelect(value)}
               >
-                <Check class={cn("mr-2 h-4 w-4", {
-                  "text-transparent": !checked
-                })} />
+                <Check class={cn("mr-2 h-4 w-4", { "text-transparent": !checked })} />
                 {value}
               </Command.Item>
             {/each}

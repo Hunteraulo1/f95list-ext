@@ -4,7 +4,7 @@ import Filter from '$lib/components/Filter.svelte';
 import GameBox from '$lib/components/GameBox.svelte';
 import { filteredGames, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
-import { Button } from '$ui/button';
+import { Button, buttonVariants } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
 import { ExternalLink, Reload } from 'svelte-radix';
 
@@ -42,16 +42,12 @@ const idGameBoxPromise: Promise<IdGameBox> = new Promise((resolve) =>
         resolve({ domain: 'Unknown', id: 0 });
       }),
 );
-
-let idGameBox = $state<IdGameBox>({ domain: 'Unknown', id: 0 });
 </script>
 
 <ScrollArea class="relative h-full">
   <div class="flex flex-col gap-2 p-2 relative h-full">
     {#each $filteredGames as game (game.name + game.version)}
-      {#key game.id}
-        <GameBox {game} {idGameBox} />
-      {/key}
+      <GameBox {game} />
     {:else}
       <div class="flex justify-center items-center h-full">
         <Button>
@@ -65,9 +61,7 @@ let idGameBox = $state<IdGameBox>({ domain: 'Unknown', id: 0 });
 
 <div class="h-0 flex justify-center w-full gap-2">
   <Filter variant="popup" />
-  <a href="/index.html?webapp" target="_blank">
-    <Button variant="secondary" class="-translate-y-12 border-2 border-primary-foreground">
-      <ExternalLink class="h-4 w-full" />
-    </Button>
+  <a href="/index.html?webapp" target="_blank" class={buttonVariants({ variant: "secondary", class: "-translate-y-12 border-2 border-primary-foreground" })}>
+    <ExternalLink class="h-4 w-full" />
   </a>
 </div>
