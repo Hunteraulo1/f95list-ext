@@ -23,13 +23,15 @@ const nav = [
     {@render children?.()}
   </div>
   <div class="flex flex-col h-full w-full p-2">
-    {#if $selectedGame}
-      <Details game={$selectedGame} {variant} open />
-    {:else}
-      <p class="flex items-center justify-center h-2/3 bg-primary-foreground w-full rounded-lg p-2">
-        Aucun jeu n'a été sélectionné
-      </p>
-    {/if}
+    {#key $selectedGame}
+      {#if $selectedGame}
+        <Details game={$selectedGame} {variant} open />
+      {:else}
+        <p class="flex items-center justify-center h-2/3 bg-primary-foreground w-full rounded-lg p-2">
+          Aucun jeu n'a été sélectionné
+        </p>
+      {/if}
+    {/key}
     <Filter {variant} />
     <Nav {nav} />
   </div>
