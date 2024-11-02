@@ -9,58 +9,58 @@ export const games = writable<GameType[]>([]);
 
 export const traductors = writable<TraductorType[]>([]);
 
+const filterConfig = {
+  domain: {
+    title: 'Site',
+    values: ['F95z', 'LewdCorner', 'Autre'],
+  },
+  version: {
+    title: 'Statut de la traduction',
+    values: ['À jour', 'Intégrée', 'Pas à jour'],
+  },
+  type: {
+    title: 'Type',
+    values: ['RenPy', 'RPGM', 'Unreal', 'HTLM', 'Flash', 'QSP', 'RenPy/RPGM', 'RenPy/Unity', 'Autre'],
+  },
+  status: {
+    title: 'Status',
+    values: ['EN COURS', 'ABANDONNÉ', 'TERMINÉ'],
+  },
+};
+
 const defaultFilters = (): ComboBox[] => [
   {
-    title: 'Site',
+    title: filterConfig.domain.title,
     name: 'domain',
     open: false,
-    values: [
-      { value: 'F95z', checked: false },
-      { value: 'LewdCorner', checked: false },
-      { value: 'Autre', checked: false },
-    ],
+    values: filterConfig.domain.values.map((value) => ({ value, checked: false })),
   },
   {
-    title: 'Statut de la traduction',
+    title: filterConfig.version.title,
     name: 'version',
     open: false,
-    values: [
-      { value: 'À jour', checked: false },
-      { value: 'Intégrée', checked: false },
-      { value: 'Pas à jour', checked: false },
-    ],
+    values: filterConfig.version.values.map((value) => ({ value, checked: false })),
   },
   {
-    title: 'Type',
+    title: filterConfig.type.title,
     name: 'type',
     open: false,
-    values: [
-      { value: 'RenPy', checked: false },
-      { value: 'RPGM', checked: false },
-      { value: 'Unreal', checked: false },
-      { value: 'HTLM', checked: false },
-      { value: 'Flash', checked: false },
-      { value: 'QSP', checked: false },
-      { value: 'RenPy/RPGM', checked: false },
-      { value: 'RenPy/Unity', checked: false },
-      { value: 'Autre', checked: false },
-    ],
+    values: filterConfig.type.values.map((value) => ({ value, checked: false })),
   },
   {
-    title: 'Status',
+    title: filterConfig.status.title,
     name: 'status',
     open: false,
-    values: [
-      { value: 'EN COURS', checked: false },
-      { value: 'ABANDONNÉ', checked: false },
-      { value: 'TERMINÉ', checked: false },
-    ],
+    values: filterConfig.status.values.map((value) => ({ value, checked: false })),
   },
   {
     title: 'Traducteur',
     name: 'traductor',
     open: false,
-    values: get(traductors).map((traductor) => ({ value: traductor.name ?? 'NoName', checked: false })),
+    values: get(traductors).map((traductor) => ({
+      value: traductor.name || 'NoName',
+      checked: false,
+    })),
   },
   {
     title: 'Tags',
@@ -88,15 +88,36 @@ export const search = writable('');
 
 export const filteredGames = derived([games, filter, search], ([$games, $filter, $search]) =>
   $games.filter((game) => {
-    const matchesSearch = game.name.toLowerCase().includes($search);
-    const matchesFilters = $filter.every(({ name, values }) => {
-      const activeValues = values.filter((v) => v.checked).map((v) => v.value);
-      return (
-        activeValues.length === 0 ||
-        (game[name as keyof GameType] != null && activeValues.includes(String(game[name as keyof GameType])))
-      );
+    if (!game.name.toLowerCase().includes($search.toLowerCase())) return false;
+
+    const checkVersion = (value: string): boolean => {
+      switch (value) {
+        case 'À jour':
+          return game.version === game.tversion || game.tversion === 'Intégrée';
+        case 'Intégrée':
+          return game.tversion === 'Intégrée';
+        case 'Pas à jour':
+          return game.version !== game.tversion && game.tversion !== 'Intégrée';
+        default:
+          return false;
+      }
+    };
+
+    return $filter.every(({ name, values }) => {
+      const hasCheckedValues = values.some((value) => value.checked);
+      if (!hasCheckedValues) return true;
+
+      switch (name) {
+        case 'tags':
+          return values.every((value) => !value.checked || game.tags.includes(value.value));
+        case 'traductor':
+          return values.some((value) => value.checked && game.traductor?.includes(value.value));
+        case 'version':
+          return values.some((value) => value.checked && checkVersion(value.value));
+        default:
+          return values.some((value) => value.checked && game[name] === value.value);
+      }
     });
-    return matchesSearch && matchesFilters;
   }),
 );
 
@@ -110,6 +131,4 @@ export const settings = writable<Settings>(
 
 // Webapp
 
-export const detailGame = writable<GameType | undefined>();
-
-export const pathname = writable<string>('/webapp');
+export const selectedGame = writable<GameType | undefined>();

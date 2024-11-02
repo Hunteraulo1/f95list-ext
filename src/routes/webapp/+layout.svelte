@@ -2,7 +2,8 @@
 import Details from '$lib/components/Details.svelte';
 import Filter from '$lib/components/Filter.svelte';
 import Nav from '$lib/components/Nav.svelte';
-import { detailGame } from '$lib/stores';
+import { selectedGame } from '$lib/stores';
+
 interface Props {
   children?: import('svelte').Snippet;
 }
@@ -22,12 +23,12 @@ const nav = [
     {@render children?.()}
   </div>
   <div class="flex flex-col h-full w-full p-2">
-    {#if $detailGame}
-      <Details game={$detailGame} {variant} />
+    {#if $selectedGame}
+      <Details game={$selectedGame} {variant} open />
     {:else}
-      <div class="flex items-center justify-center h-2/3 bg-primary-foreground w-full rounded-lg p-2">
+      <p class="flex items-center justify-center h-2/3 bg-primary-foreground w-full rounded-lg p-2">
         Aucun jeu n'a été sélectionné
-      </div>
+      </p>
     {/if}
     <Filter {variant} />
     <Nav {nav} />

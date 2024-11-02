@@ -19,7 +19,7 @@ interface Props {
   variant?: 'popup' | 'webapp';
 }
 
-let { game, open = $bindable(), variant = 'popup' }: Props = $props();
+let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $props();
 let closed = $state<boolean>(variant === 'popup' && false);
 </script>
 
@@ -48,8 +48,8 @@ let closed = $state<boolean>(variant === 'popup' && false);
           <span class="font-bold text-sm">Site:</span>
           <a href={game.link} target="_blank">
             <Badge variant="secondary">{game.domain}</Badge>
-            <Button variant="link">(Accèder au jeu)</Button>
           </a>
+          <a href={game.link} target="_blank" class={buttonVariants({ variant: "link", class: "px-1" })}>(Accèder au jeu)</a>
         </h2>
         <h1>
           <Badge style={typeColor(game.type)} class="text-white font-bold">
