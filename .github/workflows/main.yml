@@ -63,7 +63,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add static/manifest_chrome.json static/manifest_firefox.json
-          git commit -m "chore: update manifests version to ${{ steps.get_version.outputs.version }}"
+          git commit -m ":bookmark: update manifests version to ${{ steps.get_version.outputs.version }}"
           git push origin main
         
       - name: Build extensions
@@ -116,7 +116,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add updates.json
-          git commit -m "chore: update updates.json for version ${{ steps.get_version.outputs.version }}"
+          git commit -m ":bookmark: update updates.json for version ${{ steps.get_version.outputs.version }}"
           git push origin main
         
       - name: Create Release
