@@ -54,7 +54,7 @@ const idGameBoxPromise: Promise<IdGameBox> = new Promise((resolve) =>
           <Reload class="h-4 w-full animate-spin" />
           <span>Aucun jeu ne correspond à vos critères</span>
         </Button>
-      </div> 
+      </div>
     {/each}
   </div>
 </ScrollArea>

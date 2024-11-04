@@ -4,11 +4,11 @@ import noImage from '$lib/assets/no-image.png';
 import type { GameType } from '$lib/schemas';
 import { games, selectedGame } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
-import { lazyLoad } from '$lib/utils/lazyload';
 import { isFirefox } from '$lib/utils/polyfill';
 import { Badge } from '$ui/badge';
 import * as Card from '$ui/card';
 import * as Tooltip from '$ui/tooltip';
+import Lazy from 'svelte-lazy';
 import { Link1 } from 'svelte-radix';
 import Details from './Details.svelte';
 
@@ -38,11 +38,12 @@ const handleClick = () => {
 
 {#if game.domain !== 'Unknown'}
   <div class="relative">
-    <Card.Root class="cursor-pointer" onclick={handleClick}>
-      <img
+    <Lazy height={88}>
+      <Card.Root class="cursor-pointer" onclick={handleClick}>
+        <img
         alt={game.name}
         class="absolute top-0 left-0 object-cover w-full h-full rounded-xl"
-        use:lazyLoad={game.image?.replace(
+        src={game.image?.replace(
           'attachments.f95zone.to',
           'preview.f95zone.to'
         ) ?? noImage}
@@ -80,7 +81,8 @@ const handleClick = () => {
           </Tooltip.Provider>
         </Card.Description>
       </Card.CardContent>
-    </Card.Root>
+      </Card.Root>
+    </Lazy>
 
     {#if isFirefox() || dev}
       <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">

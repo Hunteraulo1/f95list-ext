@@ -1,14 +1,10 @@
 {
   "name": "f95list-ext",
   "version": "1.6.16",
-  "private": false,
-  "type": "module",
   "author": {
     "email": "hunteraulo@pm.me",
     "name": "Hunteraulo"
   },
-  "license": "UNLICENSED",
-  "description": "Extension de F95 France permettant de lister les jeux",
   "repository": {
     "type": "git",
     "url": "https://github.com/Hunteraulo1/f95list-ext"
@@ -20,15 +16,6 @@
     "cz-emoji": {
       "skipQuestions": ["scope", "body"]
     }
-  },
-  "scripts": {
-    "dev": "vite dev",
-    "build": "bun run build:chrome && bun run build:firefox",
-    "build:chrome": "BUILD_MODE=chrome vite build",
-    "build:firefox": "BUILD_MODE=firefox vite build",
-    "check": "bunx @biomejs/biome check --write . && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "lint": "bunx @biomejs/biome lint --write .",
-    "format": "bunx @biomejs/biome format --write ."
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
@@ -62,5 +49,21 @@
     "vite-plugin-svelte": "3.0.1",
     "vite-plugin-tailwind-purgecss": "0.3.3"
   },
-  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"]
+  "description": "Extension de F95 France permettant de lister les jeux",
+  "license": "UNLICENSED",
+  "private": false,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "bun run build:chrome && bun run build:firefox",
+    "build:chrome": "BUILD_MODE=chrome vite build",
+    "build:firefox": "BUILD_MODE=firefox vite build",
+    "check": "bunx @biomejs/biome check --write . && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "lint": "bunx @biomejs/biome lint --write .",
+    "format": "bunx @biomejs/biome format --write ."
+  },
+  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
+  "type": "module",
+  "dependencies": {
+    "svelte-lazy": "1.2.10"
+  }
 }
