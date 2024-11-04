@@ -1,4 +1,5 @@
 <script lang="ts">
+import { page } from '$app/stores';
 import { buttonVariants } from '$ui/button';
 import * as Popover from '$ui/popover';
 import { Cross2 } from 'svelte-radix';
@@ -12,7 +13,10 @@ let { variant = 'popup' }: Props = $props();
 </script>
 
 {#if variant === 'webapp'}
-  <FilterContent {variant} />
+  {@const active = $page.url.pathname === '/webapp'}
+  <div class:isNotWebapp={!active}>
+    <FilterContent {variant} {active} />
+  </div>
 {:else}
   <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "-translate-y-12 border-2 border-primary-foreground" })}>
@@ -31,3 +35,11 @@ let { variant = 'popup' }: Props = $props();
     </Popover.Content>
   </Popover.Root>
 {/if}
+
+<style type="postcss">
+  .isNotWebapp {
+    opacity: 0.5;
+    user-select: none;
+    pointer-events: none;
+  }
+</style>

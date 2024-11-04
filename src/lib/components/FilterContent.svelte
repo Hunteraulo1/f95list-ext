@@ -5,9 +5,10 @@ import { Input } from '$ui/input';
 import FilterPopover from './FilterPopover.svelte';
 interface Props {
   variant?: 'popup' | 'webapp';
+  active?: boolean;
 }
 
-let { variant = 'popup' }: Props = $props();
+let { variant = 'popup', active = true }: Props = $props();
 
 const handleReset = () => {
   $search = '';
@@ -23,17 +24,18 @@ const handleReset = () => {
       type="text"
       placeholder="Rechercher un nom"
       class="w-full"
+      disabled={!active}
       value={$search}
       oninput={({ currentTarget }: { currentTarget: HTMLInputElement }) => {
         $search = currentTarget.value.toLowerCase();
       }}
     />
-    <Button onclick={handleReset}>Réinitialiser</Button>
+    <Button onclick={handleReset} disabled={!active}>Réinitialiser</Button>
   </div>
 
   <div class={variant === 'webapp' ? 'grid grid-cols-3 gap-1' : 'flex flex-col gap-1'}>
     {#each $filter as { title, values }}
-      <FilterPopover {title} {values} />
+      <FilterPopover {active} {title} {values} />
     {/each}
   </div>
 </section> 
