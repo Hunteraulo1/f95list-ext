@@ -16,6 +16,7 @@ import Sun from 'svelte-radix/Sun.svelte';
 interface SettingItem {
   title: string;
   id: keyof Settings;
+  checked?: boolean;
 }
 
 const settingsItems: SettingItem[] = [
@@ -26,14 +27,17 @@ const settingsItems: SettingItem[] = [
   {
     title: 'Cacher les tags (par défault):',
     id: 'tagsHide',
+    checked: $settings.tagsHide,
   },
   {
     title: "Activer l'intégration F95/LC:",
     id: 'intergrateFeature',
+    checked: $settings.intergrateFeature,
   },
   {
     title: 'Ouverture automatique des jeux:',
     id: 'autoFocusGame',
+    checked: $settings.autoFocusGame,
   },
 ];
 interface Link {
@@ -68,17 +72,36 @@ const defaultSettings = JSON.stringify({
   autoFocusGame: true,
 } as Settings);
 
-$settings = JSON.parse(localStorage.getItem('settings') || defaultSettings);
+let storedSettings = localStorage.getItem('settings');
+if (storedSettings) {
+  $settings = JSON.parse(storedSettings);
+} else {
+  $settings = JSON.parse(defaultSettings);
+}
 
-const handleSettings = (id: keyof Settings) => {
-  const result = { ...$settings, [id]: !$settings[id] };
-  $settings = result;
-  localStorage.setItem('settings', JSON.stringify(result));
+const handleSettings = async (settingsItem: SettingItem) => {
+  const { id } = settingsItem;
 
-  if (id === 'intergrateFeature' && !dev) {
-    const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+  try {
+    // Mise à jour du store et localStorage
+    const newValue = !$settings[id];
+    const updatedSettings = { ...$settings, [id]: newValue };
 
-    browserAPI.runtime.sendMessage(`f95list-integrate_${result.intergrateFeature.toString()}`);
+    $settings = updatedSettings;
+    localStorage.setItem('settings', JSON.stringify(updatedSettings));
+
+    if (id === 'intergrateFeature' && !dev) {
+      const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+      const message = `f95list-integrate_${newValue.toString()}`;
+
+      try {
+        await browserAPI.runtime.sendMessage(message);
+      } catch (browserError) {
+        $settings = { ...$settings, [id]: !newValue };
+      }
+    }
+  } catch (error) {
+    console.error('Settings try error:', error);
   }
 };
 </script>
@@ -87,11 +110,11 @@ const handleSettings = (id: keyof Settings) => {
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-2">
       <h1 class="text-center mb-2 font-bold">Paramètres</h1>
-      {#each settingsItems as { title, id }}
+      {#each settingsItems as settingsItem}
         <div class="flex justify-center items-center gap-2">
-          <Label for={id}>{title}</Label>
-          {#if id === "theme"}
-            <Button {id} onclick={toggleMode} variant="outline" size="icon">
+          <Label for={settingsItem.id}>{settingsItem.title}</Label>
+          {#if settingsItem.id === "theme"}
+            <Button id={settingsItem.id} onclick={toggleMode} variant="outline" size="icon">
               <Sun
                 class="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
               />
@@ -102,9 +125,9 @@ const handleSettings = (id: keyof Settings) => {
             </Button>
           {:else}
             <Switch
-              {id}
-              onclick={() => handleSettings(id)}
-              checked={$settings[id]}
+              id={settingsItem.id}
+              checked={settingsItem.checked}
+              onclick={() => handleSettings(settingsItem)}
             />
           {/if}
         </div>
