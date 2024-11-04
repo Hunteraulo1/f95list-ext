@@ -1,6 +1,6 @@
 {
   "name": "f95list-ext",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "author": {
     "email": "hunteraulo@pm.me",
     "name": "Hunteraulo"
@@ -14,7 +14,10 @@
       "path": "cz-emoji"
     },
     "cz-emoji": {
-      "skipQuestions": ["scope", "body"]
+      "skipQuestions": [
+        "scope",
+        "body"
+      ]
     }
   },
   "devDependencies": {
@@ -61,7 +64,13 @@
     "lint": "bunx @biomejs/biome lint --write .",
     "format": "bunx @biomejs/biome format --write ."
   },
-  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@deepkit/type-compiler",
+    "@sveltejs/kit",
+    "esbuild",
+    "svelte-preprocess"
+  ],
   "type": "module",
   "dependencies": {
     "svelte-lazy": "1.2.10"
