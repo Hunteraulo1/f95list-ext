@@ -23,7 +23,7 @@ let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $prop
 let closed = $state<boolean>(variant === 'popup' && false);
 </script>
 
-<div class="top-0 left-0 z-20 {variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main'}">
+<div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main top-0 left-0 z-20'}>
   <ScrollArea class="bg-primary-foreground h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
     <Button
       class="flex gap-1 opacity-50 absolute top-2 left-2"
