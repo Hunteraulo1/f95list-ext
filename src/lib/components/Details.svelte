@@ -1,7 +1,7 @@
 <script lang="ts">
 import noImage from '$lib/assets/no-image.png';
 import type { GameType } from '$lib/schemas';
-import { settings } from '$lib/stores';
+import { selectedGame, settings } from '$lib/stores';
 import { statusColor, typeColor } from '$lib/utils/badgeColor';
 import { lazyLoad } from '$lib/utils/lazyload';
 import * as Alert from '$ui/alert';
@@ -29,6 +29,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
       class="flex gap-1 opacity-50 absolute top-2 left-2"
       variant="secondary"
       onclick={() => {
+        $selectedGame = undefined;
         closed = true;
         setTimeout(() => {open = false}, 600);
       }}
@@ -39,7 +40,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
     {#if game}
       <img
         alt={game.name}
-        class="h-full w-full object-cover"
+        class="h-full w-full object-cover max-h-[33vh]"
         class:rounded-lg={variant === 'webapp'}
         use:lazyLoad={game.image ?? noImage}
       />
