@@ -1,14 +1,19 @@
 <script lang="ts">
 import { dev } from '$app/environment';
 import GameBox from '$lib/components/GameBox.svelte';
-import { Button } from '$lib/components/ui/button';
-import { ScrollArea } from '$lib/components/ui/scroll-area';
-import { detailGame, updates } from '$lib/stores';
+import type { GameType } from '$lib/schemas';
+import { updates } from '$lib/stores';
+import { Button } from '$ui/button';
+import { ScrollArea } from '$ui/scroll-area';
+import { createEventDispatcher } from 'svelte';
 import { Reload } from 'svelte-radix';
+
+const dispatch = createEventDispatcher<{
+  selectGame: GameType | undefined;
+}>();
 
 if (!dev) {
   const browserAPI = typeof browser === 'undefined' ? chrome : browser;
-
   browserAPI.runtime.sendMessage('f95list-badge');
 }
 </script>
@@ -31,7 +36,7 @@ if (!dev) {
             {update.type}
           </h3>
           {#each update.games as game}
-            <button on:click={() => $detailGame = game}>
+            <button onclick={() => dispatch('selectGame', game)}>
               <GameBox {game} webapp />
             </button>
           {/each}

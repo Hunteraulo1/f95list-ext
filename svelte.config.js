@@ -16,6 +16,10 @@ const config = {
       manifest: `manifest_${buildMode}.json`,
     }),
     appDir: 'app',
+    alias: {
+      $utils: 'src/lib/utils',
+      $ui: 'src/lib/components/ui',
+    },
   },
 };
 

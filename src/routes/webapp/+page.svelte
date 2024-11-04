@@ -1,17 +1,15 @@
 <script lang="ts">
 import GameBox from '$lib/components/GameBox.svelte';
-import Button from '$lib/components/ui/button/button.svelte';
-import { ScrollArea } from '$lib/components/ui/scroll-area';
-import { detailGame, filteredGames } from '$lib/stores';
+import { filteredGames } from '$lib/stores';
+import { Button } from '$ui/button';
+import { ScrollArea } from '$ui/scroll-area';
 import Reload from 'svelte-radix/Reload.svelte';
 </script>
 
 <ScrollArea class="relative h-full">
   <div class="flex flex-col gap-2 p-2 relative h-full">
     {#each $filteredGames as game (game.name + game.version)}
-      <button on:click={() => $detailGame = game}>
-        <GameBox {game} webapp />
-      </button>
+      <GameBox {game} webapp />
     {:else}
       <div class="flex justify-center items-center h-full">
         <Button>
