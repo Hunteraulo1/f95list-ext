@@ -1,9 +1,9 @@
 <script lang="ts">
 import { dev } from '$app/environment';
 import GameBox from '$lib/components/GameBox.svelte';
-import { Button } from '$lib/components/ui/button';
-import { ScrollArea } from '$lib/components/ui/scroll-area';
 import { updates } from '$lib/stores';
+import { Button } from '$ui/button';
+import { ScrollArea } from '$ui/scroll-area';
 import { Reload } from 'svelte-radix';
 
 if (!dev) {

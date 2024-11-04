@@ -1,42 +1,47 @@
 <script lang="ts">
 import noImage from '$lib/assets/no-image.png';
-import * as Alert from '$lib/components/ui/alert/index.js';
-import { Badge } from '$lib/components/ui/badge';
-import { Button } from '$lib/components/ui/button/index.js';
-import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
-import * as Tooltip from '$lib/components/ui/tooltip';
 import type { GameType } from '$lib/schemas';
-import { settings } from '$lib/stores';
+import { selectedGame, settings } from '$lib/stores';
 import { statusColor, typeColor } from '$lib/utils/badgeColor';
 import { lazyLoad } from '$lib/utils/lazyload';
+import * as Alert from '$ui/alert';
+import { Badge } from '$ui/badge';
+import { Button, buttonVariants } from '$ui/button';
+import { ScrollArea } from '$ui/scroll-area';
+import * as Tooltip from '$ui/tooltip';
 import { ArrowLeft, ExclamationTriangle } from 'svelte-radix';
 
-let tagsHide = $settings.tagsHide;
+let tagsHide = $state($settings.tagsHide);
 
-export let game: GameType, open: boolean;
-let closed = false;
+interface Props {
+  game: GameType;
+  open?: boolean;
+  variant?: 'popup' | 'webapp';
+}
+
+let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $props();
+let closed = $state<boolean>(variant === 'popup' && false);
 </script>
 
-<div class="fixed top-0 left-0 w-main h-main z-20">
-  <ScrollArea
-    class="bg-primary-foreground h-full {closed
-      ? 'animate-toUp'
-      : 'animate-toDown'}"
-  >
+<div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main top-0 left-0 z-20'}>
+  <ScrollArea class="bg-primary-foreground h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
     <Button
       class="flex gap-1 opacity-50 absolute top-2 left-2"
       variant="secondary"
-      on:click={() => {
-        closed = true
-        setTimeout(() => (open = false), 600)
+      onclick={() => {
+        $selectedGame = undefined;
+        closed = true;
+        setTimeout(() => {open = false}, 600);
       }}
     >
       <ArrowLeft />
     </Button>
+
     {#if game}
       <img
         alt={game.name}
-        class="h-32 w-full object-cover"
+        class="h-full w-full object-cover max-h-[33vh]"
+        class:rounded-lg={variant === 'webapp'}
         use:lazyLoad={game.image ?? noImage}
       />
       <div class="p-2 flex flex-col gap-2">
@@ -44,8 +49,8 @@ let closed = false;
           <span class="font-bold text-sm">Site:</span>
           <a href={game.link} target="_blank">
             <Badge variant="secondary">{game.domain}</Badge>
-            <Button variant="link">(Accèder au jeu)</Button>
           </a>
+          <a href={game.link} target="_blank" class={buttonVariants({ variant: "link", class: "px-1" })}>(Accèder au jeu)</a>
         </h2>
         <h1>
           <Badge style={typeColor(game.type)} class="text-white font-bold">
@@ -55,6 +60,7 @@ let closed = false;
             {game.status}
           </Badge>
           {game.name}
+          <Tooltip.Provider>
           <Tooltip.Root>
             <Tooltip.Trigger
               class="text-xs cursor-help font-bold {game.tversion ===
@@ -78,6 +84,7 @@ let closed = false;
               </Badge>
             </Tooltip.Content>
           </Tooltip.Root>
+        </Tooltip.Provider>
         </h1>
         <div class="flex gap-1 flex-wrap">
           <span class="font-bold text-sm">Tags:</span>
@@ -89,7 +96,7 @@ let closed = false;
           {#if game.tags.length > 5}
             <button
               class="text-xs font-bold text-secondary-foreground/50"
-              on:click={() => (tagsHide = !tagsHide)}
+              onclick={() => (tagsHide = !tagsHide)}
             >
               {tagsHide ? 'afficher plus...' : 'cacher'}
             </button>
@@ -140,8 +147,8 @@ let closed = false;
             <Button variant="ghost" class="flex gap-1">Aucune traduction</Button
             >
           {:else}
-            <a href={game.tlink} target="_blank">
-              <Button class="flex gap-1">Accéder à la traduction</Button>
+            <a href={game.tlink} target="_blank" class={buttonVariants({ variant: "secondary", class: "flex gap-1" })}>
+              Accéder à la traduction
             </a>
           {/if}
         </div>
