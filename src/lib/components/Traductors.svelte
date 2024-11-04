@@ -1,8 +1,8 @@
 <script lang="ts">
-import { Button } from '$lib/components/ui/button';
-import * as Card from '$lib/components/ui/card';
-import { ScrollArea } from '$lib/components/ui/scroll-area';
 import { traductors } from '$lib/stores';
+import { Button, buttonVariants } from '$ui/button';
+import * as Card from '$ui/card';
+import { ScrollArea } from '$ui/scroll-area';
 import { Reload } from 'svelte-radix';
 </script>
 
@@ -17,10 +17,8 @@ import { Reload } from 'svelte-radix';
             <div class="flex text-sm items-center justify-center">
               <p class="font-bold text-secondary-foreground/50">Liens:</p>
               {#each pages as { title, link }}
-                <a href={link} target="_blank">
-                  <Button variant="link" class="px-1">
-                    {title}
-                  </Button>
+                <a href={link} target="_blank" class={buttonVariants({ variant: "link", class: "px-1" })}>
+                  {title}
                 </a>
               {:else}
                 <p class="px-1 py-2">Aucun lien</p>
