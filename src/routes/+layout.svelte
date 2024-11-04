@@ -1,12 +1,21 @@
 <script lang="ts">
 import Nav from '$lib/components/Nav.svelte';
-import { Button } from '$lib/components/ui/button';
 import getData from '$lib/utils/getData';
+import { Button } from '$ui/button';
 import { ModeWatcher } from 'mode-watcher';
 import { Reload } from 'svelte-radix';
 import '../app.pcss';
+interface Props {
+  children?: import('svelte').Snippet;
+}
 
-console.log(window.location.pathname);
+let { children }: Props = $props();
+
+const nav = [
+  { name: 'Liste', href: '/' },
+  { name: 'MàJ', href: '/updates' },
+  { name: 'Paramètres', href: '/settings' },
+];
 </script>
 
 <ModeWatcher defaultMode="system" />
@@ -20,7 +29,7 @@ console.log(window.location.pathname);
       </Button>
     </div>
   {:then}
-    <slot />
-    <Nav />
+    {@render children?.()}
+    <Nav {nav} />
   {/await}
 </main>
