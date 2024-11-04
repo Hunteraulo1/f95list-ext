@@ -22,12 +22,12 @@ const nav = [
   <div class="max-w-md w-full h-full">
     {@render children?.()}
   </div>
-  <div class="flex flex-col h-full w-full p-2">
+  <div class="flex flex-col h-full w-full p-2 gap-4">
     {#key $selectedGame}
       {#if $selectedGame}
         <Details game={$selectedGame} {variant} open />
       {:else}
-        <p class="flex items-center justify-center h-2/3 bg-primary-foreground w-full rounded-lg p-2">
+        <p class="flex items-center justify-center bg-primary-foreground w-full h-full rounded-lg p-2">
           Aucun jeu n'a été sélectionné
         </p>
       {/if}
