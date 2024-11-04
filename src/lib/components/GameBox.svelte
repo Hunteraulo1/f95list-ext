@@ -1,5 +1,6 @@
 <script lang="ts">
 import { dev } from '$app/environment';
+import { page } from '$app/stores';
 import noImage from '$lib/assets/no-image.png';
 import type { GameType } from '$lib/schemas';
 import { games, selectedGame } from '$lib/stores';
@@ -84,7 +85,7 @@ const handleClick = () => {
       </Card.Root>
     </Lazy>
 
-    {#if isFirefox() || dev}
+    {#if isFirefox() || $page.url.pathname.startsWith('/webapp') || dev}
       <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
         <Link1 />
       </a>
