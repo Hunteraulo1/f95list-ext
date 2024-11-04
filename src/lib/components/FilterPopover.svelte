@@ -10,9 +10,10 @@ import { Check, ChevronDown } from 'svelte-radix';
 type Props = {
   title: string;
   values: Array<{ value: string; checked: boolean }>;
+  active?: boolean;
 };
 
-let { title, values }: Props = $props();
+let { title, values, active = true }: Props = $props();
 
 const handleSelect = (value: string) => {
   filter.update((items) => {
@@ -40,7 +41,7 @@ const handleSelect = (value: string) => {
     {title}:
   </label>
   <Popover.Root>
-    <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between" })}>
+    <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between" })} disabled={!active}>
       {#if values.some(({ checked }) => checked)}
         {values.reduce((acc, { checked, value }) =>
           checked ? acc ? `${acc}, ${value}` : value : acc
