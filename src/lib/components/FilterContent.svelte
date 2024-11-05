@@ -24,16 +24,16 @@ const handleReset = () => {
     <label for="name" class="font-bold text-xs leading-none">Nom: </label>
     <div class="flex gap-1">
       <Input
-      id="name"
-      type="text"
-      placeholder="Rechercher un nom"
-      class="w-full"
-      disabled={!active}
-      value={$search}
-      oninput={({ currentTarget }: { currentTarget: HTMLInputElement }) => {
-        $search = currentTarget.value.toLowerCase();
-      }}
-    />
+        id="name"
+        type="text"
+        placeholder="Rechercher un nom"
+        class="w-full"
+        disabled={!active}
+        value={$search}
+        oninput={({ currentTarget }: { currentTarget: HTMLInputElement }) => {
+          $search = currentTarget.value.toLowerCase();
+        }}
+      />
     <Button onclick={handleReset} disabled={!active}>Réinitialiser</Button>
   </div>
   

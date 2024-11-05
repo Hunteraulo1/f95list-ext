@@ -23,10 +23,12 @@ let { variant = 'popup' }: Props = $props();
       Filtrer
     </Popover.Trigger>
     <Popover.Content
-    side="top"
-    preventScroll
-    onInteractOutside={()=>null}
-    class="mx-2 max-h-[calc(100vh-7rem)] p-0"
+      side="top"
+      preventScroll
+      onInteractOutside={()=>null}
+      class="mx-2 max-h-[calc(100vh-7rem)] p-0"
+      autofocus={false}
+      onOpenAutoFocus={(e) => e.preventDefault()}
     >
       <Popover.Close class="rounded-full hover:bg-primary-foreground float-end m-2 p-1">
         <Cross2 />
