@@ -4,12 +4,13 @@ import { cn } from '$utils';
 
 interface Props {
   nav: { name: string; href: string }[];
+  variant?: 'webapp' | 'popup';
 }
 
-let { nav }: Props = $props();
+let { nav, variant = 'popup' }: Props = $props();
 </script>
 
-<ul class="flex w-full justify-around bg-secondary/75 p-2 sticky bottom-0">
+<ul class={cn("flex w-full justify-around bg-secondary/75 p-2 sticky bottom-0", variant === 'webapp' && 'rounded-md')}>
   {#each nav as { name, href }}
     <li>
       <a {href} class={cn(buttonVariants({ variant: 'outline' }))}>

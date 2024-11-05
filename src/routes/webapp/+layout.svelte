@@ -33,6 +33,6 @@ const nav = [
       {/if}
     {/key}
     <Filter {variant} />
-    <Nav {nav} />
+    <Nav {nav} {variant} />
   </div>
 </section>

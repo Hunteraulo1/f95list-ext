@@ -39,7 +39,7 @@ const handleClick = () => {
 
 {#if game.domain !== 'Unknown'}
   <div class="relative">
-    <Lazy height={88}>
+    <Lazy height={88} fadeOption={{ delay: 0, duration: 0 }}>
       <Card.Root class="cursor-pointer" onclick={handleClick}>
         <img
         alt={game.name}
