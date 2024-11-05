@@ -18,7 +18,7 @@ let { variant = 'popup' }: Props = $props();
     <FilterContent {variant} {active} />
   </div>
 {:else}
-  <Popover.Root open>
+  <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "-translate-y-12 border-2 border-primary-foreground" })}>
       Filtrer
     </Popover.Trigger>
