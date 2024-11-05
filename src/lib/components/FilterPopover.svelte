@@ -25,7 +25,7 @@ const handleSelect = (value: string) => {
         values: item.values.map((v) => {
           if (v.value !== value) return v;
 
-          if (item.name === 'tags') {
+          if (v.inverse !== undefined) {
             if (!v.checked) return { ...v, checked: true, inverse: false };
             if (!v.inverse) return { ...v, checked: true, inverse: true };
             return { ...v, checked: false, inverse: false };
@@ -49,11 +49,11 @@ const handleSelect = (value: string) => {
   <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between" })} disabled={!active}>
       {#if values.some(({ checked }) => checked)}
-        {values.reduce((acc, { checked, value }) =>
-          checked ? acc ? `${acc}, ${value}` : value : acc
+        {values.reduce((acc, { checked, inverse, value }) =>
+          checked ? acc ? `${acc}, ${inverse ? '!' : ''}${value}` : `${inverse ? '!' : ''}${value}` : acc
         , "")}
       {:else}
-        Filtrer par {title.length > 17 ? title.slice(0, 17) : title}...
+        Filtrer par {values.some(({ inverse }) => inverse) ? '!' : ''}{title.length > 17 ? title.slice(0, 17) : title}...
       {/if}
       <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Popover.Trigger>

@@ -33,25 +33,25 @@ const defaultFilters = (): ComboBox[] => [
     title: filterConfig.domain.title,
     name: 'domain',
     open: false,
-    values: filterConfig.domain.values.map((value) => ({ value, checked: false })),
+    values: filterConfig.domain.values.map((value) => ({ value, checked: false, inverse: false })),
   },
   {
     title: filterConfig.version.title,
     name: 'version',
     open: false,
-    values: filterConfig.version.values.map((value) => ({ value, checked: false })),
+    values: filterConfig.version.values.map((value) => ({ value, checked: false, inverse: false })),
   },
   {
     title: filterConfig.type.title,
     name: 'type',
     open: false,
-    values: filterConfig.type.values.map((value) => ({ value, checked: false })),
+    values: filterConfig.type.values.map((value) => ({ value, checked: false, inverse: false })),
   },
   {
     title: filterConfig.status.title,
     name: 'status',
     open: false,
-    values: filterConfig.status.values.map((value) => ({ value, checked: false })),
+    values: filterConfig.status.values.map((value) => ({ value, checked: false, inverse: false })),
   },
   {
     title: 'Traducteur',
@@ -60,6 +60,7 @@ const defaultFilters = (): ComboBox[] => [
     values: get(traductors).map((traductor) => ({
       value: traductor.name || 'NoName',
       checked: false,
+      inverse: false,
     })),
   },
   {
@@ -111,15 +112,27 @@ export const filteredGames = derived([games, filter, search], ([$games, $filter,
         case 'tags':
           return values.every((value) => {
             if (!value.checked) return true;
-            if (value?.inverse) return !game.tags.includes(value.value);
+            if (value.inverse) return !game.tags.includes(value.value);
             return game.tags.includes(value.value);
           });
         case 'traductor':
-          return values.some((value) => value.checked && game.traductor?.includes(value.value));
+          return values.every((value) => {
+            if (!value.checked) return true;
+            if (value.inverse) return !game.traductor?.includes(value.value);
+            return game.traductor?.includes(value.value);
+          });
         case 'version':
-          return values.some((value) => value.checked && checkVersion(value.value));
+          return values.every((value) => {
+            if (!value.checked) return true;
+            if (value.inverse) return !checkVersion(value.value);
+            return checkVersion(value.value);
+          });
         default:
-          return values.some((value) => value.checked && game[name] === value.value);
+          return values.every((value) => {
+            if (!value.checked) return true;
+            if (value.inverse) return game[name] !== value.value;
+            return game[name] === value.value;
+          });
       }
     });
   }),
