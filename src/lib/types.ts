@@ -13,6 +13,7 @@ export interface ComboBox {
   values: {
     value: GameType['domain' | 'status' | 'type'] | string;
     checked: boolean;
+    inverse?: boolean;
   }[];
 }
 
