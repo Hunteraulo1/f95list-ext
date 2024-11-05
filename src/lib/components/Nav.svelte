@@ -4,7 +4,7 @@ import { cn } from '$utils';
 
 interface Props {
   nav: { name: string; href: string }[];
-  variant: 'webapp' | 'popup';
+  variant?: 'webapp' | 'popup';
 }
 
 let { nav, variant = 'popup' }: Props = $props();
