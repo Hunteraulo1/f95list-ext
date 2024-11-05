@@ -5,11 +5,11 @@ import * as Command from '$ui/command';
 import * as Popover from '$ui/popover';
 import { ScrollArea } from '$ui/scroll-area';
 import { cn } from '$utils';
-import { Check, ChevronDown } from 'svelte-radix';
+import { Check, ChevronDown, Cross1 } from 'svelte-radix';
 
 type Props = {
   title: string;
-  values: Array<{ value: string; checked: boolean }>;
+  values: Array<{ value: string; checked: boolean; inverse?: boolean }>;
   active?: boolean;
 };
 
@@ -24,6 +24,12 @@ const handleSelect = (value: string) => {
         ...item,
         values: item.values.map((v) => {
           if (v.value !== value) return v;
+
+          if (v.inverse !== undefined) {
+            if (!v.checked) return { ...v, checked: true, inverse: false };
+            if (!v.inverse) return { ...v, checked: true, inverse: true };
+            return { ...v, checked: false, inverse: false };
+          }
 
           return { ...v, checked: !v.checked };
         }),
@@ -43,11 +49,11 @@ const handleSelect = (value: string) => {
   <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between" })} disabled={!active}>
       {#if values.some(({ checked }) => checked)}
-        {values.reduce((acc, { checked, value }) =>
-          checked ? acc ? `${acc}, ${value}` : value : acc
+        {values.reduce((acc, { checked, inverse, value }) =>
+          checked ? acc ? `${acc}, ${inverse ? '!' : ''}${value}` : `${inverse ? '!' : ''}${value}` : acc
         , "")}
       {:else}
-        Filtrer par {title.length > 17 ? title.slice(0, 17) : title}...
+        Filtrer par {values.some(({ inverse }) => inverse) ? '!' : ''}{title.length > 17 ? title.slice(0, 17) : title}...
       {/if}
       <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Popover.Trigger>
@@ -57,12 +63,20 @@ const handleSelect = (value: string) => {
         <Command.Empty>Aucun {title} trouvé</Command.Empty>
         <Command.Group class="max-h-full relative">
           <ScrollArea class="h-[16rem]">
-            {#each values as { value, checked }}
+            {#each values as { value, checked, inverse }}
               <Command.Item
                 {value}
-                onSelect={() => handleSelect(value)}
+                onclick={() => handleSelect(value)}
               >
-                <Check class={cn("mr-2 h-4 w-4", { "text-transparent": !checked })} />
+                {#if checked}
+                  {#if inverse}
+                    <Cross1 class={cn("mr-2 h-4 w-4", "text-red-500")} />
+                  {:else}
+                    <Check class={cn("mr-2 h-4 w-4")} />
+                  {/if}
+                {:else}
+                  <div class="mr-2 h-4 w-4"></div>
+                {/if}
                 {value}
               </Command.Item>
             {/each}
