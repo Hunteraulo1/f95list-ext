@@ -5,11 +5,11 @@ import * as Command from '$ui/command';
 import * as Popover from '$ui/popover';
 import { ScrollArea } from '$ui/scroll-area';
 import { cn } from '$utils';
-import { Check, ChevronDown } from 'svelte-radix';
+import { Check, ChevronDown, Cross1 } from 'svelte-radix';
 
 type Props = {
   title: string;
-  values: Array<{ value: string; checked: boolean }>;
+  values: Array<{ value: string; checked: boolean; inverse?: boolean }>;
   active?: boolean;
 };
 
@@ -24,6 +24,12 @@ const handleSelect = (value: string) => {
         ...item,
         values: item.values.map((v) => {
           if (v.value !== value) return v;
+
+          if (item.name === 'tags') {
+            if (!v.checked) return { ...v, checked: true, inverse: false };
+            if (!v.inverse) return { ...v, checked: true, inverse: true };
+            return { ...v, checked: false, inverse: false };
+          }
 
           return { ...v, checked: !v.checked };
         }),
@@ -57,12 +63,20 @@ const handleSelect = (value: string) => {
         <Command.Empty>Aucun {title} trouvé</Command.Empty>
         <Command.Group class="max-h-full relative">
           <ScrollArea class="h-[16rem]">
-            {#each values as { value, checked }}
+            {#each values as { value, checked, inverse }}
               <Command.Item
                 {value}
-                onSelect={() => handleSelect(value)}
+                onclick={() => handleSelect(value)}
               >
-                <Check class={cn("mr-2 h-4 w-4", { "text-transparent": !checked })} />
+                {#if checked}
+                  {#if inverse}
+                    <Cross1 class={cn("mr-2 h-4 w-4", "text-red-500")} />
+                  {:else}
+                    <Check class={cn("mr-2 h-4 w-4")} />
+                  {/if}
+                {:else}
+                  <div class="mr-2 h-4 w-4"></div>
+                {/if}
                 {value}
               </Command.Item>
             {/each}

@@ -66,7 +66,7 @@ const defaultFilters = (): ComboBox[] => [
     title: 'Tags',
     name: 'tags',
     open: false,
-    values: tags.map((tag) => ({ value: tag, checked: false })),
+    values: tags.map((tag) => ({ value: tag, checked: false, inverse: false })),
   },
 ];
 
@@ -109,7 +109,11 @@ export const filteredGames = derived([games, filter, search], ([$games, $filter,
 
       switch (name) {
         case 'tags':
-          return values.every((value) => !value.checked || game.tags.includes(value.value));
+          return values.every((value) => {
+            if (!value.checked) return true;
+            if (value?.inverse) return !game.tags.includes(value.value);
+            return game.tags.includes(value.value);
+          });
         case 'traductor':
           return values.some((value) => value.checked && game.traductor?.includes(value.value));
         case 'version':
