@@ -18,17 +18,17 @@ let { variant = 'popup' }: Props = $props();
     <FilterContent {variant} {active} />
   </div>
 {:else}
-  <Popover.Root>
+  <Popover.Root open>
     <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "-translate-y-12 border-2 border-primary-foreground" })}>
       Filtrer
     </Popover.Trigger>
     <Popover.Content
-      side="top"
-      preventScroll={true}
-      onInteractOutside={()=>null}
-      class="p-2 mx-2 max-h-[calc(100vh-7rem)] overflow-y-auto"
+    side="top"
+    preventScroll
+    onInteractOutside={()=>null}
+    class="mx-2 max-h-[calc(100vh-7rem)] p-0"
     >
-      <Popover.Close class="rounded-full p-2 hover:bg-primary-foreground float-end">
+      <Popover.Close class="rounded-full hover:bg-primary-foreground float-end m-2 p-1">
         <Cross2 />
       </Popover.Close>
       <FilterContent />
