@@ -1,6 +1,6 @@
 {
   "name": "f95list-ext",
-  "version": "1.7.3",
+  "version": "1.8.0",
   "author": {
     "email": "hunteraulo@pm.me",
     "name": "Hunteraulo"
@@ -14,38 +14,41 @@
       "path": "cz-emoji"
     },
     "cz-emoji": {
-      "skipQuestions": ["scope", "body"]
+      "skipQuestions": [
+        "scope",
+        "body"
+      ]
     }
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@eslint/js": "9.14.0",
-    "@sveltejs/kit": "2.7.5",
-    "@sveltejs/vite-plugin-svelte": "4.0.0",
-    "@types/chrome": "0.0.280",
+    "@eslint/js": "9.15.0",
+    "@sveltejs/kit": "2.8.1",
+    "@sveltejs/vite-plugin-svelte": "4.0.1",
+    "@types/chrome": "0.0.283",
     "@types/webextension-polyfill": "0.12.1",
     "archiver": "7.0.1",
     "autoprefixer": "10.4.20",
-    "bits-ui": "1.0.0-next.44",
+    "bits-ui": "^1.0.0-next.58",
     "clsx": "2.1.1",
-    "cmdk-sv": "^0.0.18",
     "cross-env": "7.0.3",
     "dotenv": "16.4.5",
     "mode-watcher": "0.4.1",
-    "postcss": "8.4.47",
+    "postcss": "8.4.49",
     "postcss-import": "16.1.0",
-    "svelte": "5.1.9",
-    "svelte-check": "4.0.5",
+    "svelte": "5.2.1",
+    "svelte-check": "4.0.8",
     "svelte-radix": "^2.0.1",
     "sveltekit-adapter-chrome-extension": "2.0.1",
     "tailwind-merge": "2.5.4",
-    "tailwind-variants": "0.2.1",
-    "tailwindcss": "3.4.14",
+    "tailwind-variants": "0.3.0",
+    "tailwindcss": "3.4.15",
+    "tailwindcss-animate": "1.0.7",
     "ts-node": "10.9.2",
     "tslib": "2.8.1",
     "typescript": "5.6.3",
-    "valibot": "1.0.0-beta.3",
-    "vite": "5.4.10",
+    "valibot": "1.0.0-beta.6",
+    "vite": "5.4.11",
     "vite-plugin-svelte": "3.0.1",
     "vite-plugin-tailwind-purgecss": "0.3.3"
   },
@@ -64,7 +67,13 @@
     "lint": "bunx @biomejs/biome lint --write .",
     "format": "bunx @biomejs/biome format --write ."
   },
-  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@deepkit/type-compiler",
+    "@sveltejs/kit",
+    "esbuild",
+    "svelte-preprocess"
+  ],
   "type": "module",
   "dependencies": {
     "svelte-lazy": "1.2.10"
