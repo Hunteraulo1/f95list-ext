@@ -1,8 +1,9 @@
 <script lang="ts">
+import { dev } from '$app/environment';
 import Filter from '$lib/components/Filter.svelte';
 import GameBox from '$lib/components/GameBox.svelte';
 import type { GameType } from '$lib/schemas';
-import { autoFocusBlock, filteredGames } from '$lib/stores';
+import { autoFocusBlock, filteredGames, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { Button, buttonVariants } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
@@ -29,34 +30,30 @@ const extractId = (inputString: string): number => {
 let autoFocus: GameType[];
 
 onMount(async () => {
-  const extract: IdGameBox = await new Promise((resolve) => {
-    resolve({ domain: 'F95z', id: 61843 });
+  const extract: IdGameBox = await new Promise((resolve) =>
+    dev
+      ? resolve({ domain: 'Unknown', id: 0 })
+      : browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+          const url = tabs[0]?.url || '';
 
-    return;
+          if (!url) {
+            resolve({ domain: 'Unknown', id: 0 });
+            return;
+          }
 
-    // dev
-    //   ? resolve({ domain: 'Unknown', id: 0 })
-    //   : browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
-    //       const url = tabs[0]?.url || '';
+          if ($settings.autoFocusGame && url.startsWith('https://f95zone.to/threads/')) {
+            resolve({ domain: 'F95z', id: extractId(url) });
+            return;
+          }
 
-    //       if (!url) {
-    //         resolve({ domain: 'Unknown', id: 0 });
-    //         return;
-    //       }
+          if ($settings.autoFocusGame && url.startsWith('https://lewdcorner.com/threads/')) {
+            resolve({ domain: 'LewdCorner', id: extractId(url) });
+            return;
+          }
 
-    //       if ($settings.autoFocusGame && url.startsWith('https://f95zone.to/threads/')) {
-    //         resolve({ domain: 'F95z', id: extractId(url) });
-    //         return;
-    //       }
-
-    //       if ($settings.autoFocusGame && url.startsWith('https://lewdcorner.com/threads/')) {
-    //         resolve({ domain: 'LewdCorner', id: extractId(url) });
-    //         return;
-    //       }
-
-    //       resolve({ domain: 'Unknown', id: 0 });
-    //     }),
-  });
+          resolve({ domain: 'Unknown', id: 0 });
+        }),
+  );
 
   autoFocus =
     extract.domain === 'Unknown'
@@ -83,11 +80,11 @@ const handleAutoFocus = (game: GameType): boolean => {
     {#if autoFocus}
       {#if autoFocus.length > 0}
         <div class="mb-4 p-2 border rounded-xl">
-          <p class="mb-2">
+          <p class="mb-2 text-xs text-center">
             {#if autoFocus.length === 1}
-              Un jeu correspond à cette page:
+              Un jeu correspond à cette page
             {:else}
-              Plusieurs jeux correspondent à cette page:
+              Plusieurs jeux correspondent à cette page
             {/if}
           </p>
 
