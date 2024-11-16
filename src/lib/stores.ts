@@ -143,7 +143,7 @@ export const updates = writable<Update[]>([]);
 const settingsData: string | null = localStorage.getItem('settings');
 
 export const settings = writable<Settings>(
-  settingsData ? JSON.parse(settingsData) : { tagsHide: true, intergrateFeature: false, autoFocusGame: true },
+  settingsData ? JSON.parse(settingsData) : { tagsHide: true, intergrateFeature: true, autoFocusGame: true },
 );
 
 // Webapp
