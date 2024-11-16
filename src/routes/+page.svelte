@@ -1,9 +1,8 @@
 <script lang="ts">
-import { dev } from '$app/environment';
 import Filter from '$lib/components/Filter.svelte';
 import GameBox from '$lib/components/GameBox.svelte';
 import type { GameType } from '$lib/schemas';
-import { autoFocusBlock, filteredGames, settings } from '$lib/stores';
+import { autoFocusBlock, filteredGames } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { Button, buttonVariants } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
@@ -19,56 +18,57 @@ if (typeof chrome !== 'undefined') {
 }
 
 const extractId = (inputString: string): number => {
+  if (!inputString) return 0;
+
   const regex = /\.(\d+)/;
   const match = inputString.match(regex);
-  console.log('🚀 ~ extractId ~ match:', match);
 
   return match ? Number.parseInt(match[1]) : 0;
 };
 
 let autoFocus: GameType[];
-let selectedGameId: number | null = null;
 
 onMount(async () => {
-  const extract: IdGameBox = await new Promise((resolve) =>
-    dev
-      ? resolve({ domain: 'Unknown', id: 0 })
-      : browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
-          const { url } = tabs[0];
+  const extract: IdGameBox = await new Promise((resolve) => {
+    resolve({ domain: 'F95z', id: 61843 });
 
-          if (!url) {
-            resolve({ domain: 'Unknown', id: 0 });
-            return;
-          }
-
-          if ($settings.autoFocusGame && url.startsWith('https://f95zone.to/threads/')) {
-            resolve({ domain: 'F95z', id: extractId(url) });
-          }
-
-          if ($settings.autoFocusGame && url.startsWith('https://lewdcorner.com/threads/')) {
-            resolve({ domain: 'LewdCorner', id: extractId(url) });
-          }
-
-          resolve({ domain: 'Unknown', id: 0 });
-        }),
-  );
-
-  if (extract.domain === 'Unknown') {
-    autoFocus = [];
     return;
-  }
 
-  autoFocus = $filteredGames.filter((game) => game.domain === extract.domain && game.id === extract.id);
+    // dev
+    //   ? resolve({ domain: 'Unknown', id: 0 })
+    //   : browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+    //       const url = tabs[0]?.url || '';
+
+    //       if (!url) {
+    //         resolve({ domain: 'Unknown', id: 0 });
+    //         return;
+    //       }
+
+    //       if ($settings.autoFocusGame && url.startsWith('https://f95zone.to/threads/')) {
+    //         resolve({ domain: 'F95z', id: extractId(url) });
+    //         return;
+    //       }
+
+    //       if ($settings.autoFocusGame && url.startsWith('https://lewdcorner.com/threads/')) {
+    //         resolve({ domain: 'LewdCorner', id: extractId(url) });
+    //         return;
+    //       }
+
+    //       resolve({ domain: 'Unknown', id: 0 });
+    //     }),
+  });
+
+  autoFocus =
+    extract.domain === 'Unknown'
+      ? []
+      : [...$filteredGames].filter((game) => game.domain === extract.domain && game.id === extract.id);
 });
 
+let shouldAutoFocus = $autoFocusBlock;
+
 const handleAutoFocus = (game: GameType): boolean => {
-  if (!game.id || autoFocus.length === 0) return false;
-
-  selectedGameId === game.id;
-
-  if (autoFocus.length > 1) return false;
-
-  if ($autoFocusBlock) return false;
+  if (!game.id || autoFocus.length !== 1 || shouldAutoFocus) return false;
+  shouldAutoFocus = true;
   $autoFocusBlock = true;
 
   return autoFocus[0]?.domain === game.domain && autoFocus[0]?.id === game.id;
@@ -90,7 +90,7 @@ const handleAutoFocus = (game: GameType): boolean => {
 
           <div class="flex flex-col gap-2">
             {#each autoFocus as game (game.name + game.version)}
-            <GameBox {game} autoFocusMultiple />
+              <GameBox {game} autoFocusMultiple />
             {/each}
           </div>
         </div>
