@@ -43,7 +43,7 @@ const Traductor = object({
       link: string(),
     }),
   ),
-  discordId: nullable(string()),
+  discordId: nullable(number()),
   tradCount: number(),
   readCount: number(),
   score: number(),

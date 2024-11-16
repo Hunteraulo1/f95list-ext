@@ -51,20 +51,17 @@ const getData = async () => {
       tversion: '',
     };
 
-    const updatesData = data.updates.map((update: UpdateData) => {
-      return {
-        date: new Date(update.date),
-        type: update.type,
-        games: update.names.map((name: string) => {
-          return (
-            validGames.findLast((game) => game.name === name) ?? {
-              ...defaultGame,
-              name,
-            }
-          );
-        }),
-      };
-    });
+    const updatesData = data.updates.map((update: UpdateData) => ({
+      date: new Date(update.date),
+      type: update.type,
+      games: update.names.map(
+        (name: string) =>
+          validGames.findLast((game) => game.name === name) ?? {
+            ...defaultGame,
+            name,
+          },
+      ),
+    }));
 
     const validUpdates = parse(Updates, updatesData);
 
