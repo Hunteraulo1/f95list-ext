@@ -72,14 +72,14 @@ const handleClick = () => {
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger
-                class="text-xs cursor-help font-bold {game.tversion ===
+                class="text-xs cursor-help font-bold z-20 {game.tversion ===
                 'Intégrée' || game.tversion === game.version
                 ? 'text-green-700'
                 : 'text-red-700'} {webapp ? 'text-lg' : ''}"
               >
                 {game.tversion}
               </Tooltip.Trigger>
-              <Tooltip.Content class="bg-transparent">
+              <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'}>
                 <Badge variant="secondary">
                   {#if game.tversion === 'Intégrée'}
                     À jour ({game.version})
