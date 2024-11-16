@@ -146,6 +146,8 @@ export const settings = writable<Settings>(
   settingsData ? JSON.parse(settingsData) : { tagsHide: true, intergrateFeature: true, autoFocusGame: true },
 );
 
+export const autoFocusBlock = writable<boolean>(false);
+
 // Webapp
 
 export const selectedGame = writable<GameType | undefined>();

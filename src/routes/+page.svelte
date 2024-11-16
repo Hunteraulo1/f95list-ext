@@ -3,7 +3,7 @@ import { dev } from '$app/environment';
 import Filter from '$lib/components/Filter.svelte';
 import GameBox from '$lib/components/GameBox.svelte';
 import type { GameType } from '$lib/schemas';
-import { filteredGames, settings } from '$lib/stores';
+import { autoFocusBlock, filteredGames, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { Button, buttonVariants } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
@@ -67,6 +67,9 @@ const handleAutoFocus = (game: GameType): boolean => {
   selectedGameId === game.id;
 
   if (autoFocus.length > 1) return false;
+
+  if ($autoFocusBlock) return false;
+  $autoFocusBlock = true;
 
   return autoFocus[0]?.domain === game.domain && autoFocus[0]?.id === game.id;
 };
