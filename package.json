@@ -1,6 +1,6 @@
 {
   "name": "f95list-ext",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "author": {
     "email": "hunteraulo@pm.me",
     "name": "Hunteraulo"
@@ -14,10 +14,7 @@
       "path": "cz-emoji"
     },
     "cz-emoji": {
-      "skipQuestions": [
-        "scope",
-        "body"
-      ]
+      "skipQuestions": ["scope", "body"]
     }
   },
   "devDependencies": {
@@ -36,8 +33,8 @@
     "mode-watcher": "0.4.1",
     "postcss": "8.4.49",
     "postcss-import": "16.1.0",
-    "svelte": "5.2.1",
-    "svelte-check": "4.0.8",
+    "svelte": "5.2.2",
+    "svelte-check": "4.0.9",
     "svelte-radix": "^2.0.1",
     "sveltekit-adapter-chrome-extension": "2.0.1",
     "tailwind-merge": "2.5.4",
@@ -67,13 +64,7 @@
     "lint": "bunx @biomejs/biome lint --write .",
     "format": "bunx @biomejs/biome format --write ."
   },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "@deepkit/type-compiler",
-    "@sveltejs/kit",
-    "esbuild",
-    "svelte-preprocess"
-  ],
+  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
   "type": "module",
   "dependencies": {
     "svelte-lazy": "1.2.10"
