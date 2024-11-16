@@ -17,9 +17,21 @@ interface Props {
   game: GameType;
   idGameBox?: IdGameBox;
   webapp?: boolean;
+  autoFocus?: boolean;
+  autoFocusMultiple?: boolean;
 }
 
-let { game, idGameBox = { domain: 'Unknown', id: 0 }, webapp = false }: Props = $props();
+let {
+  game,
+  idGameBox = { domain: 'Unknown', id: 0 },
+  webapp = false,
+  autoFocus = false,
+  autoFocusMultiple = false,
+}: Props = $props();
+
+$effect(() => {
+  autoFocus && handleClick();
+});
 
 let open = $state(false);
 
@@ -41,31 +53,33 @@ const handleClick = () => {
   <div class="relative">
     <Lazy height={88} fadeOption={{ delay: 0, duration: 0 }}>
       <Card.Root class="cursor-pointer" onclick={handleClick}>
-        <img
-        alt={game.name}
-        class="absolute top-0 left-0 object-cover w-full h-full rounded-xl"
-        src={game.image?.replace(
-          'attachments.f95zone.to',
-          'preview.f95zone.to'
-        ) ?? noImage}
-        style="image-rendering: smooth; image-resolution: snap;"
-      />
+        {#if !autoFocusMultiple}
+          <img
+            alt={game.name}
+            class="absolute top-0 left-0 object-cover w-full h-full rounded-xl"
+            src={game.image?.replace(
+              'attachments.f95zone.to',
+              'preview.f95zone.to'
+            ) ?? noImage}
+            style="image-rendering: smooth; image-resolution: snap;"
+          />
+        {/if}
       
       <Card.CardContent
-        class="relative p-6 rounded-xl overflow-hidden transition backdrop-brightness-90 text-white {webapp ? 'text-xl' : 'hover:backdrop-brightness-100'}">
+        class="relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white {(webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100'} {autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'}">
         <Card.Title>{game.name}</Card.Title>
         <Card.Description>
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger
-                class="text-xs cursor-help font-bold {game.tversion ===
+                class="text-xs cursor-help font-bold z-20 {game.tversion ===
                 'Intégrée' || game.tversion === game.version
                 ? 'text-green-700'
                 : 'text-red-700'} {webapp ? 'text-lg' : ''}"
               >
                 {game.tversion}
               </Tooltip.Trigger>
-              <Tooltip.Content class="bg-transparent">
+              <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
                 <Badge variant="secondary">
                   {#if game.tversion === 'Intégrée'}
                     À jour ({game.version})
@@ -84,7 +98,7 @@ const handleClick = () => {
       </Card.CardContent>
       </Card.Root>
     </Lazy>
-
+    
     {#if isFirefox() || $page.url.pathname.startsWith('/webapp') || dev}
       <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
         <Link1 />
