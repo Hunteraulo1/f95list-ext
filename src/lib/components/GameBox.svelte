@@ -79,7 +79,7 @@ const handleClick = () => {
               >
                 {game.tversion}
               </Tooltip.Trigger>
-              <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'}>
+              <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
                 <Badge variant="secondary">
                   {#if game.tversion === 'Intégrée'}
                     À jour ({game.version})

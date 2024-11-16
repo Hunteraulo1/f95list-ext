@@ -64,14 +64,17 @@ onMount(async () => {
       : [...$filteredGames].filter((game) => game.domain === extract.domain && game.id === extract.id);
 });
 
-let shouldAutoFocus = $autoFocusBlock;
+let shouldAutoFocus = Boolean($autoFocusBlock);
+$autoFocusBlock = true;
 
 const handleAutoFocus = (game: GameType): boolean => {
   if (!game.id || autoFocus.length !== 1 || shouldAutoFocus) return false;
-  shouldAutoFocus = true;
-  $autoFocusBlock = true;
 
-  return autoFocus[0]?.domain === game.domain && autoFocus[0]?.id === game.id;
+  if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.id !== game.id) return false;
+
+  shouldAutoFocus = true;
+
+  return true;
 };
 </script>
 
