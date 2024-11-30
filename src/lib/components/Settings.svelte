@@ -2,16 +2,17 @@
 import { dev } from '$app/environment';
 import { goto } from '$app/navigation';
 import { settings } from '$lib/stores';
-import type { Settings } from '$lib/types';
 import { Button, buttonVariants } from '$ui/button';
 import { Label } from '$ui/label';
 import { ScrollArea } from '$ui/scroll-area';
 import { Switch } from '$ui/switch';
 import { toggleMode } from 'mode-watcher';
-import type { Component } from 'svelte';
 import DiscordLogo from 'svelte-radix/DiscordLogo.svelte';
 import Moon from 'svelte-radix/Moon.svelte';
 import Sun from 'svelte-radix/Sun.svelte';
+
+import type { Settings } from '$lib/types';
+import type { Component } from 'svelte';
 
 interface SettingItem {
   title: string;

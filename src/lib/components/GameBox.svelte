@@ -2,9 +2,7 @@
 import { dev } from '$app/environment';
 import { page } from '$app/stores';
 import noImage from '$lib/assets/no-image.png';
-import type { GameType } from '$lib/schemas';
 import { games, selectedGame } from '$lib/stores';
-import type { IdGameBox } from '$lib/types';
 import { isFirefox } from '$lib/utils/polyfill';
 import { Badge } from '$ui/badge';
 import * as Card from '$ui/card';
@@ -12,6 +10,9 @@ import * as Tooltip from '$ui/tooltip';
 import Lazy from 'svelte-lazy';
 import { Link1 } from 'svelte-radix';
 import Details from './Details.svelte';
+
+import type { GameType } from '$lib/schemas';
+import type { IdGameBox } from '$lib/types';
 
 interface Props {
   game: GameType;
@@ -51,7 +52,7 @@ const handleClick = () => {
 
 {#if game.domain !== 'Unknown'}
   <div class="relative">
-    <Lazy height={88} fadeOption={{ delay: 0, duration: 0 }}>
+    <Lazy height={88} fadeOption={{ delay: 0, duration: 0 }} keep={true}>
       <Card.Root class="cursor-pointer" onclick={handleClick}>
         {#if !autoFocusMultiple}
           <img
@@ -67,7 +68,7 @@ const handleClick = () => {
       
       <Card.CardContent
         class="relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white {(webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100'} {autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'}">
-        <Card.Title>{game.name}</Card.Title>
+        <Card.Title class="select-none">{game.name}</Card.Title>
         <Card.Description>
           <Tooltip.Provider>
             <Tooltip.Root>

@@ -1,6 +1,5 @@
 <script lang="ts">
 import noImage from '$lib/assets/no-image.png';
-import type { GameType } from '$lib/schemas';
 import { selectedGame, settings } from '$lib/stores';
 import { statusColor, typeColor } from '$lib/utils/badgeColor';
 import { lazyLoad } from '$lib/utils/lazyload';
@@ -9,7 +8,10 @@ import { Badge } from '$ui/badge';
 import { Button, buttonVariants } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
 import * as Tooltip from '$ui/tooltip';
+import { cn } from '$utils';
 import { ArrowLeft, ExclamationTriangle } from 'svelte-radix';
+
+import type { GameType } from '$lib/schemas';
 
 let tagsHide = $state($settings.tagsHide);
 
@@ -46,11 +48,17 @@ let closed = $state<boolean>(variant === 'popup' && false);
       />
       <div class="p-2 flex flex-col gap-2">
         <h2>
-          <span class="font-bold text-sm">Site:</span>
+          <span class="font-bold text-sm select-none">Site:</span>
           <a href={game.link} target="_blank">
             <Badge variant="secondary">{game.domain}</Badge>
           </a>
-          <a href={game.link} target="_blank" class={buttonVariants({ variant: "link", class: "px-1" })}>(Accèder au jeu)</a>
+          <a
+            href={game.link}
+            target="_blank"
+            class={cn(buttonVariants({ variant: 'link', class: 'px-1' }), 'select-none')}
+          >
+            (Accèder au jeu)
+          </a>
         </h2>
         <h1>
           <Badge style={typeColor(game.type)} class="text-white font-bold">
@@ -87,7 +95,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
         </Tooltip.Provider>
         </h1>
         <div class="flex gap-1 flex-wrap">
-          <span class="font-bold text-sm">Tags:</span>
+          <span class="font-bold text-sm select-none">Tags:</span>
           {#each game.tags as tag, index}
             {#if index < 5 || !tagsHide}
               <Badge variant="outline">{tag}</Badge>
@@ -103,7 +111,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
           {/if}
         </div>
         <p class="text-sm">
-          <span class="font-bold">Traducteur:</span>
+          <span class="font-bold select-none">Traducteur:</span>
           <a href={game.trlink} class:traductor={game.trlink} target="_blank">
             {game.traductor ?? 'Aucun'}
           </a>
@@ -113,7 +121,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
         </p>
         {#if game.proofreader}
           <p class="text-sm">
-            <span class="font-bold">Relecteur:</span>
+            <span class="font-bold select-none">Relecteur:</span>
             <a href={game.trlink} class:traductor={game.trlink} target="_blank">
               {game.proofreader}
             </a>
