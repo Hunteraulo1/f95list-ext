@@ -84,7 +84,7 @@ const dataInit = async () => {
     return;
   }
 
-  await browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 6 }); // 6 hours
+  await browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 2 }); // 2 hours
   await browserAPI.storage.local.set({ f95list_ext_data: await query() });
 
   await badgeState();
