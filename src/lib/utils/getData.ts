@@ -1,11 +1,10 @@
-import { parse } from 'valibot';
-
-import { type GameType, Games, TraductorsData, Updates } from '../schemas';
-import { filter, games, traductors, updates } from '../stores';
-
 import { dev } from '$app/environment';
 import apiJson from '$lib/assets/api.json';
-import { browserAPI } from './polyfill';
+import { parse } from 'valibot';
+import { Games, TraductorsData, Updates } from '../schemas';
+import { filter, games, traductors, updates } from '../stores';
+
+import type { GameType } from '../schemas';
 
 interface UpdateData {
   date: string;
@@ -16,7 +15,7 @@ interface UpdateData {
 const callWorker = async () => {
   if (dev) return apiJson.data;
 
-  return await browserAPI()?.runtime.sendMessage('f95list-ext');
+  return await browser.runtime.sendMessage('f95list-ext');
 };
 
 const getData = async () => {

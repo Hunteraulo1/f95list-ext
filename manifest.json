@@ -1,16 +1,34 @@
 {
   "name": "F95 France - Extension",
-  "description": "Extension of F95 France community",
+  "description": "Extension de F95 France",
   "author": "Hunteraulo",
   "version": "0.0.0",
-  "manifest_version": 3,
+  "{{chrome}}.manifest_version": 3,
+  "{{firefox}}.manifest_version": 2,
   "icons": {
     "16": "favicon_16.png",
     "32": "favicon_32.png",
     "64": "favicon_64.png",
     "128": "favicon_128.png"
   },
-  "action": {
+  "{{firefox}}.browser_specific_settings": {
+    "gecko": {
+      "id": "{9f7488b3-d704-4894-bac8-5dc3068fd6b9}",
+      "strict_min_version": "79.0",
+      "update_url": "https://raw.githubusercontent.com/Hunteraulo1/f95list-ext/main/updates.json"
+    }
+  },
+  "{{chrome}}.action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "favicon_16.png",
+      "32": "favicon_32.png",
+      "64": "favicon_64.png",
+      "128": "favicon_128.png"
+    },
+    "default_title": "F95 France - Extension"
+  },
+  "{{firefox}}.browser_action": {
     "default_popup": "index.html",
     "default_icon": {
       "16": "favicon_16.png",
@@ -35,7 +53,8 @@
     }
   ],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "{{chrome}}.service_worker": "background.js",
+    "{{chrome}}.type": "module",
+    "{{firefox}}.scripts": ["background.js"]
   }
 }

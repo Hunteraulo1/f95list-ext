@@ -5,11 +5,10 @@ import { updates } from '$lib/stores';
 import { Button } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
 import { Reload } from 'svelte-radix';
+import browser from 'webextension-polyfill';
 
 if (!dev) {
-  const browserAPI = typeof browser === 'undefined' ? chrome : browser;
-
-  browserAPI.runtime.sendMessage('f95list-badge');
+  browser.runtime.sendMessage('f95list-badge');
 }
 </script>
 

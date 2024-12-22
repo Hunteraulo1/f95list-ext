@@ -7,14 +7,14 @@ import { Button } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
 import { createEventDispatcher } from 'svelte';
 import { Reload } from 'svelte-radix';
+import browser from 'webextension-polyfill';
 
 const dispatch = createEventDispatcher<{
   selectGame: GameType | undefined;
 }>();
 
 if (!dev) {
-  const browserAPI = typeof browser === 'undefined' ? chrome : browser;
-  browserAPI.runtime.sendMessage('f95list-badge');
+  browser.runtime.sendMessage('f95list-badge');
 }
 </script>
 

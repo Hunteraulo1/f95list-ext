@@ -1,22 +1,22 @@
-const browserAPI = typeof browser === 'undefined' ? chrome : browser;
+import browser from 'webextension-polyfill';
 
-browserAPI.runtime.onInstalled.addListener(async () => {
-  const { f95list_ext_integrate } = await browserAPI.storage.local.get(['f95list_ext_integrate']);
+browser.runtime.onInstalled.addListener(async () => {
+  const { f95list_ext_integrate } = await browser.storage.local.get(['f95list_ext_integrate']);
 
-  if (f95list_ext_integrate === undefined) await browserAPI.storage.local.set({ f95list_ext_integrate: true });
+  if (f95list_ext_integrate === undefined) await browser.storage.local.set({ f95list_ext_integrate: true });
   await dataInit();
 
   await badgeState();
 });
 
-browserAPI.runtime.onStartup.addListener(async () => {
+browser.runtime.onStartup.addListener(async () => {
   await dataInit();
 
   await badgeState();
 });
 
 const badgeData = async () => {
-  const { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data']);
+  const { f95list_ext_data } = await browser.storage.local.get(['f95list_ext_data']);
 
   if (!f95list_ext_data || f95list_ext_data.updates.length === 0) throw new Error('no data');
 
@@ -27,7 +27,7 @@ const badgeState = async () => {
   const browserAction = typeof browser === 'undefined' ? chrome.action : browser.browserAction;
 
   const updatesData = await badgeData();
-  const { f95list_ext_badge } = await browserAPI.storage.local.get(['f95list_ext_badge']);
+  const { f95list_ext_badge } = await browser.storage.local.get(['f95list_ext_badge']);
 
   let index = 0;
   updatesData?.every((updateData) => {
@@ -56,7 +56,7 @@ const badgeReset = async () => {
 
     if (updatesData[0].date === updatesData[1].date) result.push(updatesData[1]);
 
-    await browserAPI.storage.local.set({ f95list_ext_badge: result });
+    await browser.storage.local.set({ f95list_ext_badge: result });
     await badgeState();
   } catch (error) {
     console.error(error);
@@ -71,36 +71,36 @@ const dataInit = async () => {
     await sleep(1000); // 1 second
   }
 
-  const { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data']);
+  const { f95list_ext_data } = await browser.storage.local.get(['f95list_ext_data']);
 
   if (wait) return;
   wait = true;
 
   const date = new Date().getTime();
-  const { f95list_ext_time } = await browserAPI.storage.local.get(['f95list_ext_time']);
+  const { f95list_ext_time } = await browser.storage.local.get(['f95list_ext_time']);
 
   if (f95list_ext_data && f95list_ext_time && date < f95list_ext_time) {
     wait = false;
     return;
   }
 
-  await browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 2 }); // 2 hours
-  await browserAPI.storage.local.set({ f95list_ext_data: await query() });
+  await browser.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 2 }); // 2 hours
+  await browser.storage.local.set({ f95list_ext_data: await query() });
 
   await badgeState();
 
   wait = false;
 };
 
-browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
     await dataInit();
 
-    const { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data']);
+    const { f95list_ext_data } = await browser.storage.local.get(['f95list_ext_data']);
 
     switch (message) {
       case 'f95list-script': {
-        const { f95list_ext_integrate } = await browserAPI.storage.local.get(['f95list_ext_integrate']);
+        const { f95list_ext_integrate } = await browser.storage.local.get(['f95list_ext_integrate']);
 
         if (!f95list_ext_integrate) throw new Error('no integrate');
 
@@ -114,10 +114,10 @@ browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         await badgeReset();
         break;
       case 'f95list-integrate_true':
-        await browserAPI.storage.local.set({ f95list_ext_integrate: true });
+        await browser.storage.local.set({ f95list_ext_integrate: true });
         break;
       case 'f95list-integrate_false':
-        await browserAPI.storage.local.set({ f95list_ext_integrate: false });
+        await browser.storage.local.set({ f95list_ext_integrate: false });
         break;
     }
   })();
@@ -140,7 +140,7 @@ const query = async () => {
   } catch (error) {
     console.error(error);
 
-    await browserAPI.storage.local.set({ f95list_ext_time: 0 });
+    await browser.storage.local.set({ f95list_ext_time: 0 });
 
     wait = false;
   }

@@ -1,11 +1,5 @@
 import { dev } from '$app/environment';
 
-const browserAPI = () => {
-  if (dev) return;
-
-  return typeof browser === 'undefined' ? chrome : browser;
-};
-
 const isFirefox = () => {
   if (dev) return false;
 
@@ -18,4 +12,4 @@ const isChrome = () => {
   return typeof browser === 'undefined';
 };
 
-export { browserAPI, isChrome, isFirefox };
+export { isChrome, isFirefox };

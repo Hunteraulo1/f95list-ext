@@ -2,21 +2,15 @@
 import { dev } from '$app/environment';
 import Filter from '$lib/components/Filter.svelte';
 import GameBox from '$lib/components/GameBox.svelte';
-import type { GameType } from '$lib/schemas';
 import { autoFocusBlock, filteredGames, settings } from '$lib/stores';
-import type { IdGameBox } from '$lib/types';
 import { Button, buttonVariants } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
 import { onMount } from 'svelte';
 import { ExternalLink, Reload } from 'svelte-radix';
+import browser from 'webextension-polyfill';
 
-let browserAPI = undefined;
-
-if (typeof chrome !== 'undefined') {
-  browserAPI = chrome;
-} else if (typeof browser !== 'undefined') {
-  browserAPI = browser;
-}
+import type { GameType } from '$lib/schemas';
+import type { IdGameBox } from '$lib/types';
 
 const extractId = (inputString: string): number => {
   if (!inputString) return 0;
@@ -33,7 +27,7 @@ onMount(async () => {
   const extract: IdGameBox = await new Promise((resolve) =>
     dev
       ? resolve({ domain: 'Unknown', id: 0 })
-      : browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+      : browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
           const url = tabs[0]?.url || '';
 
           if (!url) {

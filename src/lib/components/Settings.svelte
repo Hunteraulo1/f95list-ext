@@ -10,6 +10,7 @@ import { toggleMode } from 'mode-watcher';
 import DiscordLogo from 'svelte-radix/DiscordLogo.svelte';
 import Moon from 'svelte-radix/Moon.svelte';
 import Sun from 'svelte-radix/Sun.svelte';
+import browser from 'webextension-polyfill';
 
 import type { Settings } from '$lib/types';
 import type { Component } from 'svelte';
@@ -92,11 +93,10 @@ const handleSettings = async (settingsItem: SettingItem) => {
     localStorage.setItem('settings', JSON.stringify(updatedSettings));
 
     if (id === 'intergrateFeature' && !dev) {
-      const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
       const message = `f95list-integrate_${newValue.toString()}`;
 
       try {
-        await browserAPI.runtime.sendMessage(message);
+        await browser.runtime.sendMessage(message);
       } catch (browserError) {
         $settings = { ...$settings, [id]: !newValue };
       }
