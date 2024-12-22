@@ -20,6 +20,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@eslint/js": "9.16.0",
+    "@sveltejs/adapter-static": "3.0.8",
     "@sveltejs/kit": "2.10.1",
     "@sveltejs/vite-plugin-svelte": "5.0.1",
     "@types/chrome": "0.0.287",
@@ -36,7 +37,6 @@
     "svelte": "5.11.0",
     "svelte-check": "4.1.1",
     "svelte-radix": "^2.0.1",
-    "sveltekit-adapter-chrome-extension": "2.0.1",
     "tailwind-merge": "2.5.5",
     "tailwind-variants": "0.3.0",
     "tailwindcss": "3.4.16",
@@ -64,7 +64,15 @@
     "lint": "bunx @biomejs/biome lint --write .",
     "format": "bunx @biomejs/biome format --write ."
   },
-  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "dtrace-provider", "esbuild", "spawn-sync", "svelte-preprocess"],
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@deepkit/type-compiler",
+    "@sveltejs/kit",
+    "dtrace-provider",
+    "esbuild",
+    "spawn-sync",
+    "svelte-preprocess"
+  ],
   "type": "module",
   "dependencies": {
     "svelte-lazy": "1.2.11",

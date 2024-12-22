@@ -1,5 +1,5 @@
+import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-import adapter from 'sveltekit-adapter-chrome-extension';
 
 const buildMode = process.env.BUILD_MODE;
 
@@ -8,13 +8,7 @@ const config = {
   preprocess: vitePreprocess(),
 
   kit: {
-    adapter: adapter({
-      pages: `builds/${buildMode}`,
-      assets: `builds/${buildMode}`,
-      fallback: null,
-      precompress: false,
-      manifest: `manifest_${buildMode}.json`,
-    }),
+    adapter: adapter(),
     appDir: 'app',
     alias: {
       $utils: 'src/lib/utils',
