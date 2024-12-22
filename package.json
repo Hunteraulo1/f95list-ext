@@ -45,7 +45,7 @@
     "tslib": "2.8.1",
     "typescript": "5.7.2",
     "valibot": "1.0.0-beta.9",
-    "vite": "6.0.3",
+    "vite": "^6.0.5",
     "vite-plugin-svelte": "3.0.1",
     "vite-plugin-tailwind-purgecss": "0.3.5"
   },
@@ -64,9 +64,11 @@
     "lint": "bunx @biomejs/biome lint --write .",
     "format": "bunx @biomejs/biome format --write ."
   },
-  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "esbuild", "svelte-preprocess"],
+  "trustedDependencies": ["@biomejs/biome", "@deepkit/type-compiler", "@sveltejs/kit", "dtrace-provider", "esbuild", "spawn-sync", "svelte-preprocess"],
   "type": "module",
   "dependencies": {
-    "svelte-lazy": "1.2.11"
+    "svelte-lazy": "1.2.11",
+    "vite-plugin-web-extension": "^4.3.1",
+    "webextension-polyfill": "^0.12.0"
   }
 }
