@@ -118,25 +118,52 @@ export const filteredGames = derived([games, filter, search], ([$games, $filter,
         case 'traductor':
           if (!values.some((v) => v.checked)) return true;
 
-          return values.some((value) => {
-            if (!value.checked) return false;
-            if (value.inverse) return !game.traductor?.includes(value.value);
+          if (!values.some((v) => v.inverse)) {
+            return values.some((value) => {
+              if (!value.checked) return false;
+              return game.traductor?.includes(value.value);
+            });
+          }
+
+          return values.every((value) => {
+            if (!value.checked) return true;
+            if (value.inverse) {
+              return !game.traductor?.includes(value.value);
+            }
             return game.traductor?.includes(value.value);
           });
         case 'version':
           if (!values.some((v) => v.checked)) return true;
 
-          return values.some((value) => {
-            if (!value.checked) return false;
-            if (value.inverse) return !checkVersion(value.value);
+          if (!values.some((v) => v.inverse)) {
+            return values.some((value) => {
+              if (!value.checked) return false;
+              return checkVersion(value.value);
+            });
+          }
+
+          return values.every((value) => {
+            if (!value.checked) return true;
+            if (value.inverse) {
+              return !checkVersion(value.value);
+            }
             return checkVersion(value.value);
           });
         default:
           if (!values.some((v) => v.checked)) return true;
 
-          return values.some((value) => {
-            if (!value.checked) return false;
-            if (value.inverse) return game[name] !== value.value;
+          if (!values.some((v) => v.inverse)) {
+            return values.some((value) => {
+              if (!value.checked) return false;
+              return game[name] === value.value;
+            });
+          }
+
+          return values.every((value) => {
+            if (!value.checked) return true;
+            if (value.inverse) {
+              return game[name] !== value.value;
+            }
             return game[name] === value.value;
           });
       }
