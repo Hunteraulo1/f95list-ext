@@ -1,25 +1,21 @@
 <script lang="ts">
-	import type { WithElementRef } from "bits-ui";
 	import type { HTMLAttributes } from "svelte/elements";
+	import type { HeadingLevel } from "./index.js";
 	import { cn } from "$lib/utils.js";
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		level = 3,
-		children,
-		...restProps
-	}: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
-		level?: 1 | 2 | 3 | 4 | 5 | 6;
-	} = $props();
+	type $$Props = HTMLAttributes<HTMLHeadingElement> & {
+		tag?: HeadingLevel;
+	};
+
+	let className: $$Props["class"] = undefined;
+	export let tag: $$Props["tag"] = "h3";
+	export { className as class };
 </script>
 
-<div
-	role="heading"
-	aria-level={level}
-	bind:this={ref}
+<svelte:element
+	this={tag}
 	class={cn("font-semibold leading-none tracking-tight", className)}
-	{...restProps}
+	{...$$restProps}
 >
-	{@render children?.()}
-</div>
+	<slot />
+</svelte:element>
