@@ -15,7 +15,7 @@ const filterConfig = {
     values: ['F95z', 'LewdCorner', 'Autre'],
   },
   version: {
-    title: 'Statut de la traduction',
+    title: 'Status de la traduction',
     values: ['À jour', 'Intégrée', 'Pas à jour'],
   },
   type: {
@@ -116,21 +116,54 @@ export const filteredGames = derived([games, filter, search], ([$games, $filter,
             return game.tags.includes(value.value);
           });
         case 'traductor':
+          if (!values.some((v) => v.checked)) return true;
+
+          if (!values.some((v) => v.inverse)) {
+            return values.some((value) => {
+              if (!value.checked) return false;
+              return game.traductor?.includes(value.value);
+            });
+          }
+
           return values.every((value) => {
             if (!value.checked) return true;
-            if (value.inverse) return !game.traductor?.includes(value.value);
+            if (value.inverse) {
+              return !game.traductor?.includes(value.value);
+            }
             return game.traductor?.includes(value.value);
           });
         case 'version':
+          if (!values.some((v) => v.checked)) return true;
+
+          if (!values.some((v) => v.inverse)) {
+            return values.some((value) => {
+              if (!value.checked) return false;
+              return checkVersion(value.value);
+            });
+          }
+
           return values.every((value) => {
             if (!value.checked) return true;
-            if (value.inverse) return !checkVersion(value.value);
+            if (value.inverse) {
+              return !checkVersion(value.value);
+            }
             return checkVersion(value.value);
           });
         default:
+          if (!values.some((v) => v.checked)) return true;
+
+          if (!values.some((v) => v.inverse)) {
+            return values.some((value) => {
+              if (!value.checked) return false;
+              return game[name] === value.value;
+            });
+          }
+
           return values.every((value) => {
             if (!value.checked) return true;
-            if (value.inverse) return game[name] !== value.value;
+            if (value.inverse) {
+              return game[name] !== value.value;
+            }
             return game[name] === value.value;
           });
       }
