@@ -1,5 +1,5 @@
 <script lang="ts">
-import { page } from '$app/stores';
+import { page } from '$app/state';
 import { buttonVariants } from '$ui/button';
 import * as Popover from '$ui/popover';
 import { Cross2 } from 'svelte-radix';
@@ -13,7 +13,7 @@ let { variant = 'popup' }: Props = $props();
 </script>
 
 {#if variant === 'webapp'}
-  {@const active = $page.url.pathname === '/webapp'}
+  {@const active = page.url.pathname === '/webapp'}
   <div class:isNotWebapp={!active}>
     <FilterContent {variant} {active} />
   </div>
