@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     sveltekit(),
     webExtension({
-      // ...
+      browser: process.env.TARGET || 'chrome',
     }),
   ],
 });

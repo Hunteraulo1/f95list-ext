@@ -1,1 +1,0 @@
-import{o as c,E as s,q as i,v as r,w as h,x as p,y as d}from"./utils.DeauswqW.js";function u(o,t,f){r&&h();var n=o,a,e;c(()=>{a!==(a=t())&&(e&&(p(e),e=null),a&&(e=i(()=>f(n,a))))},s),r&&(n=d)}export{u as c};

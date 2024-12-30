@@ -1,0 +1,1 @@
+import"../chunks/disclose-version.Bg9kRutz.js";import{p as r,a as p}from"../chunks/utils.BKGyaFQO.js";import{g as o}from"../chunks/entry.UW29fpv8.js";function n(t,a){r(a,!0),a.data.searchParams.webapp===""?o("/webapp"):o("/"),p()}export{n as component};
