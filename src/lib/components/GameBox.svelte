@@ -1,6 +1,6 @@
 <script lang="ts">
 import { dev } from '$app/environment';
-import { page } from '$app/stores';
+import { page } from '$app/state';
 import noImage from '$lib/assets/no-image.png';
 import { games, selectedGame } from '$lib/stores';
 import { isFirefox } from '$lib/utils/polyfill';
@@ -78,7 +78,7 @@ const handleClick = () => {
                 ? 'text-green-700'
                 : 'text-red-700'} {webapp ? 'text-lg' : ''}"
               >
-                {game.tversion}
+              {game.tversion}
               </Tooltip.Trigger>
               <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
                 <Badge variant="secondary">
@@ -87,20 +87,20 @@ const handleClick = () => {
                   {:else if game.tversion === game.version}
                     À jour
                   {:else if game.tversion === 'n/a'}
-                    Pas de traduction
+                  Pas de traduction
                   {:else}
                     N'est pas à jour ({game.version})
                   {/if}
                 </Badge>
               </Tooltip.Content>
             </Tooltip.Root>
-          </Tooltip.Provider>
+        </Tooltip.Provider>
         </Card.Description>
       </Card.CardContent>
-      </Card.Root>
-    </Lazy>
+    </Card.Root>
+  </Lazy>
     
-    {#if isFirefox() || $page.url.pathname.startsWith('/webapp') || dev}
+    {#if isFirefox() || page.url.pathname.startsWith('/webapp') || dev}
       <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
         <Link1 />
       </a>
