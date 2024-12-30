@@ -15,7 +15,7 @@ const filterConfig = {
     values: ['F95z', 'LewdCorner', 'Autre'],
   },
   version: {
-    title: 'Statut de la traduction',
+    title: 'Status de la traduction',
     values: ['À jour', 'Intégrée', 'Pas à jour'],
   },
   type: {
