@@ -68,8 +68,9 @@ let closed = $state<boolean>(variant === 'popup' && false);
             {game.status}
           </Badge>
           {game.name}
-          <Tooltip.Root>
-            <Tooltip.Trigger
+          <Tooltip.Provider>
+            <Tooltip.Root>
+              <Tooltip.Trigger
               class="text-xs cursor-help font-bold {game.tversion ===
                 'Intégrée' || game.tversion === game.version
                 ? 'text-green-700'
@@ -85,12 +86,13 @@ let closed = $state<boolean>(variant === 'popup' && false);
                   À jour
                 {:else if game.tversion === 'n/a'}
                   Pas de traduction
-                {:else}
+                  {:else}
                   N'est pas à jour ({game.version})
-                {/if}
+                  {/if}
               </Badge>
             </Tooltip.Content>
           </Tooltip.Root>
+        </Tooltip.Provider>
         </h1>
         <div class="flex gap-1 flex-wrap">
           <span class="font-bold text-sm select-none">Tags:</span>
