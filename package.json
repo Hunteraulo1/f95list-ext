@@ -26,7 +26,7 @@
     "@types/webextension-polyfill": "0.12.1",
     "archiver": "7.0.1",
     "autoprefixer": "10.4.20",
-    "bits-ui": "^1.0.0-next.74",
+    "bits-ui": "^0.22.0",
     "clsx": "2.1.1",
     "cmdk-sv": "^0.0.18",
     "cross-env": "7.0.3",
@@ -49,9 +49,6 @@
     "vite": "6.0.6",
     "vite-plugin-svelte": "3.0.1",
     "vite-plugin-tailwind-purgecss": "0.3.5"
-  },
-  "overrides": {
-    "bits-ui": ">=1.0.0-next.0"
   },
   "description": "Extension de F95 France permettant de lister les jeux",
   "license": "UNLICENSED",
