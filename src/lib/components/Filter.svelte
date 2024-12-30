@@ -40,8 +40,6 @@ let { variant = 'popup' }: Props = $props();
 
 <style type="postcss">
   .isNotWebapp {
-    opacity: 0.5;
-    user-select: none;
-    pointer-events: none;
+    @apply opacity-50 select-none pointer-events-none
   }
 </style>
