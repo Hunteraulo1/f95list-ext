@@ -70,31 +70,29 @@ const handleClick = () => {
         class="relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white {(webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100'} {autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'}">
         <Card.Title class="select-none">{game.name}</Card.Title>
         <Card.Description>
-          <Tooltip.Provider>
-            <Tooltip.Root>
-              <Tooltip.Trigger
-                class="text-xs cursor-help font-bold z-20 {game.tversion ===
-                'Intégrée' || game.tversion === game.version
-                ? 'text-green-700'
-                : 'text-red-700'} {webapp ? 'text-lg' : ''}"
-              >
-                {game.tversion}
-              </Tooltip.Trigger>
-              <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
-                <Badge variant="secondary">
-                  {#if game.tversion === 'Intégrée'}
-                    À jour ({game.version})
-                  {:else if game.tversion === game.version}
-                    À jour
-                  {:else if game.tversion === 'n/a'}
-                    Pas de traduction
-                  {:else}
-                    N'est pas à jour ({game.version})
-                  {/if}
-                </Badge>
-              </Tooltip.Content>
-            </Tooltip.Root>
-          </Tooltip.Provider>
+          <Tooltip.Root>
+            <Tooltip.Trigger
+              class="text-xs cursor-help font-bold z-20 {game.tversion ===
+              'Intégrée' || game.tversion === game.version
+              ? 'text-green-700'
+              : 'text-red-700'} {webapp ? 'text-lg' : ''}"
+            >
+              {game.tversion}
+            </Tooltip.Trigger>
+            <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
+              <Badge variant="secondary">
+                {#if game.tversion === 'Intégrée'}
+                  À jour ({game.version})
+                {:else if game.tversion === game.version}
+                  À jour
+                {:else if game.tversion === 'n/a'}
+                  Pas de traduction
+                {:else}
+                  N'est pas à jour ({game.version})
+                {/if}
+              </Badge>
+            </Tooltip.Content>
+          </Tooltip.Root>
         </Card.Description>
       </Card.CardContent>
       </Card.Root>
