@@ -116,20 +116,26 @@ export const filteredGames = derived([games, filter, search], ([$games, $filter,
             return game.tags.includes(value.value);
           });
         case 'traductor':
-          return values.every((value) => {
-            if (!value.checked) return true;
+          if (!values.some((v) => v.checked)) return true;
+
+          return values.some((value) => {
+            if (!value.checked) return false;
             if (value.inverse) return !game.traductor?.includes(value.value);
             return game.traductor?.includes(value.value);
           });
         case 'version':
-          return values.every((value) => {
-            if (!value.checked) return true;
+          if (!values.some((v) => v.checked)) return true;
+
+          return values.some((value) => {
+            if (!value.checked) return false;
             if (value.inverse) return !checkVersion(value.value);
             return checkVersion(value.value);
           });
         default:
-          return values.every((value) => {
-            if (!value.checked) return true;
+          if (!values.some((v) => v.checked)) return true;
+
+          return values.some((value) => {
+            if (!value.checked) return false;
             if (value.inverse) return game[name] !== value.value;
             return game[name] === value.value;
           });
