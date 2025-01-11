@@ -1,5 +1,5 @@
 <script lang="ts">
-import { page } from '../stores';
+import { page } from '$lib/stores.js';
 import type { Page } from './Nav.svelte';
 
 interface Props {
