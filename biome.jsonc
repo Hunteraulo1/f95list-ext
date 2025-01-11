@@ -1,0 +1,87 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
+  },
+  "formatter": {
+    "ignore": ["**/node_modules/*", "**/dist/*", "**/.svelte-kit/*", "**/build/*"],
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120,
+    "attributePosition": "auto"
+  },
+  "organizeImports": {
+    "ignore": ["**/node_modules/*", "**/dist/*", "**/.svelte-kit/*", "**/build/*"],
+    "enabled": true
+  },
+  "linter": {
+    "ignore": ["**/node_modules/*", "**/dist/*", "**/.svelte-kit/*", "**/build/*", "**/lib/utils.ts"],
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUndeclaredVariables": "warn"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
+      "style": {
+        "useFilenamingConvention": {
+          "level": "error",
+          "options": {
+            "filenameCases": ["PascalCase", "camelCase", "export"]
+          }
+        }
+      }
+    }
+  },
+  "javascript": {
+    "globals": ["chrome", "browser"],
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "files": {
+    "ignore": [
+      ".env",
+      ".env.*",
+      "**/components/ui/*",
+      "**/node_modules/*",
+      "**/dist/*",
+      "**/.svelte-kit/*",
+      "**/build/*"
+    ],
+    "maxSize": 18446744073709551615
+  },
+  "overrides": [
+    {
+      "include": ["biome.jsonc", "tsconfig.json", ".vscode/*"],
+      "json": {
+        "parser": {
+          "allowComments": true,
+          "allowTrailingCommas": true
+        },
+        "formatter": {
+          "trailingCommas": "none"
+        }
+      }
+    },
+    {
+      "include": ["*.svelte"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useConst": "off",
+            "useImportType": "off"
+          }
+        }
+      }
+    }
+  ]
+}
