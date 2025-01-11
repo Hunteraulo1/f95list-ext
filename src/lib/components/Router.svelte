@@ -1,12 +1,9 @@
 <script lang="ts">
-import type { Component } from 'svelte';
 import { page } from '../stores';
+import type { Page } from './Nav.svelte';
 
 interface Props {
-  pages: {
-    link: string;
-    target: Component;
-  }[];
+  pages: Page[];
 }
 
 const { pages }: Props = $props();

@@ -12,7 +12,12 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "paths": {
+      "$ui/*": ["./src/lib/components/ui/*"],
+      "$components/*": ["./src/lib/components/*"],
+      "$lib/*": ["./src/lib/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.svelte"],
   "references": [{ "path": "./tsconfig.node.json" }]
