@@ -1,6 +1,22 @@
 {
   "name": "f95list-ext",
   "version": "2.0.0",
+  "author": {
+    "email": "hunteraulo@pm.me",
+    "name": "Hunteraulo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hunteraulo1/f95list-ext"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-emoji"
+    },
+    "cz-emoji": {
+      "skipQuestions": ["scope", "body"]
+    }
+  },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
@@ -16,6 +32,8 @@
     "vite-plugin-web-extension": "4.4.3",
     "webextension-polyfill": "0.12.0"
   },
+  "description": "Extension de F95 France permettant de lister les jeux",
+  "license": "UNLICENSED",
   "private": false,
   "scripts": {
     "dev": "vite",
