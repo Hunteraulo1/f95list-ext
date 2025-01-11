@@ -1,6 +1,15 @@
 {
+  "name": "F95 France - Extension",
   "{{chrome}}.manifest_version": 3,
   "{{firefox}}.manifest_version": 2,
+  "{{firefox}}.browser_specific_settings": {
+    "gecko": {
+      "id": "{9f7488b3-d704-4894-bac8-5dc3068fd6b9}",
+      "strict_min_version": "79.0",
+      "update_url": "https://raw.githubusercontent.com/Hunteraulo1/f95list-ext/main/updates.json"
+    }
+  },
+  "permissions": ["storage", "unlimitedStorage", "tabs"],
   "icons": {
     "16": "icon/16.png",
     "32": "icon/32.png",
@@ -16,6 +25,20 @@
   },
   "background": {
     "{{chrome}}.service_worker": "src/background.ts",
-    "{{firefox}}.scripts": ["src/background.ts"]
-  }
+    "{{firefox}}.scripts": ["src/background.ts"],
+    "{{chrome}}.type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://f95zone.to/sam/latest_alpha/*",
+        "*://f95zone.to/threads/*",
+        "*://lewdcorner.com/latest-updates/*",
+        "*://lewdcorner.com/threads/*"
+      ],
+      "js": ["src/content.ts"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
 }
