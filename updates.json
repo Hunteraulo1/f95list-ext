@@ -1,0 +1,12 @@
+{
+  "addons": {
+    "{9f7488b3-d704-4894-bac8-5dc3068fd6b9}": {
+      "updates": [
+        {
+          "version": "0.0.0",
+          "update_link": "https://github.com/Hunteraulo1/f95list-ext/releases/download/v0.0.0/f95list_ext-0.0.0_firefox.xpi"
+        }
+      ]
+    }
+  }
+}
