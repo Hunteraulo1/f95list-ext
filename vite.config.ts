@@ -1,4 +1,5 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import tailwindcss from '@tailwindcss/vite';
 import path from 'node:path';
 import { defineConfig } from 'vite';
 import webExtension, { readJsonFile } from 'vite-plugin-web-extension';
@@ -22,6 +23,7 @@ export default defineConfig({
       manifest: generateManifest,
       watchFilePaths: ['package.json', 'manifest.json'],
     }),
+    tailwindcss(),
   ],
   resolve: {
     alias: {
