@@ -1,47 +1,81 @@
-# Svelte + TS + Vite
+# Extension de F95 France
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+## Fonctionnalités de l'extension
 
-## Recommended IDE Setup
+- Lister tous les jeux de F95France
+- Lister les mises à jour de la liste
+- Ajouter un drapeau sur les jeux traduits _(sur f95)_
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+## Installation de l'extension
 
-## Need an official Svelte framework?
+Lien de téléchargement: [Accéder à l'extension](https://github.com/Hunteraulo1/f95list-ext/releases) _(Regarder dans Assets)_
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+## Installation
 
-## Technical considerations
+**Pour Firefox:** *(mise à jour automatique)*
+- Il faut glisser le fichier **.xpi** sur le navigateur _ou l'ouvrir avec Firefox_.
 
-**Why use this over SvelteKit?**
+**Pour Chrome:** *(mise à jour manuelle)*
+- Il faut aller dans la page des extensions _(chrome://extensions/)_
+- Cliquer en haut à droite sur **Mode développeur**
+- Puis glisser l'archive **.zip** dans la page
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+## Documentation de réference
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+- [Extension Development Basics](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
+- [Vite Plugin Web Extension](https://github.com/aklinker1/vite-plugin-web-extension)
+- [Svelte](https://svelte.dev/docs/)
+- [Tailwind](https://tailwindcss.com/docs/)
+- [Valibot](https://valibot.dev/guides/)
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+## Installation (pour les développeurs)
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+Pour installer les dépendences:
+```bash
+bun install
+```
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+## Autres commandes
 
-**Why include `.vscode/extensions.json`?**
+Commandes de lintage:
+```bash
+bun run lint
+bun run format
+```
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+Svelte-check + Lint + Format:
+```bash
+bun run check
+```
 
-**Why enable `allowJs` in the TS template?**
+## Développement
 
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
+Pour démarrez un serveur de développement:
+Firefox:
+```bash
+bun run dev:firefox
+```
 
-**Why is HMR not preserving my local component state?**
+Chrome:
+```bash
+bun run dev:chrome
+```
 
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
+## Production
 
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
+Pour créer une version de production de l'extension:
 
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+Firefox:
+```bash
+bun run build:firefox
+```
+
+Chrome:
+```bash
+bun run build:chrome
+```
+
+Firefox + Chrome:
+```bash
+bun run build
 ```
