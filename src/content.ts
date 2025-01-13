@@ -1,26 +1,6 @@
-interface Game {
-  id: number | null;
-  domain: string;
-  hostname: string | null;
-  name: string;
-  version: string;
-  tversion: string;
-  tname: string;
-  status: string;
-  tags: string[];
-  type: string;
-  traductor: string | null;
-  proofreader: string | null;
-  ttype: string;
-  ac: boolean;
-  image: string | null;
-  link: string;
-  tlink: string;
-  trlink: string | null;
-  prlink: string | null;
-}
+import type { GameType } from '$lib/schemas';
 
-const insert = (games: Game[]) => {
+const insert = (games: GameType[]) => {
   if (!(games && games.length > 0)) return;
 
   const { pathname } = window.location;
@@ -75,7 +55,7 @@ const insert = (games: Game[]) => {
 
 const { hostname } = window.location;
 
-const latest = (query: string, games: Game[]) => {
+const latest = (query: string, games: GameType[]) => {
   const tiles = document.querySelectorAll(query);
 
   for (const tile of Array.from(tiles)) {
