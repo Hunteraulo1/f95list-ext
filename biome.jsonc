@@ -79,6 +79,9 @@
           "style": {
             "useConst": "off",
             "useImportType": "off"
+          },
+          "correctness": {
+            "noUndeclaredVariables": "off" // Store error
           }
         }
       }

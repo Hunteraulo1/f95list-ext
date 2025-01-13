@@ -3,9 +3,15 @@ import noImage from '$lib/assets/no-image.png';
 import { selectedGame, settings } from '$lib/stores';
 import { lazyLoad } from '$lib/utils/lazyload';
 
-import { ArrowLeft } from '$lib/assets/icon';
+import { ArrowLeft, TriangleAlert } from '$lib/assets/icon';
 import type { GameType } from '$lib/schemas';
-import { Button } from './ui';
+import { cn } from '$lib/utils';
+import * as Alert from '$ui/alert/index';
+import { Badge } from '$ui/badge';
+import { Button, buttonVariants } from '$ui/button';
+import { ScrollArea } from '$ui/scroll-area';
+import * as Tooltip from '$ui/tooltip/index';
+import { statusColor, typeColor } from '$utils/badgeColor';
 
 let tagsHide = $state($settings.tagsHide);
 
@@ -19,17 +25,19 @@ let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $prop
 let closed = $state<boolean>(variant === 'popup' && false);
 </script>
 
-<div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-full top-0 left-0 z-20'}>
-  <div class="bg-primary-foreground h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
+<div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main top-0 left-0 z-20'}>
+  <ScrollArea class="bg-primary-foreground h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
     <Button
-      className="flex gap-1 absolute top-2 left-2"
+      class="flex gap-1 opacity-50 absolute top-2 left-2"
+      variant="secondary"
       onclick={() => {
         $selectedGame = undefined;
         closed = true;
         setTimeout(() => {open = false}, 600);
       }}
-      icon={ArrowLeft}
-    />
+    >
+      <ArrowLeft />
+    </Button>
 
     {#if game}
       <img
@@ -42,25 +50,25 @@ let closed = $state<boolean>(variant === 'popup' && false);
         <h2>
           <span class="font-bold text-sm select-none">Site:</span>
           <a href={game.link} target="_blank">
-            <!-- <Badge variant="secondary">{game.domain}</Badge> -->
+            <Badge variant="secondary">{game.domain}</Badge>
           </a>
           <a
             href={game.link}
             target="_blank"
-            class='select-none'
+            class={cn(buttonVariants({ variant: 'link', class: 'px-1' }), 'select-none')}
           >
             (Accèder au jeu)
           </a>
         </h2>
         <h1>
-          <!-- <Badge style={typeColor(game.type)} class="text-white font-bold">
+          <Badge style={typeColor(game.type)} class="text-white font-bold">
             {game.type}
           </Badge>
           <Badge style={statusColor(game.status)} class="text-white font-bold">
             {game.status}
-          </Badge> -->
+          </Badge>
           {game.name}
-          <!-- <Tooltip.Provider>
+          <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger
               class="text-xs cursor-help font-bold {game.tversion ===
@@ -84,13 +92,13 @@ let closed = $state<boolean>(variant === 'popup' && false);
               </Badge>
             </Tooltip.Content>
           </Tooltip.Root>
-        </Tooltip.Provider> -->
+        </Tooltip.Provider>
         </h1>
         <div class="flex gap-1 flex-wrap">
           <span class="font-bold text-sm select-none">Tags:</span>
           {#each game.tags as tag, index}
             {#if index < 5 || !tagsHide}
-              <!-- <Badge variant="outline">{tag}</Badge> -->
+              <Badge variant="outline">{tag}</Badge>
             {/if}
           {/each}
           {#if game.tags.length > 5}
@@ -120,34 +128,35 @@ let closed = $state<boolean>(variant === 'popup' && false);
           </p>
         {/if}
         {#if game.tname === 'Traduction (mod inclus)'}
-          <!-- <Alert.Root class="text-red-600">
-            <ExclamationTriangle class="h-4 w-4" />
+          <Alert.Root class="text-red-600">
+            <TriangleAlert class="h-4 w-4" />
             <Alert.Title>Attention !</Alert.Title>
             <Alert.Description>
               Un mod peut-être nécessaire au bon fonctionnement de cette
               traduction. Veuillez lire les instructions du traducteur.
             </Alert.Description>
-          </Alert.Root> -->
+          </Alert.Root>
         {:else if game.tname === 'Pas de traduction'}
-          <!-- <Alert.Root class="text-red-600">
-            <ExclamationTriangle class="h-4 w-4" />
+          <Alert.Root class="text-red-600">
+            <TriangleAlert class="h-4 w-4" />
             <Alert.Title>Attention !</Alert.Title>
             <Alert.Description>
               Cette traduction à disparue. Veuillez nous contacter si vous en
               possédez une version.
             </Alert.Description>
-          </Alert.Root> -->
+          </Alert.Root>
         {/if}
         <div class="flex justify-center mt-2">
           {#if game.tname === 'Intégrée'}
-            <Button title='Traduction intégrée' />
+            <Button variant="outline" class="flex gap-1">
+              Traduction intégrée
+            </Button>
           {:else if game.tname === 'Pas de traduction' || !game.tlink}
-            <Button title="Aucune traduction" />
+            <Button variant="ghost" class="flex gap-1">Aucune traduction</Button
+            >
           {:else}
-            <a href={game.tlink} target="_blank">
-              <button class="flex gap-1">
-                Accéder à la traduction
-              </button>
+            <a href={game.tlink} target="_blank" class={buttonVariants({ variant: "secondary", class: "flex gap-1" })}>
+              Accéder à la traduction
             </a>
           {/if}
         </div>
@@ -155,7 +164,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
     {:else}
       <h1>Game not found</h1>
     {/if}
-    </div>
+  </ScrollArea>
 </div>
 
 <style lang="postcss">
