@@ -1,7 +1,7 @@
 import { derived, get, writable } from 'svelte/store';
 
-import type { GameType, TraductorType } from './schemas.js';
-import type { ComboBox, Settings, Update } from './types.js';
+import type { GameType, TraductorType, UpdateType } from './schemas.js';
+import type { ComboBox, Settings } from './types.js';
 
 import type { Page } from '$components/Nav.svelte';
 import tags from '$lib/assets/tags.json' assert { type: 'json' };
@@ -188,7 +188,7 @@ export const filteredGames = derived([games, filter, search], ([$games, $filter,
   }),
 );
 
-export const updates = writable<Update[]>([]);
+export const updates = writable<UpdateType[]>([]);
 
 const settingsData: string | null = localStorage.getItem('settings');
 
