@@ -21,7 +21,7 @@ export default defineConfig({
     webExtension({
       manifest: generateManifest,
       watchFilePaths: ['package.json', 'manifest.json'],
-      browser: process.env.TARGET || 'chrome',
+      browser: process.env.TARGET,
       disableAutoLaunch: true,
     }),
   ],
@@ -32,5 +32,8 @@ export default defineConfig({
       $utils: path.resolve('./src/lib/utils'),
       $lib: path.resolve('./src/lib'),
     },
+  },
+  build: {
+    outDir: `./builds/${process.env.TARGET}`,
   },
 });
