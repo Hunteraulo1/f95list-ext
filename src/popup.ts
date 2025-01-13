@@ -1,4 +1,5 @@
-import Popup from './pages/Popup.svelte'
-import { mount } from "svelte";
+import { mount } from 'svelte';
+import Popup from './pages/Popup.svelte';
+import Webapp from './pages/Webapp.svelte';
 
-mount(Popup, { target: document.body });
+mount(window.location.hash === '#webapp' ? Webapp : Popup, { target: document.body });
