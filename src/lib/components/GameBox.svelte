@@ -1,18 +1,16 @@
 <script lang="ts">
-import { dev } from '$app/environment';
-import { page } from '$app/state';
+import { CopyCheck } from '$lib/assets/icon';
 import noImage from '$lib/assets/no-image.png';
+import type { GameType } from '$lib/schemas';
 import { games, selectedGame } from '$lib/stores';
+import type { IdGameBox } from '$lib/types';
+import { cn } from '$lib/utils';
 import { isFirefox } from '$lib/utils/polyfill';
 import { Badge } from '$ui/badge';
-import * as Card from '$ui/card';
-import * as Tooltip from '$ui/tooltip';
+import * as Card from '$ui/card/index';
+import * as Tooltip from '$ui/tooltip/index';
 import Lazy from 'svelte-lazy';
-import { Link1 } from 'svelte-radix';
 import Details from './Details.svelte';
-
-import type { GameType } from '$lib/schemas';
-import type { IdGameBox } from '$lib/types';
 
 interface Props {
   game: GameType;
@@ -37,7 +35,7 @@ $effect(() => {
 let open = $state(false);
 
 if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
-  open = $games.filter((game) => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1;
+  open = $games.filter((game: GameType) => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1;
 }
 
 const handleClick = () => {
@@ -52,7 +50,7 @@ const handleClick = () => {
 
 {#if game.domain !== 'Unknown'}
   <div class="relative">
-    <Lazy height={88} fadeOption={{ delay: 0, duration: 0 }} keep={true}>
+    <Lazy height={autoFocusMultiple ? 38 : 88} fadeOption={{ delay: 0, duration: 0 }} keep={true}>
       <Card.Root class="cursor-pointer" onclick={handleClick}>
         {#if !autoFocusMultiple}
           <img
@@ -66,53 +64,63 @@ const handleClick = () => {
           />
         {/if}
       
-      <Card.CardContent
-        class="relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white {(webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100'} {autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'}">
-        <Card.Title class="select-none">{game.name}</Card.Title>
-        <Card.Description>
-          <Tooltip.Provider>
-            <Tooltip.Root>
-              <Tooltip.Trigger
-                class="text-xs cursor-help font-bold z-20 {game.tversion ===
-                'Intégrée' || game.tversion === game.version
-                ? 'text-green-700'
-                : 'text-red-700'} {webapp ? 'text-lg' : ''}"
-              >
-              {game.tversion}
-              </Tooltip.Trigger>
-              <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
-                <Badge variant="secondary">
-                  {#if game.tversion === 'Intégrée'}
-                    À jour ({game.version})
-                  {:else if game.tversion === game.version}
-                    À jour
-                  {:else if game.tversion === 'n/a'}
-                  Pas de traduction
-                  {:else}
-                    N'est pas à jour ({game.version})
-                  {/if}
-                </Badge>
-              </Tooltip.Content>
-            </Tooltip.Root>
-        </Tooltip.Provider>
-        </Card.Description>
-      </Card.CardContent>
-    </Card.Root>
-  </Lazy>
+        <Card.CardContent
+          class={cn("relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white", webapp  && 'text-xl', autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6 hover:backdrop-brightness-100')}>
+          <Card.Title class="select-none">{game.name}</Card.Title>
+          <Card.Description>
+            <Tooltip.Provider>
+              <Tooltip.Root>
+                <Tooltip.Trigger
+                  class="text-xs cursor-help font-bold z-20 {game.tversion ===
+                  'Intégrée' || game.tversion === game.version
+                  ? 'text-green-700'
+                  : 'text-red-700'} {webapp ? 'text-lg' : ''}"
+                >
+                {game.tversion}
+                </Tooltip.Trigger>
+                <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
+                  <Badge variant="secondary">
+                    {#if game.tversion === 'Intégrée'}
+                      À jour ({game.version})
+                    {:else if game.tversion === game.version}
+                      À jour
+                    {:else if game.tversion === 'n/a'}
+                    Pas de traduction
+                    {:else}
+                      N'est pas à jour ({game.version})
+                    {/if}
+                  </Badge>
+                </Tooltip.Content>
+              </Tooltip.Root>
+          </Tooltip.Provider>
+          </Card.Description>
+        </Card.CardContent>
+      </Card.Root>
+    </Lazy>
     
-    {#if isFirefox() || page.url.pathname.startsWith('/webapp') || dev}
+    {#if isFirefox() && !autoFocusMultiple}
       <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
-        <Link1 />
+        <CopyCheck />
       </a>
     {/if}
   </div>
 {:else}
-  <Card.Root class="relative">
-    <Card.CardContent
-      class="relative h-20 p-6 rounded-xl backdrop-blur-xs hover:backdrop-blur-none bg-secondary/20"
-    >
-      <Card.Title>{game.name}</Card.Title>
-      <Card.Description>Jeu introuvable</Card.Description>
-    </Card.CardContent>
-  </Card.Root>
+  <div class="relative">
+    <div class="rounded-md cursor-pointer">
+      <div class={cn(
+          "relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white", 
+          (webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100',
+          autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'
+        )}>
+        <h2>{game.name}</h2>
+        <h3 class={cn(
+            "text-xs cursor-help font-bold z-20"
+          )}
+          class:text-lg={webapp}
+        >
+          Jeu introuvable
+        </h3>
+      </div>
+    </div>
+  </div>
 {/if}

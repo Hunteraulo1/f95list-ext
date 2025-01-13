@@ -1,9 +1,9 @@
 <script lang="ts">
+import { RefreshCcw } from '$lib/assets/icon';
 import { traductors } from '$lib/stores';
 import { Button, buttonVariants } from '$ui/button';
 import * as Card from '$ui/card';
 import { ScrollArea } from '$ui/scroll-area';
-import { Reload } from 'svelte-radix';
 </script>
 
 {#if $traductors.length > 0}
@@ -40,7 +40,7 @@ import { Reload } from 'svelte-radix';
 {:else}
   <div class="flex justify-center items-center min-h-full">
     <Button>
-      <Reload class="mr-2 h-4 w-4 animate-spin" />
+      <RefreshCcw />
       Veuillez patienter
     </Button>
   </div>

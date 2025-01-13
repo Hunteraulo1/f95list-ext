@@ -1,3 +1,5 @@
+import type { GameType, UpdateType } from '$lib/schemas';
+
 const browserAPI = typeof browser === 'undefined' ? chrome : browser;
 
 browserAPI.runtime.onInstalled.addListener(async () => {
@@ -23,6 +25,12 @@ const badgeData = async () => {
   return f95list_ext_data.updates;
 };
 
+interface UpdateData {
+  date: UpdateType['date'];
+  type: UpdateType['type'];
+  names: GameType['name'][];
+}
+
 const badgeState = async () => {
   const browserAction = typeof browser === 'undefined' ? chrome.action : browser.browserAction;
 
@@ -30,21 +38,20 @@ const badgeState = async () => {
   const { f95list_ext_badge } = await browserAPI.storage.local.get(['f95list_ext_badge']);
 
   let index = 0;
-  updatesData?.every((updateData) => {
+  updatesData?.every((updateData: UpdateData) => {
     if (!f95list_ext_badge || updateData.date < f95list_ext_badge[0].date) return false;
 
     index += updateData.names.length;
 
     return true;
   });
-  f95list_ext_badge?.map((update) => {
+  f95list_ext_badge?.map((update: UpdateData) => {
     index -= update.names.length;
   });
 
   const text = index === 0 ? '' : index.toString();
 
   await browserAction.setBadgeBackgroundColor({ color: '#CC0000' });
-  await browserAction.setBadgeTextColor({ color: '#FFFFFF' });
   await browserAction.setBadgeText({ text });
 };
 
@@ -64,7 +71,7 @@ const badgeReset = async () => {
 };
 
 let wait = false;
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const dataInit = async () => {
   while (wait) {

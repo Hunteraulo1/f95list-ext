@@ -46,25 +46,6 @@ jobs:
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           PREVIOUS_VERSION=${PREVIOUS_TAG#v}
           echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
-
-      - name: Update manifests version
-        run: |
-          VERSION=${{ steps.get_version.outputs.version }}
-          
-          # Mise à jour des manifests
-          jq --arg version "$VERSION" '.version = $version' static/manifest_chrome.json > static/manifest_chrome.json.tmp \
-            && mv static/manifest_chrome.json.tmp static/manifest_chrome.json
-          
-          jq --arg version "$VERSION" '.version = $version' static/manifest_firefox.json > static/manifest_firefox.json.tmp \
-            && mv static/manifest_firefox.json.tmp static/manifest_firefox.json
-
-      - name: Commit manifest changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add static/manifest_chrome.json static/manifest_firefox.json
-          git commit -m ":bookmark: update manifests version to ${{ steps.get_version.outputs.version }}"
-          git push origin main
         
       - name: Build extensions
         run: bun run build

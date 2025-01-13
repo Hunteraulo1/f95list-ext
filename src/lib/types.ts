@@ -1,10 +1,4 @@
-import type { GameType, UpdateType } from './schemas';
-
-export interface Update {
-  date: Date;
-  type: UpdateType['type'];
-  games: GameType[];
-}
+import type { GameType } from './schemas.js';
 
 export interface ComboBox {
   title: string;

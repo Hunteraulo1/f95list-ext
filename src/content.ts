@@ -1,35 +1,6 @@
-(async () => {
-  try {
-    const data = await chrome.runtime.sendMessage('f95list-script');
+import type { GameType } from '$lib/schemas';
 
-    insert(data);
-
-    const { pathname } = window.location;
-
-    const f95 = pathname === '/sam/latest_alpha/';
-    const lc = pathname.startsWith('/latest-updates/');
-
-    if (f95 || lc) {
-      const mutationCallback = async (mutationsList) => {
-        if ((f95 && mutationsList.length > 35) || lc) {
-          insert(data);
-        }
-      };
-      const observer = new MutationObserver(mutationCallback);
-      const config = { childList: true, subtree: true };
-
-      observer.observe(document.body, config);
-    }
-
-    console.info('[F95ListFR] Injecting script successful !');
-  } catch (error) {
-    console.error(error);
-  }
-})();
-
-const { hostname } = window.location;
-
-const insert = (games) => {
+const insert = (games: GameType[]) => {
   if (!(games && games.length > 0)) return;
 
   const { pathname } = window.location;
@@ -53,14 +24,45 @@ const insert = (games) => {
   }
 };
 
-const latest = (query, games) => {
+(async () => {
+  try {
+    const data = await chrome.runtime.sendMessage('f95list-script');
+
+    insert(data);
+
+    const { pathname } = window.location;
+
+    const f95 = pathname === '/sam/latest_alpha/';
+    const lc = pathname.startsWith('/latest-updates/');
+
+    if (f95 || lc) {
+      const mutationCallback: MutationCallback = async (mutationsList) => {
+        if ((f95 && mutationsList.length > 35) || lc) {
+          insert(data);
+        }
+      };
+      const observer = new MutationObserver(mutationCallback);
+      const config = { childList: true, subtree: true };
+
+      observer.observe(document.body, config);
+    }
+
+    console.info('[F95ListFR] Injecting script successful !');
+  } catch (error) {
+    console.error(error);
+  }
+})();
+
+const { hostname } = window.location;
+
+const latest = (query: string, games: GameType[]) => {
   const tiles = document.querySelectorAll(query);
 
-  for (const tile of tiles) {
+  for (const tile of Array.from(tiles)) {
     const tileId =
       hostname === 'f95zone.to'
-        ? Number(tile.pathname.split('/')[2])
-        : Number(tile.pathname.split('/')[2].split('.')[1]);
+        ? Number((tile as HTMLAnchorElement).pathname.split('/')[2])
+        : Number((tile as HTMLAnchorElement).pathname.split('/')[2].split('.')[1]);
 
     if (
       games.find((game) => game.id === tileId && game.hostname === hostname) &&
@@ -72,7 +74,7 @@ const latest = (query, games) => {
   }
 };
 
-const createFlag = (parent) => {
+const createFlag = (parent: Element) => {
   const img = document.createElement('img');
 
   img.style.width = '32px';

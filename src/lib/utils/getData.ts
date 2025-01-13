@@ -1,11 +1,7 @@
+import { filter, games, traductors, updates } from '$lib/stores.js';
 import { parse } from 'valibot';
-
-import { type GameType, Games, TraductorsData, Updates } from '../schemas';
-import { filter, games, traductors, updates } from '../stores';
-
-import { dev } from '$app/environment';
-import apiJson from '$lib/assets/api.json';
-import { browserAPI } from './polyfill';
+import { type GameType, Games, TraductorsData, Updates } from '../schemas.js';
+import { browserAPI } from './polyfill.js';
 
 interface UpdateData {
   date: string;
@@ -13,11 +9,7 @@ interface UpdateData {
   names: string[];
 }
 
-const callWorker = async () => {
-  if (dev) return apiJson.data;
-
-  return await browserAPI()?.runtime.sendMessage('f95list-ext');
-};
+const callWorker = async () => await browserAPI().runtime.sendMessage('f95list-ext');
 
 const getData = async () => {
   try {
@@ -56,7 +48,7 @@ const getData = async () => {
       type: update.type,
       games: update.names.map(
         (name: string) =>
-          validGames.findLast((game) => game.name === name) ?? {
+          validGames.findLast((game: GameType) => game.name === name) ?? {
             ...defaultGame,
             name,
           },

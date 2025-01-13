@@ -1,21 +1,19 @@
 <script lang="ts">
-import { dev } from '$app/environment';
+import { RefreshCcw } from '$lib/assets/icon';
 import GameBox from '$lib/components/GameBox.svelte';
-import type { GameType } from '$lib/schemas';
 import { updates } from '$lib/stores';
 import { Button } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
-import { createEventDispatcher } from 'svelte';
-import { Reload } from 'svelte-radix';
 
-const dispatch = createEventDispatcher<{
-  selectGame: GameType | undefined;
-}>();
+const browserAPI = typeof browser === 'undefined' ? chrome : browser;
 
-if (!dev) {
-  const browserAPI = typeof browser === 'undefined' ? chrome : browser;
-  browserAPI.runtime.sendMessage('f95list-badge');
+browserAPI.runtime.sendMessage('f95list-badge');
+
+interface Props {
+  webapp?: boolean;
 }
+
+const { webapp = false }: Props = $props();
 </script>
 
 {#if $updates}
@@ -36,9 +34,7 @@ if (!dev) {
             {update.type}
           </h3>
           {#each update.games as game}
-            <button onclick={() => dispatch('selectGame', game)}>
-              <GameBox {game} webapp />
-            </button>
+            <GameBox {game} webapp />
           {/each}
         </div>
       {/each}
@@ -47,7 +43,7 @@ if (!dev) {
 {:else}
   <div class="flex justify-center items-center h-full">
     <Button>
-      <Reload class="mr-2 h-4 w-4 animate-spin" />
+      <RefreshCcw classes="mr-2 h-4 w-4" />
       Veuillez patienter
     </Button>
   </div>

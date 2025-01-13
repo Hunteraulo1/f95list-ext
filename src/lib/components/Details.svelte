@@ -1,17 +1,17 @@
 <script lang="ts">
 import noImage from '$lib/assets/no-image.png';
 import { selectedGame, settings } from '$lib/stores';
-import { statusColor, typeColor } from '$lib/utils/badgeColor';
 import { lazyLoad } from '$lib/utils/lazyload';
-import * as Alert from '$ui/alert';
+
+import { ArrowLeft, TriangleAlert } from '$lib/assets/icon';
+import type { GameType } from '$lib/schemas';
+import { cn } from '$lib/utils';
+import * as Alert from '$ui/alert/index';
 import { Badge } from '$ui/badge';
 import { Button, buttonVariants } from '$ui/button';
 import { ScrollArea } from '$ui/scroll-area';
-import * as Tooltip from '$ui/tooltip';
-import { cn } from '$utils';
-import { ArrowLeft, ExclamationTriangle } from 'svelte-radix';
-
-import type { GameType } from '$lib/schemas';
+import * as Tooltip from '$ui/tooltip/index';
+import { statusColor, typeColor } from '$utils/badgeColor';
 
 let tagsHide = $state($settings.tagsHide);
 
@@ -129,7 +129,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
         {/if}
         {#if game.tname === 'Traduction (mod inclus)'}
           <Alert.Root class="text-red-600">
-            <ExclamationTriangle class="h-4 w-4" />
+            <TriangleAlert class="h-4 w-4" />
             <Alert.Title>Attention !</Alert.Title>
             <Alert.Description>
               Un mod peut-être nécessaire au bon fonctionnement de cette
@@ -138,7 +138,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
           </Alert.Root>
         {:else if game.tname === 'Pas de traduction'}
           <Alert.Root class="text-red-600">
-            <ExclamationTriangle class="h-4 w-4" />
+            <TriangleAlert class="h-4 w-4" />
             <Alert.Title>Attention !</Alert.Title>
             <Alert.Description>
               Cette traduction à disparue. Veuillez nous contacter si vous en
@@ -152,8 +152,9 @@ let closed = $state<boolean>(variant === 'popup' && false);
               Traduction intégrée
             </Button>
           {:else if game.tname === 'Pas de traduction' || !game.tlink}
-            <Button variant="ghost" class="flex gap-1">Aucune traduction</Button
-            >
+            <Button variant="ghost" class="flex gap-1">
+              Aucune traduction
+            </Button>
           {:else}
             <a href={game.tlink} target="_blank" class={buttonVariants({ variant: "secondary", class: "flex gap-1" })}>
               Accéder à la traduction
