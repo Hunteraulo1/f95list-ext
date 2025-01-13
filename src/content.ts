@@ -1,4 +1,26 @@
-const insert = (games) => {
+interface Game {
+  id: number | null;
+  domain: string;
+  hostname: string | null;
+  name: string;
+  version: string;
+  tversion: string;
+  tname: string;
+  status: string;
+  tags: string[];
+  type: string;
+  traductor: string | null;
+  proofreader: string | null;
+  ttype: string;
+  ac: boolean;
+  image: string | null;
+  link: string;
+  tlink: string;
+  trlink: string | null;
+  prlink: string | null;
+}
+
+const insert = (games: Game[]) => {
   if (!(games && games.length > 0)) return;
 
   const { pathname } = window.location;
@@ -34,7 +56,7 @@ const insert = (games) => {
     const lc = pathname.startsWith('/latest-updates/');
 
     if (f95 || lc) {
-      const mutationCallback = async (mutationsList) => {
+      const mutationCallback: MutationCallback = async (mutationsList) => {
         if ((f95 && mutationsList.length > 35) || lc) {
           insert(data);
         }
@@ -53,14 +75,14 @@ const insert = (games) => {
 
 const { hostname } = window.location;
 
-const latest = (query, games) => {
+const latest = (query: string, games: Game[]) => {
   const tiles = document.querySelectorAll(query);
 
-  for (const tile of tiles) {
+  for (const tile of Array.from(tiles)) {
     const tileId =
       hostname === 'f95zone.to'
-        ? Number(tile.pathname.split('/')[2])
-        : Number(tile.pathname.split('/')[2].split('.')[1]);
+        ? Number((tile as HTMLAnchorElement).pathname.split('/')[2])
+        : Number((tile as HTMLAnchorElement).pathname.split('/')[2].split('.')[1]);
 
     if (
       games.find((game) => game.id === tileId && game.hostname === hostname) &&
@@ -72,7 +94,7 @@ const latest = (query, games) => {
   }
 };
 
-const createFlag = (parent) => {
+const createFlag = (parent: Element) => {
   const img = document.createElement('img');
 
   img.style.width = '32px';

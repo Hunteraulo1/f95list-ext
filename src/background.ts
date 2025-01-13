@@ -23,6 +23,12 @@ const badgeData = async () => {
   return f95list_ext_data.updates;
 };
 
+interface UpdateData {
+  date: string;
+  type: string;
+  names: string[];
+}
+
 const badgeState = async () => {
   const browserAction = typeof browser === 'undefined' ? chrome.action : browser.browserAction;
 
@@ -30,14 +36,14 @@ const badgeState = async () => {
   const { f95list_ext_badge } = await browserAPI.storage.local.get(['f95list_ext_badge']);
 
   let index = 0;
-  updatesData?.every((updateData) => {
+  updatesData?.every((updateData: UpdateData) => {
     if (!f95list_ext_badge || updateData.date < f95list_ext_badge[0].date) return false;
 
     index += updateData.names.length;
 
     return true;
   });
-  f95list_ext_badge?.map((update) => {
+  f95list_ext_badge?.map((update: UpdateData) => {
     index -= update.names.length;
   });
 
