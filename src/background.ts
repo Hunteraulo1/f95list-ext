@@ -1,3 +1,5 @@
+import type { GameType, UpdateType } from '$lib/schemas';
+
 const browserAPI = typeof browser === 'undefined' ? chrome : browser;
 
 browserAPI.runtime.onInstalled.addListener(async () => {
@@ -24,9 +26,9 @@ const badgeData = async () => {
 };
 
 interface UpdateData {
-  date: string;
-  type: string;
-  names: string[];
+  date: UpdateType['date'];
+  type: UpdateType['type'];
+  names: GameType['name'][];
 }
 
 const badgeState = async () => {
