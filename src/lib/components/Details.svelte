@@ -152,8 +152,9 @@ let closed = $state<boolean>(variant === 'popup' && false);
               Traduction intégrée
             </Button>
           {:else if game.tname === 'Pas de traduction' || !game.tlink}
-            <Button variant="ghost" class="flex gap-1">Aucune traduction</Button
-            >
+            <Button variant="ghost" class="flex gap-1">
+              Aucune traduction
+            </Button>
           {:else}
             <a href={game.tlink} target="_blank" class={buttonVariants({ variant: "secondary", class: "flex gap-1" })}>
               Accéder à la traduction
