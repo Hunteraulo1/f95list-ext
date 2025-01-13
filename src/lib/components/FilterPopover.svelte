@@ -1,11 +1,11 @@
 <script lang="ts">
+import { Check, ChevronDown, XIcon } from '$lib/assets/icon';
 import { filter } from '$lib/stores';
+import { cn } from '$lib/utils';
 import { buttonVariants } from '$ui/button';
-import * as Command from '$ui/command';
-import * as Popover from '$ui/popover';
+import * as Command from '$ui/command/index';
+import * as Popover from '$ui/popover/index';
 import { ScrollArea } from '$ui/scroll-area';
-import { cn } from '$utils';
-import { Check, ChevronDown, Cross1 } from 'svelte-radix';
 
 type Props = {
   title: string;
@@ -55,7 +55,7 @@ const handleSelect = (value: string) => {
       {:else}
         Filtrer par {values.some(({ inverse }) => inverse) ? '!' : ''}{title.length > 17 ? title.slice(0, 17) : title}...
       {/if}
-      <ChevronDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+      <ChevronDown classes="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Popover.Trigger>
     <Popover.Content class="w-fit p-0">
       <Command.Root>
@@ -70,9 +70,9 @@ const handleSelect = (value: string) => {
               >
                 {#if checked}
                   {#if inverse}
-                    <Cross1 class={cn("mr-2 h-4 w-4", "text-red-500")} />
+                    <XIcon class={cn("mr-2 h-4 w-4", "text-red-500")} />
                   {:else}
-                    <Check class={cn("mr-2 h-4 w-4")} />
+                    <Check classes={cn("mr-2 h-4 w-4")} />
                   {/if}
                 {:else}
                   <div class="mr-2 h-4 w-4"></div>

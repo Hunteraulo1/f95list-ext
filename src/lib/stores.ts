@@ -1,9 +1,10 @@
 import { derived, get, writable } from 'svelte/store';
 
-import type { GameType, TraductorType } from './schemas';
-import type { ComboBox, Settings, Update } from './types';
+import type { GameType, TraductorType, UpdateType } from './schemas.js';
+import type { ComboBox, Settings } from './types.js';
 
-import tags from '$lib/assets/tags.json';
+import type { Page } from '$components/Nav.svelte';
+import tags from '$lib/assets/tags.json' assert { type: 'json' };
 
 export const games = writable<GameType[]>([]);
 
@@ -33,25 +34,41 @@ const defaultFilters = (): ComboBox[] => [
     title: filterConfig.domain.title,
     name: 'domain',
     open: false,
-    values: filterConfig.domain.values.map((value) => ({ value, checked: false, inverse: false })),
+    values: filterConfig.domain.values.map((value) => ({
+      value,
+      checked: false,
+      inverse: false,
+    })),
   },
   {
     title: filterConfig.version.title,
     name: 'version',
     open: false,
-    values: filterConfig.version.values.map((value) => ({ value, checked: false, inverse: false })),
+    values: filterConfig.version.values.map((value) => ({
+      value,
+      checked: false,
+      inverse: false,
+    })),
   },
   {
     title: filterConfig.type.title,
     name: 'type',
     open: false,
-    values: filterConfig.type.values.map((value) => ({ value, checked: false, inverse: false })),
+    values: filterConfig.type.values.map((value) => ({
+      value,
+      checked: false,
+      inverse: false,
+    })),
   },
   {
     title: filterConfig.status.title,
     name: 'status',
     open: false,
-    values: filterConfig.status.values.map((value) => ({ value, checked: false, inverse: false })),
+    values: filterConfig.status.values.map((value) => ({
+      value,
+      checked: false,
+      inverse: false,
+    })),
   },
   {
     title: 'Traducteur',
@@ -171,7 +188,7 @@ export const filteredGames = derived([games, filter, search], ([$games, $filter,
   }),
 );
 
-export const updates = writable<Update[]>([]);
+export const updates = writable<UpdateType[]>([]);
 
 const settingsData: string | null = localStorage.getItem('settings');
 
@@ -184,3 +201,5 @@ export const autoFocusBlock = writable<boolean>(false);
 // Webapp
 
 export const selectedGame = writable<GameType | undefined>();
+
+export const page = writable<Page['link']>('list');

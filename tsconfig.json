@@ -1,18 +1,25 @@
 {
-  "extends": "./.svelte-kit/tsconfig.json",
+  "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "allowJs": false,
     "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true
+    "noEmit": true,
+    "paths": {
+      "$ui/*": ["./src/lib/components/ui/*"],
+      "$components/*": ["./src/lib/components/*"],
+      "$utils/*": ["./src/lib/utils/*"],
+      "$lib/*": ["./src/lib/*"]
+    }
   },
-  "reflection": true
-  // Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
-  //
-  // If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
-  // from the referenced tsconfig.json - TypeScript does not merge them in
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.svelte"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

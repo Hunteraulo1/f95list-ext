@@ -78,6 +78,10 @@ const config: Config = {
       width: {
         main: '19rem',
       },
+      height: {
+        app: '37rem',
+        main: '33rem',
+      },
     },
   },
 };

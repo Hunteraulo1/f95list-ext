@@ -3,13 +3,13 @@
   "style": "new-york",
   "tailwind": {
     "config": "tailwind.config.ts",
-    "css": "src/app.pcss",
-    "baseColor": "blue"
+    "css": "src/app.css",
+    "baseColor": "neutral"
   },
   "aliases": {
-    "components": "$lib/components",
+    "components": "$components/",
     "utils": "$lib/utils",
-    "ui": "$lib/components/ui",
+    "ui": "$ui/",
     "hooks": "$lib/hooks"
   },
   "typescript": true,
