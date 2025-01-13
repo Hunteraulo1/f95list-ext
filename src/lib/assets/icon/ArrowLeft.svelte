@@ -1,19 +1,13 @@
 <script lang="ts">
-	let {
-		color = 'currentColor',
-		size = 28,
-		strokeWidth = 2,
-		isHovered = false,
-		classes = ''
-	} = $props();
+let { color = 'currentColor', size = 28, strokeWidth = 2, isHovered = false, classes = '' } = $props();
 
-	function handleMouseEnter() {
-		isHovered = true;
+function handleMouseEnter() {
+  isHovered = true;
 
-		setTimeout(() => {
-			isHovered = false;
-		}, 200);
-	}
+  setTimeout(() => {
+    isHovered = false;
+  }, 200);
+}
 </script>
 
 <div class={classes} aria-label="arrow-left" role="img" onmouseenter={handleMouseEnter}>
