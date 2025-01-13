@@ -10,7 +10,6 @@ import { Badge } from '$ui/badge';
 import * as Card from '$ui/card/index';
 import * as Tooltip from '$ui/tooltip/index';
 import Lazy from 'svelte-lazy';
-import type { KeyboardEventHandler } from 'svelte/elements';
 import Details from './Details.svelte';
 
 interface Props {
@@ -39,11 +38,6 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
   open = $games.filter((game: GameType) => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1;
 }
 
-const handleKeyDown: KeyboardEventHandler<HTMLButtonElement> = (e) => {
-  if (e.currentTarget) $selectedGame = game;
-  open = true;
-};
-
 const handleClick = () => {
   $selectedGame = game;
   open = true;
@@ -71,7 +65,7 @@ const handleClick = () => {
         {/if}
       
         <Card.CardContent
-          class="relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white {(webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100'} {autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'}">
+          class={cn("relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white", webapp  && 'text-xl', autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6 hover:backdrop-brightness-100')}>
           <Card.Title class="select-none">{game.name}</Card.Title>
           <Card.Description>
             <Tooltip.Provider>
