@@ -46,7 +46,7 @@ const variant = 'webapp';
 
 <main class="flex w-screen min-h-screen h-screen max-h-screen bg-primary-foreground z-10">
   {#await getData()}
-    <div class="flex justify-center items-center h-full">
+    <div class="flex justify-center items-center h-full w-full">
       <Button>
         <RefreshCcw />
         Veuillez patienter
