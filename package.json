@@ -61,7 +61,7 @@
   "trustedDependencies": ["@biomejs/biome", "dtrace-provider", "esbuild", "spawn-sync"],
   "type": "module",
   "dependencies": {
-    "lucide-svelte": "^0.471.0",
+    "lucide-svelte": "0.471.0",
     "svelte-lazy": "1.2.11"
   }
 }
