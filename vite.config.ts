@@ -1,5 +1,5 @@
-import { svelte } from '@sveltejs/vite-plugin-svelte';
 import path from 'node:path';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig } from 'vite';
 import webExtension, { readJsonFile } from 'vite-plugin-web-extension';
 
