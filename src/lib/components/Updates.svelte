@@ -29,7 +29,7 @@ const { webapp = false }: Props = $props();
             </h2>
           {/if}
           <h3
-            class="text-[.7rem] text-center text-secondary-foreground/50 leading-none"
+            class="text-[.7rem] text-center text-secondary-foreground/75 leading-none"
           >
             {update.type}
           </h3>

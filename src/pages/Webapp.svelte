@@ -44,7 +44,7 @@ const variant = 'webapp';
 
 <ModeWatcher defaultMode="system" />
 
-<main class="flex w-screen min-h-screen h-screen max-h-screen bg-primary-foreground z-10">
+<main class="flex w-screen min-h-screen h-screen max-h-screen bg-background z-10">
   {#await getData()}
     <div class="flex justify-center items-center h-full w-full">
       <Button>

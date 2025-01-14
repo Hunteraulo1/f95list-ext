@@ -26,7 +26,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
 </script>
 
 <div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main top-0 left-0 z-20'}>
-  <ScrollArea class="bg-primary-foreground h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
+  <ScrollArea class="bg-background h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
     <Button
       class="flex gap-1 opacity-50 absolute top-2 left-2"
       variant="secondary"
@@ -98,7 +98,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
           <span class="font-bold text-sm select-none">Tags:</span>
           {#each game.tags as tag, index}
             {#if index < 5 || !tagsHide}
-              <Badge variant="outline">{tag}</Badge>
+              <Badge variant="secondary">{tag}</Badge>
             {/if}
           {/each}
           {#if game.tags.length > 5}
