@@ -43,18 +43,18 @@ const handleSelect = (value: string) => {
   <label
     for={title}
     class="font-bold text-xs capitalize leading-none mt-2"
-  >
-    {title}:
-  </label>
+  >{title}:</label>
   <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between" })} disabled={!active}>
-      {#if values.some(({ checked }) => checked)}
-        {values.reduce((acc, { checked, inverse, value }) =>
-          checked ? acc ? `${acc}, ${inverse ? '!' : ''}${value}` : `${inverse ? '!' : ''}${value}` : acc
-        , "")}
-      {:else}
-        Filtrer par {values.some(({ inverse }) => inverse) ? '!' : ''}{title.length > 17 ? title.slice(0, 17) : title}...
-      {/if}
+      <p class="truncate">
+        {#if values.some(({ checked }) => checked)}
+          {values.reduce((acc, { checked, inverse, value }) =>
+            checked ? acc ? `${acc}, ${inverse ? '!' : ''}${value}` : `${inverse ? '!' : ''}${value}` : acc
+          , "")}
+        {:else}
+          Filtrer par {title}
+        {/if}
+      </p>
       <ChevronDown classes="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Popover.Trigger>
     <Popover.Content class="w-fit p-0">

@@ -22,14 +22,14 @@ const { webapp = false }: Props = $props();
       {#each $updates as update, index}
         <div class="flex flex-col gap-2">
           {#if index === 0 || $updates[index - 1].date.getTime() !== update.date.getTime()}
-            <h2 class="text-center font-bold leading-none">
+            <h2 class="text-center text-base font-bold leading-none mt-2">
               {new Date(update.date).toLocaleDateString("fr-FR", {
                 timeZone: "Europe/Paris",
               })}
             </h2>
           {/if}
           <h3
-            class="text-[.7rem] text-center text-secondary-foreground/50 leading-none"
+            class="text-[.7rem] text-center text-secondary-foreground/75 leading-none"
           >
             {update.type}
           </h3>

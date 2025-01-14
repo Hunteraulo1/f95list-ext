@@ -26,7 +26,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
 </script>
 
 <div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main top-0 left-0 z-20'}>
-  <ScrollArea class="bg-primary-foreground h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
+  <ScrollArea class="bg-background h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
     <Button
       class="flex gap-1 opacity-50 absolute top-2 left-2"
       variant="secondary"
@@ -47,7 +47,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
         use:lazyLoad={game.image ?? noImage}
       />
       <div class="p-2 flex flex-col gap-2">
-        <h2>
+        <div>
           <span class="font-bold text-sm select-none">Site:</span>
           <a href={game.link} target="_blank">
             <Badge variant="secondary">{game.domain}</Badge>
@@ -55,11 +55,11 @@ let closed = $state<boolean>(variant === 'popup' && false);
           <a
             href={game.link}
             target="_blank"
-            class={cn(buttonVariants({ variant: 'link', class: 'px-1' }), 'select-none')}
+            class={cn(buttonVariants({ variant: 'link', class: 'px-2' }), 'select-none')}
           >
-            (Accèder au jeu)
+            Accèder au jeu
           </a>
-        </h2>
+        </div>
         <h1>
           <Badge style={typeColor(game.type)} class="text-white font-bold">
             {game.type}
@@ -67,11 +67,11 @@ let closed = $state<boolean>(variant === 'popup' && false);
           <Badge style={statusColor(game.status)} class="text-white font-bold">
             {game.status}
           </Badge>
-          {game.name}
+          <span class="text-lg leading-none font-medium">{game.name}</span>
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger
-              class="text-xs cursor-help font-bold {game.tversion ===
+              class="text-sm cursor-help font-bold {game.tversion ===
                 'Intégrée' || game.tversion === game.version
                 ? 'text-green-700'
                 : 'text-red-700'}"
@@ -98,7 +98,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
           <span class="font-bold text-sm select-none">Tags:</span>
           {#each game.tags as tag, index}
             {#if index < 5 || !tagsHide}
-              <Badge variant="outline">{tag}</Badge>
+              <Badge variant="secondary">{tag}</Badge>
             {/if}
           {/each}
           {#if game.tags.length > 5}
