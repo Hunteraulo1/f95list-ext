@@ -34,7 +34,7 @@ const { webapp = false }: Props = $props();
             {update.type}
           </h3>
           {#each update.games as game}
-            <GameBox {game} webapp />
+            <GameBox {game} {webapp} />
           {/each}
         </div>
       {/each}
