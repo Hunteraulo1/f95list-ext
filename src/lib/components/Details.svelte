@@ -47,7 +47,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
         use:lazyLoad={game.image ?? noImage}
       />
       <div class="p-2 flex flex-col gap-2">
-        <h2>
+        <div>
           <span class="font-bold text-sm select-none">Site:</span>
           <a href={game.link} target="_blank">
             <Badge variant="secondary">{game.domain}</Badge>
@@ -55,11 +55,11 @@ let closed = $state<boolean>(variant === 'popup' && false);
           <a
             href={game.link}
             target="_blank"
-            class={cn(buttonVariants({ variant: 'link', class: 'px-1' }), 'select-none')}
+            class={cn(buttonVariants({ variant: 'link', class: 'px-2' }), 'select-none')}
           >
-            (Accèder au jeu)
+            Accèder au jeu
           </a>
-        </h2>
+        </div>
         <h1>
           <Badge style={typeColor(game.type)} class="text-white font-bold">
             {game.type}
@@ -67,7 +67,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
           <Badge style={statusColor(game.status)} class="text-white font-bold">
             {game.status}
           </Badge>
-          <span class="text-lg font-medium">{game.name}</span>
+          <span class="text-lg leading-none font-medium">{game.name}</span>
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger
