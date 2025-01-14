@@ -18,7 +18,9 @@ const insert = (games: GameType[]) => {
       const parent = document.querySelector('.p-title-value');
 
       if (!parent || parent?.classList.contains('flag-inserted')) return;
+
       createFlag(parent, game.tlink);
+      parent?.classList.add('flag-inserted');
     }
   }
 };
@@ -63,10 +65,9 @@ const latest = (query: string, games: GameType[]) => {
         ? Number((tile as HTMLAnchorElement).pathname.split('/')[2])
         : Number((tile as HTMLAnchorElement).pathname.split('/')[2].split('.')[1]);
 
-    if (
-      games.find((game) => game.id === tileId && game.hostname === hostname) &&
-      !tile.classList.contains('flag-inserted')
-    ) {
+    if (tile.classList.contains('flag-inserted')) return;
+
+    if (games.find((game) => game.id === tileId && game.hostname === hostname)) {
       createFlag(hostname === 'f95zone.to' ? tile.children[1].children[0] : tile.children[1].children[1]);
       tile.classList.add('flag-inserted');
     }
