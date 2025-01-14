@@ -19,7 +19,7 @@ let { variant = 'popup' }: Props = $props();
   </div>
 {:else}
   <Popover.Root>
-    <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "border-2 border-primary-foreground/60 bg-secondary/60 hover:border-primary-foreground hover:bg-secondary sticky z-10 bottom-2 mx-auto" })}>
+    <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "border-2 border-primary-foreground/60 bg-secondary/60 hover:border-primary-foreground hover:bg-secondary sticky z-10 bottom-2 mx-auto mt-auto" })}>
       Filtrer
     </Popover.Trigger>
     <Popover.Content
