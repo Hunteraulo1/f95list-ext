@@ -43,9 +43,7 @@ const handleSelect = (value: string) => {
   <label
     for={title}
     class="font-bold text-xs capitalize leading-none mt-2"
-  >
-    {title}:
-  </label>
+  >{title}:</label>
   <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between" })} disabled={!active}>
       <p class="truncate">

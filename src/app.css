@@ -49,6 +49,14 @@
 }
 
 @layer base {
+  @font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(./lib/assets/fonts/Roboto-VariableFont_wdth\,wght.ttf) format("woff2");
+  }
+
   * {
     @apply border-border;
   }
