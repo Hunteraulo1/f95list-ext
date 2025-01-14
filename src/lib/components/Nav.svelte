@@ -28,19 +28,19 @@ const handleClick = (link: Page['link'], target: Page['target']) => {
 };
 </script>
 
-<nav class={cn("flex w-full gap-2 justify-around bg-secondary p-1 border-t-4 border-primary-foreground/60", variant === 'webapp' && 'rounded-md')}>
+<nav class={cn("flex w-full gap-2 justify-around bg-primary-foreground p-1 border-t-4 border-secondary/60", variant === 'webapp' && 'rounded-md')}>
   {#each pages as {icon, name, link, className, target}, index}
     {#if icon}
       {@const Icon = icon}
       <button
-        class="flex p-1 flex-1 flex-col justify-center items-center hover:bg-primary-foreground/50 rounded-md transition-all duration-300"
+        class="flex p-1 flex-1 flex-col justify-center items-center hover:bg-secondary/60 rounded-md transition-all duration-300"
         onmouseenter={() => mouseEnter[index] = true}
         onmouseleave={() => mouseEnter[index] = false}
         onclick={() => handleClick(link, target)}
       >
       <Icon class={cn("mr-2 h-4 w-4", className)} isHovered={mouseEnter[index]} />
       
-      <span class={cn("text-xs opacity-20", mouseEnter[index] ? 'animate-pulse' : '')}>
+      <span class={cn("text-xs opacity-70", mouseEnter[index] ? 'animate-pulse' : '')}>
         {name}
       </span>
     </button>
