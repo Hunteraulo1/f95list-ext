@@ -46,7 +46,7 @@ const pages: Page[] = [
 
 <ModeWatcher defaultMode="system" />
 
-<main class="flex justify-between flex-col w-main h-app max-h-app min-h-app">
+<main class="flex justify-between flex-col w-main h-app max-h-app min-h-app bg-background text-foreground">
   {#await getData()}
     <div class="flex justify-center items-center h-full">
       <Button>

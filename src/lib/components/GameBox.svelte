@@ -65,7 +65,7 @@ const handleClick = () => {
         {/if}
       
         <Card.CardContent
-          class={cn("relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white", webapp  && 'text-xl', autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6 hover:backdrop-brightness-100')}>
+          class={cn("relative rounded-xl overflow-hidden transition", webapp  && 'text-xl', autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-white')}>
           <Card.Title class="select-none">{game.name}</Card.Title>
           <Card.Description>
             <Tooltip.Provider>
