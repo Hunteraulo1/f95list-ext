@@ -76,36 +76,35 @@ let mouseEnter = $state<boolean>(false);
 let clickFocus = $state<boolean>(false);
 </script>
 
-<div class="flex flex-col gap-2 px-2 relative">
-  {#if autoFocus}
-    {#if autoFocus.length > 0}
-      <div class="p-2 border rounded-b-xl bg-primary-foreground top-0 mx-2 sticky z-10">
-        <p class="text-xs text-center mb-2">
-          {#if autoFocus.length === 1}
-            Traduction détectée sur cette page
-          {:else}
-            Traductions détectées sur cette page
-          {/if}
-        </p>
-        <div class="flex flex-col gap-2 -mb-6">
-          {#if clickFocus}
-            {#each autoFocus as game (game.name + game.version)}
-              <GameBox {game} autoFocusMultiple />
-            {/each}
-          {/if}
-          <Button
-            variant="outline"
-            class="rounded-full mx-auto heading-none"
-            onmouseenter={() => mouseEnter = true}
-            onmouseleave={() => mouseEnter = false}
-            onclick={() => clickFocus = !clickFocus}
-          >
-            <ChevronDown isHovered={mouseEnter} classes={cn(clickFocus && 'rotate-180')} />
-          </Button>
-        </div>
+{#if autoFocus}
+  {#if autoFocus.length > 0}
+    <div class="p-2 border rounded-b-xl bg-primary-foreground top-0 mx-2 sticky z-10">
+      <p class="text-xs text-center mb-2">
+        {#if autoFocus.length === 1}
+        Traduction détectée sur cette page
+        {:else}
+        Traductions détectées sur cette page
+        {/if}
+      </p>
+      <div class="flex flex-col gap-2 -mb-6">
+        {#if clickFocus}
+          {#each autoFocus as game (game.name + game.version)}
+            <GameBox {game} autoFocusMultiple />
+          {/each}
+        {/if}
+        <Button
+          variant="outline"
+          class="rounded-full mx-auto heading-none"
+          onmouseenter={() => mouseEnter = true}
+          onmouseleave={() => mouseEnter = false}
+          onclick={() => clickFocus = !clickFocus}
+        >
+        <ChevronDown isHovered={mouseEnter} classes={cn(clickFocus && 'rotate-180')} />
+      </Button>
       </div>
-    {/if}
-
+    </div>
+  {/if}
+  <div class="flex flex-col gap-2 p-2 relative">
     {#each $filteredGames as game (game.name + game.version)}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />
     {:else}
@@ -114,6 +113,7 @@ let clickFocus = $state<boolean>(false);
         <span>Aucun jeu ne correspond à vos critères</span>
       </div>
     {/each}
-  {/if}
-  <Filter variant="popup" />
-</div>
+    
+    <Filter variant="popup" />
+  </div>
+{/if}
