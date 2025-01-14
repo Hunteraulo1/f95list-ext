@@ -50,11 +50,11 @@
 
 @layer base {
   @font-face {
-    font-family: "Roboto";
+    font-family: "Outfit";
+    font-optical-sizing: auto;
     font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(./lib/assets/fonts/Roboto-VariableFont_wdth\,wght.ttf) format("woff2");
+    font-variation-settings: "wdth" 100;
+    src: url(./lib/assets/fonts/ReemKufi.ttf) format("truetype");
   }
 
   * {

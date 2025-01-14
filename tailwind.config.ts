@@ -55,10 +55,7 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: [...fontFamily.sans],
-      },
-      backdropBlur: {
-        xs: '1px',
+        sans: ['Outfit', ...fontFamily.sans],
       },
       keyframes: {
         toDown: {
