@@ -67,11 +67,11 @@ let closed = $state<boolean>(variant === 'popup' && false);
           <Badge style={statusColor(game.status)} class="text-white font-bold">
             {game.status}
           </Badge>
-          {game.name}
+          <span class="text-lg font-medium">{game.name}</span>
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger
-              class="text-xs cursor-help font-bold {game.tversion ===
+              class="text-sm cursor-help font-bold {game.tversion ===
                 'Intégrée' || game.tversion === game.version
                 ? 'text-green-700'
                 : 'text-red-700'}"
