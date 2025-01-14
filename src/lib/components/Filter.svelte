@@ -23,16 +23,17 @@ let { variant = 'popup' }: Props = $props();
       Filtrer
     </Popover.Trigger>
     <Popover.Content
-      side="top"
-      preventScroll
-      onInteractOutside={()=>null}
-      class="mx-2 max-h-[calc(100vh-7rem)] p-0"
-      autofocus={false}
-      onOpenAutoFocus={(e: Event) => e.preventDefault()}
+    side="top"
+    preventScroll
+    onInteractOutside={()=>null}
+    class="p-0 h-full max-h-[30rem] overflow-y-auto"
+    autofocus={false}
+    onOpenAutoFocus={(e: Event) => e.preventDefault()}
     >
       <Popover.Close class="rounded-full hover:bg-primary-foreground float-end m-2 p-1">
         <XIcon />
       </Popover.Close>
+      
       <FilterContent />
     </Popover.Content>
   </Popover.Root>
