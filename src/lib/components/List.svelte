@@ -104,7 +104,7 @@ let clickFocus = $state<boolean>(false);
       </div>
     </div>
   {/if}
-  <div class="flex flex-col gap-2 p-2 relative">
+  <div class="flex flex-col gap-2 p-2 relative h-full">
     {#each $filteredGames as game (game.name + game.version)}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />
     {:else}
@@ -113,7 +113,7 @@ let clickFocus = $state<boolean>(false);
         <span>Aucun jeu ne correspond à vos critères</span>
       </div>
     {/each}
-    
+
     <Filter variant="popup" />
   </div>
 {/if}
