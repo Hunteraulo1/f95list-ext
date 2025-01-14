@@ -1,6 +1,6 @@
 {
   "name": "f95list-ext",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "author": {
     "email": "hunteraulo@pm.me",
     "name": "Hunteraulo"
@@ -21,7 +21,7 @@
     "@biomejs/biome": "1.9.4",
     "@sveltejs/vite-plugin-svelte": "5.0.3",
     "@tsconfig/svelte": "5.0.4",
-    "@types/chrome": "0.0.295",
+    "@types/chrome": "0.0.296",
     "@types/webextension-polyfill": "0.12.1",
     "autoprefixer": "10.4.20",
     "bits-ui": "^1.0.0-next.77",
