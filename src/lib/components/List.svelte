@@ -1,9 +1,11 @@
 <script lang="ts">
-import { RefreshCcw } from '$lib/assets/icon';
+import { ChevronDown, RefreshCcw } from '$lib/assets/icon';
 import GameBox from '$lib/components/GameBox.svelte';
 import type { GameType } from '$lib/schemas';
 import { autoFocusBlock, filteredGames, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
+import { cn } from '$lib/utils';
+import Button from '$ui/button/button.svelte';
 import { onMount } from 'svelte';
 import Filter from './Filter.svelte';
 
@@ -24,7 +26,7 @@ const extractId = (inputString: string): number => {
   return match ? Number.parseInt(match[1]) : 0;
 };
 
-let autoFocus: GameType[];
+let autoFocus: GameType[] = $state([]);
 
 onMount(async () => {
   const extract: IdGameBox = await new Promise((resolve) =>
@@ -68,24 +70,38 @@ const handleAutoFocus = (game: GameType): boolean => {
 
   return true;
 };
+
+let mouseEnter = $state<boolean>(false);
+
+let clickFocus = $state<boolean>(false);
 </script>
 
-<div class="flex flex-col gap-2 p-2 relative">
+<div class="flex flex-col gap-2 px-2 relative">
   {#if autoFocus}
     {#if autoFocus.length > 0}
-      <div class="mb-4 p-2 border rounded-xl">
-        <p class="mb-2 text-xs text-center">
+      <div class="p-2 border rounded-b-xl bg-primary-foreground top-0 mx-2 sticky z-10">
+        <p class="text-xs text-center mb-2">
           {#if autoFocus.length === 1}
-            Un jeu correspond à cette page
+            Traduction détectée sur cette page
           {:else}
-            Plusieurs jeux correspondent à cette page
+            Traductions détectées sur cette page
           {/if}
         </p>
-
-        <div class="flex flex-col gap-2">
-          {#each autoFocus as game (game.name + game.version)}
-            <GameBox {game} autoFocusMultiple />
-          {/each}
+        <div class="flex flex-col gap-2 -mb-6">
+          {#if clickFocus}
+            {#each autoFocus as game (game.name + game.version)}
+              <GameBox {game} autoFocusMultiple />
+            {/each}
+          {/if}
+          <Button
+            variant="outline"
+            class="rounded-full mx-auto heading-none"
+            onmouseenter={() => mouseEnter = true}
+            onmouseleave={() => mouseEnter = false}
+            onclick={() => clickFocus = !clickFocus}
+          >
+            <ChevronDown isHovered={mouseEnter} classes={cn(clickFocus && 'rotate-180')} />
+          </Button>
         </div>
       </div>
     {/if}
