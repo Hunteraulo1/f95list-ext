@@ -38,12 +38,12 @@ onMount(async () => {
         return;
       }
 
-      if ($settings.autoFocusGame && url.startsWith('https://f95zone.to/threads/')) {
+      if (url.startsWith('https://f95zone.to/threads/')) {
         resolve({ domain: 'F95z', id: extractId(url) });
         return;
       }
 
-      if ($settings.autoFocusGame && url.startsWith('https://lewdcorner.com/threads/')) {
+      if (url.startsWith('https://lewdcorner.com/threads/')) {
         resolve({ domain: 'LewdCorner', id: extractId(url) });
         return;
       }
@@ -62,7 +62,7 @@ let shouldAutoFocus = Boolean($autoFocusBlock);
 $autoFocusBlock = true;
 
 const handleAutoFocus = (game: GameType): boolean => {
-  if (!game.id || autoFocus.length !== 1 || shouldAutoFocus) return false;
+  if (!game.id || autoFocus.length !== 1 || shouldAutoFocus || !$settings.autoFocusGame) return false;
 
   if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.id !== game.id) return false;
 
