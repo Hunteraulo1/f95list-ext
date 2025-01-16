@@ -62,7 +62,7 @@ const handleSelect = (value: string) => {
         <Command.Input placeholder="Rechercher..." />
         <Command.Empty>Aucun {title} trouvé</Command.Empty>
         <Command.Group class="max-h-full relative">
-          <ScrollArea class="h-[16rem]">
+          <ScrollArea class="h-56">
             {#each values as { value, checked, inverse }}
               <Command.Item
                 {value}
