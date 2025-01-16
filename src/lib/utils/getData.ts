@@ -85,9 +85,6 @@ const getData = async () => {
 
     if (!json.version || !packageJson.version) return;
 
-    console.log(json.version);
-    console.log(packageJson.version);
-
     outdated.set(json.version !== packageJson.version);
   } catch (error: any) {
     console.error(error.message);
