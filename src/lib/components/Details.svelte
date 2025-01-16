@@ -46,7 +46,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
         class:rounded-lg={variant === 'webapp'}
         use:lazyLoad={game.image ?? noImage}
       />
-      <div class="p-2 flex flex-col gap-2">
+      <div class="p-2 flex flex-col gap-4">
         <div>
           <span class="font-bold text-sm select-none">Site:</span>
           <a href={game.link} target="_blank">
@@ -60,7 +60,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
             Accèder au jeu
           </a>
         </div>
-        <h1>
+        <h1 class="mb-2">
           <Badge style={typeColor(game.type)} class="text-white font-bold">
             {game.type}
           </Badge>
