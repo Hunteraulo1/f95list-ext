@@ -2,6 +2,7 @@
 import { filter, search } from '$lib/stores';
 import { Button } from '$ui/button';
 import { Input } from '$ui/input';
+import { ScrollArea } from '$ui/scroll-area';
 import FilterPopover from './FilterPopover.svelte';
 
 interface Props {
@@ -17,7 +18,7 @@ const handleReset = () => {
 };
 </script>
 
-<section class="flex flex-col gap-1 w-full relative p-3 m-0">
+<ScrollArea class="flex flex-col gap-1 w-full relative p-3 m-0 h-[26.5rem]">
   <label for="name" class="font-bold text-xs leading-none">Nom: </label>
   <div class="flex gap-1">
     <Input
@@ -39,4 +40,4 @@ const handleReset = () => {
       <FilterPopover {active} {title} {values} />
     {/each}
   </div>
-</section>
+</ScrollArea>

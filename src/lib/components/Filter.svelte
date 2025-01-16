@@ -26,7 +26,7 @@ let { variant = 'popup' }: Props = $props();
     side="top"
     preventScroll
     onInteractOutside={()=>null}
-    class="p-0 h-full max-h-[30rem] overflow-y-auto"
+    class="p-0 h-full"
     autofocus={false}
     onOpenAutoFocus={(e: Event) => e.preventDefault()}
     >
