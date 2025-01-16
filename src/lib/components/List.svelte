@@ -2,14 +2,13 @@
 import { ChevronDown, RefreshCcw } from '$lib/assets/icon';
 import GameBox from '$lib/components/GameBox.svelte';
 import type { GameType } from '$lib/schemas';
-import { autoFocusBlock, filteredGames, settings } from '$lib/stores';
+import { autoFocusBlock, filteredGames, outdated, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { cn } from '$lib/utils';
 import { Alert } from '$ui/alert';
 import Button from '$ui/button/button.svelte';
 import { isChrome } from '$utils/polyfill';
 import { onMount } from 'svelte';
-import manifest from '../../manifest.json';
 import Filter from './Filter.svelte';
 
 let browserAPI = undefined;
@@ -30,7 +29,6 @@ const extractId = (inputString: string): number => {
 };
 
 let autoFocus: GameType[] = $state([]);
-let outdated = $state<boolean>(false);
 
 onMount(async () => {
   const extract: IdGameBox = await new Promise((resolve) =>
@@ -60,23 +58,6 @@ onMount(async () => {
     extract.domain === 'Unknown'
       ? []
       : [...$filteredGames].filter((game) => game.domain === extract.domain && game.id === extract.id);
-
-  try {
-    const response = await fetch(
-      'https://raw.githubusercontent.com/Hunteraulo1/f95list-ext/refs/heads/main/package.json',
-    );
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-
-    const json = await response.json();
-
-    if (!json.version || !manifest.version) return;
-
-    outdated = json.version !== manifest.version;
-  } catch (error: any) {
-    console.error(error.message);
-  }
 });
 
 let shouldAutoFocus = Boolean($autoFocusBlock);

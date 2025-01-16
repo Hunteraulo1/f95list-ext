@@ -1,5 +1,7 @@
-import { filter, games, traductors, updates } from '$lib/stores.js';
+import { filter, games, outdated, traductors, updates } from '$lib/stores.js';
+import { get } from 'svelte/store';
 import { parse } from 'valibot';
+import manifest from '../../manifest.json';
 import { type GameType, Games, TraductorsData, Updates } from '../schemas.js';
 import { browserAPI } from './polyfill.js';
 
@@ -67,6 +69,25 @@ const getData = async () => {
     filter.reset();
   } catch (error) {
     console.error(error);
+  }
+
+  try {
+    if (get(outdated) !== undefined) return;
+
+    const response = await fetch(
+      'https://raw.githubusercontent.com/Hunteraulo1/f95list-ext/refs/heads/main/package.json',
+    );
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+
+    if (!json.version || !manifest.version) return;
+
+    outdated.set(json.version !== manifest.version);
+  } catch (error: any) {
+    console.error(error.message);
   }
 };
 
