@@ -1,7 +1,7 @@
 import { filter, games, outdated, traductors, updates } from '$lib/stores.js';
 import { get } from 'svelte/store';
 import { parse } from 'valibot';
-import manifest from '../../manifest.json';
+import packageJson from '../../../package.json';
 import { type GameType, Games, TraductorsData, Updates } from '../schemas.js';
 import { browserAPI } from './polyfill.js';
 
@@ -83,9 +83,9 @@ const getData = async () => {
 
     const json = await response.json();
 
-    if (!json.version || !manifest.version) return;
+    if (!json.version || !packageJson.version) return;
 
-    outdated.set(json.version !== manifest.version);
+    outdated.set(json.version !== packageJson.version);
   } catch (error: any) {
     console.error(error.message);
   }
