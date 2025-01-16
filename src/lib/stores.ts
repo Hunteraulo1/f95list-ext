@@ -198,8 +198,10 @@ export const settings = writable<Settings>(
 
 export const autoFocusBlock = writable<boolean>(false);
 
+export const page = writable<Page['link']>('list');
+
+export const outdated = writable<boolean>();
+
 // Webapp
 
 export const selectedGame = writable<GameType | undefined>();
-
-export const page = writable<Page['link']>('list');
