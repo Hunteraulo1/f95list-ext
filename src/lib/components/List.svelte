@@ -2,10 +2,12 @@
 import { ChevronDown, RefreshCcw } from '$lib/assets/icon';
 import GameBox from '$lib/components/GameBox.svelte';
 import type { GameType } from '$lib/schemas';
-import { autoFocusBlock, filteredGames, settings } from '$lib/stores';
+import { autoFocusBlock, filteredGames, outdated, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { cn } from '$lib/utils';
+import { Alert } from '$ui/alert';
 import Button from '$ui/button/button.svelte';
+import { isChrome } from '$utils/polyfill';
 import { onMount } from 'svelte';
 import Filter from './Filter.svelte';
 
@@ -38,12 +40,12 @@ onMount(async () => {
         return;
       }
 
-      if ($settings.autoFocusGame && url.startsWith('https://f95zone.to/threads/')) {
+      if (url.startsWith('https://f95zone.to/threads/')) {
         resolve({ domain: 'F95z', id: extractId(url) });
         return;
       }
 
-      if ($settings.autoFocusGame && url.startsWith('https://lewdcorner.com/threads/')) {
+      if (url.startsWith('https://lewdcorner.com/threads/')) {
         resolve({ domain: 'LewdCorner', id: extractId(url) });
         return;
       }
@@ -62,7 +64,7 @@ let shouldAutoFocus = Boolean($autoFocusBlock);
 $autoFocusBlock = true;
 
 const handleAutoFocus = (game: GameType): boolean => {
-  if (!game.id || autoFocus.length !== 1 || shouldAutoFocus) return false;
+  if (!game.id || autoFocus.length !== 1 || shouldAutoFocus || !$settings.autoFocusGame) return false;
 
   if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.id !== game.id) return false;
 
@@ -105,6 +107,9 @@ let clickFocus = $state<boolean>(false);
     </div>
   {/if}
   <div class="flex flex-col gap-2 p-2 relative h-full">
+    {#if outdated && isChrome()}
+      <Alert variant="destructive">Votre extension n'est plus à jour</Alert>
+    {/if}
     {#each $filteredGames as game (game.name + game.version)}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />
     {:else}
