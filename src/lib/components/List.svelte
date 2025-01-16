@@ -5,8 +5,11 @@ import type { GameType } from '$lib/schemas';
 import { autoFocusBlock, filteredGames, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { cn } from '$lib/utils';
+import { Alert } from '$ui/alert';
 import Button from '$ui/button/button.svelte';
+import { isChrome } from '$utils/polyfill';
 import { onMount } from 'svelte';
+import manifest from '../../manifest.json';
 import Filter from './Filter.svelte';
 
 let browserAPI = undefined;
@@ -27,6 +30,7 @@ const extractId = (inputString: string): number => {
 };
 
 let autoFocus: GameType[] = $state([]);
+let outdated = $state<boolean>(false);
 
 onMount(async () => {
   const extract: IdGameBox = await new Promise((resolve) =>
@@ -56,6 +60,23 @@ onMount(async () => {
     extract.domain === 'Unknown'
       ? []
       : [...$filteredGames].filter((game) => game.domain === extract.domain && game.id === extract.id);
+
+  try {
+    const response = await fetch(
+      'https://raw.githubusercontent.com/Hunteraulo1/f95list-ext/refs/heads/main/package.json',
+    );
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+
+    if (!json.version || !manifest.version) return;
+
+    outdated = json.version !== manifest.version;
+  } catch (error: any) {
+    console.error(error.message);
+  }
 });
 
 let shouldAutoFocus = Boolean($autoFocusBlock);
@@ -105,6 +126,9 @@ let clickFocus = $state<boolean>(false);
     </div>
   {/if}
   <div class="flex flex-col gap-2 p-2 relative h-full">
+    {#if outdated && isChrome()}
+      <Alert variant="destructive">Votre extension n'est plus à jour</Alert>
+    {/if}
     {#each $filteredGames as game (game.name + game.version)}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />
     {:else}
