@@ -41,9 +41,6 @@ if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
 const handleClick = () => {
   $selectedGame = game;
   open = true;
-
-  console.log(game);
-  console.log(webapp);
 };
 </script>
 

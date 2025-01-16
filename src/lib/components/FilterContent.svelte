@@ -1,5 +1,6 @@
 <script lang="ts">
 import { filter, search } from '$lib/stores';
+import { cn } from '$lib/utils';
 import { Button } from '$ui/button';
 import { Input } from '$ui/input';
 import { ScrollArea } from '$ui/scroll-area';
@@ -18,9 +19,9 @@ const handleReset = () => {
 };
 </script>
 
-<ScrollArea class="flex flex-col gap-1 w-full relative p-3 m-0 h-[26.5rem]">
+<ScrollArea class={cn("flex flex-col gap-1 w-full relative p-3 m-0", variant !== 'webapp' && 'h-[26.5rem]')}>
   <label for="name" class="font-bold text-xs leading-none">Nom: </label>
-  <div class="flex gap-1">
+  <div class="flex gap-2 mb-2">
     <Input
       id="name"
       type="text"
@@ -35,7 +36,7 @@ const handleReset = () => {
     <Button onclick={handleReset} disabled={!active}>Réinitialiser</Button>
   </div>
   
-  <div class={variant === 'webapp' ? 'grid grid-cols-3 gap-1' : 'flex flex-col gap-1 relative'}>
+  <div class={variant === 'webapp' ? 'grid grid-cols-3 gap-2' : 'flex flex-col gap-1 relative'}>
     {#each $filter as { title, values }}
       <FilterPopover {active} {title} {values} />
     {/each}
