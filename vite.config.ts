@@ -1,5 +1,5 @@
-import path from 'node:path';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import path from 'node:path';
 import { defineConfig } from 'vite';
 import webExtension, { readJsonFile } from 'vite-plugin-web-extension';
 
@@ -8,10 +8,10 @@ const generateManifest = () => {
   const pkg = readJsonFile('package.json');
 
   return {
+    ...manifest,
     author: pkg.author.name,
     description: pkg.description,
     version: pkg.version,
-    ...manifest,
   };
 };
 
