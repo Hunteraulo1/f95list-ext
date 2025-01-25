@@ -1,29 +1,43 @@
 import type { GameType, UpdateType } from '$lib/schemas';
+import { browserAction, runtime, storage } from 'webextension-polyfill';
 
-const browserAPI = typeof browser === 'undefined' ? chrome : browser;
+const call = {
+  async get<T extends keyof CallType>(query: T): Promise<CallType[T]> {
+    try {
+      const data = await storage.local.get([query]);
 
-browserAPI.runtime.onInstalled.addListener(async () => {
-  const { f95list_ext_integrate } = await browserAPI.storage.local.get(['f95list_ext_integrate']);
+      return data[query] as CallType[T];
+    } catch (error) {
+      console.error(error);
 
-  if (f95list_ext_integrate === undefined) await browserAPI.storage.local.set({ f95list_ext_integrate: true });
-  await dataInit();
+      throw new Error(`${query} not found`);
+    }
+  },
 
-  await badgeState();
-});
-
-browserAPI.runtime.onStartup.addListener(async () => {
-  await dataInit();
-
-  await badgeState();
-});
-
-const badgeData = async () => {
-  const { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data']);
-
-  if (!f95list_ext_data || f95list_ext_data.updates.length === 0) throw new Error('no data');
-
-  return f95list_ext_data.updates;
+  async set<T extends keyof CallType>(query: T, value: CallType[T]): Promise<void> {
+    try {
+      await storage.local.set({ [query]: value });
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };
+
+runtime.onInstalled.addListener(async () => {
+  const integrate = await call.get('f95list_ext_integrate');
+
+  if (integrate === undefined) await call.set('f95list_ext_integrate', true);
+
+  const data = await dataInit();
+
+  if (data) await badgeState(data);
+});
+
+runtime.onStartup.addListener(async () => {
+  const data = await dataInit();
+
+  if (data) await badgeState(data);
+});
 
 interface UpdateData {
   date: UpdateType['date'];
@@ -31,40 +45,52 @@ interface UpdateData {
   names: GameType['name'][];
 }
 
-const badgeState = async () => {
-  const browserAction = typeof browser === 'undefined' ? chrome.action : browser.browserAction;
+interface Data {
+  updates: UpdateData[];
+  games: GameType[];
+}
 
-  const updatesData = await badgeData();
-  const { f95list_ext_badge } = await browserAPI.storage.local.get(['f95list_ext_badge']);
+interface CallType {
+  f95list_ext_data: Data | undefined;
+  f95list_ext_badge: UpdateData[] | undefined;
+  f95list_ext_time: number | undefined;
+  f95list_ext_integrate: boolean | undefined;
+}
+
+const badgeState = async (data: CallType['f95list_ext_data']) => {
+  if (!data || data.updates.length === 0) throw new Error('data not defined or empty');
+
+  const updatesData = data.updates;
+  const badge = (await call.get('f95list_ext_badge')) ?? [];
 
   let index = 0;
+
   updatesData?.every((updateData: UpdateData) => {
-    if (!f95list_ext_badge || updateData.date < f95list_ext_badge[0].date) return false;
+    if (updateData.date < badge[0].date) return false;
 
     index += updateData.names.length;
 
     return true;
   });
-  f95list_ext_badge?.map((update: UpdateData) => {
+
+  badge.map((update: UpdateData) => {
     index -= update.names.length;
   });
 
-  const text = index === 0 ? '' : index.toString();
-
   await browserAction.setBadgeBackgroundColor({ color: '#CC0000' });
-  await browserAction.setBadgeText({ text });
+  await browserAction.setBadgeText({ text: index === 0 ? null : index.toString() });
 };
 
-const badgeReset = async () => {
+const badgeReset = async (data: CallType['f95list_ext_data']) => {
+  if (!data || data.updates.length === 0) throw new Error('data not defined or empty');
+
   try {
-    const updatesData = await badgeData();
+    const updates = [data.updates[0]];
 
-    const result = [updatesData[0]];
+    if (data.updates[0].date === data.updates[1].date) updates.push(data.updates[1]);
 
-    if (updatesData[0].date === updatesData[1].date) result.push(updatesData[1]);
-
-    await browserAPI.storage.local.set({ f95list_ext_badge: result });
-    await badgeState();
+    await call.set('f95list_ext_badge', updates);
+    await badgeState(data);
   } catch (error) {
     console.error(error);
   }
@@ -73,58 +99,62 @@ const badgeReset = async () => {
 let wait = false;
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const dataInit = async () => {
+const dataInit = async (): Promise<CallType['f95list_ext_data'] | null> => {
   while (wait) {
     await sleep(1000); // 1 second
   }
 
-  const { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data']);
+  const data = await call.get('f95list_ext_data');
 
-  if (wait) return;
+  if (wait) return null;
   wait = true;
 
   const date = new Date().getTime();
-  const { f95list_ext_time } = await browserAPI.storage.local.get(['f95list_ext_time']);
+  const time = (await call.get('f95list_ext_time')) ?? 0;
 
-  if (f95list_ext_data && f95list_ext_time && date < f95list_ext_time) {
+  if (data && date < time) {
     wait = false;
-    return;
+
+    return data;
   }
 
-  await browserAPI.storage.local.set({ f95list_ext_time: date + 1000 * 60 * 60 * 2 }); // 2 hours
-  await browserAPI.storage.local.set({ f95list_ext_data: await query() });
+  await call.set('f95list_ext_time', date + 1000 * 60 * 60 * 2); // 2 hours
+  await call.set('f95list_ext_data', await query());
 
-  await badgeState();
+  await badgeState(data);
 
   wait = false;
+
+  return data;
 };
 
-browserAPI.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
-    await dataInit();
+    const data = await dataInit();
 
-    const { f95list_ext_data } = await browserAPI.storage.local.get(['f95list_ext_data']);
+    if (!data || typeof message !== 'string') return false;
 
     switch (message) {
       case 'f95list-script': {
-        const { f95list_ext_integrate } = await browserAPI.storage.local.get(['f95list_ext_integrate']);
+        const integrate = await call.get('f95list_ext_integrate');
 
-        if (!f95list_ext_integrate) throw new Error('no integrate');
+        if (!integrate) break;
 
-        await sendResponse(f95list_ext_data.games);
+        sendResponse(data.games);
+
         break;
       }
       case 'f95list-ext':
-        await sendResponse(f95list_ext_data);
+        sendResponse(data);
+
         break;
       case 'f95list-badge':
-        await badgeReset();
+        await badgeReset(data);
+
         break;
-      case 'f95list-integrate_true':
-        await browserAPI.storage.local.set({ f95list_ext_integrate: true });
-        break;
-      case 'f95list-integrate_false':
-        await browserAPI.storage.local.set({ f95list_ext_integrate: false });
+      case message.startsWith('f95list-integrate') ? message : 'f95list-integrate':
+        await call.set('f95list_ext_integrate', message.endsWith('true'));
+
         break;
     }
   })();
@@ -147,7 +177,7 @@ const query = async () => {
   } catch (error) {
     console.error(error);
 
-    await browserAPI.storage.local.set({ f95list_ext_time: 0 });
+    await call.set('f95list_ext_time', 0);
 
     wait = false;
   }
