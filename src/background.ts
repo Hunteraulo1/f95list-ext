@@ -1,5 +1,5 @@
 import type { GameType, UpdateType } from '$lib/schemas';
-import { browserAction, runtime, storage } from 'webextension-polyfill';
+import Browser, { runtime, storage } from 'webextension-polyfill';
 
 const call = {
   async get<T extends keyof CallType>(query: T): Promise<CallType[T]> {
@@ -66,7 +66,7 @@ const badgeState = async (data: CallType['f95list_ext_data']) => {
   let index = 0;
 
   updatesData?.every((updateData: UpdateData) => {
-    if (updateData.date < badge[0].date) return false;
+    if (badge[0] && updateData.date < badge[0].date) return false;
 
     index += updateData.names.length;
 
@@ -77,8 +77,8 @@ const badgeState = async (data: CallType['f95list_ext_data']) => {
     index -= update.names.length;
   });
 
-  await browserAction.setBadgeBackgroundColor({ color: '#CC0000' });
-  await browserAction.setBadgeText({ text: index === 0 ? null : index.toString() });
+  await Browser.action.setBadgeBackgroundColor({ color: '#CC0000' });
+  await Browser.action.setBadgeText({ text: index === 0 ? null : index.toString() });
 };
 
 const badgeReset = async (data: CallType['f95list_ext_data']) => {
@@ -104,7 +104,8 @@ const dataInit = async (): Promise<CallType['f95list_ext_data'] | null> => {
     await sleep(1000); // 1 second
   }
 
-  const data = await call.get('f95list_ext_data');
+  let data = await call.get('f95list_ext_data');
+  console.log(data);
 
   if (wait) return null;
   wait = true;
@@ -118,8 +119,12 @@ const dataInit = async (): Promise<CallType['f95list_ext_data'] | null> => {
     return data;
   }
 
+  data = await query();
+
+  if (!data) throw new Error('data not found');
+
   await call.set('f95list_ext_time', date + 1000 * 60 * 60 * 2); // 2 hours
-  await call.set('f95list_ext_data', await query());
+  await call.set('f95list_ext_data', data);
 
   await badgeState(data);
 
