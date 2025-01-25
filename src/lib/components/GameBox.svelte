@@ -49,78 +49,81 @@ const handleClick = () => {
 {/if}
 
 {#if game.domain !== 'Unknown'}
-  <div class="relative">
-    <Lazy height={autoFocusMultiple ? 38 : 88} fadeOption={{ delay: 0, duration: 0 }} keep={true}>
-      <Card.Root class="cursor-pointer" onclick={handleClick}>
-        {#if !autoFocusMultiple}
-          <img
-            alt={game.name}
-            class="absolute top-0 left-0 object-cover w-full h-full rounded-xl"
-            src={game.image?.replace(
-              'attachments.f95zone.to',
-              'preview.f95zone.to'
-            ) ?? noImage}
-            style="image-rendering: smooth; image-resolution: snap;"
-          />
-        {/if}
-      
-        <Card.CardContent
-          class={cn("relative rounded-xl overflow-hidden transition", webapp  && 'text-xl', autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-white')}>
-          <Card.Title class="select-none">{game.name}</Card.Title>
-          <Card.Description>
-            <Tooltip.Provider>
-              <Tooltip.Root>
-                <Tooltip.Trigger
-                  class="text-xs cursor-help font-bold z-20 {game.tversion ===
-                  'Intégrée' || game.tversion === game.version
-                  ? 'text-green-700'
-                  : 'text-red-700'} {webapp ? 'text-lg' : ''}"
-                >
-                {game.tversion}
-                </Tooltip.Trigger>
-                <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
-                  <Badge variant="secondary">
-                    {#if game.tversion === 'Intégrée'}
-                      À jour ({game.version})
-                    {:else if game.tversion === game.version}
-                      À jour
-                    {:else if game.tversion === 'n/a'}
-                    Pas de traduction
-                    {:else}
-                      N'est pas à jour ({game.version})
-                    {/if}
-                  </Badge>
-                </Tooltip.Content>
-              </Tooltip.Root>
-          </Tooltip.Provider>
-          </Card.Description>
-        </Card.CardContent>
-      </Card.Root>
-    </Lazy>
+  <Lazy height={autoFocusMultiple ? 38 : 88} fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative rounded-md overflow-hidden bg-primary-foreground">
+    <Card.Root class="cursor-pointer" onclick={handleClick}>
+      {#if !autoFocusMultiple}
+        <img
+          alt={game.name}
+          class="absolute top-0 left-0 object-cover w-full h-full"
+          src={game.image?.replace(
+            'attachments.f95zone.to',
+            'preview.f95zone.to'
+          ) ?? noImage}
+          style="image-rendering: smooth; image-resolution: snap;"
+        />
+      {/if}
     
+      <Card.CardContent
+        class={cn(
+          "relative transition",
+          webapp && 'text-xl',
+          autoFocusMultiple ?
+            'flex gap-2 items-center py-2 px-6' :
+            'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-white'
+        )}
+      >
+        <Card.Title class="select-none">{game.name}</Card.Title>
+        <Card.Description>
+          <Tooltip.Provider>
+            <Tooltip.Root>
+              <Tooltip.Trigger
+                class="text-xs cursor-help font-bold z-20 {game.tversion ===
+                'Intégrée' || game.tversion === game.version
+                ? 'text-green-700'
+                : 'text-red-700'} {webapp ? 'text-lg' : ''}"
+              >
+              {game.tversion}
+              </Tooltip.Trigger>
+              <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
+                <Badge variant="secondary">
+                  {#if game.tversion === 'Intégrée'}
+                    À jour ({game.version})
+                  {:else if game.tversion === game.version}
+                    À jour
+                  {:else if game.tversion === 'n/a'}
+                  Pas de traduction
+                  {:else}
+                    N'est pas à jour ({game.version})
+                  {/if}
+                </Badge>
+              </Tooltip.Content>
+            </Tooltip.Root>
+        </Tooltip.Provider>
+        </Card.Description>
+      </Card.CardContent>
+    </Card.Root>
     {#if isFirefox() && !autoFocusMultiple}
       <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
         <CopyCheck />
       </a>
     {/if}
-  </div>
+  </Lazy>
 {:else}
-  <div class="relative">
-    <div class="rounded-md cursor-pointer">
-      <div class={cn(
-          "relative rounded-xl overflow-hidden transition backdrop-brightness-90 text-white", 
-          (webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100',
-          autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'
-        )}>
-        <h2>{game.name}</h2>
-        <h3 class={cn(
-            "text-xs cursor-help font-bold z-20"
-          )}
-          class:text-lg={webapp}
-        >
-          Jeu introuvable
-        </h3>
-      </div>
-    </div>
+  <div
+    class={cn(
+      "relative overflow-hidden transition text-white rounded-md cursor-pointer bg-primary-foreground", 
+      (webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100',
+      autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'
+    )}
+  >
+    <h2>{game.name}</h2>
+    <h3
+      class={cn(
+        "text-xs cursor-help font-bold z-20"
+      )}
+      class:text-lg={webapp}
+    >
+      Jeu introuvable
+    </h3>
   </div>
 {/if}
