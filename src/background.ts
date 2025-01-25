@@ -105,7 +105,6 @@ const dataInit = async (): Promise<CallType['f95list_ext_data'] | null> => {
   }
 
   let data = await call.get('f95list_ext_data');
-  console.log(data);
 
   if (wait) return null;
   wait = true;
@@ -134,10 +133,17 @@ const dataInit = async (): Promise<CallType['f95list_ext_data'] | null> => {
 };
 
 runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  console.info(message);
+
   (async () => {
     const data = await dataInit();
+    console.log('🚀 ~ data:', data);
 
-    if (!data || typeof message !== 'string') return false;
+    if (!data || typeof message !== 'string') {
+      console.error('data not found');
+
+      return false;
+    }
 
     switch (message) {
       case 'f95list-script': {
