@@ -179,7 +179,7 @@ const query = async () => {
     console.info('🚀 ~ query: ~ fetch');
 
     const response = await fetch(
-      'https://script.google.com/macros/s/AKfycbybvrFy6B2L7rkLWJnrwRHhP0F6Sv0uk6V9zUTZibwEzUjKXf-abOK_N6jUhqFPs9US/execF',
+      'https://script.google.com/macros/s/AKfycbybvrFy6B2L7rkLWJnrwRHhP0F6Sv0uk6V9zUTZibwEzUjKXf-abOK_N6jUhqFPs9US/exec',
     );
     const data = await response.json();
 
