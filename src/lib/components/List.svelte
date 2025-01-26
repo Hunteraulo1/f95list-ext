@@ -2,7 +2,7 @@
 import { ChevronDown, RefreshCcw } from '$lib/assets/icon';
 import GameBox from '$lib/components/GameBox.svelte';
 import type { GameType } from '$lib/schemas';
-import { autoFocusBlock, filteredGames, outdated, settings } from '$lib/stores';
+import { autoFocusBlock, filteredGames, games, outdated, settings } from '$lib/stores';
 import type { IdGameBox } from '$lib/types';
 import { cn } from '$lib/utils';
 import { Alert } from '$ui/alert';
@@ -113,10 +113,17 @@ let clickFocus = $state<boolean>(false);
     {#each $filteredGames as game (game.name + game.version)}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />
     {:else}
-      <div class="flex justify-center items-center h-full">
-        <RefreshCcw />
-        <span>Aucun jeu ne correspond à vos critères</span>
-      </div>
+      {#if $games.length > 0}
+        <div class="flex justify-center items-center h-full">
+          <RefreshCcw />
+          <span>Aucun jeu ne correspond à vos critères</span>
+        </div>
+      {:else}
+        <div class="flex justify-center items-center h-full text-center text-red-600">
+          <span>Un problème est survenu lors de la récupération des données, veuillez nous contacter sur discord.</span>
+        </div>
+      {/if}
+      
     {/each}
 
     <Filter variant="popup" />

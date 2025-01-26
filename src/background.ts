@@ -1,5 +1,5 @@
 import type { GameType, UpdateType } from '$lib/schemas';
-import Browser, { runtime, storage } from 'webextension-polyfill';
+import { action, browserAction, runtime, storage } from 'webextension-polyfill';
 
 const call = {
   async get<T extends keyof CallType>(query: T): Promise<CallType[T]> {
@@ -77,8 +77,9 @@ const badgeState = async (data: CallType['f95list_ext_data']) => {
     index -= update.names.length;
   });
 
-  await Browser.action.setBadgeBackgroundColor({ color: '#CC0000' });
-  await Browser.action.setBadgeText({ text: index === 0 ? null : index.toString() });
+  const definedAction = browserAction ?? action;
+  definedAction.setBadgeText({ text: index === 0 ? null : index.toString() });
+  definedAction.setBadgeBackgroundColor({ color: '#CC0000' });
 };
 
 const badgeReset = async (data: CallType['f95list_ext_data']) => {
@@ -178,7 +179,7 @@ const query = async () => {
     console.info('🚀 ~ query: ~ fetch');
 
     const response = await fetch(
-      'https://script.google.com/macros/s/AKfycbybvrFy6B2L7rkLWJnrwRHhP0F6Sv0uk6V9zUTZibwEzUjKXf-abOK_N6jUhqFPs9US/exec',
+      'https://script.google.com/macros/s/AKfycbybvrFy6B2L7rkLWJnrwRHhP0F6Sv0uk6V9zUTZibwEzUjKXf-abOK_N6jUhqFPs9US/execF',
     );
     const data = await response.json();
 
