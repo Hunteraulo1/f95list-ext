@@ -37,7 +37,7 @@
     "tslib": "2.8.1",
     "typescript": "5.7.3",
     "valibot": "1.0.0-beta.11",
-    "vite": "6.0.7",
+    "vite": "6.0.9",
     "vite-plugin-web-extension": "4.4.3",
     "webextension-polyfill": "0.12.0"
   },
