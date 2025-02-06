@@ -21,3 +21,5 @@ builds
 *.njsproj
 *.sln
 *.sw?
+
+.env
