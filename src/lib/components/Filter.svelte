@@ -19,20 +19,21 @@ let { variant = 'popup' }: Props = $props();
   </div>
 {:else}
   <Popover.Root>
-    <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "border-2 border-primary-foreground sticky z-10 bottom-2 mx-auto" })}>
+    <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "border-2 border-primary-foreground/60 bg-secondary/60 hover:border-primary-foreground hover:bg-secondary sticky z-10 bottom-2 mx-auto mt-auto" })}>
       Filtrer
     </Popover.Trigger>
     <Popover.Content
-      side="top"
-      preventScroll
-      onInteractOutside={()=>null}
-      class="mx-2 max-h-[calc(100vh-7rem)] p-0"
-      autofocus={false}
-      onOpenAutoFocus={(e: Event) => e.preventDefault()}
+    side="top"
+    preventScroll
+    onInteractOutside={()=>null}
+    class="p-0 h-full"
+    autofocus={false}
+    onOpenAutoFocus={(e: Event) => e.preventDefault()}
     >
       <Popover.Close class="rounded-full hover:bg-primary-foreground float-end m-2 p-1">
         <XIcon />
       </Popover.Close>
+      
       <FilterContent />
     </Popover.Content>
   </Popover.Root>

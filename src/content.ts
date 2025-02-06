@@ -12,14 +12,15 @@ const insert = (games: GameType[]) => {
   } else if (pathname.startsWith('/threads/')) {
     const tileId = Number(window.location.pathname.split('/')[2].split('.')[1]);
 
-    if (games.find((game) => game.id === tileId && game.hostname === hostname)) {
+    for (const game of games) {
+      if (game.id !== tileId || game.hostname !== hostname) continue;
+
       const parent = document.querySelector('.p-title-value');
 
-      if (parent && !parent?.classList.contains('flag-inserted')) {
-        createFlag(parent);
+      if (!parent || parent?.classList.contains('flag-inserted')) return;
 
-        parent?.classList.add('flag-inserted');
-      }
+      createFlag(parent, game.tlink);
+      parent?.classList.add('flag-inserted');
     }
   }
 };
@@ -64,18 +65,21 @@ const latest = (query: string, games: GameType[]) => {
         ? Number((tile as HTMLAnchorElement).pathname.split('/')[2])
         : Number((tile as HTMLAnchorElement).pathname.split('/')[2].split('.')[1]);
 
-    if (
-      games.find((game) => game.id === tileId && game.hostname === hostname) &&
-      !tile.classList.contains('flag-inserted')
-    ) {
+    if (tile.classList.contains('flag-inserted')) return;
+
+    if (games.find((game) => game.id === tileId && game.hostname === hostname)) {
       createFlag(hostname === 'f95zone.to' ? tile.children[1].children[0] : tile.children[1].children[1]);
       tile.classList.add('flag-inserted');
     }
   }
 };
 
-const createFlag = (parent: Element) => {
-  const img = document.createElement('img');
+const createFlag = (parent: Element, tlink: GameType['tlink'] = null) => {
+  const anchor: HTMLAnchorElement = document.createElement('a');
+  const img: HTMLImageElement = document.createElement('img');
+
+  anchor.target = '_BLANK';
+  anchor.href = tlink ?? '#';
 
   img.style.width = '32px';
   img.style.marginRight = '4px';
@@ -85,5 +89,6 @@ const createFlag = (parent: Element) => {
   img.src =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAELBAMAAAAFMM1/AAAAGFBMVEX///8AI5XtKTmerNf6yMwAGJDtKDjsITLN9eOpAAAA9ElEQVR42u3P0QAAQAgFsBRO4WQCyCB/iCDe72awerGpWO9PiYiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIJA7ZdJrTjvyKSgAAAABJRU5ErkJggg==';
 
-  parent.prepend(img);
+  anchor.append(img);
+  parent.prepend(anchor);
 };

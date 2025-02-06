@@ -8,10 +8,10 @@ const generateManifest = () => {
   const pkg = readJsonFile('package.json');
 
   return {
+    ...manifest,
     author: pkg.author.name,
     description: pkg.description,
     version: pkg.version,
-    ...manifest,
   };
 };
 

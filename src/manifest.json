@@ -1,5 +1,6 @@
 {
   "name": "F95 France - Extension",
+  "version": "0.0.0",
   "{{chrome}}.manifest_version": 3,
   "{{firefox}}.manifest_version": 2,
   "{{firefox}}.browser_specific_settings": {

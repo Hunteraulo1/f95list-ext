@@ -100,7 +100,7 @@ const handleSettings = async (settingsItem: SettingItem) => {
 
 <div class="flex flex-col gap-8">
   <div class="flex flex-col gap-2">
-    <h1 class="text-center mb-2 font-bold">Paramètres</h1>
+    <h1 class="text-center my-4 font-bold text-xl">Paramètres</h1>
     {#each settingsItems as settingsItem}
       <div class="flex justify-center items-center gap-2">
         <Label for={settingsItem.id}>{settingsItem.title}</Label>
