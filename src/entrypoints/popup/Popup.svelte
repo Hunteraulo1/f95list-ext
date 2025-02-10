@@ -1,13 +1,13 @@
 <script lang="ts">
-import List from '$components/List.svelte';
-import Nav, { type Page } from '$components/Nav.svelte';
-import Router from '$components/Router.svelte';
-import Settings from '$components/Settings.svelte';
-import Traductors from '$components/Traductors.svelte';
-import Updates from '$components/Updates.svelte';
-import { Bell, Expand, RefreshCcw, ScanText, Settings as SettingsIcon } from '$lib/assets/icon';
-import { Button } from '$ui/button';
-import getData from '$utils/getData';
+import { Bell, Expand, RefreshCcw, ScanText, Settings as SettingsIcon } from '@/lib/assets/icon';
+import List from '@/lib/components/List.svelte';
+import Nav, { type Page } from '@/lib/components/Nav.svelte';
+import Router from '@/lib/components/Router.svelte';
+import Settings from '@/lib/components/Settings.svelte';
+import Traductors from '@/lib/components/Traductors.svelte';
+import Updates from '@/lib/components/Updates.svelte';
+import { Button } from '@/lib/components/ui/button';
+import getData from '@/lib/utils/getData';
 import { ModeWatcher } from 'mode-watcher';
 
 const pages: Page[] = [

@@ -1,9 +1,8 @@
-import { filter, games, outdated, traductors, updates } from '$lib/stores.js';
+import { filter, games, outdated, traductors, updates } from '@/lib/stores.js';
 import { get } from 'svelte/store';
 import { parse } from 'valibot';
 import packageJson from '../../../package.json';
 import { type GameType, Games, TraductorsData, Updates } from '../schemas.js';
-import { browserAPI } from './polyfill.js';
 
 interface UpdateData {
   date: string;
@@ -11,7 +10,7 @@ interface UpdateData {
   names: string[];
 }
 
-const callWorker = async () => await browserAPI().runtime.sendMessage('f95list-ext');
+const callWorker = async () => await browser.runtime.sendMessage('f95list-ext');
 
 const getData = async () => {
   try {

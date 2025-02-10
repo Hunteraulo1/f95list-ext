@@ -1,4 +1,4 @@
-import type { GameType } from '$lib/schemas';
+import type { GameType } from '@/lib/schemas';
 
 export const typeColor = (name: GameType['type']): string => {
   let result = '';

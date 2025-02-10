@@ -1,10 +1,10 @@
 <script lang="ts">
-import { Moon, Sun } from '$lib/assets/icon';
-import { page, settings } from '$lib/stores';
-import type { Settings } from '$lib/types';
-import { Button, buttonVariants } from '$ui/button';
-import { Label } from '$ui/label';
-import { Switch } from '$ui/switch';
+import { Moon, Sun } from '@/lib/assets/icon';
+import { Button, buttonVariants } from '@/lib/components/ui/button';
+import { Label } from '@/lib/components/ui/label';
+import { Switch } from '@/lib/components/ui/switch';
+import { page, settings } from '@/lib/stores';
+import type { Settings } from '@/lib/types';
 import { toggleMode } from 'mode-watcher';
 
 interface SettingItem {
@@ -83,11 +83,10 @@ const handleSettings = async (settingsItem: SettingItem) => {
     localStorage.setItem('settings', JSON.stringify(updatedSettings));
 
     if (id === 'intergrateFeature') {
-      const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
       const message = `f95list-integrate_${newValue.toString()}`;
 
       try {
-        await browserAPI.runtime.sendMessage(message);
+        await browser.runtime.sendMessage(message);
       } catch (browserError) {
         $settings = { ...$settings, [id]: !newValue };
       }

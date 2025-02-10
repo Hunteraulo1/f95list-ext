@@ -1,4 +1,19 @@
-import type { GameType } from '$lib/schemas';
+import type { GameType } from '@/lib/schemas';
+
+// biome-ignore lint/correctness/noUndeclaredVariables: define function
+export default defineContentScript({
+  matches: [
+    '*://f95zone.to/sam/latest_alpha/*',
+    '*://f95zone.to/threads/*',
+    '*://lewdcorner.com/latest-updates/*',
+    '*://lewdcorner.com/threads/*',
+  ],
+  main() {
+    console.info('[F95ListFR] Injecting script starting !');
+
+    init();
+  },
+});
 
 const insert = (games: GameType[]) => {
   if (!(games && games.length > 0)) return;
@@ -25,9 +40,9 @@ const insert = (games: GameType[]) => {
   }
 };
 
-(async () => {
+const init = async () => {
   try {
-    const data = await chrome.runtime.sendMessage('f95list-script');
+    const data = await browser.runtime.sendMessage('f95list-script');
 
     insert(data);
 
@@ -52,7 +67,7 @@ const insert = (games: GameType[]) => {
   } catch (error) {
     console.error(error);
   }
-})();
+};
 
 const { hostname } = window.location;
 

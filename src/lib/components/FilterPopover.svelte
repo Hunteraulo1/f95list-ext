@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Check, ChevronDown, XIcon } from '$lib/assets/icon';
-import { filter } from '$lib/stores';
-import { cn } from '$lib/utils';
-import { buttonVariants } from '$ui/button';
-import * as Command from '$ui/command/index';
-import * as Popover from '$ui/popover/index';
-import { ScrollArea } from '$ui/scroll-area';
+import { Check, ChevronDown, XIcon } from '@/lib/assets/icon';
+import { buttonVariants } from '@/lib/components/ui/button';
+import * as Command from '@/lib/components/ui/command/index';
+import * as Popover from '@/lib/components/ui/popover/index';
+import { ScrollArea } from '@/lib/components/ui/scroll-area';
+import { filter } from '@/lib/stores';
+import { cn } from '@/lib/utils';
 
 type Props = {
   title: string;
