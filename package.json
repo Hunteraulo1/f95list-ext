@@ -42,8 +42,7 @@
     "webextension-polyfill": "0.12.0"
   },
   "overrides": {
-    "bits-ui": ">=1.0.0-next.1",
-    "tailwindcss": "<4.0.0"
+    "bits-ui": ">=1.0.0-next.1"
   },
   "description": "Extension de F95 France permettant de lister les jeux",
   "license": "UNLICENSED",
