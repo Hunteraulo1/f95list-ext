@@ -9,6 +9,7 @@ on:
     types: [closed]
     branches:
       - main
+      - preview
 
 env:
   FIREFOX_EXTENSION_ID: "{9f7488b3-d704-4894-bac8-5dc3068fd6b9}"
