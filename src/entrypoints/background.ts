@@ -1,4 +1,4 @@
-import type { GameType, UpdateType } from '$lib/schemas';
+import type { GameType, UpdateType } from '@/lib/schemas';
 import { action, browserAction, runtime, storage } from 'webextension-polyfill';
 
 const call = {
@@ -33,7 +33,8 @@ runtime.onInstalled.addListener(async () => {
   if (data) await badgeState(data);
 });
 
-runtime.onStartup.addListener(async () => {
+// biome-ignore lint/correctness/noUndeclaredVariables: define function
+export default defineBackground(async () => {
   const data = await dataInit();
 
   if (data) await badgeState(data);

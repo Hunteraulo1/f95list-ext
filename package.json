@@ -57,7 +57,7 @@
     "format": "bunx @biomejs/biome format --write .",
     "postinstall": "wxt prepare"
   },
-  "trustedDependencies": ["@biomejs/biome", "dtrace-provider", "esbuild", "spawn-sync"],
+  "trustedDependencies": ["@biomejs/biome", "spawn-sync"],
   "type": "module",
   "dependencies": {
     "lucide-svelte": "^0.475.0",

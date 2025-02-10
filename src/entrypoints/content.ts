@@ -1,4 +1,39 @@
-import type { GameType } from '$lib/schemas';
+import type { GameType } from '@/lib/schemas';
+
+const { hostname } = window.location;
+
+// biome-ignore lint/correctness/noUndeclaredVariables: define function
+export default defineContentScript({
+  matches: ['*://*.google.com/*'],
+  async main() {
+    try {
+      const data = await chrome.runtime.sendMessage('f95list-script');
+
+      insert(data);
+
+      const { pathname } = window.location;
+
+      const f95 = pathname === '/sam/latest_alpha/';
+      const lc = pathname.startsWith('/latest-updates/');
+
+      if (f95 || lc) {
+        const mutationCallback: MutationCallback = async (mutationsList) => {
+          if ((f95 && mutationsList.length > 35) || lc) {
+            insert(data);
+          }
+        };
+        const observer = new MutationObserver(mutationCallback);
+        const config = { childList: true, subtree: true };
+
+        observer.observe(document.body, config);
+      }
+
+      console.info('[F95ListFR] Injecting script successful !');
+    } catch (error) {
+      console.error(error);
+    }
+  },
+});
 
 const insert = (games: GameType[]) => {
   if (!(games && games.length > 0)) return;
@@ -24,37 +59,6 @@ const insert = (games: GameType[]) => {
     }
   }
 };
-
-(async () => {
-  try {
-    const data = await chrome.runtime.sendMessage('f95list-script');
-
-    insert(data);
-
-    const { pathname } = window.location;
-
-    const f95 = pathname === '/sam/latest_alpha/';
-    const lc = pathname.startsWith('/latest-updates/');
-
-    if (f95 || lc) {
-      const mutationCallback: MutationCallback = async (mutationsList) => {
-        if ((f95 && mutationsList.length > 35) || lc) {
-          insert(data);
-        }
-      };
-      const observer = new MutationObserver(mutationCallback);
-      const config = { childList: true, subtree: true };
-
-      observer.observe(document.body, config);
-    }
-
-    console.info('[F95ListFR] Injecting script successful !');
-  } catch (error) {
-    console.error(error);
-  }
-})();
-
-const { hostname } = window.location;
 
 const latest = (query: string, games: GameType[]) => {
   const tiles = document.querySelectorAll(query);
