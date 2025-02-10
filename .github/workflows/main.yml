@@ -96,7 +96,6 @@ jobs:
           zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
 
       - name: Update updates.json
-        if: steps.get_release_type.outputs.prerelease == 'false'
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
           
@@ -114,7 +113,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add updates.json
           git commit -m ":bookmark: update updates.json for version ${{ steps.get_version.outputs.version }}"
-          git push origin main
+          git push origin preview
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
