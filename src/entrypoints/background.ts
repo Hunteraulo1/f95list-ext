@@ -111,10 +111,10 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     switch (message) {
       case 'f95list-script': {
         const integrate = await storage.getItem<boolean>('local:f95list_ext_integrate');
+        console.log('🚀 ~ integrate:', integrate);
 
         if (integrate === undefined) storage.setItem('local:f95list_ext_integrate', true);
-
-        if (!integrate) break;
+        else if (!integrate) break;
 
         sendResponse(data.games);
 

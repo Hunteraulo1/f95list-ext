@@ -1,37 +1,17 @@
 import type { GameType } from '@/lib/schemas';
 
-const { hostname } = window.location;
-
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
 export default defineContentScript({
-  matches: ['*://*.google.com/*'],
-  async main() {
-    try {
-      const data = await chrome.runtime.sendMessage('f95list-script');
+  matches: [
+    '*://f95zone.to/sam/latest_alpha/*',
+    '*://f95zone.to/threads/*',
+    '*://lewdcorner.com/latest-updates/*',
+    '*://lewdcorner.com/threads/*',
+  ],
+  main() {
+    console.info('[F95ListFR] Injecting script starting !');
 
-      insert(data);
-
-      const { pathname } = window.location;
-
-      const f95 = pathname === '/sam/latest_alpha/';
-      const lc = pathname.startsWith('/latest-updates/');
-
-      if (f95 || lc) {
-        const mutationCallback: MutationCallback = async (mutationsList) => {
-          if ((f95 && mutationsList.length > 35) || lc) {
-            insert(data);
-          }
-        };
-        const observer = new MutationObserver(mutationCallback);
-        const config = { childList: true, subtree: true };
-
-        observer.observe(document.body, config);
-      }
-
-      console.info('[F95ListFR] Injecting script successful !');
-    } catch (error) {
-      console.error(error);
-    }
+    init();
   },
 });
 
@@ -59,6 +39,37 @@ const insert = (games: GameType[]) => {
     }
   }
 };
+
+const init = async () => {
+  try {
+    const data = await browser.runtime.sendMessage('f95list-script');
+
+    insert(data);
+
+    const { pathname } = window.location;
+
+    const f95 = pathname === '/sam/latest_alpha/';
+    const lc = pathname.startsWith('/latest-updates/');
+
+    if (f95 || lc) {
+      const mutationCallback: MutationCallback = async (mutationsList) => {
+        if ((f95 && mutationsList.length > 35) || lc) {
+          insert(data);
+        }
+      };
+      const observer = new MutationObserver(mutationCallback);
+      const config = { childList: true, subtree: true };
+
+      observer.observe(document.body, config);
+    }
+
+    console.info('[F95ListFR] Injecting script successful !');
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const { hostname } = window.location;
 
 const latest = (query: string, games: GameType[]) => {
   const tiles = document.querySelectorAll(query);
