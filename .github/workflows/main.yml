@@ -96,8 +96,24 @@ jobs:
           zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
 
       - name: Update updates.json
+        if: steps.get_release_type.outputs.prerelease == 'false'
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
+          
+          if [ ! -f updates.json ]; then
+            echo '{
+              "addons": {
+                "'$FIREFOX_EXTENSION_ID'": {
+                  "updates": [
+                    {
+                      "version": "0.0.0",
+                      "update_link": ""
+                    }
+                  ]
+                }
+              }
+            }' > updates.json
+          fi
           
           # Mise à jour de updates.json
           jq --arg version "$VERSION" \
