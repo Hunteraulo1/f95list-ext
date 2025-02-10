@@ -1,10 +1,10 @@
 <script lang="ts">
-import { Moon, Sun } from '$lib/assets/icon';
-import { page, settings } from '$lib/stores';
-import type { Settings } from '$lib/types';
-import { Button, buttonVariants } from '$ui/button';
-import { Label } from '$ui/label';
-import { Switch } from '$ui/switch';
+import { Moon, Sun } from '@/lib/assets/icon';
+import { Button, buttonVariants } from '@/lib/components/ui/button';
+import { Label } from '@/lib/components/ui/label';
+import { Switch } from '@/lib/components/ui/switch';
+import { page, settings } from '@/lib/stores';
+import type { Settings } from '@/lib/types';
 import { toggleMode } from 'mode-watcher';
 
 interface SettingItem {

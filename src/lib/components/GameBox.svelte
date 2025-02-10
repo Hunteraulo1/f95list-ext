@@ -1,14 +1,14 @@
 <script lang="ts">
-import { CopyCheck } from '$lib/assets/icon';
-import noImage from '$lib/assets/no-image.png';
-import type { GameType } from '$lib/schemas';
-import { games, selectedGame } from '$lib/stores';
-import type { IdGameBox } from '$lib/types';
-import { cn } from '$lib/utils';
-import { isFirefox } from '$lib/utils/polyfill';
-import { Badge } from '$ui/badge';
-import * as Card from '$ui/card/index';
-import * as Tooltip from '$ui/tooltip/index';
+import { CopyCheck } from '@/lib/assets/icon';
+import noImage from '@/lib/assets/no-image.png';
+import { Badge } from '@/lib/components/ui/badge';
+import * as Card from '@/lib/components/ui/card/index';
+import * as Tooltip from '@/lib/components/ui/tooltip/index';
+import type { GameType } from '@/lib/schemas';
+import { games, selectedGame } from '@/lib/stores';
+import type { IdGameBox } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { isFirefox } from '@/lib/utils/polyfill';
 import Lazy from 'svelte-lazy';
 import Details from './Details.svelte';
 

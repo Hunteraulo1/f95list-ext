@@ -1,16 +1,16 @@
 <script lang="ts">
-import Details from '$components/Details.svelte';
-import Filter from '$components/Filter.svelte';
-import ListWebapp from '$components/ListWebapp.svelte';
-import Nav, { type Page } from '$components/Nav.svelte';
-import Router from '$components/Router.svelte';
-import Settings from '$components/Settings.svelte';
-import Traductors from '$components/Traductors.svelte';
-import Updates from '$components/Updates.svelte';
-import { Bell, RefreshCcw, ScanText, Settings as SettingsIcon } from '$lib/assets/icon';
-import { selectedGame } from '$lib/stores';
-import { Button } from '$ui/button';
-import getData from '$utils/getData';
+import { Bell, RefreshCcw, ScanText, Settings as SettingsIcon } from '@/lib/assets/icon';
+import Details from '@/lib/components/Details.svelte';
+import Filter from '@/lib/components/Filter.svelte';
+import ListWebapp from '@/lib/components/ListWebapp.svelte';
+import Nav, { type Page } from '@/lib/components/Nav.svelte';
+import Router from '@/lib/components/Router.svelte';
+import Settings from '@/lib/components/Settings.svelte';
+import Traductors from '@/lib/components/Traductors.svelte';
+import { Button } from '@/lib/components/ui/button';
+import Updates from '@/lib/components/Updates.svelte';
+import { selectedGame } from '@/lib/stores';
+import getData from '@/lib/utils/getData';
 import { ModeWatcher } from 'mode-watcher';
 
 const pages: Page[] = [

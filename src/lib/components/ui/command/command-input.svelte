@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Search } from '$lib/assets/icon';
+import { Search } from '@/lib/assets/icon';
 import { cn } from "@/lib/utils.js";
 import { Command as CommandPrimitive } from "bits-ui";
 

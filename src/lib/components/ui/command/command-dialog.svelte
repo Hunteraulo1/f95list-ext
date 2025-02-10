@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Dialog from "@/ui//dialog/index.js";
+	import * as Dialog from "@/lib/components/ui/dialog/index.js";
 	import {
 	    Command as CommandPrimitive,
 	    Dialog as DialogPrimitive,

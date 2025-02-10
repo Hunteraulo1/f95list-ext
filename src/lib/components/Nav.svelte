@@ -1,6 +1,6 @@
 <script lang="ts">
-import { page } from '$lib/stores';
-import { cn } from '$lib/utils';
+import { page } from '@/lib/stores';
+import { cn } from '@/lib/utils';
 import type { ClassValue } from 'clsx';
 import type { Component } from 'svelte';
 

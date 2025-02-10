@@ -1,13 +1,13 @@
 <script lang="ts">
-import { ChevronDown, RefreshCcw } from '$lib/assets/icon';
-import GameBox from '$lib/components/GameBox.svelte';
-import type { GameType } from '$lib/schemas';
-import { autoFocusBlock, filteredGames, games, outdated, settings } from '$lib/stores';
-import type { IdGameBox } from '$lib/types';
-import { cn } from '$lib/utils';
-import { Alert } from '$ui/alert';
-import Button from '$ui/button/button.svelte';
-import { isChrome } from '$utils/polyfill';
+import { ChevronDown, RefreshCcw } from '@/lib/assets/icon';
+import GameBox from '@/lib/components/GameBox.svelte';
+import { Alert } from '@/lib/components/ui/alert';
+import Button from '@/lib/components/ui/button/button.svelte';
+import type { GameType } from '@/lib/schemas';
+import { autoFocusBlock, filteredGames, games, outdated, settings } from '@/lib/stores';
+import type { IdGameBox } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { isChrome } from '@/lib/utils/polyfill';
 import { onMount } from 'svelte';
 import Filter from './Filter.svelte';
 

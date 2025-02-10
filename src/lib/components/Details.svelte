@@ -1,17 +1,17 @@
 <script lang="ts">
-import noImage from '$lib/assets/no-image.png';
-import { selectedGame, settings } from '$lib/stores';
-import { lazyLoad } from '$lib/utils/lazyload';
+import noImage from '@/lib/assets/no-image.png';
+import { selectedGame, settings } from '@/lib/stores';
+import { lazyLoad } from '@/lib/utils/lazyload';
 
-import { ArrowLeft, TriangleAlert } from '$lib/assets/icon';
-import type { GameType } from '$lib/schemas';
-import { cn } from '$lib/utils';
-import * as Alert from '$ui/alert/index';
-import { Badge } from '$ui/badge';
-import { Button, buttonVariants } from '$ui/button';
-import { ScrollArea } from '$ui/scroll-area';
-import * as Tooltip from '$ui/tooltip/index';
-import { statusColor, typeColor } from '$utils/badgeColor';
+import { ArrowLeft, TriangleAlert } from '@/lib/assets/icon';
+import * as Alert from '@/lib/components/ui/alert/index';
+import { Badge } from '@/lib/components/ui/badge';
+import { Button, buttonVariants } from '@/lib/components/ui/button';
+import { ScrollArea } from '@/lib/components/ui/scroll-area';
+import * as Tooltip from '@/lib/components/ui/tooltip/index';
+import type { GameType } from '@/lib/schemas';
+import { cn } from '@/lib/utils';
+import { statusColor, typeColor } from '@/lib/utils/badgeColor';
 
 let tagsHide = $state($settings.tagsHide);
 

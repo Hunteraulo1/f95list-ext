@@ -3,8 +3,8 @@ import { derived, get, writable } from 'svelte/store';
 import type { GameType, TraductorType, UpdateType } from './schemas.js';
 import type { ComboBox, Settings } from './types.js';
 
-import type { Page } from '$components/Nav.svelte';
-import tags from '$lib/assets/tags.json' assert { type: 'json' };
+import tags from '@/lib/assets/tags.json' assert { type: 'json' };
+import type { Page } from '@/lib/components/Nav.svelte';
 
 export const games = writable<GameType[]>([]);
 

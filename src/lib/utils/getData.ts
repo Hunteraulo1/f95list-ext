@@ -1,4 +1,4 @@
-import { filter, games, outdated, traductors, updates } from '$lib/stores.js';
+import { filter, games, outdated, traductors, updates } from '@/lib/stores.js';
 import { get } from 'svelte/store';
 import { parse } from 'valibot';
 import packageJson from '../../../package.json';

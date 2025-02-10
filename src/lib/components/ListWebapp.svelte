@@ -1,8 +1,8 @@
 <script lang="ts">
-import { RefreshCcw } from '$lib/assets/icon';
-import GameBox from '$lib/components/GameBox.svelte';
-import { filteredGames } from '$lib/stores';
-import { Button } from '$ui/button';
+import { RefreshCcw } from '@/lib/assets/icon';
+import GameBox from '@/lib/components/GameBox.svelte';
+import { Button } from '@/lib/components/ui/button';
+import { filteredGames } from '@/lib/stores';
 </script>
 
 <div class="flex flex-col gap-2 p-2 relative h-full">
