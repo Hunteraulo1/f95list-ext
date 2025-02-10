@@ -169,6 +169,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
 </div>
 
 <style lang="postcss">
+  @reference "../../app.css";
   .traductor {
     @apply underline text-blue-500 hover:text-blue-700;
   }

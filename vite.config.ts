@@ -1,5 +1,7 @@
 import path from 'node:path';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+// @ts-ignore
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 import webExtension, { readJsonFile } from 'vite-plugin-web-extension';
 
@@ -24,6 +26,7 @@ export default defineConfig({
       browser: process.env.TARGET,
       disableAutoLaunch: true,
     }),
+    tailwindcss(),
   ],
   resolve: {
     alias: {

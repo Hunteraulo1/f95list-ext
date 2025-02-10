@@ -40,7 +40,8 @@ let { variant = 'popup' }: Props = $props();
 {/if}
 
 <style type="postcss">
+  @reference "../../app.css";
   .isNotWebapp {
-    @apply opacity-50 select-none pointer-events-none
+    @apply opacity-50 select-none pointer-events-none;
   }
 </style>
