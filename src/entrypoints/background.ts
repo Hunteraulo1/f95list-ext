@@ -39,8 +39,9 @@ const badgeState = async (data: Data) => {
     index -= update.names.length;
   });
 
-  browser.browserAction.setBadgeText({ text: index === 0 ? null : index.toString() });
-  browser.browserAction.setBadgeBackgroundColor({ color: '#CC0000' });
+  const definedAction = browser.browserAction ?? browser.action;
+  definedAction.setBadgeText({ text: index === 0 ? null : index.toString() });
+  definedAction.setBadgeBackgroundColor({ color: '#CC0000' });
 };
 
 const badgeReset = async (data: Data) => {
