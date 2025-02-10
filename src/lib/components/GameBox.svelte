@@ -8,7 +8,7 @@ import type { GameType } from '@/lib/schemas';
 import { games, selectedGame } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { isFirefox } from '@/lib/utils/polyfill';
+// @ts-ignore types not found
 import Lazy from 'svelte-lazy';
 import Details from './Details.svelte';
 
@@ -102,7 +102,7 @@ const handleClick = () => {
         </Card.Description>
       </Card.CardContent>
     </Card.Root>
-    {#if isFirefox() && !autoFocusMultiple}
+    {#if import.meta.env.FIREFOX && !autoFocusMultiple}
       <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
         <CopyCheck />
       </a>

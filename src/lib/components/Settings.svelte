@@ -83,11 +83,10 @@ const handleSettings = async (settingsItem: SettingItem) => {
     localStorage.setItem('settings', JSON.stringify(updatedSettings));
 
     if (id === 'intergrateFeature') {
-      const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
       const message = `f95list-integrate_${newValue.toString()}`;
 
       try {
-        await browserAPI.runtime.sendMessage(message);
+        await browser.runtime.sendMessage(message);
       } catch (browserError) {
         $settings = { ...$settings, [id]: !newValue };
       }

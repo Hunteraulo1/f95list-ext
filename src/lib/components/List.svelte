@@ -7,17 +7,8 @@ import type { GameType } from '@/lib/schemas';
 import { autoFocusBlock, filteredGames, games, outdated, settings } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { isChrome } from '@/lib/utils/polyfill';
 import { onMount } from 'svelte';
 import Filter from './Filter.svelte';
-
-let browserAPI = undefined;
-
-if (typeof chrome !== 'undefined') {
-  browserAPI = chrome;
-} else if (typeof browser !== 'undefined') {
-  browserAPI = browser;
-}
 
 const extractId = (inputString: string): number => {
   if (!inputString) return 0;
@@ -32,7 +23,7 @@ let autoFocus: GameType[] = $state([]);
 
 onMount(async () => {
   const extract: IdGameBox = await new Promise((resolve) =>
-    browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+    browser.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
       const url = tabs[0]?.url || '';
 
       if (!url) {
@@ -107,7 +98,7 @@ let clickFocus = $state<boolean>(false);
     </div>
   {/if}
   <div class="flex flex-col gap-2 p-2 relative h-full">
-    {#if $outdated && isChrome()}
+    {#if $outdated && import.meta.env.CHROME}
       <Alert variant="destructive">Votre extension n'est plus à jour</Alert>
     {/if}
     {#each $filteredGames as game (game.name + game.version)}

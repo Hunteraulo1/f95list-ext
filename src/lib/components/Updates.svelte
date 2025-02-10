@@ -5,9 +5,7 @@ import { Button } from '@/lib/components/ui/button';
 import { ScrollArea } from '@/lib/components/ui/scroll-area';
 import { updates } from '@/lib/stores';
 
-const browserAPI = typeof browser === 'undefined' ? chrome : browser;
-
-browserAPI.runtime.sendMessage('f95list-badge');
+browser.runtime.sendMessage('f95list-badge');
 
 interface Props {
   webapp?: boolean;
