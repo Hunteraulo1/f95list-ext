@@ -163,13 +163,14 @@ let closed = $state<boolean>(variant === 'popup' && false);
         </div>
       </div>
     {:else}
-      <h1>Game not found</h1>
+      <h1>Game not foun</h1>
     {/if}
   </ScrollArea>
 </div>
 
 <style lang="postcss">
-  @reference "../../app.css";
+  @reference "@/entrypoints/popup/app.css";
+
   .traductor {
     @apply underline text-blue-500 hover:text-blue-700;
   }

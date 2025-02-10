@@ -20,6 +20,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@tailwindcss/postcss": "^4.0.5",
+    "@tailwindcss/vite": "4.0.6",
     "@tsconfig/svelte": "5.0.4",
     "@types/chrome": "0.0.304",
     "@wxt-dev/module-svelte": "2.0.3",
