@@ -113,7 +113,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add updates.json
           git commit -m ":bookmark: update updates.json for version ${{ steps.get_version.outputs.version }}"
-          git push origin preview
+          git push origin ${GITHUB_REF#refs/heads/}
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
