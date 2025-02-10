@@ -1,5 +1,5 @@
-import { svelte } from '@sveltejs/vite-plugin-svelte';
 import path from 'node:path';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
 // @ts-ignore
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
