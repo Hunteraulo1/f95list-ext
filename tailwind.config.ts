@@ -71,7 +71,7 @@ const config: Config = {
       },
       height: {
         app: '37rem',
-        main: '33rem',
+        main: '33.75rem',
       },
     },
   },
