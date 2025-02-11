@@ -17,7 +17,7 @@ export default defineConfig({
         update_url: 'https://raw.githubusercontent.com/Hunteraulo1/f95list-ext/main/updates.json',
       },
     },
-    version_name: import.meta.env.DEV ? `${packageJson.version}-dev` : packageJson.version,
+    version_name: import.meta.env.PROD ? packageJson.version : `${packageJson.version}-dev`,
   },
   runner: {
     disabled: true,
