@@ -1,5 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'wxt';
+import packageJson from './package.json';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -16,6 +17,10 @@ export default defineConfig({
         update_url: 'https://raw.githubusercontent.com/Hunteraulo1/f95list-ext/main/updates.json',
       },
     },
+    version_name: import.meta.env.PROD ? packageJson.version : `${packageJson.version}-dev`,
+  },
+  runner: {
+    disabled: true,
   },
   vite: () => ({
     plugins: [tailwindcss()],
