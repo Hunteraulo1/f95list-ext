@@ -26,7 +26,7 @@ const handleReset = () => {
       id="name"
       type="text"
       placeholder="Rechercher un nom"
-      class="w-full text-xs"
+      class="w-full"
       disabled={!active}
       value={$search}
       oninput={({ currentTarget }: { currentTarget: HTMLInputElement }) => {

@@ -73,6 +73,9 @@ const config: Config = {
         app: '37rem',
         main: '33.75rem',
       },
+      fontSize: {
+        base: '.75rem',
+      },
     },
   },
 };
