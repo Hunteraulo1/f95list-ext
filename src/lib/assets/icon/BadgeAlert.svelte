@@ -1,19 +1,13 @@
-<script>
-	let {
-		color = 'currentColor',
-		size = 28,
-		strokeWidth = 2,
-		isHovered = false,
-		classes = ''
-	} = $props();
+<script lang="ts">
+let { color = 'currentColor', size = 28, strokeWidth = 2, isHovered = false, classes = '' } = $props();
 
-	function handleMouseEnter() {
-		isHovered = true;
-	}
+function handleMouseEnter() {
+  isHovered = true;
+}
 
-	function handleMouseLeave() {
-		isHovered = false;
-	}
+function handleMouseLeave() {
+  isHovered = false;
+}
 </script>
 
 <div
