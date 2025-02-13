@@ -3,7 +3,7 @@ import noImage from '@/lib/assets/no-image.png';
 import { selectedGame, settings } from '@/lib/stores';
 import { lazyLoad } from '@/lib/utils/lazyload';
 
-import { ArrowLeft, TriangleAlert } from '@/lib/assets/icon';
+import { ArrowLeft, BadgeAlert } from '@/lib/assets/icon';
 import * as Alert from '@/lib/components/ui/alert/index';
 import { Badge } from '@/lib/components/ui/badge';
 import { Button, buttonVariants } from '@/lib/components/ui/button';
@@ -129,7 +129,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
         {/if}
         {#if game.tname === 'Traduction (mod inclus)'}
           <Alert.Root class="text-red-600">
-            <TriangleAlert class="h-4 w-4" />
+            <BadgeAlert size={16} />
             <Alert.Title>Attention !</Alert.Title>
             <Alert.Description>
               Un mod peut-être nécessaire au bon fonctionnement de cette
@@ -138,7 +138,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
           </Alert.Root>
         {:else if game.tname === 'Pas de traduction'}
           <Alert.Root class="text-red-600">
-            <TriangleAlert class="h-4 w-4" />
+            <BadgeAlert size={16} />
             <Alert.Title>Attention !</Alert.Title>
             <Alert.Description>
               Cette traduction à disparue. Veuillez nous contacter si vous en

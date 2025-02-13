@@ -38,9 +38,9 @@ const handleClick = (link: Page['link'], target: Page['target']) => {
         onmouseleave={() => mouseEnter[index] = false}
         onclick={() => handleClick(link, target)}
       >
-        <Icon class={cn("mr-2 transition-all", className)} isHovered={mouseEnter[index]} size={mouseEnter[index] ? "1.5rem" : "1.7rem"} />
+        <Icon class={cn("mr-2 transition-all", className)} isHovered={mouseEnter[index]} size={mouseEnter[index] ? "22" : "26"} />
         
-        <span class={cn("text-[.6rem] text-white/0 leading-0 transition-all", mouseEnter[index] && 'text-white animate-pulse leading-3')}>
+        <span class={cn("text-[.6rem] text-white/0 leading-0 transition-all", mouseEnter[index] && 'text-white animate-pulse leading-3 mt-0.5')}>
           {name}
         </span>
       </button>
