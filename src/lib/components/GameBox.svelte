@@ -69,7 +69,7 @@ const handleClick = () => {
           webapp && 'text-xl',
           autoFocusMultiple ?
             'flex gap-2 items-center py-2 px-6' :
-            'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-white'
+            'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-secondary-foreground'
         )}
       >
         <Card.Title class="select-none">{game.name}</Card.Title>
@@ -111,7 +111,7 @@ const handleClick = () => {
 {:else}
   <div
     class={cn(
-      "relative overflow-hidden transition text-white rounded-md cursor-pointer bg-primary-foreground", 
+      "relative overflow-hidden transition text-secondary-foreground rounded-md cursor-pointer bg-primary-foreground", 
       (webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100',
       autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'
     )}
