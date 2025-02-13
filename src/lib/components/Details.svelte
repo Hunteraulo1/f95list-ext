@@ -23,20 +23,23 @@ interface Props {
 
 let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $props();
 let closed = $state<boolean>(variant === 'popup' && false);
+let closeHovered = $state<boolean>(false);
 </script>
 
 <div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main top-0 left-0 z-20'}>
-  <ScrollArea class="bg-background h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
+  <ScrollArea class="bg-background h-full w-full {closed ? 'animate-to-up' : 'animate-to-down'}">
     <Button
       class="flex gap-1 opacity-50 absolute top-2 left-2"
       variant="secondary"
+      onmouseenter={()=>closeHovered = true}
+      onmouseleave={()=>closeHovered = false}
       onclick={() => {
         $selectedGame = undefined;
         closed = true;
         setTimeout(() => {open = false}, 600);
       }}
     >
-      <ArrowLeft />
+      <ArrowLeft size={16} isHovered={closeHovered} />
     </Button>
 
     {#if game}
