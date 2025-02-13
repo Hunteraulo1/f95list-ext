@@ -3,8 +3,7 @@ import noImage from '@/lib/assets/no-image.png';
 import { selectedGame, settings } from '@/lib/stores';
 import { lazyLoad } from '@/lib/utils/lazyload';
 
-import { ArrowLeft, BadgeAlert } from '@/lib/assets/icon';
-import * as Alert from '@/lib/components/ui/alert/index';
+import { ArrowLeft } from '@/lib/assets/icon';
 import { Badge } from '@/lib/components/ui/badge';
 import { Button, buttonVariants } from '@/lib/components/ui/button';
 import { ScrollArea } from '@/lib/components/ui/scroll-area';
@@ -12,6 +11,7 @@ import * as Tooltip from '@/lib/components/ui/tooltip/index';
 import type { GameType } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
 import { statusColor, typeColor } from '@/lib/utils/badgeColor';
+import Alert from './Alert.svelte';
 
 let tagsHide = $state($settings.tagsHide);
 
@@ -131,23 +131,11 @@ let closeHovered = $state<boolean>(false);
           </p>
         {/if}
         {#if game.tname === 'Traduction (mod inclus)'}
-          <Alert.Root class="text-red-600">
-            <BadgeAlert size={16} />
-            <Alert.Title>Attention !</Alert.Title>
-            <Alert.Description>
-              Un mod peut-être nécessaire au bon fonctionnement de cette
-              traduction. Veuillez lire les instructions du traducteur.
-            </Alert.Description>
-          </Alert.Root>
+          <Alert description="Un mod peut-être nécessaire au bon fonctionnement de cette
+              traduction. Veuillez lire les instructions du traducteur." />
         {:else if game.tname === 'Pas de traduction'}
-          <Alert.Root class="text-red-600">
-            <BadgeAlert size={16} />
-            <Alert.Title>Attention !</Alert.Title>
-            <Alert.Description>
-              Cette traduction à disparue. Veuillez nous contacter si vous en
-              possédez une version.
-            </Alert.Description>
-          </Alert.Root>
+          <Alert description="Cette traduction à disparue. Veuillez nous contacter si vous en
+              possédez une version." />
         {/if}
         <div class="flex justify-center mt-2">
           {#if game.tname === 'Intégrée'}
