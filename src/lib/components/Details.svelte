@@ -106,7 +106,7 @@ let closeHovered = $state<boolean>(false);
           {/each}
           {#if game.tags.length > 5}
             <button
-              class="text-xs font-bold text-secondary-foreground/50"
+              class="text-xs font-bold text-secondary-foreground/50 cursor-pointer"
               onclick={() => (tagsHide = !tagsHide)}
             >
               {tagsHide ? 'afficher plus...' : 'cacher'}
