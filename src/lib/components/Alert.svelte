@@ -13,7 +13,7 @@ const { title = 'Attention !', description }: Props = $props();
 <Alert.Root class="text-red-600">
   
   <Alert.Title class="flex gap-1 font-bold items-center">
-    <BadgeAlert size={16} strokeWidth={3} />
+    <BadgeAlert size={16} strokeWidth={3} isHovered />
     {title}
   </Alert.Title>
   <Alert.Description>{description}</Alert.Description>
