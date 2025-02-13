@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "F95 France - Extension",
+  "description": "Extension de F95 France permettant de lister les traductions",
+  "version": "2.1.3",
+  "icons": {
+    "16": "icon/16.png",
+    "32": "icon/32.png",
+    "48": "icon/48.png",
+    "96": "icon/96.png",
+    "128": "icon/128.png"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "tabs",
+    "scripting"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{9f7488b3-d704-4894-bac8-5dc3068fd6b9}",
+      "strict_min_version": "79.0",
+      "update_url": "https://raw.githubusercontent.com/Hunteraulo1/f95list-ext/main/updates.json"
+    }
+  },
+  "version_name": "2.1.3-dev",
+  "commands": {
+    "wxt:reload-extension": {
+      "description": "Reload the extension during development",
+      "suggested_key": {
+        "default": "Alt+R"
+      }
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "F95 List - F95 France",
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "*://f95zone.to/sam/latest_alpha/*",
+    "*://f95zone.to/threads/*",
+    "*://lewdcorner.com/latest-updates/*",
+    "*://lewdcorner.com/threads/*",
+    "http://localhost/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval' http://localhost:3000; object-src 'self';",
+    "sandbox": "script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3000; sandbox allow-scripts allow-forms allow-popups allow-modals; child-src 'self';"
+  }
+}
