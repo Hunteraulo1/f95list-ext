@@ -104,7 +104,7 @@ const handleSettings = async (settingsItem: SettingItem) => {
       <div class="flex justify-center items-center gap-2">
         <Label for={settingsItem.id}>{settingsItem.title}</Label>
         {#if settingsItem.id === "theme"}
-          <Button id={settingsItem.id} onclick={toggleMode} variant="outline" size="icon">
+          <Button id={settingsItem.id} onclick={toggleMode} variant="outline" size="icon" class="cursor-pointer">
             {#if $mode === "light"}
               <Sun size={16} isHovered />
             {:else}
@@ -124,11 +124,11 @@ const handleSettings = async (settingsItem: SettingItem) => {
   <div>
     <h2 class="text-center mb-2 font-bold">En savoir plus</h2>
     <div class="flex justify-center items-center flex-col">
-      <Button class="mb-2" variant="outline" onclick={() => $page = "traductors"}
+      <Button  class="cursor-pointer mb-2" variant="outline" onclick={() => $page = "traductors"}
         >Voir les traducteurs/relecteurs</Button
       >
       {#each links as { title, href }}
-        <a {href} target="_blank" class={buttonVariants({ variant: "link", class: "flex gap-1" })}>
+        <a {href} target="_blank" class={buttonVariants({ variant: "link" })}>
           {title}
         </a>
       {/each}
