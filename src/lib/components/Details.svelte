@@ -29,7 +29,7 @@ let closeHovered = $state<boolean>(false);
 <div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main top-0 left-0 z-20'}>
   <ScrollArea class="bg-background h-full w-full {closed ? 'animate-to-up' : 'animate-to-down'}">
     <Button
-      class="flex gap-1 opacity-50 absolute top-2 left-2"
+      class="flex gap-1 opacity-50 absolute top-2 left-2 cursor-pointer"
       variant="secondary"
       onmouseenter={()=>closeHovered = true}
       onmouseleave={()=>closeHovered = false}
