@@ -1,9 +1,9 @@
 <script lang="ts">
-import { filter, search } from '$lib/stores';
-import { cn } from '$lib/utils';
-import { Button } from '$ui/button';
-import { Input } from '$ui/input';
-import { ScrollArea } from '$ui/scroll-area';
+import { Button } from '@/lib/components/ui/button';
+import { Input } from '@/lib/components/ui/input';
+import { ScrollArea } from '@/lib/components/ui/scroll-area';
+import { filter, search } from '@/lib/stores';
+import { cn } from '@/lib/utils';
 import FilterPopover from './FilterPopover.svelte';
 
 interface Props {

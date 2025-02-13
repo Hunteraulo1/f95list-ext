@@ -3,14 +3,14 @@
   "style": "new-york",
   "tailwind": {
     "config": "tailwind.config.ts",
-    "css": "src/app.css",
+    "css": "@/entrypoints/popup/app.css",
     "baseColor": "neutral"
   },
   "aliases": {
-    "components": "$components/",
-    "utils": "$lib/utils",
-    "ui": "$ui/",
-    "hooks": "$lib/hooks"
+    "components": "@/lib/components/",
+    "utils": "@/lib/utils",
+    "ui": "@/lib/components/ui/",
+    "hooks": "@/lib/hooks/"
   },
   "typescript": true,
   "registry": "https://next.shadcn-svelte.com/registry"

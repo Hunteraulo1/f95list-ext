@@ -23,7 +23,7 @@ Lien de téléchargement: [Accéder à l'extension](https://github.com/Hunteraul
 ## Documentation de réference
 
 - [Extension Development Basics](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
-- [Vite Plugin Web Extension](https://github.com/aklinker1/vite-plugin-web-extension)
+- [WXT](https://wxt.dev/guide/introduction.html)
 - [Svelte](https://svelte.dev/docs/)
 - [Tailwind](https://tailwindcss.com/docs/)
 - [Valibot](https://valibot.dev/guides/)

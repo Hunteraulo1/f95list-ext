@@ -1,10 +1,7 @@
 import type { Config } from 'tailwindcss';
-import { fontFamily } from 'tailwindcss/defaultTheme';
 
 const config: Config = {
-  darkMode: ['class'],
   content: ['./src/**/*.{html,js,svelte,ts}'],
-  safelist: ['dark'],
   theme: {
     container: {
       center: true,
@@ -54,9 +51,6 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
-      fontFamily: {
-        sans: ['Outfit', ...fontFamily.sans],
-      },
       keyframes: {
         toDown: {
           '0%': { transform: 'translateY(-100%)', opacity: '0' },
@@ -77,7 +71,10 @@ const config: Config = {
       },
       height: {
         app: '37rem',
-        main: '33rem',
+        main: '33.75rem',
+      },
+      fontSize: {
+        base: '.75rem',
       },
     },
   },

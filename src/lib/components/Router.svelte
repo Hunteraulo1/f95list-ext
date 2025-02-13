@@ -1,6 +1,6 @@
 <script lang="ts">
-import { page } from '$lib/stores';
-import ScrollArea from '$ui/scroll-area/scroll-area.svelte';
+import ScrollArea from '@/lib/components/ui/scroll-area/scroll-area.svelte';
+import { page } from '@/lib/stores';
 import type { Page } from './Nav.svelte';
 
 interface Props {

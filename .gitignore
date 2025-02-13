@@ -8,8 +8,11 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-builds
-*.local
+.output
+stats.html
+stats-*.json
+.wxt
+web-ext.config.ts
 
 # Editor directories and files
 .vscode/*
@@ -22,4 +25,6 @@ builds
 *.sln
 *.sw?
 
-.env
+# temporary migration
+old
+migration

@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Moon, Sun } from '$lib/assets/icon';
-import { page, settings } from '$lib/stores';
-import type { Settings } from '$lib/types';
-import { Button, buttonVariants } from '$ui/button';
-import { Label } from '$ui/label';
-import { Switch } from '$ui/switch';
-import { toggleMode } from 'mode-watcher';
+import { Moon, Sun } from '@/lib/assets/icon';
+import { Button, buttonVariants } from '@/lib/components/ui/button';
+import { Label } from '@/lib/components/ui/label';
+import { Switch } from '@/lib/components/ui/switch';
+import { page, settings } from '@/lib/stores';
+import type { Settings } from '@/lib/types';
+import { mode, toggleMode } from 'mode-watcher';
 
 interface SettingItem {
   title: string;
@@ -83,11 +83,10 @@ const handleSettings = async (settingsItem: SettingItem) => {
     localStorage.setItem('settings', JSON.stringify(updatedSettings));
 
     if (id === 'intergrateFeature') {
-      const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
       const message = `f95list-integrate_${newValue.toString()}`;
 
       try {
-        await browserAPI.runtime.sendMessage(message);
+        await browser.runtime.sendMessage(message);
       } catch (browserError) {
         $settings = { ...$settings, [id]: !newValue };
       }
@@ -105,14 +104,12 @@ const handleSettings = async (settingsItem: SettingItem) => {
       <div class="flex justify-center items-center gap-2">
         <Label for={settingsItem.id}>{settingsItem.title}</Label>
         {#if settingsItem.id === "theme"}
-          <Button id={settingsItem.id} onclick={toggleMode} variant="outline" size="icon">
-            <Sun
-              class="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
-            />
-            <Moon
-              class="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-            />
-            <span class="sr-only">Changer le thème</span>
+          <Button id={settingsItem.id} onclick={toggleMode} variant="outline" size="icon" class="cursor-pointer">
+            {#if $mode === "light"}
+              <Sun size={16} isHovered />
+            {:else}
+              <Moon class="h-4 w-4" />
+            {/if}
           </Button>
         {:else}
           <Switch
@@ -127,11 +124,11 @@ const handleSettings = async (settingsItem: SettingItem) => {
   <div>
     <h2 class="text-center mb-2 font-bold">En savoir plus</h2>
     <div class="flex justify-center items-center flex-col">
-      <Button class="mb-2" variant="outline" onclick={() => $page = "traductors"}
+      <Button  class="cursor-pointer mb-2" variant="outline" onclick={() => $page = "traductors"}
         >Voir les traducteurs/relecteurs</Button
       >
       {#each links as { title, href }}
-        <a {href} target="_blank" class={buttonVariants({ variant: "link", class: "flex gap-1" })}>
+        <a {href} target="_blank" class={buttonVariants({ variant: "link" })}>
           {title}
         </a>
       {/each}

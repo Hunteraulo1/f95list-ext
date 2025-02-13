@@ -1,8 +1,8 @@
 <script lang="ts">
-import { XIcon } from '$lib/assets/icon';
-import { page } from '$lib/stores';
-import { buttonVariants } from '$ui/button';
-import * as Popover from '$ui/popover/index';
+import { XIcon } from '@/lib/assets/icon';
+import { buttonVariants } from '@/lib/components/ui/button';
+import * as Popover from '@/lib/components/ui/popover/index';
+import { page } from '@/lib/stores';
 import FilterContent from './FilterContent.svelte';
 
 interface Props {
@@ -40,7 +40,8 @@ let { variant = 'popup' }: Props = $props();
 {/if}
 
 <style type="postcss">
+  @reference "@/entrypoints/popup/app.css";
   .isNotWebapp {
-    @apply opacity-50 select-none pointer-events-none
+    @apply opacity-50 select-none pointer-events-none;
   }
 </style>

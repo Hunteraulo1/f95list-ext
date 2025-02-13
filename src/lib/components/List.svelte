@@ -1,23 +1,14 @@
 <script lang="ts">
-import { ChevronDown, RefreshCcw } from '$lib/assets/icon';
-import GameBox from '$lib/components/GameBox.svelte';
-import type { GameType } from '$lib/schemas';
-import { autoFocusBlock, filteredGames, games, outdated, settings } from '$lib/stores';
-import type { IdGameBox } from '$lib/types';
-import { cn } from '$lib/utils';
-import { Alert } from '$ui/alert';
-import Button from '$ui/button/button.svelte';
-import { isChrome } from '$utils/polyfill';
+import { ChevronDown, RefreshCcw } from '@/lib/assets/icon';
+import GameBox from '@/lib/components/GameBox.svelte';
+import Button from '@/lib/components/ui/button/button.svelte';
+import type { GameType } from '@/lib/schemas';
+import { autoFocusBlock, filteredGames, games, outdated, settings } from '@/lib/stores';
+import type { IdGameBox } from '@/lib/types';
+import { cn } from '@/lib/utils';
 import { onMount } from 'svelte';
+import Alert from './Alert.svelte';
 import Filter from './Filter.svelte';
-
-let browserAPI = undefined;
-
-if (typeof chrome !== 'undefined') {
-  browserAPI = chrome;
-} else if (typeof browser !== 'undefined') {
-  browserAPI = browser;
-}
 
 const extractId = (inputString: string): number => {
   if (!inputString) return 0;
@@ -32,7 +23,7 @@ let autoFocus: GameType[] = $state([]);
 
 onMount(async () => {
   const extract: IdGameBox = await new Promise((resolve) =>
-    browserAPI?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+    browser.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
       const url = tabs[0]?.url || '';
 
       if (!url) {
@@ -107,8 +98,8 @@ let clickFocus = $state<boolean>(false);
     </div>
   {/if}
   <div class="flex flex-col gap-2 p-2 relative h-full">
-    {#if $outdated && isChrome()}
-      <Alert variant="destructive">Votre extension n'est plus à jour</Alert>
+    {#if $outdated && import.meta.env.CHROME}
+      <Alert description="Votre extension n'est plus à jour !" />
     {/if}
     {#each $filteredGames as game (game.name + game.version)}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />

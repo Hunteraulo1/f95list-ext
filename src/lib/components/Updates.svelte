@@ -1,13 +1,11 @@
 <script lang="ts">
-import { RefreshCcw } from '$lib/assets/icon';
-import GameBox from '$lib/components/GameBox.svelte';
-import { updates } from '$lib/stores';
-import { Button } from '$ui/button';
-import { ScrollArea } from '$ui/scroll-area';
+import { RefreshCcw } from '@/lib/assets/icon';
+import GameBox from '@/lib/components/GameBox.svelte';
+import { Button } from '@/lib/components/ui/button';
+import { ScrollArea } from '@/lib/components/ui/scroll-area';
+import { updates } from '@/lib/stores';
 
-const browserAPI = typeof browser === 'undefined' ? chrome : browser;
-
-browserAPI.runtime.sendMessage('f95list-badge');
+browser.runtime.sendMessage('f95list-badge');
 
 interface Props {
   webapp?: boolean;

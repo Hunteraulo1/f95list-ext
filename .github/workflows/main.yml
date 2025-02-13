@@ -9,6 +9,7 @@ on:
     types: [closed]
     branches:
       - main
+      - preview
 
 env:
   FIREFOX_EXTENSION_ID: "{9f7488b3-d704-4894-bac8-5dc3068fd6b9}"
@@ -47,6 +48,19 @@ jobs:
           PREVIOUS_VERSION=${PREVIOUS_TAG#v}
           echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
         
+      - name: Get release type
+        id: get_release_type
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          if [[ $PR_TITLE == *"+ RELEASE"* ]]; then
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+          elif [[ $PR_TITLE == *"+ PRE-RELEASE"* ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "Neither RELEASE nor PRE-RELEASE found in PR title"
+            exit 1
+          fi
+        
       - name: Build extensions
         run: bun run build
         
@@ -58,13 +72,13 @@ jobs:
           web-ext sign \
             --api-key ${{ secrets.MOZILLA_API_KEY }} \
             --api-secret ${{ secrets.MOZILLA_API_SECRET }} \
-            --artifacts-dir builds/artifacts \
+            --artifacts-dir .output/artifacts \
             --channel unlisted \
-            -s builds/firefox
+            -s .output/firefox-mv2
             
       - name: Rename Firefox artifact
         run: |
-          cd builds/artifacts
+          cd .output/artifacts
           for file in *.xpi; do
             if [ -f "$file" ]; then
               mv "$file" "${file%.xpi}_firefox.xpi"
@@ -74,16 +88,32 @@ jobs:
       - name: Create Chrome artifact
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
-          cd builds
+          cd .output/
           if [ ! -d "artifacts" ]; then
             mkdir artifacts
           fi
-          cd chrome
+          cd chrome-mv3
           zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
 
       - name: Update updates.json
+        if: steps.get_release_type.outputs.prerelease == 'false'
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
+          
+          if [ ! -f updates.json ]; then
+            echo '{
+              "addons": {
+                "'$FIREFOX_EXTENSION_ID'": {
+                  "updates": [
+                    {
+                      "version": "0.0.0",
+                      "update_link": ""
+                    }
+                  ]
+                }
+              }
+            }' > updates.json
+          fi
           
           # Mise à jour de updates.json
           jq --arg version "$VERSION" \
@@ -93,20 +123,22 @@ jobs:
              updates.json > updates.json.tmp && mv updates.json.tmp updates.json
 
       - name: Commit updates.json changes
+        if: steps.get_release_type.outputs.prerelease == 'false'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add updates.json
           git commit -m ":bookmark: update updates.json for version ${{ steps.get_version.outputs.version }}"
-          git push origin main
+          git push origin ${GITHUB_REF#refs/heads/}
         
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            builds/artifacts/*_chrome.zip
-            builds/artifacts/*_firefox.xpi
+            .output/artifacts/*_chrome.zip
+            .output/artifacts/*_firefox.xpi
           tag_name: v${{ steps.get_version.outputs.version }}
+          prerelease: ${{ steps.get_release_type.outputs.prerelease }}
           body: |
             ## Installation
             **Pour Firefox:** *(mise à jour automatique)*

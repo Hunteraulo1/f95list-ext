@@ -1,6 +1,6 @@
 <script lang="ts">
-import { page } from '$lib/stores';
-import { cn } from '$lib/utils';
+import { page } from '@/lib/stores';
+import { cn } from '@/lib/utils';
 import type { ClassValue } from 'clsx';
 import type { Component } from 'svelte';
 
@@ -28,22 +28,22 @@ const handleClick = (link: Page['link'], target: Page['target']) => {
 };
 </script>
 
-<nav class={cn("flex w-full gap-2 justify-around bg-primary-foreground p-1 border-t-4 border-secondary/60", variant === 'webapp' && 'rounded-md')}>
+<nav class={cn("flex w-full gap-2 justify-around bg-primary-foreground p-1 border-t-4 border-secondary/60 h-14", variant === 'webapp' && 'rounded-md h-18')}>
   {#each pages as {icon, name, link, className, target}, index}
     {#if icon}
       {@const Icon = icon}
       <button
-        class="flex p-1 flex-1 flex-col justify-center items-center hover:bg-secondary/60 rounded-md transition-all duration-300"
+        class={cn("flex flex-1 flex-col justify-center items-center hover:bg-secondary/60 rounded-md transition-all duration-300 hover:text-secondary-foreground text-secondary-foreground/50", $page === link && 'text-secondary-foreground')}
         onmouseenter={() => mouseEnter[index] = true}
         onmouseleave={() => mouseEnter[index] = false}
         onclick={() => handleClick(link, target)}
       >
-      <Icon class={cn("mr-2 h-4 w-4", className)} isHovered={mouseEnter[index]} />
-      
-      <span class={cn("text-xs opacity-70", mouseEnter[index] ? 'animate-pulse' : '')}>
-        {name}
-      </span>
-    </button>
+        <Icon class={cn("mr-2 transition-all", className)} isHovered={mouseEnter[index]} size={mouseEnter[index] ? "22" : "26"} />
+        
+        <span class={cn("text-[.6rem] text-secondary-foreground/0 leading-0 transition-all", mouseEnter[index] && 'text-secondary-foreground animate-pulse leading-3 mt-0.5')}>
+          {name}
+        </span>
+      </button>
     {/if}
   {/each}
 </nav>

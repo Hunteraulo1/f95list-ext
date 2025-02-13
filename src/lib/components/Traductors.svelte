@@ -1,9 +1,9 @@
 <script lang="ts">
-import { RefreshCcw } from '$lib/assets/icon';
-import { traductors } from '$lib/stores';
-import { Button, buttonVariants } from '$ui/button';
-import * as Card from '$ui/card';
-import { ScrollArea } from '$ui/scroll-area';
+import { RefreshCcw } from '@/lib/assets/icon';
+import { Button, buttonVariants } from '@/lib/components/ui/button';
+import * as Card from '@/lib/components/ui/card';
+import { ScrollArea } from '@/lib/components/ui/scroll-area';
+import { traductors } from '@/lib/stores';
 </script>
 
 {#if $traductors.length > 0}

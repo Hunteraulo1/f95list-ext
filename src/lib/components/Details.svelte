@@ -1,17 +1,17 @@
 <script lang="ts">
-import noImage from '$lib/assets/no-image.png';
-import { selectedGame, settings } from '$lib/stores';
-import { lazyLoad } from '$lib/utils/lazyload';
+import noImage from '@/lib/assets/no-image.png';
+import { selectedGame, settings } from '@/lib/stores';
+import { lazyLoad } from '@/lib/utils/lazyload';
 
-import { ArrowLeft, TriangleAlert } from '$lib/assets/icon';
-import type { GameType } from '$lib/schemas';
-import { cn } from '$lib/utils';
-import * as Alert from '$ui/alert/index';
-import { Badge } from '$ui/badge';
-import { Button, buttonVariants } from '$ui/button';
-import { ScrollArea } from '$ui/scroll-area';
-import * as Tooltip from '$ui/tooltip/index';
-import { statusColor, typeColor } from '$utils/badgeColor';
+import { ArrowLeft } from '@/lib/assets/icon';
+import { Badge } from '@/lib/components/ui/badge';
+import { Button, buttonVariants } from '@/lib/components/ui/button';
+import { ScrollArea } from '@/lib/components/ui/scroll-area';
+import * as Tooltip from '@/lib/components/ui/tooltip/index';
+import type { GameType } from '@/lib/schemas';
+import { cn } from '@/lib/utils';
+import { statusColor, typeColor } from '@/lib/utils/badgeColor';
+import Alert from './Alert.svelte';
 
 let tagsHide = $state($settings.tagsHide);
 
@@ -23,20 +23,23 @@ interface Props {
 
 let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $props();
 let closed = $state<boolean>(variant === 'popup' && false);
+let closeHovered = $state<boolean>(false);
 </script>
 
 <div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main top-0 left-0 z-20'}>
-  <ScrollArea class="bg-background h-full w-full {closed ? 'animate-toUp' : 'animate-toDown'}">
+  <ScrollArea class="bg-background h-full w-full {closed ? 'animate-to-up' : 'animate-to-down'}">
     <Button
-      class="flex gap-1 opacity-50 absolute top-2 left-2"
+      class="flex gap-1 opacity-50 absolute top-2 left-2 cursor-pointer"
       variant="secondary"
+      onmouseenter={()=>closeHovered = true}
+      onmouseleave={()=>closeHovered = false}
       onclick={() => {
         $selectedGame = undefined;
         closed = true;
         setTimeout(() => {open = false}, 600);
       }}
     >
-      <ArrowLeft />
+      <ArrowLeft size={16} isHovered={closeHovered} />
     </Button>
 
     {#if game}
@@ -60,11 +63,11 @@ let closed = $state<boolean>(variant === 'popup' && false);
             Accèder au jeu
           </a>
         </div>
-        <h1 class="mb-2">
-          <Badge style={typeColor(game.type)} class="text-white font-bold">
+        <h1 class="mb-2 flex items-center gap-1">
+          <Badge style={typeColor(game.type)} class="text-primary-foreground font-bold">
             {game.type}
           </Badge>
-          <Badge style={statusColor(game.status)} class="text-white font-bold">
+          <Badge style={statusColor(game.status)} class="text-primary-foreground font-bold">
             {game.status}
           </Badge>
           <span class="text-lg leading-none font-medium">{game.name}</span>
@@ -103,7 +106,7 @@ let closed = $state<boolean>(variant === 'popup' && false);
           {/each}
           {#if game.tags.length > 5}
             <button
-              class="text-xs font-bold text-secondary-foreground/50"
+              class="text-xs font-bold text-secondary-foreground/50 cursor-pointer hover:text-secondary-foreground/80"
               onclick={() => (tagsHide = !tagsHide)}
             >
               {tagsHide ? 'afficher plus...' : 'cacher'}
@@ -128,23 +131,11 @@ let closed = $state<boolean>(variant === 'popup' && false);
           </p>
         {/if}
         {#if game.tname === 'Traduction (mod inclus)'}
-          <Alert.Root class="text-red-600">
-            <TriangleAlert class="h-4 w-4" />
-            <Alert.Title>Attention !</Alert.Title>
-            <Alert.Description>
-              Un mod peut-être nécessaire au bon fonctionnement de cette
-              traduction. Veuillez lire les instructions du traducteur.
-            </Alert.Description>
-          </Alert.Root>
+          <Alert description="Un mod peut-être nécessaire au bon fonctionnement de cette
+              traduction. Veuillez lire les instructions du traducteur." />
         {:else if game.tname === 'Pas de traduction'}
-          <Alert.Root class="text-red-600">
-            <TriangleAlert class="h-4 w-4" />
-            <Alert.Title>Attention !</Alert.Title>
-            <Alert.Description>
-              Cette traduction à disparue. Veuillez nous contacter si vous en
-              possédez une version.
-            </Alert.Description>
-          </Alert.Root>
+          <Alert description="Cette traduction à disparue. Veuillez nous contacter si vous en
+              possédez une version." />
         {/if}
         <div class="flex justify-center mt-2">
           {#if game.tname === 'Intégrée'}
@@ -163,12 +154,14 @@ let closed = $state<boolean>(variant === 'popup' && false);
         </div>
       </div>
     {:else}
-      <h1>Game not found</h1>
+      <h1>Game not foun</h1>
     {/if}
   </ScrollArea>
 </div>
 
 <style lang="postcss">
+  @reference "@/entrypoints/popup/app.css";
+
   .traductor {
     @apply underline text-blue-500 hover:text-blue-700;
   }

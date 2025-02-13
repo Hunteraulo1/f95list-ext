@@ -1,14 +1,14 @@
 <script lang="ts">
-import { CopyCheck } from '$lib/assets/icon';
-import noImage from '$lib/assets/no-image.png';
-import type { GameType } from '$lib/schemas';
-import { games, selectedGame } from '$lib/stores';
-import type { IdGameBox } from '$lib/types';
-import { cn } from '$lib/utils';
-import { isFirefox } from '$lib/utils/polyfill';
-import { Badge } from '$ui/badge';
-import * as Card from '$ui/card/index';
-import * as Tooltip from '$ui/tooltip/index';
+import { CopyCheck } from '@/lib/assets/icon';
+import noImage from '@/lib/assets/no-image.png';
+import { Badge } from '@/lib/components/ui/badge';
+import * as Card from '@/lib/components/ui/card/index';
+import * as Tooltip from '@/lib/components/ui/tooltip/index';
+import type { GameType } from '@/lib/schemas';
+import { games, selectedGame } from '@/lib/stores';
+import type { IdGameBox } from '@/lib/types';
+import { cn } from '@/lib/utils';
+// @ts-ignore types not found
 import Lazy from 'svelte-lazy';
 import Details from './Details.svelte';
 
@@ -69,7 +69,7 @@ const handleClick = () => {
           webapp && 'text-xl',
           autoFocusMultiple ?
             'flex gap-2 items-center py-2 px-6' :
-            'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-white'
+            'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-secondary-foreground'
         )}
       >
         <Card.Title class="select-none">{game.name}</Card.Title>
@@ -102,7 +102,7 @@ const handleClick = () => {
         </Card.Description>
       </Card.CardContent>
     </Card.Root>
-    {#if isFirefox() && !autoFocusMultiple}
+    {#if import.meta.env.FIREFOX && !autoFocusMultiple}
       <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
         <CopyCheck />
       </a>
@@ -111,7 +111,7 @@ const handleClick = () => {
 {:else}
   <div
     class={cn(
-      "relative overflow-hidden transition text-white rounded-md cursor-pointer bg-primary-foreground", 
+      "relative overflow-hidden transition text-secondary-foreground rounded-md cursor-pointer bg-primary-foreground", 
       (webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100',
       autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'
     )}
