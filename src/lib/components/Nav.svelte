@@ -33,14 +33,14 @@ const handleClick = (link: Page['link'], target: Page['target']) => {
     {#if icon}
       {@const Icon = icon}
       <button
-        class={cn("flex flex-1 flex-col justify-center items-center hover:bg-secondary/60 rounded-md transition-all duration-300 hover:text-white text-white/50", $page === link && 'text-white')}
+        class={cn("flex flex-1 flex-col justify-center items-center hover:bg-secondary/60 rounded-md transition-all duration-300 hover:text-secondary-foreground text-secondary-foreground/50", $page === link && 'text-secondary-foreground')}
         onmouseenter={() => mouseEnter[index] = true}
         onmouseleave={() => mouseEnter[index] = false}
         onclick={() => handleClick(link, target)}
       >
         <Icon class={cn("mr-2 transition-all", className)} isHovered={mouseEnter[index]} size={mouseEnter[index] ? "22" : "26"} />
         
-        <span class={cn("text-[.6rem] text-white/0 leading-0 transition-all", mouseEnter[index] && 'text-white animate-pulse leading-3 mt-0.5')}>
+        <span class={cn("text-[.6rem] text-secondary-foreground/0 leading-0 transition-all", mouseEnter[index] && 'text-secondary-foreground animate-pulse leading-3 mt-0.5')}>
           {name}
         </span>
       </button>
