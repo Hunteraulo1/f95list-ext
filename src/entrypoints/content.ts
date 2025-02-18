@@ -5,7 +5,7 @@ export default defineContentScript({
   matches: [
     '*://f95zone.to/sam/latest_alpha/*',
     '*://f95zone.to/threads/*',
-    '*://lewdcorner.com/latest-updates/*',
+    '*://lewdcorner.com/latest-contents/*',
     '*://lewdcorner.com/threads/*',
   ],
   main() {
@@ -22,8 +22,8 @@ const insert = (games: GameType[]) => {
 
   if (pathname === '/sam/latest_alpha/') {
     latest('.resource-tile_link', games);
-  } else if (pathname.startsWith('/latest-updates/')) {
-    latest('.porta-article-header', games);
+  } else if (pathname.startsWith('/latest-contents/')) {
+    latest('.structItem-title > a', games);
   } else if (pathname.startsWith('/threads/')) {
     const tileId = Number(window.location.pathname.split('/')[2].split('.')[1]);
 
@@ -47,9 +47,10 @@ const init = async () => {
     insert(data);
 
     const { pathname } = window.location;
+    console.log('🚀 ~ init ~ pathname:', pathname);
 
     const f95 = pathname === '/sam/latest_alpha/';
-    const lc = pathname.startsWith('/latest-updates/');
+    const lc = pathname.startsWith('/latest-contents/');
 
     if (f95 || lc) {
       const mutationCallback: MutationCallback = async (mutationsList) => {
@@ -83,7 +84,15 @@ const latest = (query: string, games: GameType[]) => {
     if (tile.classList.contains('flag-inserted')) return;
 
     if (games.find((game) => game.id === tileId && game.hostname === hostname)) {
-      createFlag(hostname === 'f95zone.to' ? tile.children[1].children[0] : tile.children[1].children[1]);
+      const element =
+        hostname === 'f95zone.to'
+          ? tile.children[1].children[0]
+          : tile.parentElement?.parentElement?.children[1].children[0];
+
+      console.log('🚀 ~ latest ~ element:', element);
+      if (!element) return;
+
+      createFlag(element);
       tile.classList.add('flag-inserted');
     }
   }
