@@ -111,7 +111,7 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     switch (message) {
       case 'f95list-script': {
         const integrate = await storage.getItem<boolean>('local:f95list_ext_integrate');
-        console.log('🚀 ~ integrate:', integrate);
+        console.info('🚀 ~ integrate:', integrate);
 
         if (integrate === undefined) storage.setItem('local:f95list_ext_integrate', true);
         else if (!integrate) break;
@@ -120,18 +120,21 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
         break;
       }
-      case 'f95list-ext':
+      case 'f95list-ext': {
         sendResponse(data);
 
         break;
-      case 'f95list-badge':
+      }
+      case 'f95list-badge': {
         await badgeReset(data);
 
         break;
-      case message.startsWith('f95list-integrate') ? message : 'f95list-integrate':
+      }
+      case message.startsWith('f95list-integrate') ? message : 'f95list-integrate': {
         await storage.setItem('local:f95list_ext_integrate', message.endsWith('true'));
 
         break;
+      }
     }
   })();
 
