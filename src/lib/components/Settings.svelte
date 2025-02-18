@@ -3,7 +3,7 @@ import { Moon, Sun } from '@/lib/assets/icon';
 import { Button, buttonVariants } from '@/lib/components/ui/button';
 import { Label } from '@/lib/components/ui/label';
 import { Switch } from '@/lib/components/ui/switch';
-import { page, settings } from '@/lib/stores';
+import { errors, page, settings } from '@/lib/stores';
 import type { Settings } from '@/lib/types';
 import { mode, toggleMode } from 'mode-watcher';
 
@@ -134,4 +134,10 @@ const handleSettings = async (settingsItem: SettingItem) => {
       {/each}
     </div>
   </div>
+  {#if $errors.length > 0}
+    <div class="flex justify-center gap-1">
+      <h2 class="text-center mb-2 font-bold">Debug:</h2>
+      <span class="text-red-500 font-bold">{$errors.length} erreurs</span>
+    </div>
+  {/if}
 </div>

@@ -1,6 +1,6 @@
-import { filter, games, outdated, traductors, updates } from '@/lib/stores.js';
+import { errors, filter, games, outdated, traductors, updates } from '@/lib/stores.js';
 import { get } from 'svelte/store';
-import { parse } from 'valibot';
+import { flatten, parse, safeParse } from 'valibot';
 import packageJson from '../../../package.json';
 import { type GameType, Games, TraductorsData, Updates } from '../schemas.js';
 
@@ -17,9 +17,17 @@ const getData = async () => {
     const data = await callWorker();
 
     // Games
-    const validGames = parse(Games, data.games);
+    const validGames = safeParse(Games, data.games);
 
-    games.set(validGames);
+    if (validGames.issues) {
+      const flatErrors = flatten(validGames.issues);
+      console.error('🚀 ~ getData ~ flatErrors:', flatErrors);
+      errors.set([...get(errors), flatErrors]);
+    }
+
+    const output: GameType[] = (validGames.output as GameType[]) ?? [];
+
+    games.set(output);
 
     // Updates
     const defaultGame: GameType = {
@@ -49,7 +57,7 @@ const getData = async () => {
       type: update.type,
       games: update.names.map(
         (name: string) =>
-          validGames.findLast((game: GameType) => game.name === name) ?? {
+          output.findLast((game: GameType) => game.name === name) ?? {
             ...defaultGame,
             name,
           },
