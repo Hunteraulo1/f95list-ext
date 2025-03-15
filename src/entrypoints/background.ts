@@ -130,6 +130,13 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
         break;
       }
+      case 'f95list-integrate': {
+        const integrate = await storage.getItem('local:f95list_ext_integrate');
+
+        sendResponse(integrate);
+
+        break;
+      }
       case message.startsWith('f95list-integrate') ? message : 'f95list-integrate': {
         await storage.setItem('local:f95list_ext_integrate', message.endsWith('true'));
 
