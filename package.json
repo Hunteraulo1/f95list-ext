@@ -45,8 +45,8 @@
   "license": "UNLICENSED",
   "private": false,
   "scripts": {
-    "dev:chrome": "wxt",
-    "dev:firefox": "wxt -b firefox",
+    "dev:chrome": "wxt --debug",
+    "dev:firefox": "wxt -b firefox --debug",
     "build": "bun run build:chrome && bun run build:firefox",
     "build:chrome": "wxt build",
     "build:firefox": "wxt build -b firefox",
