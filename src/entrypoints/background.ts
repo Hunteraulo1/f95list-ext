@@ -3,6 +3,10 @@ import { storage } from 'wxt/storage';
 
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
 export default defineBackground(async () => {
+  const integrate = await storage.getItem<boolean>('local:f95list_ext_integrate');
+
+  if (integrate === null) await storage.setItem('local:f95list_ext_integrate', true);
+
   const data = await dataInit();
 
   if (data) await badgeState(data);
@@ -110,12 +114,6 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
     switch (message) {
       case 'f95list-script': {
-        const integrate = await storage.getItem<boolean>('local:f95list_ext_integrate');
-        console.info('🚀 ~ integrate:', integrate);
-
-        if (integrate === undefined) storage.setItem('local:f95list_ext_integrate', true);
-        else if (!integrate) break;
-
         sendResponse(data.games);
 
         break;
