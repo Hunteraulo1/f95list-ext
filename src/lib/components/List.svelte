@@ -22,8 +22,10 @@ const extractId = (inputString: string): number => {
 let autoFocus: GameType[] = $state([]);
 
 onMount(async () => {
+  if (!browser.tabs) return;
+
   const extract: IdGameBox = await new Promise((resolve) =>
-    browser.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+    browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const url = tabs[0]?.url || '';
 
       if (!url) {

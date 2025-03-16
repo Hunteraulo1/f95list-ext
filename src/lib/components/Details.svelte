@@ -63,7 +63,7 @@ let closeHovered = $state<boolean>(false);
             Accèder au jeu
           </a>
         </div>
-        <h1 class="mb-2 flex items-center gap-1">
+        <h1 class="mb-2 flex items-center gap-1 flex-wrap">
           <Badge style={typeColor(game.type)} class="text-primary-foreground font-bold">
             {game.type}
           </Badge>
