@@ -64,7 +64,7 @@ const handleClickRemove = (index: number) => {
 
 <ScrollArea class={cn("flex flex-col gap-1 w-full relative p-3 m-0", variant !== "webapp" && "h-[26.5rem]")}>
   <div class={cn("flex gap-2 mb-2 items-center", variant !== "webapp" && "flex-col")}>
-    <label for="filters" class="self-start">Filtrages sauvegardés: </label>
+    <label for="filters" class="self-start my-auto">Filtrages sauvegardés: </label>
     <div class="flex gap-2 self-start">
       {#each filters as fil, index}
         <button class={cn("size-8 rounded-full flex justify-center items-center text-secondary-foreground font-bold text-lg cursor-pointer", filterRemove === index ? "bg-red-700/75  hover:bg-red-700" : "bg-secondary/75 hover:bg-secondary")} onclick={()=>handleClick(fil, index)} ondblclick={()=>handleClickRemove(index)}>
