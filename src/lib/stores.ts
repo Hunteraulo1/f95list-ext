@@ -12,6 +12,8 @@ export const errors = writable<FlatErrors<any>[]>([]); // TODO: improve type
 
 export const traductors = writable<TraductorType[]>([]);
 
+export type FilterType = ComboBox[];
+
 const filterConfig = {
   domain: {
     title: 'Site',
@@ -31,7 +33,7 @@ const filterConfig = {
   },
 };
 
-const defaultFilters = (): ComboBox[] => [
+const defaultFilters = (): FilterType => [
   {
     title: filterConfig.domain.title,
     name: 'domain',
@@ -91,7 +93,7 @@ const defaultFilters = (): ComboBox[] => [
 ];
 
 const filterFn = () => {
-  const { subscribe, set, update } = writable(defaultFilters());
+  const { subscribe, set, update } = writable<FilterType>(defaultFilters());
 
   return {
     subscribe,
@@ -102,7 +104,6 @@ const filterFn = () => {
 };
 
 export const filter = filterFn();
-export type FilterType = typeof filter;
 
 export const search = writable('');
 
