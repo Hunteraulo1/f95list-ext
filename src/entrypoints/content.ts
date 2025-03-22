@@ -101,7 +101,7 @@ const createFlag = (parent: Element, tlink: GameType['tlink'] = null) => {
   const img: HTMLImageElement = document.createElement('img');
 
   anchor.target = '_BLANK';
-  anchor.href = tlink ?? '#';
+  if (tlink) anchor.href = tlink;
 
   img.style.width = '32px';
   img.style.marginRight = '4px';
