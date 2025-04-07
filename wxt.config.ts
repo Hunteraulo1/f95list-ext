@@ -5,6 +5,8 @@ import packageJSON from './package.json';
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   srcDir: 'src',
+  publicDir: 'src/public',
+  modulesDir: 'src/modules',
   modules: ['@wxt-dev/module-svelte'],
   manifest: ({ mode }) => ({
     name: 'F95 France - Extension',
