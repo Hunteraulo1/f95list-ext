@@ -6,6 +6,7 @@ import Check from './Check.svelte';
 import ChevronDown from './ChevronDown.svelte';
 import CopyCheck from './CopyCheck.svelte';
 import Expand from './Expand.svelte';
+import Plus from './Plus.svelte';
 import RefreshCcw from './RefreshCcw.svelte';
 import ScanText from './ScanText.svelte';
 import Search from './Search.svelte';
@@ -22,6 +23,7 @@ export {
   CopyCheck,
   Expand,
   Moon,
+  Plus,
   RefreshCcw,
   ScanText,
   Search,

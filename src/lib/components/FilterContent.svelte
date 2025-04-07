@@ -5,6 +5,7 @@ import { ScrollArea } from '@/lib/components/ui/scroll-area';
 import { type FilterType, filter, search } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 import { get } from 'svelte/store';
+import { Plus, XIcon } from '../assets/icon';
 import FilterPopover from './FilterPopover.svelte';
 
 interface Props {
@@ -68,11 +69,17 @@ const handleClickRemove = (index: number) => {
     <div class="flex gap-2 self-start">
       {#each filters as fil, index}
         <button class={cn("size-8 rounded-full flex justify-center items-center text-secondary-foreground font-bold text-lg cursor-pointer", filterRemove === index ? "bg-red-700/75  hover:bg-red-700" : "bg-secondary/75 hover:bg-secondary")} onclick={()=>handleClick(fil, index)} ondblclick={()=>handleClickRemove(index)}>
-          {filterRemove === index ? 'X' : index + 1}
+          {#if filterRemove === index}
+            <XIcon size={20} />
+          {:else}
+            {index + 1}
+          {/if}
         </button>
       {/each}
       {#if filters.length < 5}
-        <button class="bg-primary/75 hover:bg-primary size-8 rounded-full flex justify-center items-center text-primary-foreground font-bold text-xl cursor-pointer" onclick={handleClickAdd}>+</button>
+        <button class="bg-primary/75 hover:bg-primary size-8 rounded-full flex justify-center items-center text-primary-foreground font-bold text-xl cursor-pointer" onclick={handleClickAdd}>
+          <Plus size={20} />
+        </button>
       {/if}
     </div>
   </div>
