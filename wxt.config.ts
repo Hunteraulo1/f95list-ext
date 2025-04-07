@@ -5,7 +5,6 @@ import packageJSON from './package.json';
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   srcDir: 'src',
-  extensionApi: 'chrome',
   modules: ['@wxt-dev/module-svelte'],
   manifest: ({ mode }) => ({
     name: 'F95 France - Extension',
@@ -19,7 +18,7 @@ export default defineConfig({
     },
     version_name: mode === 'development' ? `${packageJSON.version}-dev` : packageJSON.version,
   }),
-  runner: {
+  webExt: {
     disabled: true,
   },
   vite: ({ mode }) => ({

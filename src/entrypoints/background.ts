@@ -1,5 +1,5 @@
+import { storage } from '#imports';
 import type { GameType, UpdateType } from '@/lib/schemas';
-import { storage } from 'wxt/storage';
 
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
 export default defineBackground(async () => {
