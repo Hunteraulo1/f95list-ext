@@ -33,7 +33,7 @@ const pages: Page[] = [
     link: 'webapp',
     icon: Expand,
     name: 'Webapp',
-    target: '/popup.html#webapp',
+    target: '/webapp.html',
   },
   {
     link: 'traductors',
