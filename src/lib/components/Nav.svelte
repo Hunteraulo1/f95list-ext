@@ -33,6 +33,7 @@ const handleClick = (link: Page['link'], target: Page['target']) => {
 const badgeCount = async (): Promise<void> => {
   const definedAction = browser.browserAction ?? browser.action;
   badge = Number.parseInt(await definedAction.getBadgeText({}));
+  console.log('🚀 ~ badgeCount ~ badge:', badge);
 };
 
 onMount(() => badgeCount());
