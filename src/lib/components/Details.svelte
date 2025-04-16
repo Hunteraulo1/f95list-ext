@@ -1,15 +1,16 @@
 <script lang="ts">
-import { ArrowLeft } from '@/lib/assets/icon';
 import noImage from '@/lib/assets/no-image.png';
+import { selectedGame, settings } from '@/lib/stores';
+import { lazyLoad } from '@/lib/utils/lazyload';
+
+import { ArrowLeft } from '@/lib/assets/icon';
 import { Badge } from '@/lib/components/ui/badge';
 import { Button, buttonVariants } from '@/lib/components/ui/button';
 import { ScrollArea } from '@/lib/components/ui/scroll-area';
 import * as Tooltip from '@/lib/components/ui/tooltip/index';
 import type { GameType } from '@/lib/schemas';
-import { selectedGame, settings } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 import { statusColor, typeColor } from '@/lib/utils/badgeColor';
-import Lazy from 'svelte-lazy';
 import Alert from './Alert.svelte';
 
 let tagsHide = $state($settings.tagsHide);
@@ -28,7 +29,7 @@ let closeHovered = $state<boolean>(false);
 <div class={variant === 'webapp' ? 'w-full h-full' : 'fixed w-main h-main top-0 left-0 z-20'}>
   <ScrollArea class="bg-background h-full w-full {closed ? 'animate-to-up' : 'animate-to-down'}">
     <Button
-      class="flex gap-1 opacity-50 absolute top-2 left-2 cursor-pointer z-10"
+      class="flex gap-1 opacity-50 absolute top-2 left-2 cursor-pointer"
       variant="secondary"
       onmouseenter={()=>closeHovered = true}
       onmouseleave={()=>closeHovered = false}
@@ -42,17 +43,12 @@ let closeHovered = $state<boolean>(false);
     </Button>
 
     {#if game}
-      <Lazy height="33vh" fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden bg-primary-foreground max-h-1/3" placeholder>
-        <img
-          alt={game.name}
-          src={game.image?.replace(
-            'attachments.f95zone.to',
-            'preview.f95zone.to'
-          ) ?? noImage}
-          class="h-full w-full object-cover"
-          class:rounded-lg={variant === 'webapp'}
-        />
-      </Lazy>
+      <img
+        alt={game.name}
+        class="h-full w-full object-cover max-h-[33vh]"
+        class:rounded-lg={variant === 'webapp'}
+        use:lazyLoad={game.image ?? noImage}
+      />
       <div class="p-2 flex flex-col gap-4">
         <div>
           <span class="font-bold text-sm select-none">Site:</span>

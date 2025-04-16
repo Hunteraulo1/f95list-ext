@@ -81,6 +81,7 @@ const getData = async () => {
     settingsValue.intergrateFeature = await browser.runtime.sendMessage('f95list-integrate');
 
     settings.set(settingsValue);
+    console.log('🚀 ~ getData ~ settingsValue:', settingsValue);
   } catch (error) {
     console.error(error);
   }
