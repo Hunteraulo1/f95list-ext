@@ -24,20 +24,6 @@ const handleSelect = (value: string) => {
         values: item.values.map((v) => {
           if (v.value !== value) return v;
 
-          if (title.toLowerCase() !== 'tags') {
-            if (item.values.some((va) => va.inverse)) {
-              if (v.inverse) return { ...v, checked: false, inverse: false };
-
-              return { ...v, checked: true, inverse: true };
-            }
-
-            if (item.values.some((va) => va.value !== v.value && va.checked)) {
-              if (v.checked) return { ...v, checked: false, inverse: false };
-
-              return { ...v, checked: true, inverse: false };
-            }
-          }
-
           if (v.inverse !== undefined) {
             if (!v.checked) return { ...v, checked: true, inverse: false };
             if (!v.inverse) return { ...v, checked: true, inverse: true };
