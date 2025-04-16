@@ -47,7 +47,6 @@ const init = async () => {
     insert(data);
 
     const { pathname } = window.location;
-    console.log('🚀 ~ init ~ pathname:', pathname);
 
     const f95 = pathname === '/sam/latest_alpha/';
     const lc = pathname.startsWith('/latest-contents/');
@@ -89,7 +88,6 @@ const latest = (query: string, games: GameType[]) => {
           ? tile.children[1].children[0]
           : tile.parentElement?.parentElement?.children[1].children[0];
 
-      console.log('🚀 ~ latest ~ element:', element);
       if (!element) return;
 
       createFlag(element);
@@ -103,7 +101,7 @@ const createFlag = (parent: Element, tlink: GameType['tlink'] = null) => {
   const img: HTMLImageElement = document.createElement('img');
 
   anchor.target = '_BLANK';
-  anchor.href = tlink ?? '#';
+  if (tlink) anchor.href = tlink;
 
   img.style.width = '32px';
   img.style.marginRight = '4px';

@@ -8,7 +8,6 @@ import type { GameType } from '@/lib/schemas';
 import { games, selectedGame } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
-// @ts-ignore types not found
 import Lazy from 'svelte-lazy';
 import Details from './Details.svelte';
 

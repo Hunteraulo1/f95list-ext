@@ -1,5 +1,5 @@
 import type { GameType, UpdateType } from '@/lib/schemas';
-import { storage } from 'wxt/storage';
+import { storage } from '#imports';
 
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
 export default defineBackground(async () => {
@@ -104,7 +104,6 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   (async () => {
     const data = await dataInit();
-    console.log('🚀 ~ data:', data);
 
     if (!data || typeof message !== 'string') {
       console.error('data not found');
