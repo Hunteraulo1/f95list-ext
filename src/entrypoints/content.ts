@@ -104,6 +104,7 @@ const createFlag = (parent: Element, tlink: GameType['tlink'] = null) => {
   if (tlink) anchor.href = tlink;
 
   img.style.width = '32px';
+  img.style.minWidth = '32px';
   img.style.marginRight = '4px';
   img.style.borderRadius = '4px';
   img.style.float = 'inherit';
