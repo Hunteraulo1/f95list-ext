@@ -105,10 +105,10 @@ const handleSettings = async (settingsItem: SettingItem) => {
         <Label for={settingsItem.id}>{settingsItem.title}</Label>
         {#if settingsItem.id === "theme"}
           <Button id={settingsItem.id} onclick={toggleMode} variant="outline" size="icon" class="cursor-pointer">
-            {#if mode.current === "light"}
+            {#if $mode === "light"}
               <Sun size={16} isHovered />
             {:else}
-              <Moon classes="h-4 w-4" />
+              <Moon class="h-4 w-4" />
             {/if}
           </Button>
         {:else}
