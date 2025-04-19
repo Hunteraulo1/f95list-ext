@@ -108,7 +108,7 @@ const handleSettings = async (settingsItem: SettingItem) => {
             {#if $mode === "light"}
               <Sun size={16} isHovered />
             {:else}
-              <Moon class="h-4 w-4" />
+              <Moon classes="h-4 w-4" />
             {/if}
           </Button>
         {:else}
