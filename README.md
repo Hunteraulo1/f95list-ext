@@ -2,9 +2,9 @@
 
 ## Fonctionnalités de l'extension
 
-- Lister tous les jeux de F95France
+- Lister tous les jeux de F95 France
 - Lister les mises à jour de la liste
-- Ajouter un drapeau sur les jeux traduits _(sur f95)_
+- Ajouter un drapeau sur les jeux traduits _(sur F95z)_
 
 ## Installation de l'extension
 
@@ -25,6 +25,7 @@ Lien de téléchargement: [Accéder à l'extension](https://github.com/Hunteraul
 - [Extension Development Basics](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/)
 - [WXT](https://wxt.dev/guide/introduction.html)
 - [Svelte](https://svelte.dev/docs/)
+- [Shadcn-Svelte](https://next.shadcn-svelte.com/docs/)
 - [Tailwind](https://tailwindcss.com/docs/)
 - [Valibot](https://valibot.dev/guides/)
 
