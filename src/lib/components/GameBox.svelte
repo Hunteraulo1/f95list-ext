@@ -8,7 +8,6 @@ import type { GameType } from '@/lib/schemas';
 import { games, selectedGame } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
-// @ts-ignore types not found
 import Lazy from 'svelte-lazy';
 import Details from './Details.svelte';
 
@@ -69,7 +68,7 @@ const handleClick = () => {
           webapp && 'text-xl',
           autoFocusMultiple ?
             'flex gap-2 items-center py-2 px-6' :
-            'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-white'
+            'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-secondary-foreground'
         )}
       >
         <Card.Title class="select-none">{game.name}</Card.Title>
@@ -111,7 +110,7 @@ const handleClick = () => {
 {:else}
   <div
     class={cn(
-      "relative overflow-hidden transition text-white rounded-md cursor-pointer bg-primary-foreground", 
+      "relative overflow-hidden transition text-secondary-foreground rounded-md cursor-pointer bg-primary-foreground", 
       (webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100',
       autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'
     )}

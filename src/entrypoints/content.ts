@@ -5,7 +5,7 @@ export default defineContentScript({
   matches: [
     '*://f95zone.to/sam/latest_alpha/*',
     '*://f95zone.to/threads/*',
-    '*://lewdcorner.com/latest-updates/*',
+    '*://lewdcorner.com/latest-contents/*',
     '*://lewdcorner.com/threads/*',
   ],
   main() {
@@ -18,12 +18,12 @@ export default defineContentScript({
 const insert = (games: GameType[]) => {
   if (!(games && games.length > 0)) return;
 
-  const { pathname } = window.location;
+  const { pathname, hostname } = window.location;
 
   if (pathname === '/sam/latest_alpha/') {
     latest('.resource-tile_link', games);
-  } else if (pathname.startsWith('/latest-updates/')) {
-    latest('.porta-article-header', games);
+  } else if (pathname.startsWith('/latest-contents/')) {
+    latest('.structItem-title > a', games);
   } else if (pathname.startsWith('/threads/')) {
     const tileId = Number(window.location.pathname.split('/')[2].split('.')[1]);
 
@@ -49,7 +49,7 @@ const init = async () => {
     const { pathname } = window.location;
 
     const f95 = pathname === '/sam/latest_alpha/';
-    const lc = pathname.startsWith('/latest-updates/');
+    const lc = pathname.startsWith('/latest-contents/');
 
     if (f95 || lc) {
       const mutationCallback: MutationCallback = async (mutationsList) => {
@@ -69,10 +69,10 @@ const init = async () => {
   }
 };
 
-const { hostname } = window.location;
-
 const latest = (query: string, games: GameType[]) => {
   const tiles = document.querySelectorAll(query);
+
+  const { hostname } = window.location;
 
   for (const tile of Array.from(tiles)) {
     const tileId =
@@ -83,7 +83,14 @@ const latest = (query: string, games: GameType[]) => {
     if (tile.classList.contains('flag-inserted')) return;
 
     if (games.find((game) => game.id === tileId && game.hostname === hostname)) {
-      createFlag(hostname === 'f95zone.to' ? tile.children[1].children[0] : tile.children[1].children[1]);
+      const element =
+        hostname === 'f95zone.to'
+          ? tile.children[1].children[0]
+          : tile.parentElement?.parentElement?.children[1].children[0];
+
+      if (!element) return;
+
+      createFlag(element);
       tile.classList.add('flag-inserted');
     }
   }
@@ -94,9 +101,10 @@ const createFlag = (parent: Element, tlink: GameType['tlink'] = null) => {
   const img: HTMLImageElement = document.createElement('img');
 
   anchor.target = '_BLANK';
-  anchor.href = tlink ?? '#';
+  if (tlink) anchor.href = tlink;
 
   img.style.width = '32px';
+  img.style.minWidth = '32px';
   img.style.marginRight = '4px';
   img.style.borderRadius = '4px';
   img.style.float = 'inherit';

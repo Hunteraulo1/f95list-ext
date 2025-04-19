@@ -1,8 +1,12 @@
 import type { GameType, UpdateType } from '@/lib/schemas';
-import { storage } from 'wxt/storage';
+import { storage } from '#imports';
 
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
 export default defineBackground(async () => {
+  const integrate = await storage.getItem<boolean>('local:f95list_ext_integrate');
+
+  if (integrate === null) await storage.setItem('local:f95list_ext_integrate', true);
+
   const data = await dataInit();
 
   if (data) await badgeState(data);
@@ -100,7 +104,6 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   (async () => {
     const data = await dataInit();
-    console.log('🚀 ~ data:', data);
 
     if (!data || typeof message !== 'string') {
       console.error('data not found');
@@ -110,28 +113,32 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
     switch (message) {
       case 'f95list-script': {
-        const integrate = await storage.getItem<boolean>('local:f95list_ext_integrate');
-        console.log('🚀 ~ integrate:', integrate);
-
-        if (integrate === undefined) storage.setItem('local:f95list_ext_integrate', true);
-        else if (!integrate) break;
-
         sendResponse(data.games);
 
         break;
       }
-      case 'f95list-ext':
+      case 'f95list-ext': {
         sendResponse(data);
 
         break;
-      case 'f95list-badge':
+      }
+      case 'f95list-badge': {
         await badgeReset(data);
 
         break;
-      case message.startsWith('f95list-integrate') ? message : 'f95list-integrate':
+      }
+      case 'f95list-integrate': {
+        const integrate = await storage.getItem('local:f95list_ext_integrate');
+
+        sendResponse(integrate);
+
+        break;
+      }
+      case message.startsWith('f95list-integrate') ? message : 'f95list-integrate': {
         await storage.setItem('local:f95list_ext_integrate', message.endsWith('true'));
 
         break;
+      }
     }
   })();
 

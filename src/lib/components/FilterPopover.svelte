@@ -5,7 +5,6 @@ import * as Command from '@/lib/components/ui/command/index';
 import * as Popover from '@/lib/components/ui/popover/index';
 import { ScrollArea } from '@/lib/components/ui/scroll-area';
 import { filter } from '@/lib/stores';
-import { cn } from '@/lib/utils';
 
 type Props = {
   title: string;
@@ -24,6 +23,20 @@ const handleSelect = (value: string) => {
         ...item,
         values: item.values.map((v) => {
           if (v.value !== value) return v;
+
+          if (title.toLowerCase() !== 'tags') {
+            if (item.values.some((va) => va.inverse)) {
+              if (v.inverse) return { ...v, checked: false, inverse: false };
+
+              return { ...v, checked: true, inverse: true };
+            }
+
+            if (item.values.some((va) => va.value !== v.value && va.checked)) {
+              if (v.checked) return { ...v, checked: false, inverse: false };
+
+              return { ...v, checked: true, inverse: false };
+            }
+          }
 
           if (v.inverse !== undefined) {
             if (!v.checked) return { ...v, checked: true, inverse: false };
@@ -45,7 +58,7 @@ const handleSelect = (value: string) => {
     class="font-bold text-xs capitalize leading-none mt-2"
   >{title}:</label>
   <Popover.Root>
-    <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between" })} disabled={!active}>
+    <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between gap-2" })} disabled={!active}>
       <p class="truncate">
         {#if values.some(({ checked }) => checked)}
           {values.reduce((acc, { checked, inverse, value }) =>
@@ -55,7 +68,7 @@ const handleSelect = (value: string) => {
           Filtrer par {title}
         {/if}
       </p>
-      <ChevronDown classes="ml-2 h-4 w-4 shrink-0 opacity-50" />
+      <ChevronDown size={16} />
     </Popover.Trigger>
     <Popover.Content class="w-fit p-0">
       <Command.Root>
@@ -67,15 +80,16 @@ const handleSelect = (value: string) => {
               <Command.Item
                 {value}
                 onclick={() => handleSelect(value)}
+                class="flex gap-2"
               >
                 {#if checked}
                   {#if inverse}
-                    <XIcon class={cn("mr-2 h-4 w-4", "text-red-500")} />
+                    <XIcon classes="text-red-500" size={16} isHovered />
                   {:else}
-                    <Check classes={cn("mr-2 h-4 w-4")} />
+                    <Check size={16} isHovered />
                   {/if}
                 {:else}
-                  <div class="mr-2 h-4 w-4"></div>
+                  <div class="h-4 w-4"></div>
                 {/if}
                 {value}
               </Command.Item>

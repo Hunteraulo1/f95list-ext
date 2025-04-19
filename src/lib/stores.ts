@@ -5,10 +5,14 @@ import type { ComboBox, Settings } from './types.js';
 
 import tags from '@/lib/assets/tags.json' assert { type: 'json' };
 import type { Page } from '@/lib/components/Nav.svelte';
+import type { FlatErrors } from 'valibot';
 
 export const games = writable<GameType[]>([]);
+export const errors = writable<FlatErrors<any>[]>([]); // TODO: improve type
 
 export const traductors = writable<TraductorType[]>([]);
+
+export type FilterType = ComboBox[];
 
 const filterConfig = {
   domain: {
@@ -29,7 +33,7 @@ const filterConfig = {
   },
 };
 
-const defaultFilters = (): ComboBox[] => [
+const defaultFilters = (): FilterType => [
   {
     title: filterConfig.domain.title,
     name: 'domain',
@@ -89,7 +93,7 @@ const defaultFilters = (): ComboBox[] => [
 ];
 
 const filterFn = () => {
-  const { subscribe, set, update } = writable(defaultFilters());
+  const { subscribe, set, update } = writable<FilterType>(defaultFilters());
 
   return {
     subscribe,
@@ -100,7 +104,6 @@ const filterFn = () => {
 };
 
 export const filter = filterFn();
-export type FilterType = typeof filter;
 
 export const search = writable('');
 

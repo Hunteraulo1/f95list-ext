@@ -1,13 +1,13 @@
 <script lang="ts">
 import { ChevronDown, RefreshCcw } from '@/lib/assets/icon';
 import GameBox from '@/lib/components/GameBox.svelte';
-import { Alert } from '@/lib/components/ui/alert';
 import Button from '@/lib/components/ui/button/button.svelte';
 import type { GameType } from '@/lib/schemas';
 import { autoFocusBlock, filteredGames, games, outdated, settings } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { onMount } from 'svelte';
+import Alert from './Alert.svelte';
 import Filter from './Filter.svelte';
 
 const extractId = (inputString: string): number => {
@@ -22,8 +22,10 @@ const extractId = (inputString: string): number => {
 let autoFocus: GameType[] = $state([]);
 
 onMount(async () => {
+  if (!browser.tabs) return;
+
   const extract: IdGameBox = await new Promise((resolve) =>
-    browser.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+    browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const url = tabs[0]?.url || '';
 
       if (!url) {
@@ -99,7 +101,7 @@ let clickFocus = $state<boolean>(false);
   {/if}
   <div class="flex flex-col gap-2 p-2 relative h-full">
     {#if $outdated && import.meta.env.CHROME}
-      <Alert variant="destructive">Votre extension n'est plus à jour</Alert>
+      <Alert description="Votre extension n'est plus à jour !" />
     {/if}
     {#each $filteredGames as game (game.name + game.version)}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />

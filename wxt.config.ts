@@ -1,13 +1,14 @@
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'wxt';
-import packageJson from './package.json';
+import packageJSON from './package.json';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   srcDir: 'src',
-  extensionApi: 'chrome',
+  publicDir: 'src/public',
+  modulesDir: 'src/modules',
   modules: ['@wxt-dev/module-svelte'],
-  manifest: {
+  manifest: ({ mode }) => ({
     name: 'F95 France - Extension',
     permissions: ['storage', 'unlimitedStorage', 'tabs'],
     browser_specific_settings: {
@@ -17,12 +18,16 @@ export default defineConfig({
         update_url: 'https://raw.githubusercontent.com/Hunteraulo1/f95list-ext/main/updates.json',
       },
     },
-    version_name: import.meta.env.PROD ? packageJson.version : `${packageJson.version}-dev`,
-  },
-  runner: {
+    version_name: mode === 'development' ? `${packageJSON.version}-dev` : packageJSON.version,
+  }),
+  webExt: {
     disabled: true,
   },
-  vite: () => ({
+  vite: ({ mode }) => ({
     plugins: [tailwindcss()],
+    build: {
+      cssMinify: mode === 'production',
+      minify: mode === 'production',
+    },
   }),
 });
