@@ -24,6 +24,26 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        
+      - name: Get release type
+        id: get_release_type
+        run: |
+          TARGET_BRANCH="${{ github.base_ref }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          
+          if [[ ! "$PR_TITLE" == "🔖"* ]]; then
+            echo "Version not detected!"
+            exit 1
+          fi
+          
+          if [[ "$TARGET_BRANCH" == "main" ]]; then
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+          elif [[ "$TARGET_BRANCH" == "preview" ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "Unexpected target branch: $TARGET_BRANCH"
+            exit 1
+          fi
       
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
@@ -47,26 +67,6 @@ jobs:
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           PREVIOUS_VERSION=${PREVIOUS_TAG#v}
           echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
-        
-      - name: Get release type
-        id: get_release_type
-        run: |
-          TARGET_BRANCH="${{ github.base_ref }}"
-          PR_TITLE="${{ github.event.pull_request.title }}"
-          
-          if [[ ! "$PR_TITLE" == "🔖"* ]]; then
-            echo "Version not detected!"
-            exit 1
-          fi
-          
-          if [[ "$TARGET_BRANCH" == "main" ]]; then
-            echo "prerelease=false" >> $GITHUB_OUTPUT
-          elif [[ "$TARGET_BRANCH" == "preview" ]]; then
-            echo "prerelease=true" >> $GITHUB_OUTPUT
-          else
-            echo "Unexpected target branch: $TARGET_BRANCH"
-            exit 1
-          fi
         
       - name: Update update_url for preview branch
         if: steps.get_release_type.outputs.prerelease == 'true'
