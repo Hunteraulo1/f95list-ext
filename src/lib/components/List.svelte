@@ -100,7 +100,7 @@ let clickFocus = $state<boolean>(false);
     </div>
   {/if}
   <div class="flex flex-col gap-2 p-2 relative h-full">
-    {#if $outdated && import.meta.env.CHROME}
+    {#if $outdated && import.meta.env.CHROME && import.meta.env.PROD}
       <Alert description="Votre extension n'est plus à jour !" />
     {/if}
     {#each $filteredGames as game (game.name + game.version)}
