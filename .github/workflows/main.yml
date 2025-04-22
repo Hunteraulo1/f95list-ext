@@ -51,15 +51,29 @@ jobs:
       - name: Get release type
         id: get_release_type
         run: |
+          TARGET_BRANCH="${{ github.base_ref }}"
           PR_TITLE="${{ github.event.pull_request.title }}"
-          if [[ $PR_TITLE == *"+ RELEASE"* ]]; then
-            echo "prerelease=false" >> $GITHUB_OUTPUT
-          elif [[ $PR_TITLE == *"+ PRE-RELEASE"* ]]; then
-            echo "prerelease=true" >> $GITHUB_OUTPUT
-          else
-            echo "Neither RELEASE nor PRE-RELEASE found in PR title"
+          
+          if [[ ! "$PR_TITLE" == "🔖"* ]]; then
+            echo "Version not detected!"
             exit 1
           fi
+          
+          if [[ "$TARGET_BRANCH" == "main" ]]; then
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+          elif [[ "$TARGET_BRANCH" == "preview" ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "Unexpected target branch: $TARGET_BRANCH"
+            exit 1
+          fi
+        
+      - name: Update update_url for preview branch
+        if: steps.get_release_type.outputs.prerelease == 'true'
+        run: |
+          # Replace update_url in wxt.config.ts to point to preview branch
+          sed -i 's|update_url: .*/updates.json|update_url: '\''https://raw.githubusercontent.com/${{ github.repository }}/preview/updates.json'\'',|g' wxt.config.ts
+          echo "Modified wxt.config.ts to use preview branch for updates"
         
       - name: Build extensions
         run: bun run build
@@ -95,8 +109,61 @@ jobs:
           cd chrome-mv3
           zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
 
-      - name: Update updates.json
+      - name: Update updates.json for main and preview branch
         if: steps.get_release_type.outputs.prerelease == 'false'
+        run: |
+          VERSION=${{ steps.get_version.outputs.version }}
+          
+          # Save current branch
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          
+          # Function to update updates.json
+          update_updates_json() {
+            if [ ! -f updates.json ]; then
+              echo '{
+                "addons": {
+                  "'$FIREFOX_EXTENSION_ID'": {
+                    "updates": [
+                      {
+                        "version": "0.0.0",
+                        "update_link": ""
+                      }
+                    ]
+                  }
+                }
+              }' > updates.json
+            fi
+            
+            # Update updates.json
+            jq --arg version "$VERSION" \
+               --arg url "https://github.com/${{ github.repository }}/releases/download/v${VERSION}/f95list_ext-${VERSION}_firefox.xpi" \
+               --arg id "$FIREFOX_EXTENSION_ID" \
+               '.addons[$id].updates[0].version = $version | .addons[$id].updates[0].update_link = $url' \
+               updates.json > updates.json.tmp && mv updates.json.tmp updates.json
+               
+            # Commit changes
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add updates.json
+            git commit -m ":bookmark: update updates.json for version $VERSION"
+            git push origin $(git rev-parse --abbrev-ref HEAD)
+          }
+          
+          # Update main branch
+          echo "Updating updates.json on main branch"
+          update_updates_json
+          
+          # Checkout and update preview branch
+          echo "Updating updates.json on preview branch"
+          git fetch origin preview
+          git checkout preview
+          update_updates_json
+          
+          # Return to original branch
+          git checkout $CURRENT_BRANCH
+
+      - name: Update updates.json for preview branch only
+        if: steps.get_release_type.outputs.prerelease == 'true'
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
           
@@ -115,22 +182,20 @@ jobs:
             }' > updates.json
           fi
           
-          # Mise à jour de updates.json
+          # Update updates.json
           jq --arg version "$VERSION" \
              --arg url "https://github.com/${{ github.repository }}/releases/download/v${VERSION}/f95list_ext-${VERSION}_firefox.xpi" \
              --arg id "$FIREFOX_EXTENSION_ID" \
              '.addons[$id].updates[0].version = $version | .addons[$id].updates[0].update_link = $url' \
              updates.json > updates.json.tmp && mv updates.json.tmp updates.json
-
-      - name: Commit updates.json changes
-        if: steps.get_release_type.outputs.prerelease == 'false'
-        run: |
+               
+          # Commit changes
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add updates.json
-          git commit -m ":bookmark: update updates.json for version ${{ steps.get_version.outputs.version }}"
+          git commit -m ":bookmark: update updates.json for version $VERSION"
           git push origin ${GITHUB_REF#refs/heads/}
-        
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
