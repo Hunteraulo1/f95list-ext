@@ -31,7 +31,7 @@ jobs:
           TARGET_BRANCH="${{ github.base_ref }}"
           PR_TITLE="${{ github.event.pull_request.title }}"
           
-          if [[ ! "$PR_TITLE" == "🔖"* ]]; then
+          if [[ ! "$PR_TITLE" == "🔖"* && ! "$PR_TITLE" == ":bookmark:"* ]]; then
             echo "Version not detected!"
             exit 1
           fi
