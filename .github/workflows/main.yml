@@ -72,7 +72,7 @@ jobs:
         if: steps.get_release_type.outputs.prerelease == 'true'
         run: |
           # Replace update_url in wxt.config.ts to point to preview branch
-          sed -i 's|update_url: .*/updates.json|update_url: '\''https://raw.githubusercontent.com/${{ github.repository }}/preview/updates.json'\'',|g' wxt.config.ts
+          sed -i 's|update_url: .*,|update_url: "https://raw.githubusercontent.com/${{ github.repository }}/preview/updates.json",|g' wxt.config.ts
           echo "Modified wxt.config.ts to use preview branch for updates"
         
       - name: Build extensions
