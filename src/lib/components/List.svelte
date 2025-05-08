@@ -73,8 +73,8 @@ let clickFocus = $state<boolean>(false);
 
 {#if autoFocus}
   {#if autoFocus.length > 0}
-    <div class="p-2 border rounded-b-xl bg-primary-foreground top-0 mx-2 sticky z-10">
-      <p class="text-xs text-center mb-2">
+    <div class="sticky top-0 z-10 p-2 mx-2 border rounded-b-xl bg-primary-foreground">
+      <p class="mb-2 text-xs text-center">
         {#if autoFocus.length === 1}
         Traduction détectée sur cette page
         {:else}
@@ -89,7 +89,7 @@ let clickFocus = $state<boolean>(false);
         {/if}
         <Button
           variant="outline"
-          class="rounded-full mx-auto heading-none"
+          class="mx-auto rounded-full heading-none"
           onmouseenter={() => mouseEnter = true}
           onmouseleave={() => mouseEnter = false}
           onclick={() => clickFocus = !clickFocus}
@@ -99,7 +99,7 @@ let clickFocus = $state<boolean>(false);
       </div>
     </div>
   {/if}
-  <div class="flex flex-col gap-2 p-2 relative h-full">
+  <div class="relative flex flex-col h-full gap-2 p-2">
     {#if $outdated && import.meta.env.CHROME && import.meta.env.PROD}
       <Alert description="Votre extension n'est plus à jour !" />
     {/if}
@@ -107,12 +107,12 @@ let clickFocus = $state<boolean>(false);
       <GameBox {game} autoFocus={handleAutoFocus(game)} />
     {:else}
       {#if $games.length > 0}
-        <div class="flex justify-center items-center h-full">
+        <div class="flex items-center justify-center h-full">
           <RefreshCcw />
           <span>Aucun jeu ne correspond à vos critères</span>
         </div>
       {:else}
-        <div class="flex justify-center items-center h-full text-center text-red-600">
+        <div class="flex items-center justify-center h-full text-center text-red-600">
           <span>Un problème est survenu lors de la récupération des données, veuillez nous contacter sur discord.</span>
         </div>
       {/if}
