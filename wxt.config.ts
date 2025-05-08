@@ -28,5 +28,11 @@ export default defineConfig({
       cssMinify: mode === 'production',
       minify: mode === 'production',
     },
+    server: {
+      cors: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+    },
   }),
 });

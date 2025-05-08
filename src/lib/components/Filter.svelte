@@ -26,11 +26,11 @@ let { variant = 'popup' }: Props = $props();
     side="top"
     preventScroll
     onInteractOutside={()=>null}
-    class="p-0 h-full"
+    class="h-full p-0"
     autofocus={false}
     onOpenAutoFocus={(e: Event) => e.preventDefault()}
     >
-      <Popover.Close class="rounded-full hover:bg-primary-foreground float-end m-2 p-1">
+      <Popover.Close class="p-1 m-2 rounded-full hover:bg-primary-foreground float-end">
         <XIcon />
       </Popover.Close>
       

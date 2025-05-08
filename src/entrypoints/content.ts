@@ -18,7 +18,7 @@ export default defineContentScript({
 const insert = (games: GameType[]) => {
   if (!(games && games.length > 0)) return;
 
-  const { pathname } = window.location;
+  const { pathname, hostname } = window.location;
 
   if (pathname === '/sam/latest_alpha/') {
     latest('.resource-tile_link', games);
@@ -70,10 +70,10 @@ const init = async () => {
   }
 };
 
-const { hostname } = window.location;
-
 const latest = (query: string, games: GameType[]) => {
   const tiles = document.querySelectorAll(query);
+
+  const { hostname } = window.location;
 
   for (const tile of Array.from(tiles)) {
     const tileId =
@@ -106,6 +106,7 @@ const createFlag = (parent: Element, tlink: GameType['tlink'] = null) => {
   anchor.href = tlink ?? '#';
 
   img.style.width = '32px';
+  img.style.minWidth = '32px';
   img.style.marginRight = '4px';
   img.style.borderRadius = '4px';
   img.style.float = 'inherit';

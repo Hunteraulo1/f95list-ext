@@ -49,7 +49,7 @@ const handleClick = () => {
 {/if}
 
 {#if game.domain !== 'Unknown'}
-  <Lazy height={autoFocusMultiple ? 38 : 88} fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative rounded-md overflow-hidden bg-primary-foreground">
+  <Lazy height={autoFocusMultiple ? 38 : 88} fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden rounded-md bg-primary-foreground">
     <Card.Root class="cursor-pointer" onclick={handleClick}>
       {#if !autoFocusMultiple}
         <img
@@ -103,8 +103,8 @@ const handleClick = () => {
       </Card.CardContent>
     </Card.Root>
     {#if import.meta.env.FIREFOX && !autoFocusMultiple}
-      <a class="absolute right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30 rounded-full p-1" href={game.link} target="_blank">
-        <CopyCheck />
+      <a class="absolute p-2 rounded-full right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30" href={game.link} target="_blank">
+        <CopyCheck size={24} />
       </a>
     {/if}
   </Lazy>
