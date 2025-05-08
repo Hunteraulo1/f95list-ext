@@ -153,6 +153,9 @@ jobs:
           echo "Updating updates.json on main branch"
           update_updates_json
           
+          # Clean .output directory before switching branches
+          rm -rf .output/
+          
           # Checkout and update preview branch
           echo "Updating updates.json on preview branch"
           git fetch origin preview
