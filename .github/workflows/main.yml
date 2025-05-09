@@ -114,11 +114,11 @@ jobs:
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
           
-          # Save current branch
-          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          
           # Function to update updates.json
           update_updates_json() {
+            BRANCH=$1
+            git checkout $BRANCH
+            
             if [ ! -f updates.json ]; then
               echo '{
                 "addons": {
@@ -146,24 +146,12 @@ jobs:
             git config --local user.name "GitHub Action"
             git add updates.json
             git commit -m ":bookmark: update updates.json for version $VERSION"
-            git push origin $(git rev-parse --abbrev-ref HEAD)
+            git push origin $BRANCH
           }
           
-          # Update main branch
-          echo "Updating updates.json on main branch"
-          update_updates_json
-          
-          # Clean .output directory before switching branches
-          rm -rf .output/
-          
-          # Checkout and update preview branch
-          echo "Updating updates.json on preview branch"
-          git fetch origin preview
-          git checkout preview
-          update_updates_json
-          
-          # Return to original branch
-          git checkout $CURRENT_BRANCH
+          # Update both branches
+          update_updates_json "main"
+          update_updates_json "preview"
 
       - name: Update updates.json for preview branch only
         if: steps.get_release_type.outputs.prerelease == 'true'
