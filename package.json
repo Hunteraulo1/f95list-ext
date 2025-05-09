@@ -1,6 +1,6 @@
 {
   "name": "f95list-ext",
-  "version": "2.2.0",
+  "version": "2.2.2",
   "author": {
     "email": "hunteraulo@pm.me",
     "name": "Hunteraulo"
@@ -58,7 +58,7 @@
     "format": "bunx @biomejs/biome format --write .",
     "postinstall": "wxt prepare"
   },
-  "trustedDependencies": ["@biomejs/biome", "dtrace-provider", "esbuild", "spawn-sync"],
+  "trustedDependencies": ["@biomejs/biome", "@tailwindcss/oxide", "dtrace-provider", "esbuild", "spawn-sync"],
   "type": "module",
   "dependencies": {
     "lucide-svelte": "^0.482.0",
