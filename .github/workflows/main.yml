@@ -220,3 +220,7 @@ jobs:
             **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.get_previous_version.outputs.previous_version }}...v${{ steps.get_version.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean .output directory before switching branches
+        if: steps.get_release_type.outputs.prerelease == 'false'
+        run: rm -rf .output/
