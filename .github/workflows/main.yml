@@ -109,6 +109,28 @@ jobs:
           cd chrome-mv3
           zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
 
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            .output/artifacts/*_chrome.zip
+            .output/artifacts/*_firefox.xpi
+          tag_name: v${{ steps.get_version.outputs.version }}
+          prerelease: ${{ steps.get_release_type.outputs.prerelease }}
+          body: |
+            ## Installation
+            **Pour Firefox:** *(mise à jour automatique)*
+            - Il faut glisser le fichier **.xpi** sur le navigateur _ou l'ouvrir avec Firefox_.
+
+            **Pour Chrome/Opera/Brave/Edge:** *(mise à jour manuelle)*
+            - Il faut aller dans la page des extensions _(chrome://extensions/)_
+            - Cliquer en haut à droite sur **Mode développeur**
+            - Puis glisser l'archive **.zip** dans la page
+
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.get_previous_version.outputs.previous_version }}...v${{ steps.get_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Update updates.json
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
@@ -117,16 +139,9 @@ jobs:
           update_updates_json() {
             BRANCH=$1
             
-            # Save .output directory and bun.lock to a temporary directory
-            if [ -d ".output" ] || [ -f "bun.lock" ]; then
-              mkdir -p /tmp/workflow_backup
-              if [ -d ".output" ]; then
-                cp -r .output /tmp/workflow_backup/
-              fi
-              if [ -f "bun.lock" ]; then
-                cp bun.lock /tmp/workflow_backup/
-              fi
-            fi
+            # Clean git state
+            git reset --hard
+            git clean -fd
             
             git checkout $BRANCH
             
@@ -158,18 +173,6 @@ jobs:
             git add updates.json
             git commit -m ":bookmark: update updates.json for version $VERSION"
             git push origin $BRANCH
-            
-            # Restore .output directory and bun.lock from temporary directory
-            if [ -d "/tmp/workflow_backup" ]; then
-              if [ -d "/tmp/workflow_backup/.output" ]; then
-                rm -rf .output
-                cp -r /tmp/workflow_backup/.output .
-              fi
-              if [ -f "/tmp/workflow_backup/bun.lock" ]; then
-                cp /tmp/workflow_backup/bun.lock .
-              fi
-              rm -rf /tmp/workflow_backup
-            fi
           }
           
           # Update both branches
@@ -177,28 +180,6 @@ jobs:
             update_updates_json "main"
           fi
           update_updates_json "preview"
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            .output/artifacts/*_chrome.zip
-            .output/artifacts/*_firefox.xpi
-          tag_name: v${{ steps.get_version.outputs.version }}
-          prerelease: ${{ steps.get_release_type.outputs.prerelease }}
-          body: |
-            ## Installation
-            **Pour Firefox:** *(mise à jour automatique)*
-            - Il faut glisser le fichier **.xpi** sur le navigateur _ou l'ouvrir avec Firefox_.
-
-            **Pour Chrome/Opera/Brave/Edge:** *(mise à jour manuelle)*
-            - Il faut aller dans la page des extensions _(chrome://extensions/)_
-            - Cliquer en haut à droite sur **Mode développeur**
-            - Puis glisser l'archive **.zip** dans la page
-
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.get_previous_version.outputs.previous_version }}...v${{ steps.get_version.outputs.version }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clean .output directory before switching branches
         if: steps.get_release_type.outputs.prerelease == 'false'
