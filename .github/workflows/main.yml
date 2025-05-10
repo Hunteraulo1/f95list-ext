@@ -117,9 +117,9 @@ jobs:
           update_updates_json() {
             BRANCH=$1
             
-            # Stash .output directory if it exists
-            if [ -d ".output" ]; then
-              git stash push .output/
+            # Stash .output directory and bun.lock if they exist
+            if [ -d ".output" ] || [ -f "bun.lock" ]; then
+              git stash push .output/ bun.lock
             fi
             
             git checkout $BRANCH
