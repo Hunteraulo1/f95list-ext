@@ -116,6 +116,12 @@ jobs:
           # Function to update updates.json
           update_updates_json() {
             BRANCH=$1
+            
+            # Stash .output directory if it exists
+            if [ -d ".output" ]; then
+              git stash push .output/
+            fi
+            
             git checkout $BRANCH
             
             if [ ! -f updates.json ]; then
@@ -146,6 +152,11 @@ jobs:
             git add updates.json
             git commit -m ":bookmark: update updates.json for version $VERSION"
             git push origin $BRANCH
+            
+            # Pop the stash if it exists
+            if git stash list | grep -q "stash@{0}"; then
+              git stash pop
+            fi
           }
           
           # Update both branches
