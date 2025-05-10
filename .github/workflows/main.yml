@@ -109,8 +109,7 @@ jobs:
           cd chrome-mv3
           zip -r9 ../artifacts/f95list_ext-${VERSION}_chrome.zip ./*
 
-      - name: Update updates.json for main and preview branch
-        if: steps.get_release_type.outputs.prerelease == 'false'
+      - name: Update updates.json
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
           
@@ -150,42 +149,10 @@ jobs:
           }
           
           # Update both branches
-          update_updates_json "main"
-          update_updates_json "preview"
-
-      - name: Update updates.json for preview branch only
-        if: steps.get_release_type.outputs.prerelease == 'true'
-        run: |
-          VERSION=${{ steps.get_version.outputs.version }}
-          
-          if [ ! -f updates.json ]; then
-            echo '{
-              "addons": {
-                "'$FIREFOX_EXTENSION_ID'": {
-                  "updates": [
-                    {
-                      "version": "0.0.0",
-                      "update_link": ""
-                    }
-                  ]
-                }
-              }
-            }' > updates.json
+          if [[ "${{ steps.get_release_type.outputs.prerelease }}" == "true" ]]; then
+            update_updates_json "main"
           fi
-          
-          # Update updates.json
-          jq --arg version "$VERSION" \
-             --arg url "https://github.com/${{ github.repository }}/releases/download/v${VERSION}/f95list_ext-${VERSION}_firefox.xpi" \
-             --arg id "$FIREFOX_EXTENSION_ID" \
-             '.addons[$id].updates[0].version = $version | .addons[$id].updates[0].update_link = $url' \
-             updates.json > updates.json.tmp && mv updates.json.tmp updates.json
-               
-          # Commit changes
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add updates.json
-          git commit -m ":bookmark: update updates.json for version $VERSION"
-          git push origin ${GITHUB_REF#refs/heads/}
+          update_updates_json "preview"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
