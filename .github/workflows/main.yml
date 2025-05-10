@@ -117,9 +117,15 @@ jobs:
           update_updates_json() {
             BRANCH=$1
             
-            # Stash .output directory and bun.lock if they exist
+            # Save .output directory and bun.lock to a temporary directory
             if [ -d ".output" ] || [ -f "bun.lock" ]; then
-              git stash push .output/ bun.lock
+              mkdir -p /tmp/workflow_backup
+              if [ -d ".output" ]; then
+                cp -r .output /tmp/workflow_backup/
+              fi
+              if [ -f "bun.lock" ]; then
+                cp bun.lock /tmp/workflow_backup/
+              fi
             fi
             
             git checkout $BRANCH
@@ -153,9 +159,16 @@ jobs:
             git commit -m ":bookmark: update updates.json for version $VERSION"
             git push origin $BRANCH
             
-            # Pop the stash if it exists
-            if git stash list | grep -q "stash@{0}"; then
-              git stash pop
+            # Restore .output directory and bun.lock from temporary directory
+            if [ -d "/tmp/workflow_backup" ]; then
+              if [ -d "/tmp/workflow_backup/.output" ]; then
+                rm -rf .output
+                cp -r /tmp/workflow_backup/.output .
+              fi
+              if [ -f "/tmp/workflow_backup/bun.lock" ]; then
+                cp /tmp/workflow_backup/bun.lock .
+              fi
+              rm -rf /tmp/workflow_backup
             fi
           }
           
