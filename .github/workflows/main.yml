@@ -176,10 +176,10 @@ jobs:
           }
           
           # Update both branches
-          if [[ "${{ steps.get_release_type.outputs.prerelease }}" == "true" ]]; then
-            update_updates_json "main"
+          update_updates_json "${{ github.base_ref }}"
+          if [[ "${{ steps.get_release_type.outputs.prerelease }}" == "false" ]]; then
+            update_updates_json "preview"
           fi
-          update_updates_json "preview"
 
       - name: Clean .output directory before switching branches
         if: steps.get_release_type.outputs.prerelease == 'false'
