@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Bell, Expand, RefreshCcw, ScanText, Settings as SettingsIcon } from '@/lib/assets/icon';
+import { Bell, Expand, RefreshCcw, ScanText, SettingsIcon } from '@/lib/assets/icon';
 import List from '@/lib/components/List.svelte';
 import Nav, { type Page } from '@/lib/components/Nav.svelte';
 import Router from '@/lib/components/Router.svelte';

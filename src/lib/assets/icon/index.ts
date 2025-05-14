@@ -10,7 +10,7 @@ import Plus from './Plus.svelte';
 import RefreshCcw from './RefreshCcw.svelte';
 import ScanText from './ScanText.svelte';
 import Search from './Search.svelte';
-import Settings from './Settings.svelte';
+import SettingsIcon from './Settings.svelte';
 import Sun from './Sun.svelte';
 import XIcon from './X.svelte';
 
@@ -27,7 +27,7 @@ export {
   RefreshCcw,
   ScanText,
   Search,
-  Settings,
+  SettingsIcon,
   Sun,
   XIcon,
 };
