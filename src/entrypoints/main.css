@@ -124,6 +124,40 @@
   --animate-caret-blink: caret-blink 1.25s ease-out infinite;
 }
 
+@theme {
+  --spacing-wmain: 19rem;
+  --spacing-hmain: 33.75rem;
+  --spacing-app: 37rem;
+
+  --animate-toDown: toDown .6s ease-in-out forwards;
+
+  @keyframes toDown {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    },
+    100% {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }
+
+  --animate-toUp: toUp .6s ease-in-out forwardss;
+
+  @keyframes toUp {
+    0% {
+      transform: translateY(0%);
+    },
+    25% {
+      opacity: 1;
+    },
+    100% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

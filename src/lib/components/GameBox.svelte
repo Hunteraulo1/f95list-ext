@@ -49,7 +49,7 @@ const handleClick = () => {
 
 {#if game.domain !== 'Unknown'}
   <Lazy height={autoFocusMultiple ? 38 : 88} fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden rounded-md bg-primary-foreground">
-    <Card.Root class="cursor-pointer" onclick={handleClick}>
+    <Card.Root class="cursor-pointer py-0" onclick={handleClick}>
       {#if !autoFocusMultiple}
         <img
           alt={game.name}
