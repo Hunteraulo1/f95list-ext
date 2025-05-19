@@ -1,6 +1,7 @@
 <script lang="ts">
 import ScrollArea from '@/lib/components/ui/scroll-area/scroll-area.svelte';
 import { page } from '@/lib/stores';
+import { cn } from '../utils';
 import type { Page } from './Nav.svelte';
 
 interface Props {
@@ -13,7 +14,7 @@ const { pages, webapp = false }: Props = $props();
 
 {#each pages as { link, target }}
   {#if link === $page}
-    <ScrollArea class="h-full">
+    <ScrollArea class={cn(!webapp && "h-hmain")}>
       {#if typeof target !== 'string'}
         {@const Target = target}
         <Target {webapp} />
