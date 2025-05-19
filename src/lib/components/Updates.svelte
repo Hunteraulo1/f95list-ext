@@ -55,7 +55,7 @@ const handleClickFilter = (type: UpdateType['type']) => {
   
   <div class="sticky z-10 inline-flex items-center justify-center -translate-x-1/2 ml-[50%] border-2 rounded-md shadow-sm h-9 border-primary-foreground/60 bg-secondary/60 bottom-2">
     <Button variant="ghost" class={cn("text-xs", filterType === 'AJOUT DE JEU' && 'bg-secondary')} onclick={()=>handleClickFilter('AJOUT DE JEU')}>Ajouts</Button>
-    <hr class="w-[1px] h-full bg-secondary-foreground" />
+    <hr class="w-px h-full bg-secondary-foreground" />
     <Button variant="ghost" class={cn("text-xs", filterType === 'MISE À JOUR' && 'bg-secondary')} onclick={()=>handleClickFilter('MISE À JOUR')}>MàJ</Button>
   </div>
 {:else}

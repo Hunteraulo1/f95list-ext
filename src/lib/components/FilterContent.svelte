@@ -63,7 +63,7 @@ const handleClickRemove = (index: number) => {
 };
 </script>
 
-<ScrollArea class={cn("flex flex-col gap-1 w-full relative p-3 m-0", variant !== "webapp" && "h-[26.5rem]")}>
+<ScrollArea class={cn("flex flex-col gap-1 w-full relative p-3 m-0", variant !== "webapp" && "h-106")}>
   <div class={cn("flex gap-2 mb-2 items-center", variant !== "webapp" && "flex-col")}>
     <label for="filters" class="self-start my-auto">Filtrages sauvegardés: </label>
     <div class="flex gap-2 self-start">
