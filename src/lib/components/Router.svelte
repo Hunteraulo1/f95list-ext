@@ -14,7 +14,7 @@ const { pages, webapp = false }: Props = $props();
 
 {#each pages as { link, target }}
   {#if link === $page}
-    <ScrollArea class={cn(!webapp && "h-hmain")}>
+    <ScrollArea class={cn(webapp ? "h-screen max-h-screen" : "h-hmain")}>
       {#if typeof target !== 'string'}
         {@const Target = target}
         <Target {webapp} />
