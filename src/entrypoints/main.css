@@ -40,6 +40,8 @@
   --destructive-foreground: hsl(210 40% 88);
   --ring: hsl(221.2 83.2% 30%);
 
+  --font-sans: Outfit, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
   --radius: 0.5rem;
 }
 
@@ -130,7 +132,7 @@
     font-optical-sizing: auto;
     font-style: normal;
     font-variation-settings: "wdth" 100;
-    src: url(../../lib/assets/fonts/Outfit.ttf) format("truetype");
+    src: url(../lib/assets/fonts/Outfit.ttf) format("truetype");
   }
 }
 
