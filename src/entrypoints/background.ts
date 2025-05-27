@@ -1,15 +1,19 @@
-import type { GameType, UpdateType } from '@/lib/schemas';
 import { storage } from '#imports';
+import type { GameType, UpdateType } from '@/lib/schemas';
 
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
-export default defineBackground(async () => {
-  const integrate = await storage.getItem<boolean>('local:f95list_ext_integrate');
+export default defineBackground(() => {
+  const init = async () => {
+    const integrate = await storage.getItem<boolean>('local:f95list_ext_integrate');
 
-  if (integrate === null) await storage.setItem('local:f95list_ext_integrate', true);
+    if (integrate === null) await storage.setItem('local:f95list_ext_integrate', true);
 
-  const data = await dataInit();
+    const data = await dataInit();
 
-  if (data) await badgeState(data);
+    if (data) await badgeState(data);
+  };
+
+  init();
 });
 
 interface UpdateData {
@@ -102,46 +106,51 @@ const dataInit = async (): Promise<Data | null> => {
 browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   console.info(message);
 
-  (async () => {
-    const data = await dataInit();
+  const handleMessage = async () => {
+    try {
+      const data = await dataInit();
 
-    if (!data || typeof message !== 'string') {
-      console.error('data not found');
+      if (!data || typeof message !== 'string') {
+        console.error('data not found');
+        sendResponse(false);
+        return;
+      }
 
-      return false;
+      switch (message) {
+        case 'f95list-script': {
+          sendResponse(data.games);
+          break;
+        }
+        case 'f95list-ext': {
+          sendResponse(data);
+          break;
+        }
+        case 'f95list-badge': {
+          await badgeReset(data);
+          sendResponse(true);
+          break;
+        }
+        case 'f95list-integrate': {
+          const integrate = await storage.getItem('local:f95list_ext_integrate');
+          sendResponse(integrate);
+          break;
+        }
+        case message.startsWith('f95list-integrate') ? message : 'f95list-integrate': {
+          await storage.setItem('local:f95list_ext_integrate', message.endsWith('true'));
+          sendResponse(true);
+          break;
+        }
+        default: {
+          sendResponse(false);
+        }
+      }
+    } catch (error) {
+      console.error('Error in message handler:', error);
+      sendResponse(false);
     }
+  };
 
-    switch (message) {
-      case 'f95list-script': {
-        sendResponse(data.games);
-
-        break;
-      }
-      case 'f95list-ext': {
-        sendResponse(data);
-
-        break;
-      }
-      case 'f95list-badge': {
-        await badgeReset(data);
-
-        break;
-      }
-      case 'f95list-integrate': {
-        const integrate = await storage.getItem('local:f95list_ext_integrate');
-
-        sendResponse(integrate);
-
-        break;
-      }
-      case message.startsWith('f95list-integrate') ? message : 'f95list-integrate': {
-        await storage.setItem('local:f95list_ext_integrate', message.endsWith('true'));
-
-        break;
-      }
-    }
-  })();
-
+  handleMessage();
   return true;
 });
 
