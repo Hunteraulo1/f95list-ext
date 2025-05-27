@@ -32,7 +32,7 @@ const insert = (games: GameType[]) => {
 
       const parent = document.querySelector('.p-title-value');
 
-      if (!parent || parent?.classList.contains('flag-inserted')) return;
+      if (!parent || parent?.classList.contains('flag-inserted')) continue;
 
       createFlag(parent, game.tlink);
       parent?.classList.add('flag-inserted');
@@ -42,6 +42,12 @@ const insert = (games: GameType[]) => {
 
 const init = async () => {
   try {
+    if (document.readyState === 'loading') {
+      await new Promise((resolve) => {
+        document.addEventListener('DOMContentLoaded', resolve);
+      });
+    }
+
     const data = await browser.runtime.sendMessage('f95list-script');
 
     insert(data);
