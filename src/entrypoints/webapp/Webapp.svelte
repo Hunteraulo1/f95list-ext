@@ -56,7 +56,7 @@ const variant = 'webapp';
     <div class="max-w-md w-full h-full">
       <Router {pages} webapp />
     </div>
-    <div class="flex flex-col h-full w-full p-2 gap-4">
+    <div class="flex flex-col h-full w-full p-2 gap-4 relative">
       {#key $selectedGame}
         {#if $selectedGame}
           <Details game={$selectedGame} {variant} open />
