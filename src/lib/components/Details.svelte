@@ -44,15 +44,15 @@ let closeHovered = $state<boolean>(false);
     </Button>
 
     {#if game}
-      <Lazy height="33vh" fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden bg-primary-foreground max-h-1/3" placeholder>
-        {@const image = isDevelopment ? faker.image.url() : game.image?.replace(
+      {@const image = isDevelopment ? faker.image.url() : game.image?.replace(
             'attachments.f95zone.to',
             'preview.f95zone.to'
           )}
+      <Lazy height="33vh" fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden bg-primary-foreground max-h-1/3" placeholder>
         <img
           alt={game.name}
           src={image ?? noImage}
-          class="h-full w-full object-cover"
+          class="h-full w-full object-cover relative overflow-hidden bg-primary-foreground max-h-1/3"
           class:rounded-lg={variant === 'webapp'}
         />
       </Lazy>
