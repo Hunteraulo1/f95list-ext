@@ -39,8 +39,5 @@ export default defineConfig({
         'Access-Control-Allow-Origin': '*',
       },
     },
-    define: {
-      'process.env': process.env,
-    },
   }),
 });

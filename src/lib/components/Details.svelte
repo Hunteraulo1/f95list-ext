@@ -1,6 +1,4 @@
 <script lang="ts">
-import { faker } from '@faker-js/faker';
-import Lazy from 'svelte-lazy';
 import { ArrowLeft } from '@/lib/assets/icon';
 import noImage from '@/lib/assets/no-image.png';
 import { Badge } from '@/lib/components/ui/badge';
@@ -11,7 +9,7 @@ import type { GameType } from '@/lib/schemas';
 import { selectedGame, settings } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 import { statusColor, typeColor } from '@/lib/utils/badgeColor';
-import { isDevelopment } from '../utils/development';
+import Lazy from 'svelte-lazy';
 import Alert from './Alert.svelte';
 
 let tagsHide = $state($settings.tagsHide);
@@ -44,14 +42,13 @@ let closeHovered = $state<boolean>(false);
     </Button>
 
     {#if game}
-      {@const image = isDevelopment ? faker.image.url() : game.image?.replace(
-        'attachments.f95zone.to',
-        'preview.f95zone.to'
-      )}
       <Lazy height="33vh" fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden bg-primary-foreground max-h-1/3" placeholder>
         <img
           alt={game.name}
-          src={image ?? noImage}
+          src={game.image?.replace(
+            'attachments.f95zone.to',
+            'preview.f95zone.to'
+          ) ?? noImage}
           class="h-full w-full"
           class:rounded-lg={variant === 'webapp'}
         />
@@ -77,7 +74,7 @@ let closeHovered = $state<boolean>(false);
           <Badge style={statusColor(game.status)} class="text-primary-foreground font-bold">
             {game.status}
           </Badge>
-          <span class="text-lg leading-none font-medium">{isDevelopment ? faker.company.name() : game.name}</span>
+          <span class="text-lg leading-none font-medium">{game.name}</span>
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger
@@ -108,7 +105,7 @@ let closeHovered = $state<boolean>(false);
           <span class="font-bold text-sm select-none">Tags:</span>
           {#each game.tags as tag, index}
             {#if index < 5 || !tagsHide}
-              <Badge variant="secondary">{isDevelopment ? faker.word.sample(5) : tag}</Badge>
+              <Badge variant="secondary">{tag}</Badge>
             {/if}
           {/each}
           {#if game.tags.length > 5}
