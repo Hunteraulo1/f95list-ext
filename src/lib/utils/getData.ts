@@ -1,8 +1,8 @@
-import { errors, filter, games, outdated, settings, traductors, updates } from '@/lib/stores.js';
 import { get } from 'svelte/store';
 import { flatten, parse, safeParse } from 'valibot';
+import { errors, filter, games, outdated, settings, traductors, updates } from '@/lib/stores.js';
 import packageJson from '../../../package.json';
-import { type GameType, Games, TraductorsData, Updates } from '../schemas.js';
+import { Games, type GameType, TraductorsData, Updates } from '../schemas.js';
 
 interface UpdateData {
   date: string;
@@ -10,7 +10,7 @@ interface UpdateData {
   names: string[];
 }
 
-const callIntegrate = async () => await browser.runtime.sendMessage('f95list-integrate');
+export const callIntegrate = async () => await browser.runtime.sendMessage('f95list-integrate');
 
 const getData = async () => {
   try {

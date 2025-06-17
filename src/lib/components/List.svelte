@@ -1,4 +1,5 @@
 <script lang="ts">
+import { onMount } from 'svelte';
 import { ChevronDown, RefreshCcw } from '@/lib/assets/icon';
 import GameBox from '@/lib/components/GameBox.svelte';
 import Button from '@/lib/components/ui/button/button.svelte';
@@ -6,7 +7,6 @@ import type { GameType } from '@/lib/schemas';
 import { autoFocusBlock, filteredGames, games, outdated, settings } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { onMount } from 'svelte';
 import Alert from './Alert.svelte';
 import Filter from './Filter.svelte';
 

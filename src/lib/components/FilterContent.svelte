@@ -1,10 +1,10 @@
 <script lang="ts">
+import { get } from 'svelte/store';
 import { Button } from '@/lib/components/ui/button';
 import { Input } from '@/lib/components/ui/input';
 import { ScrollArea } from '@/lib/components/ui/scroll-area';
 import { type FilterType, filter, search } from '@/lib/stores';
 import { cn } from '@/lib/utils';
-import { get } from 'svelte/store';
 import { Plus, XIcon } from '../assets/icon';
 import FilterPopover from './FilterPopover.svelte';
 

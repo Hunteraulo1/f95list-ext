@@ -1,4 +1,4 @@
-import { type InferOutput, array, boolean, date, nullable, number, object, picklist, string } from 'valibot';
+import { array, boolean, date, type InferOutput, nullable, number, object, picklist, string } from 'valibot';
 
 const Game = object({
   id: nullable(number()),

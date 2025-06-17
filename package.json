@@ -14,7 +14,10 @@
       "path": "cz-emoji"
     },
     "cz-emoji": {
-      "skipQuestions": ["scope", "body"]
+      "skipQuestions": [
+        "scope",
+        "body"
+      ]
     }
   },
   "devDependencies": {
@@ -64,7 +67,13 @@
     "format": "bunx @biomejs/biome format --write .",
     "postinstall": "wxt prepare"
   },
-  "trustedDependencies": ["@biomejs/biome", "@tailwindcss/oxide", "dtrace-provider", "esbuild", "spawn-sync"],
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@tailwindcss/oxide",
+    "dtrace-provider",
+    "esbuild",
+    "spawn-sync"
+  ],
   "type": "module",
   "dependencies": {
     "svelte-lazy": "1.2.11"

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { ModeWatcher } from 'mode-watcher';
 import { Bell, Expand, RefreshCcw, ScanText, SettingsIcon } from '@/lib/assets/icon';
 import List from '@/lib/components/List.svelte';
 import Nav, { type Page } from '@/lib/components/Nav.svelte';
@@ -8,7 +9,6 @@ import Traductors from '@/lib/components/Traductors.svelte';
 import Updates from '@/lib/components/Updates.svelte';
 import { Button } from '@/lib/components/ui/button';
 import getData from '@/lib/utils/getData';
-import { ModeWatcher } from 'mode-watcher';
 
 const pages: Page[] = [
   {

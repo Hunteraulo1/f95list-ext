@@ -1,11 +1,11 @@
 <script lang="ts">
+import { mode, toggleMode } from 'mode-watcher';
 import { Moon, Sun } from '@/lib/assets/icon';
 import { Button, buttonVariants } from '@/lib/components/ui/button';
 import { Label } from '@/lib/components/ui/label';
 import { Switch } from '@/lib/components/ui/switch';
 import { errors, page, settings } from '@/lib/stores';
 import type { Settings } from '@/lib/types';
-import { mode, toggleMode } from 'mode-watcher';
 
 interface SettingItem {
   title: string;

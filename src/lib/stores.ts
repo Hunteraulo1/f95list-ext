@@ -1,11 +1,9 @@
 import { derived, get, writable } from 'svelte/store';
-
+import type { FlatErrors } from 'valibot';
+import tags from '@/lib/assets/tags.json' with { type: 'json' };
+import type { Page } from '@/lib/components/Nav.svelte';
 import type { GameType, TraductorType, UpdateType } from './schemas.js';
 import type { ComboBox, Settings } from './types.js';
-
-import tags from '@/lib/assets/tags.json' assert { type: 'json' };
-import type { Page } from '@/lib/components/Nav.svelte';
-import type { FlatErrors } from 'valibot';
 
 export const games = writable<GameType[]>([]);
 export const errors = writable<FlatErrors<any>[]>([]); // TODO: improve type

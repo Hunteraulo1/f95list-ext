@@ -110,8 +110,8 @@
   --animate-caret-blink: caret-blink 1.25s ease-out infinite;
 
   /* Custom */
-  --animate-toDown: toDown .6s ease-in-out forwards;
-  --animate-toUp: toUp .6s ease-in-out forwardss;
+  --animate-toDown: toDown 0.6s ease-in-out forwards;
+  --animate-toUp: toUp 0.6s ease-in-out forwardss;
 
   --spacing-wmain: 19rem;
   --spacing-hmain: 33.75rem;

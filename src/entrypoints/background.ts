@@ -1,5 +1,5 @@
-import type { GameType, UpdateType } from '@/lib/schemas';
 import { storage } from '#imports';
+import type { GameType, UpdateType } from '@/lib/schemas';
 
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
 export default defineBackground(() => {
@@ -80,7 +80,7 @@ const dataInit = async (): Promise<Data | null> => {
   if (wait) return null;
   wait = true;
 
-  const date = new Date().getTime();
+  const date = Date.now();
   const time = (await storage.getItem<number>('local:f95list_ext_time')) ?? 0;
 
   if (data && date < time) {

@@ -1,4 +1,6 @@
 <script lang="ts">
+import { faker } from '@faker-js/faker';
+import Lazy from 'svelte-lazy';
 import { CopyCheck } from '@/lib/assets/icon';
 import noImage from '@/lib/assets/no-image.png';
 import { Badge } from '@/lib/components/ui/badge';
@@ -8,8 +10,6 @@ import type { GameType } from '@/lib/schemas';
 import { games, selectedGame } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { faker } from '@faker-js/faker';
-import Lazy from 'svelte-lazy';
 import { isDevelopment } from '../utils/development';
 import Details from './Details.svelte';
 

@@ -1,4 +1,6 @@
 <script lang="ts">
+import { faker } from '@faker-js/faker';
+import Lazy from 'svelte-lazy';
 import { ArrowLeft } from '@/lib/assets/icon';
 import noImage from '@/lib/assets/no-image.png';
 import { Badge } from '@/lib/components/ui/badge';
@@ -9,8 +11,6 @@ import type { GameType } from '@/lib/schemas';
 import { selectedGame, settings } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 import { statusColor, typeColor } from '@/lib/utils/badgeColor';
-import { faker } from '@faker-js/faker';
-import Lazy from 'svelte-lazy';
 import { isDevelopment } from '../utils/development';
 import Alert from './Alert.svelte';
 
