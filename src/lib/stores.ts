@@ -27,6 +27,17 @@ const filterConfig = {
     title: 'Type',
     values: ['RenPy', 'RPGM', 'Unreal', 'HTLM', 'Flash', 'QSP', 'RenPy/RPGM', 'RenPy/Unity', 'Autre'],
   },
+  ttype: {
+    title: 'Qualité de la traduction',
+    values: [
+      'Traduction Humaine',
+      'Traduction Automatique',
+      'Traduction Semi-Automatique',
+      'VO Française',
+      'À tester',
+      'Lien Trad HS',
+    ],
+  },
   status: {
     title: 'Status',
     values: ['EN COURS', 'ABANDONNÉ', 'TERMINÉ'],
@@ -69,6 +80,16 @@ const defaultFilters = (): FilterType => [
     name: 'status',
     open: false,
     values: filterConfig.status.values.map((value) => ({
+      value,
+      checked: false,
+      inverse: false,
+    })),
+  },
+  {
+    title: filterConfig.ttype.title,
+    name: 'ttype',
+    open: false,
+    values: filterConfig.ttype.values.map((value) => ({
       value,
       checked: false,
       inverse: false,
