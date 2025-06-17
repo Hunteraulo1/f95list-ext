@@ -45,9 +45,9 @@ let closeHovered = $state<boolean>(false);
 
     {#if game}
       {@const image = isDevelopment ? faker.image.url() : game.image?.replace(
-            'attachments.f95zone.to',
-            'preview.f95zone.to'
-          )}
+        'attachments.f95zone.to',
+        'preview.f95zone.to'
+      )}
       <Lazy height="33vh" fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden bg-primary-foreground max-h-1/3" placeholder>
         <img
           alt={game.name}
