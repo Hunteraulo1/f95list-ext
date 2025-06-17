@@ -9,7 +9,9 @@ import type { GameType } from '@/lib/schemas';
 import { selectedGame, settings } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 import { statusColor, typeColor } from '@/lib/utils/badgeColor';
+import { faker } from '@faker-js/faker';
 import Lazy from 'svelte-lazy';
+import { isDevelopment } from '../utils/development';
 import Alert from './Alert.svelte';
 
 let tagsHide = $state($settings.tagsHide);
@@ -43,12 +45,13 @@ let closeHovered = $state<boolean>(false);
 
     {#if game}
       <Lazy height="33vh" fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden bg-primary-foreground max-h-1/3" placeholder>
-        <img
-          alt={game.name}
-          src={game.image?.replace(
+        {@const image = isDevelopment ? faker.image.url() : game.image?.replace(
             'attachments.f95zone.to',
             'preview.f95zone.to'
-          ) ?? noImage}
+          )}
+        <img
+          alt={game.name}
+          src={image ?? noImage}
           class="h-full w-full object-cover"
           class:rounded-lg={variant === 'webapp'}
         />
@@ -74,7 +77,7 @@ let closeHovered = $state<boolean>(false);
           <Badge style={statusColor(game.status)} class="text-primary-foreground font-bold">
             {game.status}
           </Badge>
-          <span class="text-lg leading-none font-medium">{game.name}</span>
+          <span class="text-lg leading-none font-medium">{isDevelopment ? faker.company.name() : game.name}</span>
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger
@@ -105,7 +108,7 @@ let closeHovered = $state<boolean>(false);
           <span class="font-bold text-sm select-none">Tags:</span>
           {#each game.tags as tag, index}
             {#if index < 5 || !tagsHide}
-              <Badge variant="secondary">{tag}</Badge>
+              <Badge variant="secondary">{isDevelopment ? faker.word.sample(5) : tag}</Badge>
             {/if}
           {/each}
           {#if game.tags.length > 5}

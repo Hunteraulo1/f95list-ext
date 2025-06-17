@@ -8,7 +8,9 @@ import type { GameType } from '@/lib/schemas';
 import { games, selectedGame } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { faker } from '@faker-js/faker';
 import Lazy from 'svelte-lazy';
+import { isDevelopment } from '../utils/development';
 import Details from './Details.svelte';
 
 interface Props {
@@ -51,13 +53,14 @@ const handleClick = () => {
   <Lazy height={autoFocusMultiple ? 38 : 88} fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden rounded-md bg-primary-foreground">
     <Card.Root class="cursor-pointer py-0" onclick={handleClick}>
       {#if !autoFocusMultiple}
+      {@const image = isDevelopment ? faker.image.url() : game.image?.replace(
+            'attachments.f95zone.to',
+            'preview.f95zone.to'
+          )}
         <img
           alt={game.name}
           class="absolute top-0 left-0 object-cover w-full h-full"
-          src={game.image?.replace(
-            'attachments.f95zone.to',
-            'preview.f95zone.to'
-          ) ?? noImage}
+          src={image ?? noImage}
           style="image-rendering: smooth; image-resolution: snap;"
         />
       {/if}
@@ -71,7 +74,7 @@ const handleClick = () => {
             'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-secondary-foreground'
         )}
       >
-        <Card.Title class="select-none">{game.name}</Card.Title>
+        <Card.Title class="select-none">{isDevelopment ? faker.company.name() : game.name}</Card.Title>
         <Card.Description>
           <Tooltip.Provider>
             <Tooltip.Root>

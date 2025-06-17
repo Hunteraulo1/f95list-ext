@@ -1,6 +1,10 @@
 import tailwindcss from '@tailwindcss/vite';
+import dotenv from 'dotenv';
 import { defineConfig } from 'wxt';
 import packageJSON from './package.json';
+
+// Charger les variables d'environnement
+dotenv.config();
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -34,6 +38,9 @@ export default defineConfig({
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
+    },
+    define: {
+      'process.env': process.env,
     },
   }),
 });

@@ -125,11 +125,11 @@
 
   body {
     @apply bg-background text-foreground;
+    text-size-adjust: 100%;
   }
 
   @font-face {
     font-family: Outfit;
-    font-optical-sizing: auto;
     font-style: normal;
     font-variation-settings: "wdth" 100;
     src: url(../lib/assets/fonts/Outfit.ttf) format("truetype");
@@ -175,14 +175,14 @@
     opacity: 0;
   }
   100% {
-    transform: translateY(0%);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
 @keyframes toUp {
   0% {
-    transform: translateY(0%);
+    transform: translateY(0);
   }
   25% {
     opacity: 1;
