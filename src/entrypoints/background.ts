@@ -1,5 +1,5 @@
-import { storage } from '#imports';
 import type { GameType, UpdateType } from '@/lib/schemas';
+import { storage } from '#imports';
 
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
 export default defineBackground(() => {
