@@ -43,7 +43,7 @@ const badgeState = async (data: Data) => {
     return true;
   });
 
-  badge.map((update: UpdateData) => {
+  badge.forEach((update: UpdateData) => {
     index -= update.names.length;
   });
 
@@ -108,6 +108,24 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
   const handleMessage = async () => {
     try {
+      // Workspace fix
+      if (typeof message === 'object' && message && 'type' in message) {
+        const typedMsg = message as { type?: string; url?: string };
+        if (typedMsg.type === 'open-tab' && typedMsg.url) {
+          const [activeTab] = await browser.tabs.query({ active: true, currentWindow: true });
+          if (activeTab) {
+            await browser.tabs.create({
+              url: typedMsg.url,
+              windowId: activeTab.windowId,
+              index: typeof activeTab.index === 'number' ? activeTab.index + 1 : undefined,
+              openerTabId: activeTab.id,
+              active: true,
+            });
+          }
+          return;
+        }
+      }
+
       const data = await dataInit();
 
       if (!data || typeof message !== 'string') {

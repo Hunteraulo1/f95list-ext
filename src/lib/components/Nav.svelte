@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { ClassValue } from 'clsx';
 import type { Component } from 'svelte';
+import { onMount } from 'svelte';
 import { page } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 
@@ -23,7 +24,14 @@ let mouseEnter = $state<boolean[]>(Array(pages.length).fill(false));
 let badge = $state<number>(0);
 
 const handleClick = (link: Page['link'], target: Page['target']) => {
-  if (typeof target === 'string') return window.open(target, '_blank');
+  if (typeof target === 'string') {
+    try {
+      browser.runtime.sendMessage({ type: 'open-tab', url: target });
+    } catch {
+      window.open(target, '_blank');
+    }
+    return;
+  }
 
   $page = link;
 
@@ -32,7 +40,7 @@ const handleClick = (link: Page['link'], target: Page['target']) => {
 
 const badgeCount = async (): Promise<void> => {
   const definedAction = browser.browserAction ?? browser.action;
-  badge = Number.parseInt(await definedAction.getBadgeText({}));
+  badge = Number.parseInt(await definedAction.getBadgeText({}), 10);
   console.log('🚀 ~ badgeCount ~ badge:', badge);
 };
 
