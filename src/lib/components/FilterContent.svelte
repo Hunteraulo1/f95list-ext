@@ -1,4 +1,5 @@
 <script lang="ts">
+import { onMount } from 'svelte';
 import { get } from 'svelte/store';
 import { Button } from '@/lib/components/ui/button';
 import { Input } from '@/lib/components/ui/input';

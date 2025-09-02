@@ -14,7 +14,7 @@ export default defineConfig({
   modules: ['@wxt-dev/module-svelte'],
   manifest: ({ mode }) => ({
     name: 'F95 France - Extension',
-    permissions: ['storage', 'unlimitedStorage', 'tabs'],
+    permissions: ['storage', 'unlimitedStorage', 'tabs', 'activeTab'],
     browser_specific_settings: {
       gecko: {
         id: '{9f7488b3-d704-4894-bac8-5dc3068fd6b9}',
