@@ -45,7 +45,6 @@
     "wxt": "0.20.8"
   },
   "overrides": {
-    "paneforge": ">=1.0.0-next.1",
     "vaul-svelte": ">=1.0.0-next.1"
   },
   "description": "Extension de F95 France permettant de lister les traductions",
