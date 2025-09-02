@@ -24,6 +24,7 @@
       "!**/dist/**/*",
       "!**/.svelte-kit/**/*",
       "!**/build/**/*",
+      "!**/*.css",
       "!**/lib/utils.ts"
     ],
     "enabled": true,

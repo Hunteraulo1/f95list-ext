@@ -43,7 +43,7 @@ const badgeState = async (data: Data) => {
     return true;
   });
 
-  badge.map((update: UpdateData) => {
+  badge.forEach((update: UpdateData) => {
     index -= update.names.length;
   });
 
