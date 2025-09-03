@@ -6,6 +6,7 @@ import { Label } from '@/lib/components/ui/label';
 import { Switch } from '@/lib/components/ui/switch';
 import { errors, page, settings } from '@/lib/stores';
 import type { Settings } from '@/lib/types';
+import ExternalLink from './ExternalLink.svelte';
 
 interface SettingItem {
   title: string;
@@ -128,9 +129,9 @@ const handleSettings = async (settingsItem: SettingItem) => {
         >Voir les traducteurs/relecteurs</Button
       >
       {#each links as { title, href }}
-        <a {href} target="_blank" class={buttonVariants({ variant: "link" })}>
+        <ExternalLink  target={href} classes={buttonVariants({ variant: "link" })}>
           {title}
-        </a>
+        </ExternalLink>
       {/each}
     </div>
   </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { ModeWatcher } from 'mode-watcher';
 import { Bell, RefreshCcw, ScanText, SettingsIcon } from '@/lib/assets/icon';
 import Details from '@/lib/components/Details.svelte';
 import Filter from '@/lib/components/Filter.svelte';
@@ -11,7 +12,6 @@ import Updates from '@/lib/components/Updates.svelte';
 import { Button } from '@/lib/components/ui/button';
 import { selectedGame } from '@/lib/stores';
 import getData from '@/lib/utils/getData';
-import { ModeWatcher } from 'mode-watcher';
 
 const pages: Page[] = [
   {
@@ -56,7 +56,7 @@ const variant = 'webapp';
     <div class="max-w-md w-full h-full">
       <Router {pages} webapp />
     </div>
-    <div class="flex flex-col h-full w-full p-2 relative">
+    <div class="grid grid-rows-[2fr_1fr] h-full w-full p-2 relative">
       {#key $selectedGame}
         {#if $selectedGame}
           <Details game={$selectedGame} {variant} open />
@@ -66,9 +66,11 @@ const variant = 'webapp';
           </p>
         {/if}
       {/key}
-      <Filter {variant} />
-      
-      <Nav {pages} {variant} />
+      <div class="h-full">
+        <Filter {variant} />
+        
+        <Nav {pages} {variant} />
+      </div>
     </div>
   {/await}
 </main>

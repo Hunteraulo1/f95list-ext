@@ -1,6 +1,6 @@
-import { errors, filter, games, outdated, settings, traductors, updates } from '@/lib/stores.js';
 import { get } from 'svelte/store';
 import { flatten, parse, safeParse } from 'valibot';
+import { errors, filter, games, outdated, settings, traductors, updates } from '@/lib/stores.js';
 import packageJson from '../../../package.json';
 import { Games, type GameType, TraductorsData, type TraductorType, Updates } from '../schemas.js';
 import devlist from './devlist.json';

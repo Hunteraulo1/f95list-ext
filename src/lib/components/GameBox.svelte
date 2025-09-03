@@ -10,6 +10,7 @@ import { games, selectedGame } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import Details from './Details.svelte';
+import ExternalLink from './ExternalLink.svelte';
 
 interface Props {
   game: GameType;
@@ -102,9 +103,9 @@ const handleClick = () => {
       </Card.CardContent>
     </Card.Root>
     {#if import.meta.env.FIREFOX && !autoFocusMultiple}
-      <a class="absolute p-2 rounded-full right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30" href={game.link} target="_blank">
+      <ExternalLink classes="absolute p-2 rounded-full right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30" target={game.link}>
         <CopyCheck size={24} />
-      </a>
+      </ExternalLink>
     {/if}
   </Lazy>
 {:else}

@@ -64,7 +64,7 @@ const handleClickRemove = (index: number) => {
 };
 </script>
 
-<ScrollArea class={cn("flex flex-col gap-1 w-full relative p-3 m-0", variant !== "webapp" && "h-106")}>
+<ScrollArea class={cn("flex flex-col gap-1 w-full h-full relative p-2 pb-4 m-0", variant === "webapp" ? "" : "h-106")}>
   <div class={cn("flex gap-2 mb-2 items-center", variant !== "webapp" && "flex-col")}>
     <label for="filters" class="self-start my-auto">Filtrages sauvegardés: </label>
     <div class="flex gap-2 self-start">
@@ -100,7 +100,7 @@ const handleClickRemove = (index: number) => {
     <Button onclick={handleReset} disabled={!active}>Réinitialiser</Button>
   </div>
   
-  <div class={variant === 'webapp' ? 'grid grid-cols-4 gap-2' : 'flex flex-col gap-1 relative'}>
+  <div class={variant === 'webapp' ? 'grid lg:grid-cols-4 md:grid-cols-2 gap-2 overflow-scroll' : 'flex flex-col gap-1 relative'}>
     {#each $filter as { title, values }}
       <FilterPopover {active} {title} {values} />
     {/each}

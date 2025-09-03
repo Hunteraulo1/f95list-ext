@@ -55,7 +55,7 @@ const handleSelect = (value: string) => {
 <div class="w-full">
   <label
     for={title}
-    class="font-bold text-xs capitalize leading-none mt-2"
+    class="font-bold text-xs leading-none mt-2 text-nowrap"
   >{title}:</label>
   <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "outline", class: "w-full flex justify-between gap-2" })} disabled={!active}>

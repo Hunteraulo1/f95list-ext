@@ -47,7 +47,7 @@ const badgeCount = async (): Promise<void> => {
 onMount(() => badgeCount());
 </script>
 
-<nav class={cn("flex w-full gap-2 justify-around bg-primary-foreground p-1 border-t-4 border-secondary/60 h-14", variant === 'webapp' && 'rounded-md h-18')}>
+<nav class={cn("flex w-full gap-2 justify-around bg-primary-foreground p-1 border-t-4 border-secondary/60 h-14", variant === 'webapp' && 'rounded-md')}>
   {#each pages as {icon, name, link, className, target}, index}
     {#if icon}
       {@const Icon = icon}
