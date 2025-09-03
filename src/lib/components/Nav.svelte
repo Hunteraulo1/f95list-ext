@@ -1,9 +1,9 @@
 <script lang="ts">
+import { page, selectedGame } from '@/lib/stores';
+import { cn } from '@/lib/utils';
 import type { ClassValue } from 'clsx';
 import type { Component } from 'svelte';
 import { onMount } from 'svelte';
-import { page } from '@/lib/stores';
-import { cn } from '@/lib/utils';
 
 export interface Page {
   name: string;
@@ -34,6 +34,7 @@ const handleClick = (link: Page['link'], target: Page['target']) => {
   }
 
   $page = link;
+  $selectedGame = undefined;
 
   badgeCount();
 };
