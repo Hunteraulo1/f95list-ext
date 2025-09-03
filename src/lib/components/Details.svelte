@@ -1,5 +1,4 @@
 <script lang="ts">
-import Lazy from 'svelte-lazy';
 import { ArrowLeft } from '@/lib/assets/icon';
 import noImage from '@/lib/assets/no-image.png';
 import { Badge } from '@/lib/components/ui/badge';
@@ -10,6 +9,7 @@ import type { GameType } from '@/lib/schemas';
 import { selectedGame, settings } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 import { statusColor, typeColor } from '@/lib/utils/badgeColor';
+import Lazy from 'svelte-lazy';
 import Alert from './Alert.svelte';
 import ExternalLink from './ExternalLink.svelte';
 
@@ -44,10 +44,7 @@ let closeHovered = $state<boolean>(false);
       <Lazy height="16rem" fadeOption={{ delay: 0, duration: 0 }} keep={true} class="overflow-hidden bg-primary-foreground h-64 max-h-64" placeholder>
         <img
           alt={game.name}
-          src={game.image?.replace(
-            'attachments.f95zone.to',
-            'preview.f95zone.to'
-          ) ?? noImage}
+          src={game.image ?? noImage}
           class={cn("h-1/3 w-full object-cover", variant === 'webapp' && 'rounded-lg h-64')}
         />
       </Lazy>
