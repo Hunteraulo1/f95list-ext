@@ -112,7 +112,6 @@
 
   /* Custom */
   --animate-toDown: toDown 0.6s ease-in-out forwards;
-  --animate-toUp: toUp 0.6s ease-in-out forwardss;
 
   --spacing-wmain: 19rem;
   --spacing-hmain: 33.75rem;
@@ -178,18 +177,5 @@
   100% {
     transform: translateY(0);
     opacity: 1;
-  }
-}
-
-@keyframes toUp {
-  0% {
-    transform: translateY(0);
-  }
-  25% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100%);
-    opacity: 0;
   }
 }

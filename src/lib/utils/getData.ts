@@ -2,7 +2,8 @@ import { get } from 'svelte/store';
 import { flatten, parse, safeParse } from 'valibot';
 import { errors, filter, games, outdated, settings, traductors, updates } from '@/lib/stores.js';
 import packageJson from '../../../package.json';
-import { Games, type GameType, TraductorsData, Updates } from '../schemas.js';
+import { Games, type GameType, TraductorsData, type TraductorType, Updates } from '../schemas.js';
+import devlist from './devlist.json';
 
 interface UpdateData {
   date: string;
@@ -10,11 +11,21 @@ interface UpdateData {
   names: string[];
 }
 
+const devMode = false;
+
 export const callIntegrate = async () => await browser.runtime.sendMessage('f95list-integrate');
 
 const getData = async () => {
   try {
-    const data = await browser.runtime.sendMessage('f95list-ext');
+    interface Data {
+      games: GameType[];
+      updates: UpdateData[];
+      traductors: TraductorType[];
+    }
+
+    const data: Data = devMode
+      ? (devlist.data as { games: GameType[]; updates: UpdateData[]; traductors: TraductorType[] })
+      : await browser.runtime.sendMessage('f95list-ext');
 
     // Games
     const validGames = safeParse(Games, data.games);

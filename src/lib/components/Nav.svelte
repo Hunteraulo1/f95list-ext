@@ -2,7 +2,7 @@
 import type { ClassValue } from 'clsx';
 import type { Component } from 'svelte';
 import { onMount } from 'svelte';
-import { page } from '@/lib/stores';
+import { page, selectedGame } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 
 export interface Page {
@@ -34,6 +34,7 @@ const handleClick = (link: Page['link'], target: Page['target']) => {
   }
 
   $page = link;
+  $selectedGame = undefined;
 
   badgeCount();
 };
@@ -47,7 +48,7 @@ const badgeCount = async (): Promise<void> => {
 onMount(() => badgeCount());
 </script>
 
-<nav class={cn("flex w-full gap-2 justify-around bg-primary-foreground p-1 border-t-4 border-secondary/60 h-14", variant === 'webapp' && 'rounded-md h-18')}>
+<nav class={cn("flex w-full gap-2 justify-around bg-primary-foreground p-1 border-t-4 border-secondary/60 h-14", variant === 'webapp' && 'rounded-md')}>
   {#each pages as {icon, name, link, className, target}, index}
     {#if icon}
       {@const Icon = icon}

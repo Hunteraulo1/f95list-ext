@@ -11,6 +11,7 @@ import { selectedGame, settings } from '@/lib/stores';
 import { cn } from '@/lib/utils';
 import { statusColor, typeColor } from '@/lib/utils/badgeColor';
 import Alert from './Alert.svelte';
+import ExternalLink from './ExternalLink.svelte';
 
 let tagsHide = $state($settings.tagsHide);
 
@@ -21,12 +22,11 @@ interface Props {
 }
 
 let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $props();
-let closed = $state<boolean>(variant === 'popup' && false);
 let closeHovered = $state<boolean>(false);
 </script>
 
-<div class={variant === 'webapp' ? 'w-full h-full relative max-h-2/3' : 'fixed w-wmain h-hmain top-0 left-0 z-20'}>
-  <ScrollArea class="bg-background h-full w-full {closed ? 'animate-to-up' : 'animate-to-down'}">
+<div class={variant === 'webapp' ? 'overflow-hidden' : 'fixed w-wmain h-hmain top-0 left-0 z-20'}>
+  <ScrollArea class="bg-background h-full w-full animate-toDown">
     <Button
       class="flex gap-1 opacity-50 absolute top-2 left-2 cursor-pointer z-10"
       variant="secondary"
@@ -34,38 +34,32 @@ let closeHovered = $state<boolean>(false);
       onmouseleave={()=>closeHovered = false}
       onclick={() => {
         $selectedGame = undefined;
-        closed = true;
-        setTimeout(() => {open = false}, 600);
+        open = false;
       }}
     >
       <ArrowLeft size={16} isHovered={closeHovered} />
     </Button>
 
     {#if game}
-      <Lazy height="33vh" fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden bg-primary-foreground max-h-1/3" placeholder>
+      <Lazy height="16rem" fadeOption={{ delay: 0, duration: 0 }} keep={true} class="overflow-hidden bg-primary-foreground h-64 max-h-64" placeholder>
         <img
           alt={game.name}
-          src={game.image?.replace(
-            'attachments.f95zone.to',
-            'preview.f95zone.to'
-          ) ?? noImage}
-          class="h-full w-full"
-          class:rounded-lg={variant === 'webapp'}
+          src={game.image ?? noImage}
+          class={cn("h-1/3 w-full object-cover", variant === 'webapp' && 'rounded-lg h-64')}
         />
       </Lazy>
       <div class="p-2 flex flex-col gap-4">
         <div>
           <span class="font-bold text-sm select-none">Site:</span>
-          <a href={game.link} target="_blank">
+          <ExternalLink target={game.link}>
             <Badge variant="secondary">{game.domain}</Badge>
-          </a>
-          <a
-            href={game.link}
-            target="_blank"
-            class={cn(buttonVariants({ variant: 'link', class: 'px-2' }), 'select-none')}
+          </ExternalLink>
+          <ExternalLink
+            target={game.link}
+            classes={cn(buttonVariants({ variant: 'link', class: 'px-2' }), 'select-none')}
           >
             Accèder au jeu
-          </a>
+          </ExternalLink>
         </div>
         <h1 class="mb-2 flex items-center gap-1 flex-wrap">
           <Badge style={typeColor(game.type)} class="text-primary-foreground font-bold">
