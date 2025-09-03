@@ -100,7 +100,7 @@ const handleClickRemove = (index: number) => {
     <Button onclick={handleReset} disabled={!active}>Réinitialiser</Button>
   </div>
   
-  <div class={variant === 'webapp' ? 'grid lg:grid-cols-4 md:grid-cols-2 gap-2 overflow-scroll' : 'flex flex-col gap-1 relative'}>
+  <div class={variant === 'webapp' ? 'grid lg:grid-cols-4 md:grid-cols-2 gap-2' : 'flex flex-col gap-1 relative'}>
     {#each $filter as { title, values }}
       <FilterPopover {active} {title} {values} />
     {/each}
