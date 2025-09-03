@@ -1,11 +1,11 @@
 <script lang="ts">
-import { onMount } from 'svelte';
-import { get } from 'svelte/store';
 import { Button } from '@/lib/components/ui/button';
 import { Input } from '@/lib/components/ui/input';
 import { ScrollArea } from '@/lib/components/ui/scroll-area';
 import { type FilterType, filter, search } from '@/lib/stores';
 import { cn } from '@/lib/utils';
+import { onMount } from 'svelte';
+import { get } from 'svelte/store';
 import { Plus, XIcon } from '../assets/icon';
 import FilterPopover from './FilterPopover.svelte';
 
@@ -64,7 +64,7 @@ const handleClickRemove = (index: number) => {
 };
 </script>
 
-<ScrollArea class={cn("flex flex-col gap-1 w-full h-full relative p-2 pb-4 m-0", variant === "webapp" ? "" : "h-106")}>
+<ScrollArea class={cn("flex flex-col gap-1 w-full h-full relative p-2 pb-4 m-0", variant === "webapp" ? "max-h-80" : "h-106")}>
   <div class={cn("flex gap-2 mb-2 items-center", variant !== "webapp" && "flex-col")}>
     <label for="filters" class="self-start my-auto">Filtrages sauvegardés: </label>
     <div class="flex gap-2 self-start">
