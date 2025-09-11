@@ -119,7 +119,7 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
               windowId: activeTab.windowId,
               index: typeof activeTab.index === 'number' ? activeTab.index + 1 : undefined,
               openerTabId: activeTab.id,
-              active: true,
+              active: false,
             });
           }
           return;
