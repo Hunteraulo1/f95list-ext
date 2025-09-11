@@ -111,8 +111,10 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       // Workspace fix
       if (typeof message === 'object' && message && 'type' in message) {
         const typedMsg = message as { type?: string; url?: string };
+
         if (typedMsg.type === 'open-tab' && typedMsg.url) {
           const [activeTab] = await browser.tabs.query({ active: true, currentWindow: true });
+
           if (activeTab) {
             await browser.tabs.create({
               url: typedMsg.url,
@@ -122,6 +124,7 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
               active: false,
             });
           }
+
           return;
         }
       }
@@ -131,31 +134,37 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       if (!data || typeof message !== 'string') {
         console.error('data not found');
         sendResponse(false);
+
         return;
       }
 
       switch (message) {
         case 'f95list-script': {
           sendResponse(data.games);
+
           break;
         }
         case 'f95list-ext': {
           sendResponse(data);
+
           break;
         }
         case 'f95list-badge': {
           await badgeReset(data);
           sendResponse(true);
+
           break;
         }
         case 'f95list-integrate': {
           const integrate = await storage.getItem('local:f95list_ext_integrate');
           sendResponse(integrate);
+
           break;
         }
         case message.startsWith('f95list-integrate') ? message : 'f95list-integrate': {
           await storage.setItem('local:f95list_ext_integrate', message.endsWith('true'));
           sendResponse(true);
+
           break;
         }
         default: {
