@@ -177,9 +177,10 @@ const query = async () => {
     console.info('🚀 ~ query: ~ fetch');
 
     const response = await fetch(
-      'https://script.google.com/macros/s/AKfycbybvrFy6B2L7rkLWJnrwRHhP0F6Sv0uk6V9zUTZibwEzUjKXf-abOK_N6jUhqFPs9US/exec',
+      'https://f95-france-git-dev-hunteraulo1s-projects.vercel.app/api/extension-api',
     );
     const data = await response.json();
+    console.log("🚀 ~ query ~ data:", data)
 
     if (!data?.data) throw new Error('fetch not data');
 
