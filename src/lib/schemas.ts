@@ -39,6 +39,7 @@ const Update = object({
 });
 
 const Traductor = object({
+  id: nullable(number()),
   name: Game.entries.traductor,
   pages: array(
     object({
