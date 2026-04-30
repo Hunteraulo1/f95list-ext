@@ -19,7 +19,7 @@ export default defineBackground(() => {
 interface UpdateData {
   date: UpdateType['date'];
   type: UpdateType['type'];
-  names: GameType['name'][];
+  gameId: GameType['gameId'];
 }
 
 interface Data {
@@ -38,13 +38,13 @@ const badgeState = async (data: Data) => {
   updatesData?.every((updateData: UpdateData) => {
     if (badge[0] && updateData.date < badge[0].date) return false;
 
-    index += updateData.names.length;
+    index += 1;
 
     return true;
   });
 
-  badge.forEach((update: UpdateData) => {
-    index -= update.names.length;
+  badge.forEach(() => {
+    index -= 1;
   });
 
   const definedAction = browser.browserAction ?? browser.action;
@@ -176,11 +176,9 @@ const query = async () => {
   try {
     console.info('🚀 ~ query: ~ fetch');
 
-    const response = await fetch(
-      'https://f95-france-git-dev-hunteraulo1s-projects.vercel.app/api/extension-api',
-    );
+    const response = await fetch('https://f95-france-git-dev-hunteraulo1s-projects.vercel.app/api/extension-api');
     const data = await response.json();
-    console.log("🚀 ~ query ~ data:", data)
+    console.log('🚀 ~ query ~ data:', data);
 
     if (!data?.data) throw new Error('fetch not data');
 

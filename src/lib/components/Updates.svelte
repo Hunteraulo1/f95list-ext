@@ -3,8 +3,8 @@ import { RefreshCcw } from '@/lib/assets/icon';
 import GameBox from '@/lib/components/GameBox.svelte';
 import { Button } from '@/lib/components/ui/button';
 import { ScrollArea } from '@/lib/components/ui/scroll-area';
+import type { UpdateType } from '@/lib/schemas';
 import { updates } from '@/lib/stores';
-import type { UpdateType } from '../schemas';
 import { cn } from '../utils';
 
 browser.runtime.sendMessage('f95list-badge');

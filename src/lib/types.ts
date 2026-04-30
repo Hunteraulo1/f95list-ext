@@ -20,5 +20,5 @@ export interface Settings {
 
 export interface IdGameBox {
   domain: GameType['domain'];
-  id: GameType['id'];
+  threadId: GameType['threadId'];
 }

@@ -1,8 +1,8 @@
-import { array, boolean, date, nullable, number, object, picklist, string, type InferOutput } from 'valibot';
+import { array, boolean, date, type InferOutput, nullable, number, object, picklist, string } from 'valibot';
 
 const Game = object({
-  id: nullable(number()),
-  gameId: nullable(number()),
+  id: nullable(string()),
+  gameId: nullable(string()),
   threadId: nullable(number()),
   domain: picklist(['F95z', 'LewdCorner', 'Autre', 'Unknown']),
   hostname: nullable(picklist(['f95zone.to', 'lewdcorner.com'])),
@@ -35,7 +35,7 @@ const Game = object({
 const Update = object({
   date: date(),
   type: picklist(['AJOUT DE JEU', 'MISE À JOUR']),
-  games: array(Game),
+  gameId: Game.entries.gameId,
 });
 
 const Traductor = object({

@@ -1,89 +1,74 @@
 <script lang="ts">
-  import { ChevronDown, RefreshCcw } from "@/lib/assets/icon";
-  import GameBox from "@/lib/components/GameBox.svelte";
-  import Button from "@/lib/components/ui/button/button.svelte";
-  import type { GameType } from "@/lib/schemas";
-  import {
-    autoFocusBlock,
-    filteredGames,
-    games,
-    outdated,
-    settings,
-  } from "@/lib/stores";
-  import type { IdGameBox } from "@/lib/types";
-  import { cn } from "@/lib/utils";
-  import { onMount } from "svelte";
-  import Alert from "./Alert.svelte";
-  import Filter from "./Filter.svelte";
+import { onMount } from 'svelte';
+import { ChevronDown, RefreshCcw } from '@/lib/assets/icon';
+import GameBox from '@/lib/components/GameBox.svelte';
+import Button from '@/lib/components/ui/button/button.svelte';
+import type { GameType } from '@/lib/schemas';
+import { autoFocusBlock, filteredGames, games, outdated, settings } from '@/lib/stores';
+import type { IdGameBox } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import Alert from './Alert.svelte';
+import Filter from './Filter.svelte';
 
-  const extractId = (inputString: string): number => {
-    if (!inputString) return 0;
+const extractId = (inputString: string): number => {
+  if (!inputString) return 0;
 
-    const regex = /\.(\d+)/;
-    const match = inputString.match(regex);
+  const regex = /\.(\d+)/;
+  const match = inputString.match(regex);
 
-    return match ? Number.parseInt(match[1], 10) : 0;
-  };
+  return match ? Number.parseInt(match[1], 10) : 0;
+};
 
-  let autoFocus: GameType[] = $state([]);
+let autoFocus: GameType[] = $state([]);
 
-  onMount(async () => {
-    if (!browser.tabs) return;
+onMount(async () => {
+  if (!browser.tabs) return;
 
-    const extract: IdGameBox = await new Promise((resolve) =>
-      browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        const url = tabs[0]?.url || "";
+  const extract: IdGameBox = await new Promise((resolve) =>
+    browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const url = tabs[0]?.url || '';
 
-        if (!url) {
-          resolve({ domain: "Unknown", id: 0 });
-          return;
-        }
+      if (!url) {
+        resolve({ domain: 'Unknown', threadId: 0 });
+        return;
+      }
 
-        if (url.startsWith("https://f95zone.to/threads/")) {
-          resolve({ domain: "F95z", id: extractId(url) });
-          return;
-        }
+      if (url.startsWith('https://f95zone.to/threads/')) {
+        resolve({ domain: 'F95z', threadId: extractId(url) });
+        return;
+      }
 
-        if (url.startsWith("https://lewdcorner.com/threads/")) {
-          resolve({ domain: "LewdCorner", id: extractId(url) });
-          return;
-        }
+      if (url.startsWith('https://lewdcorner.com/threads/')) {
+        resolve({ domain: 'LewdCorner', threadId: extractId(url) });
+        return;
+      }
 
-        resolve({ domain: "Unknown", id: 0 });
-      }),
-    );
+      resolve({ domain: 'Unknown', threadId: 0 });
+    }),
+  );
 
-    autoFocus =
-      extract.domain === "Unknown"
-        ? []
-        : [...$filteredGames].filter(
-            (game) => game.domain === extract.domain && game.id === extract.id,
-          );
-  });
+  autoFocus =
+    extract.domain === 'Unknown'
+      ? []
+      : [...$filteredGames].filter((game) => game.domain === extract.domain && game.threadId === extract.threadId);
+});
 
-  let shouldAutoFocus = Boolean($autoFocusBlock);
-  $autoFocusBlock = true;
+let shouldAutoFocus = Boolean($autoFocusBlock);
+$autoFocusBlock = true;
 
-  const handleAutoFocus = (game: GameType): boolean => {
-    if (
-      !game.id ||
-      autoFocus.length !== 1 ||
-      shouldAutoFocus ||
-      !$settings.autoFocusGame
-    )
-      return false;
+const handleAutoFocus = (game: GameType): boolean => {
+  if (!game.id || autoFocus.length !== 1 || shouldAutoFocus || !$settings.autoFocusGame) return false;
 
-    if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.id !== game.id)
-      return false;
+  if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.id !== game.id) return false;
 
-    shouldAutoFocus = true;
+  shouldAutoFocus = true;
 
-    return true;
-  };
+  return true;
+};
 
-  let mouseEnter = $state<boolean>(false);
+let mouseEnter = $state<boolean>(false);
 
-  let clickFocus = $state<boolean>(false);
+let clickFocus = $state<boolean>(false);
 </script>
 
 {#if autoFocus}
