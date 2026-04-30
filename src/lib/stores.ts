@@ -210,13 +210,7 @@ export const filteredGames = derived([games, filter, search], ([$games, $filter,
   }),
 );
 
-export interface UIUpdateType {
-  date: UpdateType['date'];
-  type: UpdateType['type'];
-  games: GameType[];
-}
-
-export const updates = writable<UIUpdateType[]>([]);
+export const updates = writable<UpdateType[]>([]);
 
 const settingsData: string | null = localStorage.getItem('settings');
 

@@ -23,7 +23,7 @@ const getData = async () => {
       traductors: unknown[];
     }
 
-    const data: Data = devMode ? (devlist.data as Data) : await browser.runtime.sendMessage('f95list-ext');
+    const data: Data = devMode ? (devlist.data as unknown as Data) : await browser.runtime.sendMessage('f95list-ext');
 
     // Games
     const validGames = safeParse(Games, data.games);
@@ -39,65 +39,22 @@ const getData = async () => {
     games.set(output);
 
     // Updates
-    const defaultGame: GameType = {
-      id: null,
-      gameId: null,
-      threadId: null,
-      name: '',
-      ac: false,
-      version: '',
-      link: '',
-      type: 'Autre',
-      domain: 'Unknown',
-      hostname: null,
-      status: 'TERMINÉ',
-      description: null,
-      image: '',
-      proofreader: null,
-      prlink: null,
-      tags: [],
-      tlink: null,
-      tname: 'Pas de traduction',
-      traductor: null,
-      trlink: null,
-      ttype: 'À tester',
-      tversion: '',
-    };
+    const normalizedUpdates = data.updates.map((update: UpdateData) => ({
+      date: new Date(update.date),
+      type: update.type,
+      gameId: typeof update.gameId === 'string' ? update.gameId : null,
+    }));
 
-    const parsedRawUpdates = parse(
-      Updates,
-      data.updates.map((update: UpdateData) => ({
-        date: new Date(update.date),
-        type: update.type,
-        gameId: update.gameId,
-      })),
-    );
+    const validUpdates = safeParse(Updates, normalizedUpdates);
 
-    const updatesData = parsedRawUpdates.reduce<
-      {
-        date: Date;
-        type: (typeof parsedRawUpdates)[number]['type'];
-        games: GameType[];
-      }[]
-    >((acc, update) => {
-      const game = output.find((entry) => entry.gameId === update.gameId) ??
-        output.find((entry) => entry.id === update.gameId) ?? { ...defaultGame, gameId: update.gameId };
-
-      const previous = acc[acc.length - 1];
-      if (previous && previous.date.getTime() === update.date.getTime() && previous.type === update.type) {
-        previous.games.push(game);
-      } else {
-        acc.push({
-          date: update.date,
-          type: update.type,
-          games: [game],
-        });
-      }
-
-      return acc;
-    }, []);
-
-    updates.set(updatesData);
+    if (validUpdates.issues) {
+      const flatErrors = flatten(validUpdates.issues);
+      console.error('🚀 ~ getData ~ updatesErrors:', flatErrors);
+      errors.set([...get(errors), flatErrors]);
+      updates.set([]);
+    } else {
+      updates.set(validUpdates.output);
+    }
 
     // Traductors
     const validTraductors = parse(TraductorsData, data.traductors);

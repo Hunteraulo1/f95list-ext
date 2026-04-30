@@ -57,9 +57,9 @@ let shouldAutoFocus = Boolean($autoFocusBlock);
 $autoFocusBlock = true;
 
 const handleAutoFocus = (game: GameType): boolean => {
-  if (!game.id || autoFocus.length !== 1 || shouldAutoFocus || !$settings.autoFocusGame) return false;
+  if (!game.threadId || autoFocus.length !== 1 || shouldAutoFocus || !$settings.autoFocusGame) return false;
 
-  if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.id !== game.id) return false;
+  if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.threadId !== game.threadId) return false;
 
   shouldAutoFocus = true;
 

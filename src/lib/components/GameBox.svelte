@@ -22,7 +22,7 @@ interface Props {
 
 let {
   game,
-  idGameBox = { domain: 'Unknown', id: 0 },
+  idGameBox = { domain: 'Unknown', threadId: 0 },
   webapp = false,
   autoFocus = false,
   autoFocusMultiple = false,
@@ -34,9 +34,13 @@ $effect(() => {
 
 let open = $state(false);
 
-if (game.domain === idGameBox.domain && game.id === idGameBox.id) {
-  open = $games.filter((game: GameType) => game.domain === idGameBox.domain && game.id === idGameBox.id).length === 1;
-}
+$effect(() => {
+  if (game.domain === idGameBox.domain && game.threadId === idGameBox.threadId) {
+    open =
+      $games.filter((entry: GameType) => entry.domain === idGameBox.domain && entry.threadId === idGameBox.threadId)
+        .length === 1;
+  }
+});
 
 const handleClick = () => {
   $selectedGame = game;
