@@ -19,7 +19,7 @@ export default defineBackground(() => {
 interface UpdateData {
   date: UpdateType['date'];
   type: UpdateType['type'];
-  names: GameType['name'][];
+  gameId: GameType['gameId'];
 }
 
 interface Data {
@@ -38,13 +38,13 @@ const badgeState = async (data: Data) => {
   updatesData?.every((updateData: UpdateData) => {
     if (badge[0] && updateData.date < badge[0].date) return false;
 
-    index += updateData.names.length;
+    index += 1;
 
     return true;
   });
 
-  badge.forEach((update: UpdateData) => {
-    index -= update.names.length;
+  badge.forEach(() => {
+    index -= 1;
   });
 
   const definedAction = browser.browserAction ?? browser.action;
@@ -183,21 +183,26 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 const query = async () => {
   try {
-    console.info('🚀 ~ query: ~ fetch');
+    const response = await fetch('https://f95-france.vercel.app/api/extension-api', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer f95ext_SWrozPwV1uqj_I3J6GAqigHN1gocVu3D',
+        Accept: 'application/json',
+      },
+    });
 
-    const response = await fetch(
-      'https://script.google.com/macros/s/AKfycbybvrFy6B2L7rkLWJnrwRHhP0F6Sv0uk6V9zUTZibwEzUjKXf-abOK_N6jUhqFPs9US/exec',
-    );
+    if (!response.ok) {
+      const errBody = await response.text();
+      throw new Error(`API ${response.status}: ${errBody}`);
+    }
+
     const data = await response.json();
-
     if (!data?.data) throw new Error('fetch not data');
 
     return data.data;
   } catch (error) {
     console.error(error);
-
     await storage.setItem('local:f95list_ext_time', 0);
-
     wait = false;
   }
 };

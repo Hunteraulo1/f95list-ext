@@ -2,13 +2,13 @@ import { get } from 'svelte/store';
 import { flatten, parse, safeParse } from 'valibot';
 import { errors, filter, games, outdated, settings, traductors, updates } from '@/lib/stores.js';
 import packageJson from '../../../package.json';
-import { Games, type GameType, TraductorsData, type TraductorType, Updates } from '../schemas.js';
+import { Games, type GameType, TraductorsData, Updates } from '../schemas.js';
 import devlist from './devlist.json';
 
 interface UpdateData {
   date: string;
   type: string;
-  names: string[];
+  gameId: string | null;
 }
 
 const devMode = false;
@@ -18,14 +18,12 @@ export const callIntegrate = async () => await browser.runtime.sendMessage('f95l
 const getData = async () => {
   try {
     interface Data {
-      games: GameType[];
+      games: unknown[];
       updates: UpdateData[];
-      traductors: TraductorType[];
+      traductors: unknown[];
     }
 
-    const data: Data = devMode
-      ? (devlist.data as { games: GameType[]; updates: UpdateData[]; traductors: TraductorType[] })
-      : await browser.runtime.sendMessage('f95list-ext');
+    const data: Data = devMode ? (devlist.data as unknown as Data) : await browser.runtime.sendMessage('f95list-ext');
 
     // Games
     const validGames = safeParse(Games, data.games);
@@ -41,43 +39,22 @@ const getData = async () => {
     games.set(output);
 
     // Updates
-    const defaultGame: GameType = {
-      id: null,
-      name: '',
-      ac: false,
-      version: '',
-      link: '',
-      type: 'Autre',
-      domain: 'Unknown',
-      hostname: null,
-      status: 'TERMINÉ',
-      image: '',
-      proofreader: '',
-      prlink: '',
-      tags: [],
-      tlink: '',
-      tname: 'Pas de traduction',
-      traductor: '',
-      trlink: '',
-      ttype: 'À tester',
-      tversion: '',
-    };
-
-    const updatesData = data.updates.map((update: UpdateData) => ({
+    const normalizedUpdates = data.updates.map((update: UpdateData) => ({
       date: new Date(update.date),
       type: update.type,
-      games: update.names.map(
-        (name: string) =>
-          output.findLast((game: GameType) => game.name === name) ?? {
-            ...defaultGame,
-            name,
-          },
-      ),
+      gameId: typeof update.gameId === 'string' ? update.gameId : null,
     }));
 
-    const validUpdates = parse(Updates, updatesData);
+    const validUpdates = safeParse(Updates, normalizedUpdates);
 
-    updates.set(validUpdates);
+    if (validUpdates.issues) {
+      const flatErrors = flatten(validUpdates.issues);
+      console.error('🚀 ~ getData ~ updatesErrors:', flatErrors);
+      errors.set([...get(errors), flatErrors]);
+      updates.set([]);
+    } else {
+      updates.set(validUpdates.output);
+    }
 
     // Traductors
     const validTraductors = parse(TraductorsData, data.traductors);

@@ -16,7 +16,7 @@ export const typeColor = (name: GameType['type']): string => {
     case 'Unreal':
       result = '#0f4fb4';
       break;
-    case 'HTLM':
+    case 'HTML':
       result = '#72ae3d';
       break;
     case 'Autre':

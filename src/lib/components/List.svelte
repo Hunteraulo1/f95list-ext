@@ -29,42 +29,49 @@ onMount(async () => {
       const url = tabs[0]?.url || '';
 
       if (!url) {
-        resolve({ domain: 'Unknown', id: 0 });
+        resolve({ domain: 'Unknown', threadId: 0 });
         return;
       }
 
       if (url.startsWith('https://f95zone.to/threads/')) {
-        resolve({ domain: 'F95z', id: extractId(url) });
+        resolve({ domain: 'F95z', threadId: extractId(url) });
         return;
       }
 
       if (url.startsWith('https://lewdcorner.com/threads/')) {
-        resolve({ domain: 'LewdCorner', id: extractId(url) });
+        resolve({ domain: 'LewdCorner', threadId: extractId(url) });
         return;
       }
 
-      resolve({ domain: 'Unknown', id: 0 });
+      resolve({ domain: 'Unknown', threadId: 0 });
     }),
   );
 
   autoFocus =
     extract.domain === 'Unknown'
       ? []
-      : [...$filteredGames].filter((game) => game.domain === extract.domain && game.id === extract.id);
+      : [...$filteredGames].filter((game) => game.domain === extract.domain && game.threadId === extract.threadId);
 });
 
 let shouldAutoFocus = Boolean($autoFocusBlock);
 $autoFocusBlock = true;
 
 const handleAutoFocus = (game: GameType): boolean => {
-  if (!game.id || autoFocus.length !== 1 || shouldAutoFocus || !$settings.autoFocusGame) return false;
+  if (!game.threadId || autoFocus.length !== 1 || shouldAutoFocus || !$settings.autoFocusGame) return false;
 
-  if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.id !== game.id) return false;
+  if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.threadId !== game.threadId) return false;
 
   shouldAutoFocus = true;
 
   return true;
 };
+
+const getGameKey = (game: GameType): string =>
+  game.id ??
+  game.gameId ??
+  (game.threadId ? `${game.domain}-${game.threadId}` : null) ??
+  game.link ??
+  `${game.domain}-${game.name}-${game.version}`;
 
 let mouseEnter = $state<boolean>(false);
 
@@ -73,29 +80,34 @@ let clickFocus = $state<boolean>(false);
 
 {#if autoFocus}
   {#if autoFocus.length > 0}
-    <div class="sticky top-0 z-10 p-2 mx-2 border rounded-b-xl bg-primary-foreground">
+    <div
+      class="sticky top-0 z-10 p-2 mx-2 border rounded-b-xl bg-primary-foreground"
+    >
       <p class="mb-2 text-xs text-center">
         {#if autoFocus.length === 1}
-        Traduction détectée sur cette page
+          Traduction détectée sur cette page
         {:else}
-        Traductions détectées sur cette page
+          Traductions détectées sur cette page
         {/if}
       </p>
       <div class="flex flex-col gap-2 -mb-6">
         {#if clickFocus}
-          {#each autoFocus as game (game.name + game.version)}
+          {#each autoFocus as game (getGameKey(game))}
             <GameBox {game} autoFocusMultiple />
           {/each}
         {/if}
         <Button
           variant="outline"
           class="mx-auto rounded-full heading-none"
-          onmouseenter={() => mouseEnter = true}
-          onmouseleave={() => mouseEnter = false}
-          onclick={() => clickFocus = !clickFocus}
+          onmouseenter={() => (mouseEnter = true)}
+          onmouseleave={() => (mouseEnter = false)}
+          onclick={() => (clickFocus = !clickFocus)}
         >
-        <ChevronDown isHovered={mouseEnter} classes={cn(clickFocus && 'rotate-180')} />
-      </Button>
+          <ChevronDown
+            isHovered={mouseEnter}
+            classes={cn(clickFocus && "rotate-180")}
+          />
+        </Button>
       </div>
     </div>
   {/if}
@@ -103,7 +115,7 @@ let clickFocus = $state<boolean>(false);
     {#if $outdated && import.meta.env.CHROME && import.meta.env.PROD}
       <Alert description="Votre extension n'est plus à jour !" />
     {/if}
-    {#each $filteredGames as game (game.name + game.version)}
+    {#each $filteredGames as game (getGameKey(game))}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />
     {:else}
       {#if $games.length > 0}
@@ -112,11 +124,15 @@ let clickFocus = $state<boolean>(false);
           <span>Aucun jeu ne correspond à vos critères</span>
         </div>
       {:else}
-        <div class="flex items-center justify-center h-full text-center text-red-600">
-          <span>Un problème est survenu lors de la récupération des données, veuillez nous contacter sur discord.</span>
+        <div
+          class="flex items-center justify-center h-full text-center text-red-600"
+        >
+          <span
+            >Un problème est survenu lors de la récupération des données,
+            veuillez nous contacter sur discord.</span
+          >
         </div>
       {/if}
-      
     {/each}
 
     <Filter variant="popup" />

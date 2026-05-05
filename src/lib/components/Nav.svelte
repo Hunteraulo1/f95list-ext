@@ -20,8 +20,12 @@ interface Props {
 
 let { pages = [], variant = 'popup' }: Props = $props();
 
-let mouseEnter = $state<boolean[]>(Array(pages.length).fill(false));
+let mouseEnter = $state<boolean[]>([]);
 let badge = $state<number>(0);
+
+$effect(() => {
+  mouseEnter = Array(pages.length).fill(false);
+});
 
 const handleClick = (link: Page['link'], target: Page['target']) => {
   if (typeof target === 'string') {
@@ -41,7 +45,11 @@ const handleClick = (link: Page['link'], target: Page['target']) => {
 
 const badgeCount = async (): Promise<void> => {
   const definedAction = browser.browserAction ?? browser.action;
-  badge = Number.parseInt(await definedAction.getBadgeText({}), 10);
+  const badgeText = await new Promise<string>((resolve) => {
+    definedAction.getBadgeText({}, (value) => resolve(value ?? '0'));
+  });
+  const parsedBadge = Number.parseInt(badgeText, 10);
+  badge = Number.isNaN(parsedBadge) ? 0 : parsedBadge;
   console.log('🚀 ~ badgeCount ~ badge:', badge);
 };
 

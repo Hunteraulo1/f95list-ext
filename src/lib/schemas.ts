@@ -1,16 +1,19 @@
-import { array, boolean, date, type InferOutput, nullable, number, object, picklist, string } from 'valibot';
+import { array, boolean, date, type InferOutput, nullable, number, object, picklist, string, union } from 'valibot';
 
 const Game = object({
-  id: nullable(number()),
+  id: nullable(string()),
+  gameId: nullable(string()),
+  threadId: nullable(number()),
   domain: picklist(['F95z', 'LewdCorner', 'Autre', 'Unknown']),
   hostname: nullable(picklist(['f95zone.to', 'lewdcorner.com'])),
   name: string(),
   version: string(),
   tversion: string(),
+  description: nullable(string()),
   tname: picklist(['Traduction', 'Traduction (mod inclus)', 'Intégrée', 'Pas de traduction']),
   status: picklist(['EN COURS', 'TERMINÉ', 'ABANDONNÉ']),
   tags: array(string()),
-  type: picklist(['RenPy', 'RPGM', 'Unity', 'Unreal', 'Flash', 'HTLM', 'QSP', 'Autre', 'RenPy/RPGM', 'RenPy/Unity']),
+  type: picklist(['RenPy', 'RPGM', 'Unity', 'Unreal', 'Flash', 'HTML', 'QSP', 'Autre']),
   traductor: nullable(string()),
   proofreader: nullable(string()),
   ttype: picklist([
@@ -32,10 +35,11 @@ const Game = object({
 const Update = object({
   date: date(),
   type: picklist(['AJOUT DE JEU', 'MISE À JOUR']),
-  games: array(Game),
+  gameId: Game.entries.gameId,
 });
 
 const Traductor = object({
+  id: nullable(union([number(), string()])),
   name: Game.entries.traductor,
   pages: array(
     object({
@@ -43,7 +47,7 @@ const Traductor = object({
       link: string(),
     }),
   ),
-  discordId: nullable(number()),
+  discordId: nullable(union([number(), string()])),
   tradCount: number(),
   readCount: number(),
   score: number(),

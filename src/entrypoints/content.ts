@@ -28,7 +28,7 @@ const insert = (games: GameType[]) => {
     const tileId = Number(window.location.pathname.split('/')[2].split('.')[1]);
 
     for (const game of games) {
-      if (game.id !== tileId || game.hostname !== hostname) continue;
+      if (game.threadId !== tileId || game.hostname !== hostname) continue;
 
       const parent = document.querySelector('.p-title-value');
 
@@ -88,7 +88,7 @@ const latest = (query: string, games: GameType[]) => {
 
     if (tile.classList.contains('flag-inserted')) return;
 
-    if (games.find((game) => game.id === tileId && game.hostname === hostname)) {
+    if (games.find((game) => game.threadId === tileId && game.hostname === hostname)) {
       const element =
         hostname === 'f95zone.to'
           ? tile.children[1].children[0]

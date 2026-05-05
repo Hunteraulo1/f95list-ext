@@ -28,7 +28,7 @@ export default defineConfig({
     disabled: true,
   },
   vite: ({ mode }) => ({
-    plugins: [tailwindcss()],
+    plugins: [...(tailwindcss() as any[])],
     build: {
       cssMinify: mode === 'production',
       minify: mode === 'production',
