@@ -3,7 +3,7 @@
   "compilerOptions": {
     "useDefineForClassFields": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   }
 }
