@@ -177,9 +177,9 @@ const query = async () => {
     const response = await fetch('https://f95-france.vercel.app/api/extension-api', {
       method: 'GET',
       headers: {
-        Authorization: `Bearer f95ext_SWrozPwV1uqj_I3J6GAqigHN1gocVu3D`,
-        Accept: 'application/json'
-      }
+        Authorization: 'Bearer f95ext_SWrozPwV1uqj_I3J6GAqigHN1gocVu3D',
+        Accept: 'application/json',
+      },
     });
 
     if (!response.ok) {

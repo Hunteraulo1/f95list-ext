@@ -1,7 +1,7 @@
-import tags from '@/lib/assets/tags.json';
-import type { Page } from '@/lib/components/Nav.svelte';
 import { derived, get, writable } from 'svelte/store';
 import type { FlatErrors } from 'valibot';
+import tags from '@/lib/assets/tags.json';
+import type { Page } from '@/lib/components/Nav.svelte';
 import type { GameType, TraductorType, UpdateType } from './schemas.js';
 import type { ComboBox, Settings } from './types.js';
 

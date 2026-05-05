@@ -67,11 +67,11 @@ const handleAutoFocus = (game: GameType): boolean => {
 };
 
 const getGameKey = (game: GameType): string =>
-  game.id
-  ?? game.gameId
-  ?? (game.threadId ? `${game.domain}-${game.threadId}` : null)
-  ?? game.link
-  ?? `${game.domain}-${game.name}-${game.version}`;
+  game.id ??
+  game.gameId ??
+  (game.threadId ? `${game.domain}-${game.threadId}` : null) ??
+  game.link ??
+  `${game.domain}-${game.name}-${game.version}`;
 
 let mouseEnter = $state<boolean>(false);
 
