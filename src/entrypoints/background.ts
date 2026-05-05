@@ -174,20 +174,26 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 const query = async () => {
   try {
-    console.info('🚀 ~ query: ~ fetch');
+    const response = await fetch('https://f95-france.vercel.app/api/extension-api', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer f95ext_SWrozPwV1uqj_I3J6GAqigHN1gocVu3D`,
+        Accept: 'application/json'
+      }
+    });
 
-    const response = await fetch('https://f95-france-git-dev-hunteraulo1s-projects.vercel.app/api/extension-api');
+    if (!response.ok) {
+      const errBody = await response.text();
+      throw new Error(`API ${response.status}: ${errBody}`);
+    }
+
     const data = await response.json();
-    console.log('🚀 ~ query ~ data:', data);
-
     if (!data?.data) throw new Error('fetch not data');
 
     return data.data;
   } catch (error) {
     console.error(error);
-
     await storage.setItem('local:f95list_ext_time', 0);
-
     wait = false;
   }
 };

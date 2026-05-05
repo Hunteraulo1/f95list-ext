@@ -1,4 +1,4 @@
-import { array, boolean, date, type InferOutput, nullable, number, object, picklist, string } from 'valibot';
+import { array, boolean, date, nullable, number, object, picklist, string, union, type InferOutput } from 'valibot';
 
 const Game = object({
   id: nullable(string()),
@@ -13,7 +13,7 @@ const Game = object({
   tname: picklist(['Traduction', 'Traduction (mod inclus)', 'Intégrée', 'Pas de traduction']),
   status: picklist(['EN COURS', 'TERMINÉ', 'ABANDONNÉ']),
   tags: array(string()),
-  type: picklist(['RenPy', 'RPGM', 'Unity', 'Unreal', 'Flash', 'HTLM', 'QSP', 'Autre', 'RenPy/RPGM', 'RenPy/Unity']),
+  type: picklist(['RenPy', 'RPGM', 'Unity', 'Unreal', 'Flash', 'HTML', 'QSP', 'Autre']),
   traductor: nullable(string()),
   proofreader: nullable(string()),
   ttype: picklist([
@@ -39,7 +39,7 @@ const Update = object({
 });
 
 const Traductor = object({
-  id: nullable(number()),
+  id: nullable(union([number(), string()])),
   name: Game.entries.traductor,
   pages: array(
     object({
@@ -47,7 +47,7 @@ const Traductor = object({
       link: string(),
     }),
   ),
-  discordId: nullable(number()),
+  discordId: nullable(union([number(), string()])),
   tradCount: number(),
   readCount: number(),
   score: number(),

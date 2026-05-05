@@ -1,7 +1,7 @@
+import tags from '@/lib/assets/tags.json';
+import type { Page } from '@/lib/components/Nav.svelte';
 import { derived, get, writable } from 'svelte/store';
 import type { FlatErrors } from 'valibot';
-import tags from '@/lib/assets/tags.json' with { type: 'json' };
-import type { Page } from '@/lib/components/Nav.svelte';
 import type { GameType, TraductorType, UpdateType } from './schemas.js';
 import type { ComboBox, Settings } from './types.js';
 
@@ -23,7 +23,7 @@ const filterConfig = {
   },
   type: {
     title: 'Type',
-    values: ['RenPy', 'RPGM', 'Unreal', 'HTLM', 'Flash', 'QSP', 'RenPy/RPGM', 'RenPy/Unity', 'Autre'],
+    values: ['RenPy', 'RPGM', 'Unreal', 'HTML', 'Flash', 'QSP', 'Autre'],
   },
   ttype: {
     title: 'Qualité de la traduction',

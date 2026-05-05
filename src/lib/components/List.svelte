@@ -66,6 +66,13 @@ const handleAutoFocus = (game: GameType): boolean => {
   return true;
 };
 
+const getGameKey = (game: GameType): string =>
+  game.id
+  ?? game.gameId
+  ?? (game.threadId ? `${game.domain}-${game.threadId}` : null)
+  ?? game.link
+  ?? `${game.domain}-${game.name}-${game.version}`;
+
 let mouseEnter = $state<boolean>(false);
 
 let clickFocus = $state<boolean>(false);
@@ -85,7 +92,7 @@ let clickFocus = $state<boolean>(false);
       </p>
       <div class="flex flex-col gap-2 -mb-6">
         {#if clickFocus}
-          {#each autoFocus as game (game.name + game.version)}
+          {#each autoFocus as game (getGameKey(game))}
             <GameBox {game} autoFocusMultiple />
           {/each}
         {/if}
@@ -108,7 +115,7 @@ let clickFocus = $state<boolean>(false);
     {#if $outdated && import.meta.env.CHROME && import.meta.env.PROD}
       <Alert description="Votre extension n'est plus à jour !" />
     {/if}
-    {#each $filteredGames as game (game.id)}
+    {#each $filteredGames as game (getGameKey(game))}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />
     {:else}
       {#if $games.length > 0}
