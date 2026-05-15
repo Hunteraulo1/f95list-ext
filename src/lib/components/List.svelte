@@ -1,81 +1,110 @@
 <script lang="ts">
-import { onMount } from 'svelte';
-import { ChevronDown, RefreshCcw } from '@/lib/assets/icon';
-import GameBox from '@/lib/components/GameBox.svelte';
-import Button from '@/lib/components/ui/button/button.svelte';
-import type { GameType } from '@/lib/schemas';
-import { autoFocusBlock, filteredGames, games, outdated, settings } from '@/lib/stores';
-import type { IdGameBox } from '@/lib/types';
-import { cn } from '@/lib/utils';
-import Alert from './Alert.svelte';
-import Filter from './Filter.svelte';
+  import { ChevronDown, RefreshCcw } from "@/lib/assets/icon";
+  import GameBox from "@/lib/components/GameBox.svelte";
+  import Button from "@/lib/components/ui/button/button.svelte";
+  import type { GameType } from "@/lib/schemas";
+  import {
+    autoFocusBlock,
+    filteredGames,
+    games,
+    outdated,
+    settings,
+  } from "@/lib/stores";
+  import type { IdGameBox } from "@/lib/types";
+  import { cn } from "@/lib/utils";
+  import { onMount } from "svelte";
+  import Alert from "./Alert.svelte";
+  import Filter from "./Filter.svelte";
 
-const extractId = (inputString: string): number => {
-  if (!inputString) return 0;
+  const extractId = (inputString: string): number => {
+    if (!inputString) return 0;
 
-  const regex = /\.(\d+)/;
-  const match = inputString.match(regex);
+    const regex = /\.(\d+)/;
+    const match = inputString.match(regex);
 
-  return match ? Number.parseInt(match[1], 10) : 0;
-};
+    return match ? Number.parseInt(match[1], 10) : 0;
+  };
 
-let autoFocus: GameType[] = $state([]);
+  let autoFocus: GameType[] = $state([]);
 
-onMount(async () => {
-  if (!browser.tabs) return;
+  const sortGamesByName = (list: GameType[]) =>
+    [...list].sort((a, b) =>
+      a.name.localeCompare(b.name, "fr", { sensitivity: "base" }),
+    );
 
-  const extract: IdGameBox = await new Promise((resolve) =>
-    browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const url = tabs[0]?.url || '';
+  const sortedFilteredGames = $derived(sortGamesByName($filteredGames));
 
-      if (!url) {
-        resolve({ domain: 'Unknown', threadId: 0 });
-        return;
-      }
+  onMount(async () => {
+    if (!browser.tabs) return;
 
-      if (url.startsWith('https://f95zone.to/threads/')) {
-        resolve({ domain: 'F95z', threadId: extractId(url) });
-        return;
-      }
+    const extract: IdGameBox = await new Promise((resolve) =>
+      browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const url = tabs[0]?.url || "";
 
-      if (url.startsWith('https://lewdcorner.com/threads/')) {
-        resolve({ domain: 'LewdCorner', threadId: extractId(url) });
-        return;
-      }
+        if (!url) {
+          resolve({ domain: "Unknown", threadId: 0 });
+          return;
+        }
 
-      resolve({ domain: 'Unknown', threadId: 0 });
-    }),
-  );
+        if (url.startsWith("https://f95zone.to/threads/")) {
+          resolve({ domain: "F95z", threadId: extractId(url) });
+          return;
+        }
 
-  autoFocus =
-    extract.domain === 'Unknown'
-      ? []
-      : [...$filteredGames].filter((game) => game.domain === extract.domain && game.threadId === extract.threadId);
-});
+        if (url.startsWith("https://lewdcorner.com/threads/")) {
+          resolve({ domain: "LewdCorner", threadId: extractId(url) });
+          return;
+        }
 
-let shouldAutoFocus = Boolean($autoFocusBlock);
-$autoFocusBlock = true;
+        resolve({ domain: "Unknown", threadId: 0 });
+      }),
+    );
 
-const handleAutoFocus = (game: GameType): boolean => {
-  if (!game.threadId || autoFocus.length !== 1 || shouldAutoFocus || !$settings.autoFocusGame) return false;
+    autoFocus =
+      extract.domain === "Unknown"
+        ? []
+        : sortGamesByName(
+            [...$filteredGames].filter(
+              (game) =>
+                game.domain === extract.domain &&
+                game.threadId === extract.threadId,
+            ),
+          );
+  });
 
-  if (autoFocus[0]?.domain !== game.domain || autoFocus[0]?.threadId !== game.threadId) return false;
+  let shouldAutoFocus = Boolean($autoFocusBlock);
+  $autoFocusBlock = true;
 
-  shouldAutoFocus = true;
+  const handleAutoFocus = (game: GameType): boolean => {
+    if (
+      !game.threadId ||
+      autoFocus.length !== 1 ||
+      shouldAutoFocus ||
+      !$settings.autoFocusGame
+    )
+      return false;
 
-  return true;
-};
+    if (
+      autoFocus[0]?.domain !== game.domain ||
+      autoFocus[0]?.threadId !== game.threadId
+    )
+      return false;
 
-const getGameKey = (game: GameType): string =>
-  game.id ??
-  game.gameId ??
-  (game.threadId ? `${game.domain}-${game.threadId}` : null) ??
-  game.link ??
-  `${game.domain}-${game.name}-${game.version}`;
+    shouldAutoFocus = true;
 
-let mouseEnter = $state<boolean>(false);
+    return true;
+  };
 
-let clickFocus = $state<boolean>(false);
+  const getGameKey = (game: GameType): string =>
+    game.id ??
+    game.gameId ??
+    (game.threadId ? `${game.domain}-${game.threadId}` : null) ??
+    game.link ??
+    `${game.domain}-${game.name}-${game.version}`;
+
+  let mouseEnter = $state<boolean>(false);
+
+  let clickFocus = $state<boolean>(false);
 </script>
 
 {#if autoFocus}
@@ -115,7 +144,7 @@ let clickFocus = $state<boolean>(false);
     {#if $outdated && import.meta.env.CHROME && import.meta.env.PROD}
       <Alert description="Votre extension n'est plus à jour !" />
     {/if}
-    {#each $filteredGames as game (getGameKey(game))}
+    {#each sortedFilteredGames as game (getGameKey(game))}
       <GameBox {game} autoFocus={handleAutoFocus(game)} />
     {:else}
       {#if $games.length > 0}

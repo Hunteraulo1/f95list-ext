@@ -183,7 +183,7 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 const query = async () => {
   try {
-    const response = await fetch('https://f95-france.vercel.app/api/extension-api', {
+    const response = await fetch('https://f95france.site/api/extension-api', {
       method: 'GET',
       headers: {
         Authorization: 'Bearer f95ext_SWrozPwV1uqj_I3J6GAqigHN1gocVu3D',
@@ -206,3 +206,38 @@ const query = async () => {
     wait = false;
   }
 };
+
+async function trackEvent(eventName: string, eventData: Record<string, any> = {}) {
+  const UMAMI_URL = 'https://insight.f95france.site/api/send';
+  const WEBSITE_ID = '9d88061f-84e3-497e-b297-36d643b068c2';
+
+  const payload = {
+    payload: {
+      website: WEBSITE_ID,
+      url: '/extension-popup',
+      title: 'Extension Popup',
+      name: eventName,
+      data: eventData
+    },
+    type: 'event'
+  };
+
+  try {
+    const response = await fetch(UMAMI_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': navigator.userAgent
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    if (!response.ok) {
+      console.error('Erreur Umami:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Échec de l\'envoi Umami:', error);
+  }
+}
+
+trackEvent('extension-ouverte', { version: '1.0' });
