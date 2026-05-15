@@ -15,6 +15,7 @@ export default defineConfig({
   manifest: ({ mode }) => ({
     name: 'F95 France - Extension',
     permissions: ['storage', 'unlimitedStorage', 'tabs', 'activeTab'],
+    host_permissions: ['https://f95france.site/*'],
     browser_specific_settings: {
       gecko: {
         id: '{9f7488b3-d704-4894-bac8-5dc3068fd6b9}',
