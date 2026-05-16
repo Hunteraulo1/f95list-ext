@@ -217,9 +217,9 @@ async function trackEvent(eventName: string, eventData: Record<string, any> = {}
       url: '/extension-popup',
       title: 'Extension Popup',
       name: eventName,
-      data: eventData
+      data: eventData,
     },
-    type: 'event'
+    type: 'event',
   };
 
   try {
@@ -227,16 +227,16 @@ async function trackEvent(eventName: string, eventData: Record<string, any> = {}
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': navigator.userAgent
+        'User-Agent': navigator.userAgent,
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
-    
+
     if (!response.ok) {
       console.error('Erreur Umami:', response.statusText);
     }
   } catch (error) {
-    console.error('Échec de l\'envoi Umami:', error);
+    console.error("Échec de l'envoi Umami:", error);
   }
 }
 
