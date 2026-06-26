@@ -1,55 +1,55 @@
 <script lang="ts">
-  import { page, selectedGame } from "@/lib/stores";
-  import { cn } from "@/lib/utils";
-  import type { ClassValue } from "clsx";
-  import type { Component } from "svelte";
-  import { onMount } from "svelte";
+import type { ClassValue } from 'clsx';
+import type { Component } from 'svelte';
+import { onMount } from 'svelte';
+import { page, selectedGame } from '@/lib/stores';
+import { cn } from '@/lib/utils';
 
-  export interface Page {
-    name: string;
-    link: string;
-    icon: Component | null;
-    className?: ClassValue[];
-    target: Component | string;
+export interface Page {
+  name: string;
+  link: string;
+  icon: Component | null;
+  className?: ClassValue[];
+  target: Component | string;
+}
+
+interface Props {
+  pages?: Page[];
+  variant?: 'webapp' | 'popup';
+}
+
+let { pages = [], variant = 'popup' }: Props = $props();
+
+let mouseEnter = $state<boolean[]>([]);
+let badge = $state<number>(0);
+
+$effect(() => {
+  mouseEnter = Array(pages.length).fill(false);
+});
+
+const handleClick = (link: Page['link'], target: Page['target']) => {
+  if (typeof target === 'string') {
+    window.open(target);
+    return;
   }
 
-  interface Props {
-    pages?: Page[];
-    variant?: "webapp" | "popup";
-  }
+  $page = link;
+  $selectedGame = undefined;
 
-  let { pages = [], variant = "popup" }: Props = $props();
+  badgeCount();
+};
 
-  let mouseEnter = $state<boolean[]>([]);
-  let badge = $state<number>(0);
-
-  $effect(() => {
-    mouseEnter = Array(pages.length).fill(false);
+const badgeCount = async (): Promise<void> => {
+  const definedAction = browser.browserAction ?? browser.action;
+  const badgeText = await new Promise<string>((resolve) => {
+    definedAction.getBadgeText({}, (value) => resolve(value ?? '0'));
   });
+  const parsedBadge = Number.parseInt(badgeText, 10);
+  badge = Number.isNaN(parsedBadge) ? 0 : parsedBadge;
+  console.log('🚀 ~ badgeCount ~ badge:', badge);
+};
 
-  const handleClick = (link: Page["link"], target: Page["target"]) => {
-    if (typeof target === "string") {
-      window.open(target);
-      return;
-    }
-
-    $page = link;
-    $selectedGame = undefined;
-
-    badgeCount();
-  };
-
-  const badgeCount = async (): Promise<void> => {
-    const definedAction = browser.browserAction ?? browser.action;
-    const badgeText = await new Promise<string>((resolve) => {
-      definedAction.getBadgeText({}, (value) => resolve(value ?? "0"));
-    });
-    const parsedBadge = Number.parseInt(badgeText, 10);
-    badge = Number.isNaN(parsedBadge) ? 0 : parsedBadge;
-    console.log("🚀 ~ badgeCount ~ badge:", badge);
-  };
-
-  onMount(() => badgeCount());
+onMount(() => badgeCount());
 </script>
 
 <nav
