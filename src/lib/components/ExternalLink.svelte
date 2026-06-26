@@ -1,22 +1,18 @@
 <script lang="ts">
-interface Props {
-  children: any;
-  target: string;
-  classes?: string;
-}
+  interface Props {
+    children: any;
+    target: string | null;
+    classes?: string;
+  }
 
-let { target, classes = '', children }: Props = $props();
+  let { target, classes = "", children }: Props = $props();
 
-const handleClick = () => {
-  if (typeof target === 'string') {
-    try {
-      browser.runtime.sendMessage({ type: 'open-tab', url: target });
-    } catch {
-      window.open(target, '_blank');
+  const handleClick = () => {
+    if (target && typeof target === "string") {
+      window.open(target);
     }
     return;
-  }
-};
+  };
 </script>
 
 <button class={classes} onclick={handleClick}>

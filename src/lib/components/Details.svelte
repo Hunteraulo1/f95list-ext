@@ -1,28 +1,32 @@
 <script lang="ts">
-import Lazy from 'svelte-lazy';
-import { ArrowLeft } from '@/lib/assets/icon';
-import noImage from '@/lib/assets/no-image.png';
-import { Badge } from '@/lib/components/ui/badge';
-import { Button, buttonVariants } from '@/lib/components/ui/button';
-import { ScrollArea } from '@/lib/components/ui/scroll-area';
-import * as Tooltip from '@/lib/components/ui/tooltip/index';
-import type { GameType } from '@/lib/schemas';
-import { selectedGame, settings } from '@/lib/stores';
-import { cn } from '@/lib/utils';
-import { statusColor, typeColor } from '@/lib/utils/badgeColor';
-import Alert from './Alert.svelte';
-import ExternalLink from './ExternalLink.svelte';
+  import { ArrowLeft } from "@/lib/assets/icon";
+  import noImage from "@/lib/assets/no-image.png";
+  import { Badge } from "@/lib/components/ui/badge";
+  import { Button, buttonVariants } from "@/lib/components/ui/button";
+  import { ScrollArea } from "@/lib/components/ui/scroll-area";
+  import * as Tooltip from "@/lib/components/ui/tooltip/index";
+  import type { GameType } from "@/lib/schemas";
+  import { selectedGame, settings } from "@/lib/stores";
+  import { cn } from "@/lib/utils";
+  import { statusColor, typeColor } from "@/lib/utils/badgeColor";
+  import Lazy from "svelte-lazy";
+  import Alert from "./Alert.svelte";
+  import ExternalLink from "./ExternalLink.svelte";
 
-let tagsHide = $state($settings.tagsHide);
+  let tagsHide = $state($settings.tagsHide);
 
-interface Props {
-  game: GameType;
-  open?: boolean;
-  variant?: 'popup' | 'webapp';
-}
+  interface Props {
+    game: GameType;
+    open?: boolean;
+    variant?: "popup" | "webapp";
+  }
 
-let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $props();
-let closeHovered = $state<boolean>(false);
+  let {
+    game = $bindable(),
+    open = $bindable(),
+    variant = "popup",
+  }: Props = $props();
+  let closeHovered = $state<boolean>(false);
 </script>
 
 <div
@@ -67,14 +71,13 @@ let closeHovered = $state<boolean>(false);
           <ExternalLink target={game.link}>
             <Badge variant="secondary">{game.domain}</Badge>
           </ExternalLink>
-          <ExternalLink
-            target={game.link}
+          <ExternalLink target={game.link}>
+            href={game.link}
             classes={cn(
               buttonVariants({ variant: "link", class: "px-2" }),
               "select-none",
             )}
-          >
-            Accèder au jeu
+            > Accèder au jeu
           </ExternalLink>
         </div>
         <h1 class="mb-2 flex items-center gap-1 flex-wrap">
@@ -138,9 +141,12 @@ let closeHovered = $state<boolean>(false);
         </div>
         <p class="text-sm">
           <span class="font-bold select-none">Traducteur:</span>
-          <a href={game.trlink} class:traductor={game.trlink} target="_blank">
+          <ExternalLink
+            target={game.trlink}
+            classes={cn(game.trlink ? "traductor" : "")}
+          >
             {game.traductor ?? "Aucun"}
-          </a>
+          </ExternalLink>
           <span class="text-secondary-foreground/50 text-xs">
             ({game.ttype})
           </span>
@@ -148,9 +154,12 @@ let closeHovered = $state<boolean>(false);
         {#if game.proofreader}
           <p class="text-sm">
             <span class="font-bold select-none">Relecteur:</span>
-            <a href={game.trlink} class:traductor={game.trlink} target="_blank">
+            <ExternalLink
+              target={game.trlink}
+              classes={cn(game.trlink ? "traductor" : "")}
+            >
               {game.proofreader}
-            </a>
+            </ExternalLink>
           </p>
         {/if}
         {#if game.tname === "Traduction (mod inclus)"}

@@ -1,180 +1,194 @@
 <script lang="ts">
-import { mode, toggleMode } from 'mode-watcher';
-import { storage } from '#imports';
-import { accountLinked, isSuperadmin, linkWithCode, unlink } from '@/lib/account';
-import { Check, Moon, Sun } from '@/lib/assets/icon';
-import { Button, buttonVariants } from '@/lib/components/ui/button';
-import { Input } from '@/lib/components/ui/input';
-import { Label } from '@/lib/components/ui/label';
-import { Switch } from '@/lib/components/ui/switch';
-import { API_ENVIRONMENTS, type ApiEnvName, api, SITE_ENVIRONMENTS, type SiteEnvName, site } from '@/lib/config';
-import { errors, page, settings } from '@/lib/stores';
-import { resync } from '@/lib/sync';
-import type { Settings } from '@/lib/types';
-import { cn } from '@/lib/utils';
-import getData from '@/lib/utils/getData';
-import ExternalLink from './ExternalLink.svelte';
+  import { storage } from "#imports";
+  import {
+    accountLinked,
+    isSuperadmin,
+    linkWithCode,
+    unlink,
+  } from "@/lib/account";
+  import { Check, Moon, Sun } from "@/lib/assets/icon";
+  import { Button, buttonVariants } from "@/lib/components/ui/button";
+  import { Input } from "@/lib/components/ui/input";
+  import { Label } from "@/lib/components/ui/label";
+  import { Switch } from "@/lib/components/ui/switch";
+  import {
+    API_ENVIRONMENTS,
+    type ApiEnvName,
+    SITE_ENVIRONMENTS,
+    type SiteEnvName,
+    api,
+    site,
+  } from "@/lib/config";
+  import { errors, page, settings } from "@/lib/stores";
+  import { resync } from "@/lib/sync";
+  import type { Settings } from "@/lib/types";
+  import { cn } from "@/lib/utils";
+  import getData from "@/lib/utils/getData";
+  import { mode, toggleMode } from "mode-watcher";
 
-const isDev = import.meta.env.DEV;
-const siteUrl = site.store;
-const apiUrl = api.store;
-const siteEnvNames = Object.keys(SITE_ENVIRONMENTS) as SiteEnvName[];
-const apiEnvNames = Object.keys(API_ENVIRONMENTS) as ApiEnvName[];
+  const isDev = import.meta.env.DEV;
+  const siteUrl = site.store;
+  const apiUrl = api.store;
+  const siteEnvNames = Object.keys(SITE_ENVIRONMENTS) as SiteEnvName[];
+  const apiEnvNames = Object.keys(API_ENVIRONMENTS) as ApiEnvName[];
 
-const extensionSettingsUrl = $derived(`${$siteUrl}/dashboard/settings/extension`);
-const currentSiteEnv = $derived(site.nameOf($siteUrl));
-const currentApiEnv = $derived(api.nameOf($apiUrl));
+  const extensionSettingsUrl = $derived(
+    `${$siteUrl}/dashboard/settings/extension`,
+  );
+  const currentSiteEnv = $derived(site.nameOf($siteUrl));
+  const currentApiEnv = $derived(api.nameOf($apiUrl));
 
-// Vide le cache des données reçues de l'API (cache background de 2 h).
-const clearApiDataCache = () =>
-  Promise.all([
-    storage.removeItem('local:f95list_ext_data'),
-    storage.removeItem('local:f95list_ext_time'),
-    storage.removeItem('local:f95list_ext_badge'),
-  ]);
+  // Vide le cache des données reçues de l'API (cache background de 2 h).
+  const clearApiDataCache = () =>
+    Promise.all([
+      storage.removeItem("local:f95list_ext_data"),
+      storage.removeItem("local:f95list_ext_time"),
+      storage.removeItem("local:f95list_ext_badge"),
+    ]);
 
-const handleSiteEnv = async (env: SiteEnvName) => {
-  await site.setEnv(env);
-  // Re-sync compte/presets contre le nouveau site (sans recharger la page).
-  await resync();
-};
+  const handleSiteEnv = async (env: SiteEnvName) => {
+    await site.setEnv(env);
+    // Re-sync compte/presets contre le nouveau site (sans recharger la page).
+    await resync();
+  };
 
-const handleApiEnv = async (env: ApiEnvName) => {
-  await api.setEnv(env);
-  // Purge le cache puis refetch immédiatement les données depuis la nouvelle API.
-  await clearApiDataCache();
-  await getData();
-};
+  const handleApiEnv = async (env: ApiEnvName) => {
+    await api.setEnv(env);
+    // Purge le cache puis refetch immédiatement les données depuis la nouvelle API.
+    await clearApiDataCache();
+    await getData();
+  };
 
-let linkCode = $state('');
-let linking = $state(false);
-let linkError = $state<string | null>(null);
+  let linkCode = $state("");
+  let linking = $state(false);
+  let linkError = $state<string | null>(null);
 
-const handleConnect = async () => {
-  const code = linkCode.trim().toUpperCase();
-  if (code.length !== 8) {
-    linkError = 'Le code doit comporter 8 caractères.';
-    return;
-  }
-
-  linking = true;
-  linkError = null;
-
-  try {
-    await linkWithCode(code);
-    linkCode = '';
-  } catch (error) {
-    linkError = error instanceof Error ? error.message : 'Échec de la liaison.';
-  } finally {
-    linking = false;
-  }
-};
-
-const handleUnlink = async () => {
-  await unlink();
-  linkError = null;
-};
-
-let apiDataCleared = $state(false);
-
-// Superadmin : vide le cache des données reçues de l'API (browser.storage.local).
-const handleClearApiData = async () => {
-  await clearApiDataCache();
-
-  apiDataCleared = true;
-  setTimeout(() => {
-    apiDataCleared = false;
-  }, 2000);
-};
-
-interface SettingItem {
-  title: string;
-  id: keyof Settings;
-  checked?: boolean;
-}
-
-const settingsItems: SettingItem[] = [
-  {
-    title: "Thème de l'extension:",
-    id: 'theme',
-  },
-  {
-    title: 'Cacher les tags (par défault):',
-    id: 'tagsHide',
-    checked: $settings.tagsHide,
-  },
-  {
-    title: "Activer l'intégration F95/LC:",
-    id: 'intergrateFeature',
-    checked: $settings.intergrateFeature,
-  },
-  {
-    title: 'Ouverture automatique des jeux:',
-    id: 'autoFocusGame',
-    checked: $settings.autoFocusGame,
-  },
-];
-interface Link {
-  title: string;
-  href: string;
-}
-
-const links: Link[] = [
-  {
-    title: 'Accéder à notre page F95',
-    href: 'https://f95zone.to/threads/26002',
-  },
-  {
-    title: 'Accéder au tableur',
-    href: 'https://docs.google.com/spreadsheets/d/1ELRF0kpF8SoUlslX5ZXZoG4WXeWST6lN9bLws32EPfs',
-  },
-  {
-    title: 'Accéder au Discord',
-    href: 'https://discord.gg/QXd9kr3ewW',
-  },
-  {
-    title: 'Dépot Github',
-    href: 'https://github.com/Hunteraulo1/f95list-ext',
-  },
-];
-
-const defaultSettings = JSON.stringify({
-  tagsHide: true,
-  intergrateFeature: true,
-  autoFocusGame: true,
-} as Settings);
-
-let storedSettings = localStorage.getItem('settings');
-if (storedSettings) {
-  $settings = JSON.parse(storedSettings);
-} else {
-  $settings = JSON.parse(defaultSettings);
-}
-
-const handleSettings = async (settingsItem: SettingItem) => {
-  const { id } = settingsItem;
-
-  try {
-    // Mise à jour du store et localStorage
-    const newValue = !$settings[id];
-    const updatedSettings = { ...$settings, [id]: newValue };
-
-    $settings = updatedSettings;
-    localStorage.setItem('settings', JSON.stringify(updatedSettings));
-
-    if (id === 'intergrateFeature') {
-      const message = `f95list-integrate_${newValue.toString()}`;
-
-      try {
-        await browser.runtime.sendMessage(message);
-      } catch (browserError) {
-        $settings = { ...$settings, [id]: !newValue };
-      }
+  const handleConnect = async () => {
+    const code = linkCode.trim().toUpperCase();
+    if (code.length !== 8) {
+      linkError = "Le code doit comporter 8 caractères.";
+      return;
     }
-  } catch (error) {
-    console.error('Settings try error:', error);
+
+    linking = true;
+    linkError = null;
+
+    try {
+      await linkWithCode(code);
+      linkCode = "";
+    } catch (error) {
+      linkError =
+        error instanceof Error ? error.message : "Échec de la liaison.";
+    } finally {
+      linking = false;
+    }
+  };
+
+  const handleUnlink = async () => {
+    await unlink();
+    linkError = null;
+  };
+
+  let apiDataCleared = $state(false);
+
+  // Superadmin : vide le cache des données reçues de l'API (browser.storage.local).
+  const handleClearApiData = async () => {
+    await clearApiDataCache();
+
+    apiDataCleared = true;
+    setTimeout(() => {
+      apiDataCleared = false;
+    }, 2000);
+  };
+
+  interface SettingItem {
+    title: string;
+    id: keyof Settings;
+    checked?: boolean;
   }
-};
+
+  const settingsItems: SettingItem[] = [
+    {
+      title: "Thème de l'extension:",
+      id: "theme",
+    },
+    {
+      title: "Cacher les tags (par défault):",
+      id: "tagsHide",
+      checked: $settings.tagsHide,
+    },
+    {
+      title: "Activer l'intégration F95/LC:",
+      id: "intergrateFeature",
+      checked: $settings.intergrateFeature,
+    },
+    {
+      title: "Ouverture automatique des jeux:",
+      id: "autoFocusGame",
+      checked: $settings.autoFocusGame,
+    },
+  ];
+  interface Link {
+    title: string;
+    href: string;
+  }
+
+  const links: Link[] = [
+    {
+      title: "Accéder à notre page F95",
+      href: "https://f95zone.to/threads/26002",
+    },
+    {
+      title: "Accéder au tableur",
+      href: "https://docs.google.com/spreadsheets/d/1ELRF0kpF8SoUlslX5ZXZoG4WXeWST6lN9bLws32EPfs",
+    },
+    {
+      title: "Accéder au Discord",
+      href: "https://discord.gg/QXd9kr3ewW",
+    },
+    {
+      title: "Dépot Github",
+      href: "https://github.com/Hunteraulo1/f95list-ext",
+    },
+  ];
+
+  const defaultSettings = JSON.stringify({
+    tagsHide: true,
+    intergrateFeature: true,
+    autoFocusGame: true,
+  } as Settings);
+
+  let storedSettings = localStorage.getItem("settings");
+  if (storedSettings) {
+    $settings = JSON.parse(storedSettings);
+  } else {
+    $settings = JSON.parse(defaultSettings);
+  }
+
+  const handleSettings = async (settingsItem: SettingItem) => {
+    const { id } = settingsItem;
+
+    try {
+      // Mise à jour du store et localStorage
+      const newValue = !$settings[id];
+      const updatedSettings = { ...$settings, [id]: newValue };
+
+      $settings = updatedSettings;
+      localStorage.setItem("settings", JSON.stringify(updatedSettings));
+
+      if (id === "intergrateFeature") {
+        const message = `f95list-integrate_${newValue.toString()}`;
+
+        try {
+          await browser.runtime.sendMessage(message);
+        } catch (browserError) {
+          $settings = { ...$settings, [id]: !newValue };
+        }
+      }
+    } catch (error) {
+      console.error("Settings try error:", error);
+    }
+  };
 </script>
 
 <div class="flex flex-col gap-8">
@@ -281,7 +295,9 @@ const handleSettings = async (settingsItem: SettingItem) => {
             variant="destructive"
             onclick={handleClearApiData}
           >
-            {apiDataCleared ? "Données supprimées" : "Supprimer les données API"}
+            {apiDataCleared
+              ? "Données supprimées"
+              : "Supprimer les données API"}
           </Button>
           <span class="text-[.65rem] text-secondary-foreground/50 text-center">
             Vide le cache des jeux/MàJ reçus de l'API (rechargé au prochain
@@ -319,12 +335,12 @@ const handleSettings = async (settingsItem: SettingItem) => {
       {#if linkError}
         <p class="text-center text-xs text-red-500 font-medium">{linkError}</p>
       {/if}
-      <ExternalLink
-        target={extensionSettingsUrl}
-        classes={buttonVariants({ variant: "link", class: "mx-auto" })}
+      <a
+        href={extensionSettingsUrl}
+        class={buttonVariants({ variant: "link", class: "mx-auto" })}
       >
         Obtenir un code de liaison
-      </ExternalLink>
+      </a>
     {/if}
   </div>
   <div>
@@ -337,12 +353,9 @@ const handleSettings = async (settingsItem: SettingItem) => {
         >Voir les traducteurs/relecteurs</Button
       >
       {#each links as { title, href }}
-        <ExternalLink
-          target={href}
-          classes={buttonVariants({ variant: "link" })}
-        >
+        <a {href} target="_blank" class={buttonVariants({ variant: "link" })}>
           {title}
-        </ExternalLink>
+        </a>
       {/each}
     </div>
   </div>
