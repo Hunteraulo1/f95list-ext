@@ -2,25 +2,27 @@
 import { XIcon } from '@/lib/assets/icon';
 import { buttonVariants } from '@/lib/components/ui/button';
 import * as Popover from '@/lib/components/ui/popover/index';
-import { page } from '@/lib/stores';
+import { type FilterContext, gamesContext, page } from '@/lib/stores';
 import FilterContent from './FilterContent.svelte';
 
 interface Props {
   variant?: 'popup' | 'webapp';
+  ctx?: FilterContext;
+  label?: string;
 }
 
-let { variant = 'popup' }: Props = $props();
+let { variant = 'popup', ctx = gamesContext, label = 'Filtrer' }: Props = $props();
 </script>
 
 {#if variant === 'webapp'}
   {@const active = $page === 'list'}
   <div class:isNotWebapp={!active}>
-    <FilterContent {variant} {active} />
+    <FilterContent {variant} {active} {ctx} />
   </div>
 {:else}
   <Popover.Root>
     <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "border-2 border-primary-foreground/60 bg-secondary/60 hover:border-primary-foreground hover:bg-secondary sticky z-10 bottom-2 mx-auto mt-auto" })}>
-      Filtrer
+      {label}
     </Popover.Trigger>
     <Popover.Content
     side="top"
@@ -34,7 +36,7 @@ let { variant = 'popup' }: Props = $props();
         <XIcon />
       </Popover.Close>
       
-      <FilterContent />
+      <FilterContent {ctx} />
     </Popover.Content>
   </Popover.Root>
 {/if}

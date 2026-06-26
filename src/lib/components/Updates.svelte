@@ -1,11 +1,11 @@
 <script lang="ts">
-import { RefreshCcw } from '@/lib/assets/icon';
 import GameBox from '@/lib/components/GameBox.svelte';
 import { Button } from '@/lib/components/ui/button';
 import { ScrollArea } from '@/lib/components/ui/scroll-area';
 import type { GameType, UpdateType } from '@/lib/schemas';
-import { games, updates } from '@/lib/stores';
-import { cn } from '../utils';
+import { filteredUpdates, games, updates, updatesContext } from '@/lib/stores';
+import { RefreshCcw } from '../assets/icon';
+import Filter from './Filter.svelte';
 
 browser.runtime.sendMessage('f95list-badge');
 
@@ -13,14 +13,15 @@ interface Props {
   webapp?: boolean;
 }
 
-let filterType = $state<UpdateType['type'] | null>(null);
-let visibleUpdates = $derived(filterType ? $updates.filter((update) => update.type === filterType) : $updates);
+const { webapp = false }: Props = $props();
+
 const parisDayFormatter = new Intl.DateTimeFormat('fr-CA', {
   timeZone: 'Europe/Paris',
   year: 'numeric',
   month: '2-digit',
   day: '2-digit',
 });
+
 let groupedUpdates = $derived.by(() => {
   const grouped = new Map<
     string,
@@ -32,7 +33,7 @@ let groupedUpdates = $derived.by(() => {
     }
   >();
 
-  for (const update of visibleUpdates) {
+  for (const update of $filteredUpdates) {
     const game =
       $games.find((entry) => entry.gameId === update.gameId) ?? $games.find((entry) => entry.id === update.gameId);
     if (!game) continue;
@@ -59,18 +60,6 @@ let groupedUpdates = $derived.by(() => {
     return a.type === 'AJOUT DE JEU' ? -1 : 1;
   });
 });
-
-const { webapp = false }: Props = $props();
-
-const handleClickFilter = (type: UpdateType['type']) => {
-  if (type === filterType) {
-    filterType = null;
-
-    return;
-  }
-
-  filterType = type;
-};
 </script>
 
 {#if $updates}
@@ -92,15 +81,15 @@ const handleClickFilter = (type: UpdateType['type']) => {
             <GameBox {game} {webapp} />
           {/each}
         </div>
+      {:else}
+        <div class="flex items-center justify-center h-40 text-center text-secondary-foreground/75">
+          <span>Aucune mise à jour ne correspond à vos critères</span>
+        </div>
       {/each}
     </div>
   </ScrollArea>
-  
-  <div class="sticky z-10 inline-flex items-center justify-center -translate-x-1/2 ml-[50%] border-2 rounded-md shadow-sm h-9 border-primary-foreground/60 bg-secondary/60 bottom-2">
-    <Button variant="ghost" class={cn("text-xs", filterType === 'AJOUT DE JEU' && 'bg-secondary')} onclick={()=>handleClickFilter('AJOUT DE JEU')}>Ajouts</Button>
-    <hr class="w-px h-full bg-secondary-foreground" />
-    <Button variant="ghost" class={cn("text-xs", filterType === 'MISE À JOUR' && 'bg-secondary')} onclick={()=>handleClickFilter('MISE À JOUR')}>MàJ</Button>
-  </div>
+
+  <Filter variant="popup" ctx={updatesContext} label="Filtrer les MàJ" />
 {:else}
   <div class="flex items-center justify-center h-full">
     <Button>
