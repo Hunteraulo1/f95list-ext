@@ -1,32 +1,28 @@
 <script lang="ts">
-  import { ArrowLeft } from "@/lib/assets/icon";
-  import noImage from "@/lib/assets/no-image.png";
-  import { Badge } from "@/lib/components/ui/badge";
-  import { Button, buttonVariants } from "@/lib/components/ui/button";
-  import { ScrollArea } from "@/lib/components/ui/scroll-area";
-  import * as Tooltip from "@/lib/components/ui/tooltip/index";
-  import type { GameType } from "@/lib/schemas";
-  import { selectedGame, settings } from "@/lib/stores";
-  import { cn } from "@/lib/utils";
-  import { statusColor, typeColor } from "@/lib/utils/badgeColor";
-  import Lazy from "svelte-lazy";
-  import Alert from "./Alert.svelte";
-  import ExternalLink from "./ExternalLink.svelte";
+import Lazy from 'svelte-lazy';
+import { ArrowLeft } from '@/lib/assets/icon';
+import noImage from '@/lib/assets/no-image.png';
+import { Badge } from '@/lib/components/ui/badge';
+import { Button, buttonVariants } from '@/lib/components/ui/button';
+import { ScrollArea } from '@/lib/components/ui/scroll-area';
+import * as Tooltip from '@/lib/components/ui/tooltip/index';
+import type { GameType } from '@/lib/schemas';
+import { selectedGame, settings } from '@/lib/stores';
+import { cn } from '@/lib/utils';
+import { statusColor, typeColor } from '@/lib/utils/badgeColor';
+import Alert from './Alert.svelte';
+import ExternalLink from './ExternalLink.svelte';
 
-  let tagsHide = $state($settings.tagsHide);
+let tagsHide = $state($settings.tagsHide);
 
-  interface Props {
-    game: GameType;
-    open?: boolean;
-    variant?: "popup" | "webapp";
-  }
+interface Props {
+  game: GameType;
+  open?: boolean;
+  variant?: 'popup' | 'webapp';
+}
 
-  let {
-    game = $bindable(),
-    open = $bindable(),
-    variant = "popup",
-  }: Props = $props();
-  let closeHovered = $state<boolean>(false);
+let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $props();
+let closeHovered = $state<boolean>(false);
 </script>
 
 <div
@@ -71,13 +67,14 @@
           <ExternalLink target={game.link}>
             <Badge variant="secondary">{game.domain}</Badge>
           </ExternalLink>
-          <ExternalLink target={game.link}>
-            href={game.link}
+          <ExternalLink
+            target={game.link}
             classes={cn(
               buttonVariants({ variant: "link", class: "px-2" }),
               "select-none",
             )}
-            > Accèder au jeu
+          >
+            Accèder au jeu
           </ExternalLink>
         </div>
         <h1 class="mb-2 flex items-center gap-1 flex-wrap">
