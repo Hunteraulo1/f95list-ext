@@ -52,6 +52,20 @@ const authedFetch = async (token: string, path: string, init?: RequestInit): Pro
   return response;
 };
 
+export interface ExtensionUser {
+  role: string | null;
+}
+
+/** Récupère le profil du compte lié (notamment son rôle). */
+export const getMe = async (token: string): Promise<ExtensionUser> => {
+  const response = await authedFetch(token, '/me');
+
+  if (!response.ok) throw new Error(`GET me → ${response.status}`);
+
+  const body = await response.json().catch(() => ({}));
+  return { role: typeof body?.role === 'string' ? body.role : null };
+};
+
 /** Récupère les presets sauvegardés du compte pour `kind`. */
 export const getSavedFilters = async (token: string, kind: SavedFilterKind): Promise<Preset[]> => {
   const response = await authedFetch(token, `/saved-filters/${kind}`);

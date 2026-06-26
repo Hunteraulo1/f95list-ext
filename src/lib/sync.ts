@@ -1,5 +1,5 @@
 import { get, type Writable } from 'svelte/store';
-import { accountLinked, initAccount, token, unlink } from './account.js';
+import { accountLinked, initAccount, refreshRole, token, unlink } from './account.js';
 import { getSavedFilters, putSavedFilters, type SavedFilterKind, UnauthorizedError } from './api/f95france.js';
 import { api, site } from './config.js';
 import type { Preset } from './savedFilters.js';
@@ -81,7 +81,18 @@ export const initSync = async (): Promise<void> => {
   let previousLinked = false;
   token.subscribe((value) => {
     const linked = Boolean(value);
-    if (linked && !previousLinked && value) pull(value);
+    if (linked && !previousLinked && value) {
+      pull(value);
+      refreshRole();
+    }
     previousLinked = linked;
   });
+};
+
+/** Re-synchronise (presets + rôle) avec le compte, ex. après un changement d'environnement site. */
+export const resync = async (): Promise<void> => {
+  const current = get(token);
+  if (!current) return;
+  await pull(current);
+  await refreshRole();
 };

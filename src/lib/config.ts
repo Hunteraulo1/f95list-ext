@@ -51,7 +51,10 @@ export const site = createEnvConfig(SITE_ENVIRONMENTS, 'local:f95france_base_url
 // API de données de l'extension (jeux/updates/traducteurs) — /private/extension.
 export const API_ENVIRONMENTS = {
   prod: 'https://api.f95france.site',
-  dev: 'http://localhost:3001',
+  // 127.0.0.1 et non localhost : en build Firefox dev, WXT injecte `http://localhost/*`
+  // (reload du dev server) qui rendrait le fetch privilégié et masquerait l'en-tête Origin
+  // requis par l'auth par origine. 127.0.0.1 échappe à ce pattern → requête CORS avec Origin.
+  dev: 'http://127.0.0.1:3001',
 } as const;
 export type ApiEnvName = keyof typeof API_ENVIRONMENTS;
 export const api = createEnvConfig(API_ENVIRONMENTS, 'local:f95france_api_base_url');

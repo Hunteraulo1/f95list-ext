@@ -184,10 +184,10 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 const query = async () => {
   try {
+    // Authentification côté serveur via l'origine de l'extension (chrome-extension:// / moz-extension://).
     const response = await fetch(`${await api.get()}/private/extension`, {
       method: 'GET',
       headers: {
-        Authorization: 'Bearer f95ext_SWrozPwV1uqj_I3J6GAqigHN1gocVu3D',
         Accept: 'application/json',
       },
     });

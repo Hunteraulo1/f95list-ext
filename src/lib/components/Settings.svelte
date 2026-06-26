@@ -1,7 +1,7 @@
 <script lang="ts">
 import { mode, toggleMode } from 'mode-watcher';
 import { storage } from '#imports';
-import { accountLinked, linkWithCode, unlink } from '@/lib/account';
+import { accountLinked, isSuperadmin, linkWithCode, unlink } from '@/lib/account';
 import { Check, Moon, Sun } from '@/lib/assets/icon';
 import { Button, buttonVariants } from '@/lib/components/ui/button';
 import { Input } from '@/lib/components/ui/input';
@@ -9,8 +9,10 @@ import { Label } from '@/lib/components/ui/label';
 import { Switch } from '@/lib/components/ui/switch';
 import { API_ENVIRONMENTS, type ApiEnvName, api, SITE_ENVIRONMENTS, type SiteEnvName, site } from '@/lib/config';
 import { errors, page, settings } from '@/lib/stores';
+import { resync } from '@/lib/sync';
 import type { Settings } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import getData from '@/lib/utils/getData';
 import ExternalLink from './ExternalLink.svelte';
 
 const isDev = import.meta.env.DEV;
@@ -23,10 +25,25 @@ const extensionSettingsUrl = $derived(`${$siteUrl}/dashboard/settings/extension`
 const currentSiteEnv = $derived(site.nameOf($siteUrl));
 const currentApiEnv = $derived(api.nameOf($apiUrl));
 
+// Vide le cache des données reçues de l'API (cache background de 2 h).
+const clearApiDataCache = () =>
+  Promise.all([
+    storage.removeItem('local:f95list_ext_data'),
+    storage.removeItem('local:f95list_ext_time'),
+    storage.removeItem('local:f95list_ext_badge'),
+  ]);
+
+const handleSiteEnv = async (env: SiteEnvName) => {
+  await site.setEnv(env);
+  // Re-sync compte/presets contre le nouveau site (sans recharger la page).
+  await resync();
+};
+
 const handleApiEnv = async (env: ApiEnvName) => {
   await api.setEnv(env);
-  // Forcer un refetch des données au prochain chargement (cache de 2 h).
-  await storage.removeItem('local:f95list_ext_time');
+  // Purge le cache puis refetch immédiatement les données depuis la nouvelle API.
+  await clearApiDataCache();
+  await getData();
 };
 
 let linkCode = $state('');
@@ -56,6 +73,18 @@ const handleConnect = async () => {
 const handleUnlink = async () => {
   await unlink();
   linkError = null;
+};
+
+let apiDataCleared = $state(false);
+
+// Superadmin : vide le cache des données reçues de l'API (browser.storage.local).
+const handleClearApiData = async () => {
+  await clearApiDataCache();
+
+  apiDataCleared = true;
+  setTimeout(() => {
+    apiDataCleared = false;
+  }, 2000);
 };
 
 interface SettingItem {
@@ -215,7 +244,7 @@ const handleSettings = async (settingsItem: SettingItem) => {
         siteEnvNames,
         currentSiteEnv,
         $siteUrl,
-        (env) => site.setEnv(env as SiteEnvName),
+        (env) => handleSiteEnv(env as SiteEnvName),
       )}
       {@render envSelector(
         "API données (dev)",
@@ -240,6 +269,26 @@ const handleSettings = async (settingsItem: SettingItem) => {
         variant="outline"
         onclick={handleUnlink}>Délier</Button
       >
+      {#if $isSuperadmin}
+        <div
+          class="flex flex-col gap-1 items-center mt-2 pt-2 border-t border-primary-foreground/40"
+        >
+          <span class="text-xs font-bold text-secondary-foreground/75"
+            >Superadmin</span
+          >
+          <Button
+            class="cursor-pointer"
+            variant="destructive"
+            onclick={handleClearApiData}
+          >
+            {apiDataCleared ? "Données supprimées" : "Supprimer les données API"}
+          </Button>
+          <span class="text-[.65rem] text-secondary-foreground/50 text-center">
+            Vide le cache des jeux/MàJ reçus de l'API (rechargé au prochain
+            ouverture).
+          </span>
+        </div>
+      {/if}
     {:else}
       <p class="text-center text-xs text-secondary-foreground/75">
         Générez un code de liaison sur le site, puis collez-le ci-dessous.

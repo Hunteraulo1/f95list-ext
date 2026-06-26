@@ -68,7 +68,7 @@
 </script>
 
 {#if $updates}
-  <div class="relative flex flex-col h-full gap-2 p-2">
+  <div class="relative flex flex-col h-full gap-2">
     <div class="flex flex-col h-full gap-4 p-2">
       {#each groupedUpdates as update}
         <div class="flex flex-col gap-2">
