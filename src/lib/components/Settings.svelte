@@ -1,149 +1,151 @@
 <script lang="ts">
-  import { accountLinked, linkWithCode, unlink } from "@/lib/account";
-  import { Check, Moon, Sun } from "@/lib/assets/icon";
-  import { Button, buttonVariants } from "@/lib/components/ui/button";
-  import { Input } from "@/lib/components/ui/input";
-  import { Label } from "@/lib/components/ui/label";
-  import { Switch } from "@/lib/components/ui/switch";
-  import {
-    baseUrl,
-    ENVIRONMENTS,
-    type EnvName,
-    envNameOf,
-    setEnvironment,
-  } from "@/lib/config";
-  import { errors, page, settings } from "@/lib/stores";
-  import type { Settings } from "@/lib/types";
-  import { cn } from "@/lib/utils";
-  import { mode, toggleMode } from "mode-watcher";
-  import ExternalLink from "./ExternalLink.svelte";
+import { mode, toggleMode } from 'mode-watcher';
+import { storage } from '#imports';
+import { accountLinked, linkWithCode, unlink } from '@/lib/account';
+import { Check, Moon, Sun } from '@/lib/assets/icon';
+import { Button, buttonVariants } from '@/lib/components/ui/button';
+import { Input } from '@/lib/components/ui/input';
+import { Label } from '@/lib/components/ui/label';
+import { Switch } from '@/lib/components/ui/switch';
+import { API_ENVIRONMENTS, type ApiEnvName, api, SITE_ENVIRONMENTS, type SiteEnvName, site } from '@/lib/config';
+import { errors, page, settings } from '@/lib/stores';
+import type { Settings } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import ExternalLink from './ExternalLink.svelte';
 
-  const isDev = import.meta.env.DEV;
-  const envNames = Object.keys(ENVIRONMENTS) as EnvName[];
+const isDev = import.meta.env.DEV;
+const siteUrl = site.store;
+const apiUrl = api.store;
+const siteEnvNames = Object.keys(SITE_ENVIRONMENTS) as SiteEnvName[];
+const apiEnvNames = Object.keys(API_ENVIRONMENTS) as ApiEnvName[];
 
-  const extensionSettingsUrl = $derived(
-    `${$baseUrl}/dashboard/settings/extension`,
-  );
-  const currentEnv = $derived(envNameOf($baseUrl));
+const extensionSettingsUrl = $derived(`${$siteUrl}/dashboard/settings/extension`);
+const currentSiteEnv = $derived(site.nameOf($siteUrl));
+const currentApiEnv = $derived(api.nameOf($apiUrl));
 
-  let linkCode = $state("");
-  let linking = $state(false);
-  let linkError = $state<string | null>(null);
+const handleApiEnv = async (env: ApiEnvName) => {
+  await api.setEnv(env);
+  // Forcer un refetch des données au prochain chargement (cache de 2 h).
+  await storage.removeItem('local:f95list_ext_time');
+};
 
-  const handleConnect = async () => {
-    const code = linkCode.trim().toUpperCase();
-    if (code.length !== 8) {
-      linkError = "Le code doit comporter 8 caractères.";
-      return;
-    }
+let linkCode = $state('');
+let linking = $state(false);
+let linkError = $state<string | null>(null);
 
-    linking = true;
-    linkError = null;
-
-    try {
-      await linkWithCode(code);
-      linkCode = "";
-    } catch (error) {
-      linkError =
-        error instanceof Error ? error.message : "Échec de la liaison.";
-    } finally {
-      linking = false;
-    }
-  };
-
-  const handleUnlink = async () => {
-    await unlink();
-    linkError = null;
-  };
-
-  interface SettingItem {
-    title: string;
-    id: keyof Settings;
-    checked?: boolean;
+const handleConnect = async () => {
+  const code = linkCode.trim().toUpperCase();
+  if (code.length !== 8) {
+    linkError = 'Le code doit comporter 8 caractères.';
+    return;
   }
 
-  const settingsItems: SettingItem[] = [
-    {
-      title: "Thème de l'extension:",
-      id: "theme",
-    },
-    {
-      title: "Cacher les tags (par défault):",
-      id: "tagsHide",
-      checked: $settings.tagsHide,
-    },
-    {
-      title: "Activer l'intégration F95/LC:",
-      id: "intergrateFeature",
-      checked: $settings.intergrateFeature,
-    },
-    {
-      title: "Ouverture automatique des jeux:",
-      id: "autoFocusGame",
-      checked: $settings.autoFocusGame,
-    },
-  ];
-  interface Link {
-    title: string;
-    href: string;
+  linking = true;
+  linkError = null;
+
+  try {
+    await linkWithCode(code);
+    linkCode = '';
+  } catch (error) {
+    linkError = error instanceof Error ? error.message : 'Échec de la liaison.';
+  } finally {
+    linking = false;
   }
+};
 
-  const links: Link[] = [
-    {
-      title: "Accéder à notre page F95",
-      href: "https://f95zone.to/threads/26002",
-    },
-    {
-      title: "Accéder au tableur",
-      href: "https://docs.google.com/spreadsheets/d/1ELRF0kpF8SoUlslX5ZXZoG4WXeWST6lN9bLws32EPfs",
-    },
-    {
-      title: "Accéder au Discord",
-      href: "https://discord.gg/QXd9kr3ewW",
-    },
-    {
-      title: "Dépot Github",
-      href: "https://github.com/Hunteraulo1/f95list-ext",
-    },
-  ];
+const handleUnlink = async () => {
+  await unlink();
+  linkError = null;
+};
 
-  const defaultSettings = JSON.stringify({
-    tagsHide: true,
-    intergrateFeature: true,
-    autoFocusGame: true,
-  } as Settings);
+interface SettingItem {
+  title: string;
+  id: keyof Settings;
+  checked?: boolean;
+}
 
-  let storedSettings = localStorage.getItem("settings");
-  if (storedSettings) {
-    $settings = JSON.parse(storedSettings);
-  } else {
-    $settings = JSON.parse(defaultSettings);
-  }
+const settingsItems: SettingItem[] = [
+  {
+    title: "Thème de l'extension:",
+    id: 'theme',
+  },
+  {
+    title: 'Cacher les tags (par défault):',
+    id: 'tagsHide',
+    checked: $settings.tagsHide,
+  },
+  {
+    title: "Activer l'intégration F95/LC:",
+    id: 'intergrateFeature',
+    checked: $settings.intergrateFeature,
+  },
+  {
+    title: 'Ouverture automatique des jeux:',
+    id: 'autoFocusGame',
+    checked: $settings.autoFocusGame,
+  },
+];
+interface Link {
+  title: string;
+  href: string;
+}
 
-  const handleSettings = async (settingsItem: SettingItem) => {
-    const { id } = settingsItem;
+const links: Link[] = [
+  {
+    title: 'Accéder à notre page F95',
+    href: 'https://f95zone.to/threads/26002',
+  },
+  {
+    title: 'Accéder au tableur',
+    href: 'https://docs.google.com/spreadsheets/d/1ELRF0kpF8SoUlslX5ZXZoG4WXeWST6lN9bLws32EPfs',
+  },
+  {
+    title: 'Accéder au Discord',
+    href: 'https://discord.gg/QXd9kr3ewW',
+  },
+  {
+    title: 'Dépot Github',
+    href: 'https://github.com/Hunteraulo1/f95list-ext',
+  },
+];
 
-    try {
-      // Mise à jour du store et localStorage
-      const newValue = !$settings[id];
-      const updatedSettings = { ...$settings, [id]: newValue };
+const defaultSettings = JSON.stringify({
+  tagsHide: true,
+  intergrateFeature: true,
+  autoFocusGame: true,
+} as Settings);
 
-      $settings = updatedSettings;
-      localStorage.setItem("settings", JSON.stringify(updatedSettings));
+let storedSettings = localStorage.getItem('settings');
+if (storedSettings) {
+  $settings = JSON.parse(storedSettings);
+} else {
+  $settings = JSON.parse(defaultSettings);
+}
 
-      if (id === "intergrateFeature") {
-        const message = `f95list-integrate_${newValue.toString()}`;
+const handleSettings = async (settingsItem: SettingItem) => {
+  const { id } = settingsItem;
 
-        try {
-          await browser.runtime.sendMessage(message);
-        } catch (browserError) {
-          $settings = { ...$settings, [id]: !newValue };
-        }
+  try {
+    // Mise à jour du store et localStorage
+    const newValue = !$settings[id];
+    const updatedSettings = { ...$settings, [id]: newValue };
+
+    $settings = updatedSettings;
+    localStorage.setItem('settings', JSON.stringify(updatedSettings));
+
+    if (id === 'intergrateFeature') {
+      const message = `f95list-integrate_${newValue.toString()}`;
+
+      try {
+        await browser.runtime.sendMessage(message);
+      } catch (browserError) {
+        $settings = { ...$settings, [id]: !newValue };
       }
-    } catch (error) {
-      console.error("Settings try error:", error);
     }
-  };
+  } catch (error) {
+    console.error('Settings try error:', error);
+  }
+};
 </script>
 
 <div class="flex flex-col gap-8">
@@ -178,30 +180,50 @@
   </div>
   <div class="flex flex-col gap-2 px-4">
     <h2 class="text-center font-bold">Compte F95 France</h2>
-    {#if isDev}
+    {#snippet envSelector(
+      label: string,
+      names: string[],
+      current: string,
+      url: string,
+      onSelect: (env: string) => void,
+    )}
       <div class="flex flex-col gap-1 items-center">
-        <span class="text-xs text-secondary-foreground/75"
-          >Environnement (dev)</span
-        >
+        <span class="text-xs text-secondary-foreground/75">{label}</span>
         <div
           class="inline-flex rounded-md border border-primary-foreground/60 overflow-hidden"
         >
-          {#each envNames as env}
+          {#each names as env}
             <button
               class={cn(
                 "px-3 py-1 text-xs font-medium cursor-pointer transition-colors",
-                currentEnv === env
+                current === env
                   ? "bg-secondary text-secondary-foreground"
                   : "bg-transparent hover:bg-secondary/50",
               )}
-              onclick={() => setEnvironment(env)}>{env}</button
+              onclick={() => onSelect(env)}>{env}</button
             >
           {/each}
         </div>
         <span class="text-[.65rem] text-secondary-foreground/50 break-all"
-          >{$baseUrl}</span
+          >{url}</span
         >
       </div>
+    {/snippet}
+    {#if isDev}
+      {@render envSelector(
+        "Site (dev)",
+        siteEnvNames,
+        currentSiteEnv,
+        $siteUrl,
+        (env) => site.setEnv(env as SiteEnvName),
+      )}
+      {@render envSelector(
+        "API données (dev)",
+        apiEnvNames,
+        currentApiEnv,
+        $apiUrl,
+        (env) => handleApiEnv(env as ApiEnvName),
+      )}
     {/if}
     {#if $accountLinked}
       <div

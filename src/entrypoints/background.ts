@@ -1,4 +1,5 @@
 import { storage } from '#imports';
+import { api } from '@/lib/config';
 import type { GameType, UpdateType } from '@/lib/schemas';
 
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
@@ -183,7 +184,7 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 const query = async () => {
   try {
-    const response = await fetch('https://f95france.site/api/extension-api', {
+    const response = await fetch(`${await api.get()}/private/extension`, {
       method: 'GET',
       headers: {
         Authorization: 'Bearer f95ext_SWrozPwV1uqj_I3J6GAqigHN1gocVu3D',

@@ -1,7 +1,7 @@
 import { get, type Writable } from 'svelte/store';
 import { accountLinked, initAccount, token, unlink } from './account.js';
 import { getSavedFilters, putSavedFilters, type SavedFilterKind, UnauthorizedError } from './api/f95france.js';
-import { initBaseUrl } from './config.js';
+import { api, site } from './config.js';
 import type { Preset } from './savedFilters.js';
 import { gamesSavedFilters, updatesSavedFilters } from './stores.js';
 
@@ -73,7 +73,7 @@ export const initSync = async (): Promise<void> => {
   if (started) return;
   started = true;
 
-  await Promise.all([initBaseUrl(), initAccount()]);
+  await Promise.all([site.init(), api.init(), initAccount()]);
 
   watchPush('games', gamesSavedFilters);
   watchPush('updates', updatesSavedFilters);

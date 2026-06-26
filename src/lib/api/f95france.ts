@@ -1,5 +1,4 @@
-import { storage } from '#imports';
-import { BASE_URL_KEY, DEFAULT_BASE_URL } from '../config.js';
+import { site } from '../config.js';
 import type { Preset } from '../savedFilters.js';
 
 export type SavedFilterKind = 'games' | 'updates';
@@ -12,13 +11,7 @@ export class UnauthorizedError extends Error {
   }
 }
 
-/** Configurable base URL (defaults to the production site). */
-export const getBaseUrl = async (): Promise<string> => {
-  const stored = await storage.getItem<string>(BASE_URL_KEY);
-  return stored?.replace(/\/$/, '') || DEFAULT_BASE_URL;
-};
-
-const extensionUrl = async (path: string): Promise<string> => `${await getBaseUrl()}/api/extension${path}`;
+const extensionUrl = async (path: string): Promise<string> => `${await site.get()}/api/extension${path}`;
 
 /**
  * Lier le compte : échange un code à 8 caractères contre un token bearer permanent.
