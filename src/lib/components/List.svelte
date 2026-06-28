@@ -142,6 +142,6 @@ let clickFocus = $state<boolean>(false);
       {/if}
     {/each}
 
-    <Filter variant="popup" />
+    <Filter variant="popup" results={$filteredGames.length} />
   </div>
 {/if}

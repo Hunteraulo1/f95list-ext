@@ -1,41 +1,67 @@
 <script lang="ts">
-import { XIcon } from '@/lib/assets/icon';
-import { buttonVariants } from '@/lib/components/ui/button';
-import * as Popover from '@/lib/components/ui/popover/index';
-import { type FilterContext, gamesContext, page } from '@/lib/stores';
-import FilterContent from './FilterContent.svelte';
+  import { XIcon } from "@/lib/assets/icon";
+  import { buttonVariants } from "@/lib/components/ui/button";
+  import * as Popover from "@/lib/components/ui/popover/index";
+  import { type FilterContext, gamesContext, page } from "@/lib/stores";
+  import FilterContent from "./FilterContent.svelte";
 
-interface Props {
-  variant?: 'popup' | 'webapp';
-  ctx?: FilterContext;
-  label?: string;
-}
+  interface Props {
+    variant?: "popup" | "webapp";
+    ctx?: FilterContext;
+    label?: string;
+    results?: number;
+  }
 
-let { variant = 'popup', ctx = gamesContext, label = 'Filtrer' }: Props = $props();
+  let {
+    variant = "popup",
+    ctx = gamesContext,
+    label = "Filtrer",
+    results,
+  }: Props = $props();
 </script>
 
-{#if variant === 'webapp'}
-  {@const active = $page === 'list'}
+{#if variant === "webapp"}
+  {@const active = $page === "list"}
   <div class:isNotWebapp={!active}>
     <FilterContent {variant} {active} {ctx} />
   </div>
 {:else}
   <Popover.Root>
-    <Popover.Trigger class={buttonVariants({ variant: "secondary", class: "border-2 border-primary-foreground/60 bg-secondary/60 hover:border-primary-foreground hover:bg-secondary sticky z-10 bottom-2 mx-auto mt-auto" })}>
+    <Popover.Trigger
+      class={buttonVariants({
+        variant: "secondary",
+        class:
+          "border-2 border-primary-foreground/60 bg-secondary/60 hover:border-primary-foreground hover:bg-secondary sticky z-10 bottom-2 mx-auto mt-auto",
+      })}
+    >
       {label}
     </Popover.Trigger>
     <Popover.Content
-    side="top"
-    preventScroll
-    onInteractOutside={()=>null}
-    class="h-full p-0"
-    autofocus={false}
-    onOpenAutoFocus={(e: Event) => e.preventDefault()}
+      side="top"
+      preventScroll
+      onInteractOutside={() => null}
+      class="h-full p-0"
+      autofocus={false}
+      onOpenAutoFocus={(e: Event) => e.preventDefault()}
     >
-      <Popover.Close class="p-1 m-2 rounded-full hover:bg-primary-foreground float-end">
-        <XIcon />
-      </Popover.Close>
-      
+      <div class="relative flex justify-between items-center p-2">
+        <p class="ml-2">
+          {#if results}
+            {#if results > 0}
+              {results > 1 ? "Traductions trouvées" : "Traduction trouvée"}
+              : {results}
+            {:else}
+              Aucune traduction trouvée
+            {/if}
+          {/if}
+        </p>
+        <Popover.Close
+          class="p-1 rounded-full hover:bg-primary-foreground float-end"
+        >
+          <XIcon />
+        </Popover.Close>
+      </div>
+
       <FilterContent {ctx} />
     </Popover.Content>
   </Popover.Root>
