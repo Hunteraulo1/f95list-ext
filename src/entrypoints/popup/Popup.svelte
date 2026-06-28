@@ -8,9 +8,14 @@ import Settings from '@/lib/components/Settings.svelte';
 import Traductors from '@/lib/components/Traductors.svelte';
 import Updates from '@/lib/components/Updates.svelte';
 import { Button } from '@/lib/components/ui/button';
+import { site } from '@/lib/config';
 import getData from '@/lib/utils/getData';
 
-const pages: Page[] = [
+const siteUrl = site.store;
+
+// La webapp est remplacée par une redirection vers la liste des jeux sur le site
+// (env-aware : prod par défaut → https://f95france.site/games).
+const pages: Page[] = $derived([
   {
     link: 'list',
     icon: ScanText,
@@ -32,8 +37,8 @@ const pages: Page[] = [
   {
     link: 'webapp',
     icon: Expand,
-    name: 'Webapp',
-    target: '/webapp.html',
+    name: 'Site',
+    target: `${$siteUrl}/games`,
   },
   {
     link: 'traductors',
@@ -41,7 +46,7 @@ const pages: Page[] = [
     name: 'Traductors',
     target: Traductors,
   },
-];
+]);
 </script>
 
 <ModeWatcher defaultMode="system" />

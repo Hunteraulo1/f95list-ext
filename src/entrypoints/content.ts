@@ -5,7 +5,7 @@ export default defineContentScript({
   matches: [
     '*://f95zone.to/sam/latest_alpha/*',
     '*://f95zone.to/threads/*',
-    '*://lewdcorner.com/latest-contents/*',
+    '*://lewdcorner.com/latest-updates.php*',
     '*://lewdcorner.com/threads/*',
   ],
   main() {
@@ -22,8 +22,8 @@ const insert = (games: GameType[]) => {
 
   if (pathname === '/sam/latest_alpha/') {
     latest('.resource-tile_link', games);
-  } else if (pathname.startsWith('/latest-contents/')) {
-    latest('.structItem-title > a', games);
+  } else if (pathname.startsWith('/latest-updates.php')) {
+    latestLewdCorner(games);
   } else if (pathname.startsWith('/threads/')) {
     const tileId = Number(window.location.pathname.split('/')[2].split('.')[1]);
 
@@ -55,7 +55,7 @@ const init = async () => {
     const { pathname } = window.location;
 
     const f95 = pathname === '/sam/latest_alpha/';
-    const lc = pathname.startsWith('/latest-contents/');
+    const lc = pathname.startsWith('/latest-updates.php');
 
     if (f95 || lc) {
       const mutationCallback: MutationCallback = async (mutationsList) => {
@@ -99,6 +99,28 @@ const latest = (query: string, games: GameType[]) => {
       createFlag(element);
       tile.classList.add('flag-inserted');
     }
+  }
+};
+
+// Nouveau format LewdCorner (latest-updates.php) : chaque carte est un
+// <article class="lc-card" data-id="THREAD_ID"> ; le data-id est directement le threadId.
+const latestLewdCorner = (games: GameType[]) => {
+  const { hostname } = window.location;
+  const cards = document.querySelectorAll<HTMLElement>('article.lc-card[data-id]');
+
+  for (const card of Array.from(cards)) {
+    if (card.classList.contains('flag-inserted')) continue;
+
+    const tileId = Number(card.dataset.id);
+    if (!tileId) continue;
+
+    if (!games.some((game) => game.threadId === tileId && game.hostname === hostname)) continue;
+
+    const titleColumn = card.querySelector('.card__mediaBadges');
+    if (!titleColumn) continue;
+
+    createFlag(titleColumn);
+    card.classList.add('flag-inserted');
   }
 };
 

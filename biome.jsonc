@@ -29,7 +29,7 @@
     ],
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "correctness": {
         "noUndeclaredVariables": "warn"
       },

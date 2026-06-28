@@ -1,7 +1,6 @@
 <script lang="ts">
 import Lazy from 'svelte-lazy';
 import { CopyCheck } from '@/lib/assets/icon';
-import noImage from '@/lib/assets/no-image.png';
 import { Badge } from '@/lib/components/ui/badge';
 import * as Card from '@/lib/components/ui/card/index';
 import * as Tooltip from '@/lib/components/ui/tooltip/index';
@@ -10,7 +9,6 @@ import { games, selectedGame } from '@/lib/stores';
 import type { IdGameBox } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import Details from './Details.svelte';
-import ExternalLink from './ExternalLink.svelte';
 
 interface Props {
   game: GameType;
@@ -48,32 +46,45 @@ const handleClick = () => {
 };
 </script>
 
-{#if open && !webapp && game.domain !== 'Unknown'}
+{#if open && !webapp && game.domain !== "Unknown"}
   <Details {game} bind:open />
 {/if}
 
-{#if game.domain !== 'Unknown'}
-  <Lazy height={autoFocusMultiple ? 38 : 88} fadeOption={{ delay: 0, duration: 0 }} keep={true} class="relative overflow-hidden rounded-md bg-primary-foreground">
+{#if game.domain !== "Unknown"}
+  <Lazy
+    height={autoFocusMultiple ? 38 : 88}
+    fadeOption={{ delay: 0, duration: 0 }}
+    keep={true}
+    class="relative overflow-hidden rounded-md bg-primary-foreground"
+  >
     <Card.Root class="cursor-pointer py-0" onclick={handleClick}>
       {#if !autoFocusMultiple}
-        <img
-          alt={game.name}
-          class="absolute top-0 left-0 object-cover w-full h-full"
-          src={game.image?.replace(
-            'attachments.f95zone.to',
-            'preview.f95zone.to'
-          ) ?? noImage}
-          style="image-rendering: smooth; image-resolution: snap;"
-        />
+        {#if game.image}
+          <img
+            alt={game.name}
+            class="absolute top-0 left-0 object-cover w-full h-full"
+            src={game.image.replace(
+              "attachments.f95zone.to",
+              "preview.f95zone.to",
+            )}
+            style="image-rendering: smooth; image-resolution: snap;"
+          />
+        {:else}
+          <div
+            class="absolute top-0 left-0 w-full h-full bg-primary-foreground flex items-center justify-center"
+          >
+            <p>Pas d'aperçu</p>
+          </div>
+        {/if}
       {/if}
-    
+
       <Card.CardContent
         class={cn(
           "relative transition",
-          webapp && 'text-xl',
-          autoFocusMultiple ?
-            'flex gap-2 items-center py-2 px-6' :
-            'p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-secondary-foreground'
+          webapp && "text-xl",
+          autoFocusMultiple
+            ? "flex gap-2 items-center py-2 px-6"
+            : "p-6 backdrop-brightness-90 hover:backdrop-brightness-100 text-secondary-foreground",
         )}
       >
         <Card.Title class="select-none">{game.name}</Card.Title>
@@ -82,51 +93,55 @@ const handleClick = () => {
             <Tooltip.Root>
               <Tooltip.Trigger
                 class="text-xs cursor-help font-bold z-20 {game.tversion ===
-                'Intégrée' || game.tversion === game.version
-                ? 'text-green-700'
-                : 'text-red-700'} {webapp ? 'text-lg' : ''}"
+                  'Intégrée' || game.tversion === game.version
+                  ? 'text-green-700'
+                  : 'text-red-700'} {webapp ? 'text-lg' : ''}"
               >
-              {game.tversion}
+                {game.tversion}
               </Tooltip.Trigger>
-              <Tooltip.Content class="bg-transparent" side={autoFocusMultiple ? 'right' : 'top'} collisionBoundary={[]}>
+              <Tooltip.Content
+                class="bg-transparent"
+                side={autoFocusMultiple ? "right" : "top"}
+                collisionBoundary={[]}
+              >
                 <Badge variant="secondary">
-                  {#if game.tversion === 'Intégrée'}
+                  {#if game.tversion === "Intégrée"}
                     À jour ({game.version})
                   {:else if game.tversion === game.version}
                     À jour
-                  {:else if game.tversion === 'n/a'}
-                  Pas de traduction
+                  {:else if game.tversion === "n/a"}
+                    Pas de traduction
                   {:else}
                     N'est pas à jour ({game.version})
                   {/if}
                 </Badge>
               </Tooltip.Content>
             </Tooltip.Root>
-        </Tooltip.Provider>
+          </Tooltip.Provider>
         </Card.Description>
       </Card.CardContent>
     </Card.Root>
     {#if import.meta.env.FIREFOX && !autoFocusMultiple}
-      <ExternalLink classes="absolute p-2 rounded-full right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30" target={game.link}>
+      <a
+        href={game.link}
+        class="absolute p-2 rounded-full right-1 top-1 opacity-30 hover:opacity-100 hover:bg-primary-foreground/30"
+      >
         <CopyCheck size={24} />
-      </ExternalLink>
+      </a>
     {/if}
   </Lazy>
 {:else}
   <div
     class={cn(
-      "relative overflow-hidden transition text-secondary-foreground rounded-md cursor-pointer bg-primary-foreground", 
-      (webapp && !autoFocusMultiple) ? 'text-xl' : 'hover:backdrop-brightness-100',
-      autoFocusMultiple ? 'flex gap-2 items-center py-2 px-6' : 'p-6'
+      "relative overflow-hidden transition text-secondary-foreground rounded-md cursor-pointer bg-primary-foreground",
+      webapp && !autoFocusMultiple
+        ? "text-xl"
+        : "hover:backdrop-brightness-100",
+      autoFocusMultiple ? "flex gap-2 items-center py-2 px-6" : "p-6",
     )}
   >
     <h2>{game.name}</h2>
-    <h3
-      class={cn(
-        "text-xs cursor-help font-bold z-20"
-      )}
-      class:text-lg={webapp}
-    >
+    <h3 class={cn("text-xs cursor-help font-bold z-20")} class:text-lg={webapp}>
       Jeu introuvable
     </h3>
   </div>

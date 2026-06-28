@@ -10,12 +10,13 @@ type Props = {
   title: string;
   values: Array<{ value: string; checked: boolean; inverse?: boolean }>;
   active?: boolean;
+  filterStore?: typeof filter;
 };
 
-let { title, values, active = true }: Props = $props();
+let { title, values, active = true, filterStore = filter }: Props = $props();
 
 const handleSelect = (value: string) => {
-  filter.update((items) => {
+  filterStore.update((items) => {
     return items.map((item) => {
       if (item.title.toLowerCase() !== title.toLowerCase()) return item;
 

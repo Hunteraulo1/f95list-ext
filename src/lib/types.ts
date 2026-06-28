@@ -2,7 +2,8 @@ import type { GameType } from './schemas.js';
 
 export interface ComboBox {
   title: string;
-  name: keyof GameType;
+  // 'utype' n'est pas une clé de GameType : c'est le groupe "Type de MàJ" propre aux updates.
+  name: keyof GameType | 'utype';
   open: boolean;
   values: {
     value: GameType['domain' | 'status' | 'type'] | string;

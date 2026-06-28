@@ -15,11 +15,16 @@ export default defineConfig({
   manifest: ({ mode }) => ({
     name: 'F95 France - Extension',
     permissions: ['storage', 'unlimitedStorage', 'tabs', 'activeTab'],
+    // NB : l'API données (api.f95france.site / localhost:3001) est volontairement absente.
+    // Elle s'authentifie par l'origine de l'extension : sans host_permission, le fetch
+    // reste une requête CORS qui envoie l'en-tête Origin (chrome-extension:// / moz-extension://).
     host_permissions: [
       'https://insight.f95france.site/*',
       'https://f95france.site/*',
       'https://f95zone.to/*',
       'https://lewdcorner.com/*',
+      // Site de dev (liaison/sync de compte) — uniquement en build de développement.
+      ...(mode === 'development' ? ['https://ptb.f95france.site/*', 'http://localhost:5173/*'] : []),
     ],
     browser_specific_settings: {
       gecko: {

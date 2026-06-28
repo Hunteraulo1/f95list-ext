@@ -1,6 +1,7 @@
 import { get } from 'svelte/store';
 import { flatten, parse, safeParse } from 'valibot';
-import { errors, filter, games, outdated, settings, traductors, updates } from '@/lib/stores.js';
+import { errors, games, outdated, resetFilters, settings, traductors, updates } from '@/lib/stores.js';
+import { initSync } from '@/lib/sync.js';
 import packageJson from '../../../package.json';
 import { Games, type GameType, TraductorsData, Updates } from '../schemas.js';
 import devlist from './devlist.json';
@@ -16,6 +17,9 @@ const devMode = false;
 export const callIntegrate = async () => await browser.runtime.sendMessage('f95list-integrate');
 
 const getData = async () => {
+  // Synchronisation des filtres sauvegardés avec le compte F95 France (non bloquant).
+  initSync();
+
   try {
     interface Data {
       games: unknown[];
@@ -61,7 +65,7 @@ const getData = async () => {
 
     traductors.set(validTraductors);
 
-    filter.reset();
+    resetFilters();
 
     // Settings
     const settingsValue = get(settings);

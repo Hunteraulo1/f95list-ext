@@ -1,7 +1,6 @@
 <script lang="ts">
 import Lazy from 'svelte-lazy';
 import { ArrowLeft } from '@/lib/assets/icon';
-import noImage from '@/lib/assets/no-image.png';
 import { Badge } from '@/lib/components/ui/badge';
 import { Button, buttonVariants } from '@/lib/components/ui/button';
 import { ScrollArea } from '@/lib/components/ui/scroll-area';
@@ -52,14 +51,20 @@ let closeHovered = $state<boolean>(false);
         class="overflow-hidden bg-primary-foreground h-64 max-h-64"
         placeholder
       >
-        <img
-          alt={game.name}
-          src={game.image ?? noImage}
-          class={cn(
-            "h-1/3 w-full object-cover",
-            variant === "webapp" && "rounded-lg h-64",
-          )}
-        />
+        {#if game.image}
+          <img
+            alt={game.name}
+            src={game.image}
+            class={cn(
+              "h-1/3 w-full object-cover",
+              variant === "webapp" && "rounded-lg h-64",
+            )}
+          />
+        {:else}
+          <div class="h-32 w-full flex items-center justify-center">
+            <p>Pas d'aperçu</p>
+          </div>
+        {/if}
       </Lazy>
       <div class="p-2 flex flex-col gap-4">
         <div>
@@ -138,9 +143,12 @@ let closeHovered = $state<boolean>(false);
         </div>
         <p class="text-sm">
           <span class="font-bold select-none">Traducteur:</span>
-          <a href={game.trlink} class:traductor={game.trlink} target="_blank">
+          <ExternalLink
+            target={game.trlink}
+            classes={cn(game.trlink ? "traductor" : "")}
+          >
             {game.traductor ?? "Aucun"}
-          </a>
+          </ExternalLink>
           <span class="text-secondary-foreground/50 text-xs">
             ({game.ttype})
           </span>
@@ -148,9 +156,12 @@ let closeHovered = $state<boolean>(false);
         {#if game.proofreader}
           <p class="text-sm">
             <span class="font-bold select-none">Relecteur:</span>
-            <a href={game.trlink} class:traductor={game.trlink} target="_blank">
+            <ExternalLink
+              target={game.trlink}
+              classes={cn(game.trlink ? "traductor" : "")}
+            >
               {game.proofreader}
-            </a>
+            </ExternalLink>
           </p>
         {/if}
         {#if game.tname === "Traduction (mod inclus)"}
