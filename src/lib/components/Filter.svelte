@@ -1,23 +1,18 @@
 <script lang="ts">
-  import { XIcon } from "@/lib/assets/icon";
-  import { buttonVariants } from "@/lib/components/ui/button";
-  import * as Popover from "@/lib/components/ui/popover/index";
-  import { type FilterContext, gamesContext, page } from "@/lib/stores";
-  import FilterContent from "./FilterContent.svelte";
+import { XIcon } from '@/lib/assets/icon';
+import { buttonVariants } from '@/lib/components/ui/button';
+import * as Popover from '@/lib/components/ui/popover/index';
+import { type FilterContext, gamesContext, page } from '@/lib/stores';
+import FilterContent from './FilterContent.svelte';
 
-  interface Props {
-    variant?: "popup" | "webapp";
-    ctx?: FilterContext;
-    label?: string;
-    results?: number;
-  }
+interface Props {
+  variant?: 'popup' | 'webapp';
+  ctx?: FilterContext;
+  label?: string;
+  results?: number;
+}
 
-  let {
-    variant = "popup",
-    ctx = gamesContext,
-    label = "Filtrer",
-    results,
-  }: Props = $props();
+let { variant = 'popup', ctx = gamesContext, label = 'Filtrer', results }: Props = $props();
 </script>
 
 {#if variant === "webapp"}

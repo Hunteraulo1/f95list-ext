@@ -1,55 +1,49 @@
 <script lang="ts">
-  import { CopyCheck } from "@/lib/assets/icon";
-  import { Badge } from "@/lib/components/ui/badge";
-  import * as Card from "@/lib/components/ui/card/index";
-  import * as Tooltip from "@/lib/components/ui/tooltip/index";
-  import type { GameType } from "@/lib/schemas";
-  import { games, selectedGame } from "@/lib/stores";
-  import type { IdGameBox } from "@/lib/types";
-  import { cn } from "@/lib/utils";
-  import Lazy from "svelte-lazy";
-  import Details from "./Details.svelte";
+import Lazy from 'svelte-lazy';
+import { CopyCheck } from '@/lib/assets/icon';
+import { Badge } from '@/lib/components/ui/badge';
+import * as Card from '@/lib/components/ui/card/index';
+import * as Tooltip from '@/lib/components/ui/tooltip/index';
+import type { GameType } from '@/lib/schemas';
+import { games, selectedGame } from '@/lib/stores';
+import type { IdGameBox } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import Details from './Details.svelte';
 
-  interface Props {
-    game: GameType;
-    idGameBox?: IdGameBox;
-    webapp?: boolean;
-    autoFocus?: boolean;
-    autoFocusMultiple?: boolean;
+interface Props {
+  game: GameType;
+  idGameBox?: IdGameBox;
+  webapp?: boolean;
+  autoFocus?: boolean;
+  autoFocusMultiple?: boolean;
+}
+
+let {
+  game,
+  idGameBox = { domain: 'Unknown', threadId: 0 },
+  webapp = false,
+  autoFocus = false,
+  autoFocusMultiple = false,
+}: Props = $props();
+
+$effect(() => {
+  autoFocus && handleClick();
+});
+
+let open = $state(false);
+
+$effect(() => {
+  if (game.domain === idGameBox.domain && game.threadId === idGameBox.threadId) {
+    open =
+      $games.filter((entry: GameType) => entry.domain === idGameBox.domain && entry.threadId === idGameBox.threadId)
+        .length === 1;
   }
+});
 
-  let {
-    game,
-    idGameBox = { domain: "Unknown", threadId: 0 },
-    webapp = false,
-    autoFocus = false,
-    autoFocusMultiple = false,
-  }: Props = $props();
-
-  $effect(() => {
-    autoFocus && handleClick();
-  });
-
-  let open = $state(false);
-
-  $effect(() => {
-    if (
-      game.domain === idGameBox.domain &&
-      game.threadId === idGameBox.threadId
-    ) {
-      open =
-        $games.filter(
-          (entry: GameType) =>
-            entry.domain === idGameBox.domain &&
-            entry.threadId === idGameBox.threadId,
-        ).length === 1;
-    }
-  });
-
-  const handleClick = () => {
-    $selectedGame = game;
-    open = true;
-  };
+const handleClick = () => {
+  $selectedGame = game;
+  open = true;
+};
 </script>
 
 {#if open && !webapp && game.domain !== "Unknown"}

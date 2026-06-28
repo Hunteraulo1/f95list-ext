@@ -1,70 +1,64 @@
 <script lang="ts">
-  import GameBox from "@/lib/components/GameBox.svelte";
-  import { Button } from "@/lib/components/ui/button";
-  import type { GameType, UpdateType } from "@/lib/schemas";
-  import {
-    filteredUpdates,
-    games,
-    updates,
-    updatesContext,
-  } from "@/lib/stores";
-  import { RefreshCcw } from "../assets/icon";
-  import Filter from "./Filter.svelte";
+import GameBox from '@/lib/components/GameBox.svelte';
+import { Button } from '@/lib/components/ui/button';
+import type { GameType, UpdateType } from '@/lib/schemas';
+import { filteredUpdates, games, updates, updatesContext } from '@/lib/stores';
+import { RefreshCcw } from '../assets/icon';
+import Filter from './Filter.svelte';
 
-  browser.runtime.sendMessage("f95list-badge");
+browser.runtime.sendMessage('f95list-badge');
 
-  interface Props {
-    webapp?: boolean;
+interface Props {
+  webapp?: boolean;
+}
+
+const { webapp = false }: Props = $props();
+
+const parisDayFormatter = new Intl.DateTimeFormat('fr-CA', {
+  timeZone: 'Europe/Paris',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
+let groupedUpdates = $derived.by(() => {
+  const grouped = new Map<
+    string,
+    {
+      dayKey: string;
+      date: UpdateType['date'];
+      type: UpdateType['type'];
+      games: GameType[];
+    }
+  >();
+
+  for (const update of $filteredUpdates) {
+    const game =
+      $games.find((entry) => entry.gameId === update.gameId) ?? $games.find((entry) => entry.id === update.gameId);
+    if (!game) continue;
+
+    const dayKey = parisDayFormatter.format(update.date);
+    const key = `${dayKey}-${update.type}`;
+    const current = grouped.get(key);
+
+    if (current) {
+      current.games.push(game);
+    } else {
+      grouped.set(key, {
+        dayKey,
+        date: update.date,
+        type: update.type,
+        games: [game],
+      });
+    }
   }
 
-  const { webapp = false }: Props = $props();
-
-  const parisDayFormatter = new Intl.DateTimeFormat("fr-CA", {
-    timeZone: "Europe/Paris",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
+  return [...grouped.values()].sort((a, b) => {
+    if (a.dayKey !== b.dayKey) return b.dayKey.localeCompare(a.dayKey);
+    if (a.type === b.type) return 0;
+    return a.type === 'AJOUT DE JEU' ? -1 : 1;
   });
-
-  let groupedUpdates = $derived.by(() => {
-    const grouped = new Map<
-      string,
-      {
-        dayKey: string;
-        date: UpdateType["date"];
-        type: UpdateType["type"];
-        games: GameType[];
-      }
-    >();
-
-    for (const update of $filteredUpdates) {
-      const game =
-        $games.find((entry) => entry.gameId === update.gameId) ??
-        $games.find((entry) => entry.id === update.gameId);
-      if (!game) continue;
-
-      const dayKey = parisDayFormatter.format(update.date);
-      const key = `${dayKey}-${update.type}`;
-      const current = grouped.get(key);
-
-      if (current) {
-        current.games.push(game);
-      } else {
-        grouped.set(key, {
-          dayKey,
-          date: update.date,
-          type: update.type,
-          games: [game],
-        });
-      }
-    }
-
-    return [...grouped.values()].sort((a, b) => {
-      if (a.dayKey !== b.dayKey) return b.dayKey.localeCompare(a.dayKey);
-      if (a.type === b.type) return 0;
-      return a.type === "AJOUT DE JEU" ? -1 : 1;
-    });
-  });
+});
 </script>
 
 {#if $updates}
