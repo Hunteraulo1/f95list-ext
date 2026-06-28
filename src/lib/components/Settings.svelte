@@ -237,16 +237,16 @@ const handleSettings = async (settingsItem: SettingItem) => {
         >
       </div>
     {/snippet}
-    {#if isDev}
+    {#if isDev || $isSuperadmin}
       {@render envSelector(
-        "Site (dev)",
+        "Site",
         siteEnvNames,
         currentSiteEnv,
         $siteUrl,
         (env) => handleSiteEnv(env as SiteEnvName),
       )}
       {@render envSelector(
-        "API données (dev)",
+        "API données",
         apiEnvNames,
         currentApiEnv,
         $apiUrl,
