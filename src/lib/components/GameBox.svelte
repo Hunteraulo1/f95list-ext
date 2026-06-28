@@ -1,50 +1,55 @@
 <script lang="ts">
-import Lazy from 'svelte-lazy';
-import { CopyCheck } from '@/lib/assets/icon';
-import noImage from '@/lib/assets/no-image.png';
-import { Badge } from '@/lib/components/ui/badge';
-import * as Card from '@/lib/components/ui/card/index';
-import * as Tooltip from '@/lib/components/ui/tooltip/index';
-import type { GameType } from '@/lib/schemas';
-import { games, selectedGame } from '@/lib/stores';
-import type { IdGameBox } from '@/lib/types';
-import { cn } from '@/lib/utils';
-import Details from './Details.svelte';
+  import { CopyCheck } from "@/lib/assets/icon";
+  import { Badge } from "@/lib/components/ui/badge";
+  import * as Card from "@/lib/components/ui/card/index";
+  import * as Tooltip from "@/lib/components/ui/tooltip/index";
+  import type { GameType } from "@/lib/schemas";
+  import { games, selectedGame } from "@/lib/stores";
+  import type { IdGameBox } from "@/lib/types";
+  import { cn } from "@/lib/utils";
+  import Lazy from "svelte-lazy";
+  import Details from "./Details.svelte";
 
-interface Props {
-  game: GameType;
-  idGameBox?: IdGameBox;
-  webapp?: boolean;
-  autoFocus?: boolean;
-  autoFocusMultiple?: boolean;
-}
-
-let {
-  game,
-  idGameBox = { domain: 'Unknown', threadId: 0 },
-  webapp = false,
-  autoFocus = false,
-  autoFocusMultiple = false,
-}: Props = $props();
-
-$effect(() => {
-  autoFocus && handleClick();
-});
-
-let open = $state(false);
-
-$effect(() => {
-  if (game.domain === idGameBox.domain && game.threadId === idGameBox.threadId) {
-    open =
-      $games.filter((entry: GameType) => entry.domain === idGameBox.domain && entry.threadId === idGameBox.threadId)
-        .length === 1;
+  interface Props {
+    game: GameType;
+    idGameBox?: IdGameBox;
+    webapp?: boolean;
+    autoFocus?: boolean;
+    autoFocusMultiple?: boolean;
   }
-});
 
-const handleClick = () => {
-  $selectedGame = game;
-  open = true;
-};
+  let {
+    game,
+    idGameBox = { domain: "Unknown", threadId: 0 },
+    webapp = false,
+    autoFocus = false,
+    autoFocusMultiple = false,
+  }: Props = $props();
+
+  $effect(() => {
+    autoFocus && handleClick();
+  });
+
+  let open = $state(false);
+
+  $effect(() => {
+    if (
+      game.domain === idGameBox.domain &&
+      game.threadId === idGameBox.threadId
+    ) {
+      open =
+        $games.filter(
+          (entry: GameType) =>
+            entry.domain === idGameBox.domain &&
+            entry.threadId === idGameBox.threadId,
+        ).length === 1;
+    }
+  });
+
+  const handleClick = () => {
+    $selectedGame = game;
+    open = true;
+  };
 </script>
 
 {#if open && !webapp && game.domain !== "Unknown"}
@@ -60,15 +65,23 @@ const handleClick = () => {
   >
     <Card.Root class="cursor-pointer py-0" onclick={handleClick}>
       {#if !autoFocusMultiple}
-        <img
-          alt={game.name}
-          class="absolute top-0 left-0 object-cover w-full h-full"
-          src={game.image?.replace(
-            "attachments.f95zone.to",
-            "preview.f95zone.to",
-          ) ?? noImage}
-          style="image-rendering: smooth; image-resolution: snap;"
-        />
+        {#if game.image}
+          <img
+            alt={game.name}
+            class="absolute top-0 left-0 object-cover w-full h-full"
+            src={game.image.replace(
+              "attachments.f95zone.to",
+              "preview.f95zone.to",
+            )}
+            style="image-rendering: smooth; image-resolution: snap;"
+          />
+        {:else}
+          <div
+            class="absolute top-0 left-0 w-full h-full bg-primary-foreground flex items-center justify-center"
+          >
+            <p>Pas d'aperçu</p>
+          </div>
+        {/if}
       {/if}
 
       <Card.CardContent

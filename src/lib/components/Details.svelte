@@ -1,28 +1,31 @@
 <script lang="ts">
-import Lazy from 'svelte-lazy';
-import { ArrowLeft } from '@/lib/assets/icon';
-import noImage from '@/lib/assets/no-image.png';
-import { Badge } from '@/lib/components/ui/badge';
-import { Button, buttonVariants } from '@/lib/components/ui/button';
-import { ScrollArea } from '@/lib/components/ui/scroll-area';
-import * as Tooltip from '@/lib/components/ui/tooltip/index';
-import type { GameType } from '@/lib/schemas';
-import { selectedGame, settings } from '@/lib/stores';
-import { cn } from '@/lib/utils';
-import { statusColor, typeColor } from '@/lib/utils/badgeColor';
-import Alert from './Alert.svelte';
-import ExternalLink from './ExternalLink.svelte';
+  import { ArrowLeft } from "@/lib/assets/icon";
+  import { Badge } from "@/lib/components/ui/badge";
+  import { Button, buttonVariants } from "@/lib/components/ui/button";
+  import { ScrollArea } from "@/lib/components/ui/scroll-area";
+  import * as Tooltip from "@/lib/components/ui/tooltip/index";
+  import type { GameType } from "@/lib/schemas";
+  import { selectedGame, settings } from "@/lib/stores";
+  import { cn } from "@/lib/utils";
+  import { statusColor, typeColor } from "@/lib/utils/badgeColor";
+  import Lazy from "svelte-lazy";
+  import Alert from "./Alert.svelte";
+  import ExternalLink from "./ExternalLink.svelte";
 
-let tagsHide = $state($settings.tagsHide);
+  let tagsHide = $state($settings.tagsHide);
 
-interface Props {
-  game: GameType;
-  open?: boolean;
-  variant?: 'popup' | 'webapp';
-}
+  interface Props {
+    game: GameType;
+    open?: boolean;
+    variant?: "popup" | "webapp";
+  }
 
-let { game = $bindable(), open = $bindable(), variant = 'popup' }: Props = $props();
-let closeHovered = $state<boolean>(false);
+  let {
+    game = $bindable(),
+    open = $bindable(),
+    variant = "popup",
+  }: Props = $props();
+  let closeHovered = $state<boolean>(false);
 </script>
 
 <div
@@ -52,14 +55,20 @@ let closeHovered = $state<boolean>(false);
         class="overflow-hidden bg-primary-foreground h-64 max-h-64"
         placeholder
       >
-        <img
-          alt={game.name}
-          src={game.image ?? noImage}
-          class={cn(
-            "h-1/3 w-full object-cover",
-            variant === "webapp" && "rounded-lg h-64",
-          )}
-        />
+        {#if game.image}
+          <img
+            alt={game.name}
+            src={game.image}
+            class={cn(
+              "h-1/3 w-full object-cover",
+              variant === "webapp" && "rounded-lg h-64",
+            )}
+          />
+        {:else}
+          <div class="h-32 w-full flex items-center justify-center">
+            <p>Pas d'aperçu</p>
+          </div>
+        {/if}
       </Lazy>
       <div class="p-2 flex flex-col gap-4">
         <div>
