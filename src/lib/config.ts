@@ -10,18 +10,28 @@ const createEnvConfig = <T extends Record<string, string>>(environments: T, stor
   const store = writable<string>(defaultUrl);
   let initialized = false;
 
+  // URLs autorisées selon le build : en prod on n'honore JAMAIS une URL de dev
+  // (localhost / 127.0.0.1) éventuellement persistée — un ancien réglage de dev ne
+  // doit pas suivre l'utilisateur après publication. En dev, tout est autorisé.
+  const allowed = new Set(
+    Object.values(environments).filter((url) => import.meta.env.DEV || !/localhost|127\.0\.0\.1/.test(url)),
+  );
+
+  // Normalise une valeur stockée vers une URL valide pour ce build, sinon le défaut.
+  const sanitize = (url: string | null | undefined): string => {
+    const trimmed = url?.replace(/\/$/, '');
+    return trimmed && allowed.has(trimmed) ? trimmed : defaultUrl;
+  };
+
   const init = async (): Promise<void> => {
     if (initialized) return;
     initialized = true;
-    store.set((await storage.getItem<string>(storageKey)) ?? defaultUrl);
-    storage.watch<string>(storageKey, (value) => store.set(value ?? defaultUrl));
+    store.set(sanitize(await storage.getItem<string>(storageKey)));
+    storage.watch<string>(storageKey, (value) => store.set(sanitize(value)));
   };
 
   // Lecture synchrone du storage (utilisable hors contexte Svelte, ex. background).
-  const get = async (): Promise<string> => {
-    const stored = await storage.getItem<string>(storageKey);
-    return stored?.replace(/\/$/, '') || defaultUrl;
-  };
+  const get = async (): Promise<string> => sanitize(await storage.getItem<string>(storageKey));
 
   const set = async (url: string): Promise<void> => {
     store.set(url);
@@ -36,7 +46,10 @@ const createEnvConfig = <T extends Record<string, string>>(environments: T, stor
     return match ? match[0] : 'custom';
   };
 
-  return { environments, defaultUrl, store, init, get, set, setEnv, nameOf };
+  // Noms d'environnements proposables dans l'UI pour ce build (dev masqué en prod).
+  const envNames = (Object.keys(environments) as (keyof T)[]).filter((name) => allowed.has(environments[name]));
+
+  return { environments, defaultUrl, store, init, get, set, setEnv, nameOf, envNames };
 };
 
 // Site F95 France — liaison de compte + sync des filtres sauvegardés (/api/extension/*).
