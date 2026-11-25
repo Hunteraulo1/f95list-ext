@@ -1,3 +1,4 @@
+import { FLAG_SRC, insertThreadStrip } from '@/lib/integration/threadStrip';
 import type { GameType } from '@/lib/schemas';
 
 // biome-ignore lint/correctness/noUndeclaredVariables: define function
@@ -26,16 +27,19 @@ const insert = (games: GameType[]) => {
     latestLewdCorner(games);
   } else if (pathname.startsWith('/threads/')) {
     const tileId = Number(window.location.pathname.split('/')[2]?.split('.')[1]);
+    const matches = games.filter((game) => game.threadId === tileId && game.hostname === hostname);
+    const [first] = matches;
 
-    for (const game of games) {
-      if (game.threadId !== tileId || game.hostname !== hostname) continue;
+    if (!first) return;
 
-      const parent = document.querySelector('.p-title-value');
+    const title = document.querySelector('.p-title-value');
 
-      if (!parent || parent?.classList.contains('flag-inserted')) continue;
+    // Avant le drapeau : la version est lue dans le titre.
+    insertThreadStrip(matches, title);
 
-      createFlag(parent, game.tlink);
-      parent?.classList.add('flag-inserted');
+    if (title && !title.classList.contains('flag-inserted')) {
+      createFlag(title, first.tlink);
+      title.classList.add('flag-inserted');
     }
   }
 };
@@ -47,6 +51,9 @@ const init = async () => {
         document.addEventListener('DOMContentLoaded', resolve);
       });
     }
+
+    // Réglage « Activer l'intégration F95/LC » du popup.
+    if ((await browser.runtime.sendMessage('f95list-integrate')) === false) return;
 
     const data = await browser.runtime.sendMessage('f95list-script');
 
@@ -137,8 +144,7 @@ const createFlag = (parent: Element, tlink: GameType['tlink'] = null) => {
   img.style.borderRadius = '4px';
   img.style.float = 'inherit';
   img.style.verticalAlign = 'middle';
-  img.src =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAELBAMAAAAFMM1/AAAAGFBMVEX///8AI5XtKTmerNf6yMwAGJDtKDjsITLN9eOpAAAA9ElEQVR42u3P0QAAQAgFsBRO4WQCyCB/iCDe72awerGpWO9PiYiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIJA7ZdJrTjvyKSgAAAABJRU5ErkJggg==';
+  img.src = FLAG_SRC;
 
   anchor.append(img);
   parent.prepend(anchor);
