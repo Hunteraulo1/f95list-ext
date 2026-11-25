@@ -1,0 +1,63 @@
+name: Release PR
+
+# Ouvre automatiquement la PR de release dev → main quand la version du package.json
+# sur dev n'a pas encore de tag (vX.Y.Z). Le titre « :bookmark: vX.Y.Z » est celui
+# qu'attend le workflow « Release Extension » au merge.
+
+on:
+  push:
+    branches:
+      - dev
+
+concurrency:
+  group: release-pr
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  release-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Open or update the release PR
+        env:
+          # PAT (comme dans main.yml) : la PR est créée au nom du propriétaire du dépôt.
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TITLE=":bookmark: v$VERSION"
+
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "v$VERSION est déjà publiée, rien à faire."
+            exit 0
+          fi
+
+          git fetch origin main
+          if [[ "$(git rev-list --count origin/main..HEAD)" == "0" ]]; then
+            echo "dev n'a aucun commit d'avance sur main, impossible d'ouvrir une PR."
+            exit 0
+          fi
+
+          BODY_FILE=$(mktemp)
+          {
+            echo "Release **v$VERSION**"
+            echo
+            echo "Commits depuis main :"
+            git log origin/main..HEAD --no-merges --format='- %s'
+          } > "$BODY_FILE"
+
+          PR=$(gh pr list --base main --head dev --state open --json number --jq '.[0].number // empty')
+
+          if [[ -n "$PR" ]]; then
+            gh pr edit "$PR" --title "$TITLE" --body-file "$BODY_FILE"
+            echo "PR #$PR mise à jour : $TITLE"
+          else
+            gh pr create --base main --head dev --title "$TITLE" --body-file "$BODY_FILE"
+            echo "PR créée : $TITLE"
+          fi
