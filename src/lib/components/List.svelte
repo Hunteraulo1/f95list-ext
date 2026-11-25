@@ -16,7 +16,7 @@ const extractId = (inputString: string): number => {
   const regex = /\.(\d+)/;
   const match = inputString.match(regex);
 
-  return match ? Number.parseInt(match[1], 10) : 0;
+  return match?.[1] ? Number.parseInt(match[1], 10) : 0;
 };
 
 let autoFocus: GameType[] = $state([]);

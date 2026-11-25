@@ -12,10 +12,12 @@ Lien de téléchargement: [Accéder à l'extension](https://github.com/Hunteraul
 
 ## Installation
 
-**Pour Firefox:** *(mise à jour automatique)*
+**Pour Firefox:** _(mise à jour automatique)_
+
 - Il faut glisser le fichier **.xpi** sur le navigateur _ou l'ouvrir avec Firefox_.
 
-**Pour Chrome:** *(mise à jour manuelle)*
+**Pour Chrome:** _(mise à jour manuelle)_
+
 - Il faut aller dans la page des extensions _(chrome://extensions/)_
 - Cliquer en haut à droite sur **Mode développeur**
 - Puis glisser l'archive **.zip** dans la page
@@ -32,6 +34,7 @@ Lien de téléchargement: [Accéder à l'extension](https://github.com/Hunteraul
 ## Installation (pour les développeurs)
 
 Pour installer les dépendences:
+
 ```bash
 bun install
 ```
@@ -39,12 +42,14 @@ bun install
 ## Autres commandes
 
 Commandes de lintage:
+
 ```bash
 bun run lint
 bun run format
 ```
 
 Svelte-check + Lint + Format:
+
 ```bash
 bun run check
 ```
@@ -53,11 +58,13 @@ bun run check
 
 Pour démarrez un serveur de développement:
 Firefox:
+
 ```bash
 bun run dev:firefox
 ```
 
 Chrome:
+
 ```bash
 bun run dev:chrome
 ```
@@ -67,16 +74,19 @@ bun run dev:chrome
 Pour créer une version de production de l'extension:
 
 Firefox:
+
 ```bash
 bun run build:firefox
 ```
 
 Chrome:
+
 ```bash
 bun run build:chrome
 ```
 
 Firefox + Chrome:
+
 ```bash
 bun run build
 ```

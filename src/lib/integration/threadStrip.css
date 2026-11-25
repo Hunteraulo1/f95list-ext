@@ -1,0 +1,43 @@
+/* Bande « Traduction FR » injectée dans les threads F95zone / LewdCorner.
+   Couleurs et bordures héritées du thème via .block-container / .label / .button (XenForo). */
+
+.f95fr-thread {
+  margin-bottom: 10px;
+}
+
+.f95fr-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 8px 12px;
+  line-height: 1.4;
+}
+
+.f95fr-strip + .f95fr-strip {
+  border-top: 1px solid currentColor;
+  border-top-color: color-mix(in srgb, currentColor 15%, transparent);
+}
+
+.f95fr-flag {
+  width: 24px;
+  height: auto;
+  border-radius: 3px;
+}
+
+.f95fr-strip-label,
+.f95fr-strong {
+  font-weight: bold;
+}
+
+.f95fr-muted {
+  opacity: 0.7;
+}
+
+.f95fr-strip .label {
+  margin: 0;
+}
+
+.f95fr-download {
+  margin-left: auto;
+}

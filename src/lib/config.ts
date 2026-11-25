@@ -5,8 +5,9 @@ import { storage } from '#imports';
  * Petite fabrique de configuration d'URL de base, miroir de browser.storage.local
  * et synchronisée entre contextes. La 1re valeur des environnements est le défaut.
  */
-const createEnvConfig = <T extends Record<string, string>>(environments: T, storageKey: `local:${string}`) => {
-  const defaultUrl = Object.values(environments)[0];
+const createEnvConfig = <K extends string>(environments: Record<K, string>, storageKey: `local:${string}`) => {
+  const defaultUrl = Object.values<string>(environments)[0];
+  if (!defaultUrl) throw new Error(`No environment defined for ${storageKey}`);
   const store = writable<string>(defaultUrl);
   let initialized = false;
 
@@ -14,7 +15,7 @@ const createEnvConfig = <T extends Record<string, string>>(environments: T, stor
   // (localhost / 127.0.0.1) éventuellement persistée — un ancien réglage de dev ne
   // doit pas suivre l'utilisateur après publication. En dev, tout est autorisé.
   const allowed = new Set(
-    Object.values(environments).filter((url) => import.meta.env.DEV || !/localhost|127\.0\.0\.1/.test(url)),
+    Object.values<string>(environments).filter((url) => import.meta.env.DEV || !/localhost|127\.0\.0\.1/.test(url)),
   );
 
   // Normalise une valeur stockée vers une URL valide pour ce build, sinon le défaut.
@@ -39,15 +40,15 @@ const createEnvConfig = <T extends Record<string, string>>(environments: T, stor
     else await storage.setItem(storageKey, url);
   };
 
-  const setEnv = (env: keyof T): Promise<void> => set(environments[env]);
+  const setEnv = (env: K): Promise<void> => set(environments[env]);
 
-  const nameOf = (url: string): keyof T | 'custom' => {
-    const match = (Object.entries(environments) as [keyof T, string][]).find(([, value]) => value === url);
+  const nameOf = (url: string): K | 'custom' => {
+    const match = (Object.entries(environments) as [K, string][]).find(([, value]) => value === url);
     return match ? match[0] : 'custom';
   };
 
   // Noms d'environnements proposables dans l'UI pour ce build (dev masqué en prod).
-  const envNames = (Object.keys(environments) as (keyof T)[]).filter((name) => allowed.has(environments[name]));
+  const envNames = (Object.keys(environments) as K[]).filter((name) => allowed.has(environments[name]));
 
   return { environments, defaultUrl, store, init, get, set, setEnv, nameOf, envNames };
 };

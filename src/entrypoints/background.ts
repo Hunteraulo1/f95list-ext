@@ -57,9 +57,12 @@ const badgeReset = async (data: Data) => {
   if (!data || data.updates.length === 0) throw new Error('data not defined or empty');
 
   try {
-    const updates = [data.updates[0]];
+    const [first, second] = data.updates;
+    if (!first) return;
 
-    if (data.updates[0].date === data.updates[1].date) updates.push(data.updates[1]);
+    const updates = [first];
+
+    if (second && first.date === second.date) updates.push(second);
 
     await storage.setItem('local:f95list_ext_badge', updates);
     await badgeState(data);

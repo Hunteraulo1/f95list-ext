@@ -18,24 +18,24 @@ jobs:
   build:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        
+
       - name: Get release type
         id: get_release_type
         run: |
           TARGET_BRANCH="${{ github.base_ref }}"
           PR_TITLE="${{ github.event.pull_request.title }}"
-          
+
           if [[ ! "$PR_TITLE" == "🔖"* && ! "$PR_TITLE" == ":bookmark:"* ]]; then
             echo "Version not detected!"
             exit 1
           fi
-          
+
           if [[ "$TARGET_BRANCH" == "main" ]]; then
             echo "prerelease=false" >> $GITHUB_OUTPUT
           elif [[ "$TARGET_BRANCH" == "preview" ]]; then
@@ -44,40 +44,40 @@ jobs:
             echo "Unexpected target branch: $TARGET_BRANCH"
             exit 1
           fi
-      
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
-        
+
       - name: Install dependencies
         run: bun install
-        
+
       - name: Install web-ext
         run: npm install -g web-ext
-        
+
       - name: Install jq
         run: sudo apt-get install jq
-        
+
       - name: Get version
         id: get_version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-        
+
       - name: Get previous version
         id: get_previous_version
         run: |
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           PREVIOUS_VERSION=${PREVIOUS_TAG#v}
           echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
-        
+
       - name: Update update_url for preview branch
         if: steps.get_release_type.outputs.prerelease == 'true'
         run: |
           # Replace update_url in wxt.config.ts to point to preview branch
           sed -i 's|update_url: .*,|update_url: "https://raw.githubusercontent.com/${{ github.repository }}/preview/updates.json",|g' wxt.config.ts
           echo "Modified wxt.config.ts to use preview branch for updates"
-        
+
       - name: Build extensions
         run: bun run build
-        
+
       - name: Sign Firefox extension
         env:
           MOZILLA_API_KEY: ${{ secrets.MOZILLA_API_KEY }}
@@ -89,7 +89,7 @@ jobs:
             --artifacts-dir .output/artifacts \
             --channel unlisted \
             -s .output/firefox-mv2
-            
+
       - name: Rename Firefox artifact
         run: |
           cd .output/artifacts
@@ -98,7 +98,7 @@ jobs:
               mv "$file" "${file%.xpi}_firefox.xpi"
             fi
           done
-          
+
       - name: Create Chrome artifact
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
@@ -134,7 +134,7 @@ jobs:
       - name: Update updates.json
         run: |
           VERSION=${{ steps.get_version.outputs.version }}
-          
+
           # Function to update updates.json
           update_updates_json() {
             BRANCH=$1
@@ -174,7 +174,7 @@ jobs:
             git commit -m ":bookmark: update updates.json for version $VERSION"
             git push origin $BRANCH
           }
-          
+
           # Update both branches
           update_updates_json "${{ github.base_ref }}"
           if [[ "${{ steps.get_release_type.outputs.prerelease }}" == "false" ]]; then
