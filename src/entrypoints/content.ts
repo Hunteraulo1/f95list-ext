@@ -6,7 +6,7 @@ export default defineContentScript({
   matches: [
     '*://f95zone.to/sam/latest_alpha/*',
     '*://f95zone.to/threads/*',
-    '*://lewdcorner.com/latest-updates.php*',
+    '*://lewdcorner.com/latest-updates*',
     '*://lewdcorner.com/threads/*',
   ],
   main() {
@@ -23,7 +23,7 @@ const insert = (games: GameType[]) => {
 
   if (pathname === '/sam/latest_alpha/') {
     latest('.resource-tile_link', games);
-  } else if (pathname.startsWith('/latest-updates.php')) {
+  } else if (pathname.startsWith('/latest-updates')) {
     latestLewdCorner(games);
   } else if (pathname.startsWith('/threads/')) {
     const tileId = Number(window.location.pathname.split('/')[2]?.split('.')[1]);
@@ -62,7 +62,7 @@ const init = async () => {
     const { pathname } = window.location;
 
     const f95 = pathname === '/sam/latest_alpha/';
-    const lc = pathname.startsWith('/latest-updates.php');
+    const lc = pathname.startsWith('/latest-updates');
 
     if (f95 || lc) {
       const mutationCallback: MutationCallback = async (mutationsList) => {
@@ -109,41 +109,51 @@ const latest = (query: string, games: GameType[]) => {
   }
 };
 
-// Nouveau format LewdCorner (latest-updates.php) : chaque carte est un
-// <article class="lc-card" data-id="THREAD_ID"> ; le data-id est directement le threadId.
+// Page LewdCorner /latest-updates : chaque carte est un
+// <article class="lcCard" data-card-id="THREAD_ID">. Les badges (PLUS, Ren'Py…) sont
+// présents deux fois : sur la carte et dans l'aperçu au survol.
+// Le site reconstruit les cartes (rechargement de la grille, carrousel) : on vérifie donc
+// la présence du drapeau dans chaque ligne de badges plutôt qu'une classe sur la carte.
+let lcLastLog = '';
+
 const latestLewdCorner = (games: GameType[]) => {
   const { hostname } = window.location;
-  const cards = document.querySelectorAll<HTMLElement>('article.lc-card[data-id]');
+  const translated = new Set(games.filter((game) => game.hostname === hostname).map((game) => game.threadId));
+  const cards = document.querySelectorAll<HTMLElement>('article.lcCard[data-card-id]');
+  let matched = 0;
 
   for (const card of Array.from(cards)) {
-    if (card.classList.contains('flag-inserted')) continue;
+    const tileId = Number(card.dataset.cardId);
+    if (!tileId || !translated.has(tileId)) continue;
 
-    const tileId = Number(card.dataset.id);
-    if (!tileId) continue;
+    matched += 1;
 
-    if (!games.some((game) => game.threadId === tileId && game.hostname === hostname)) continue;
+    for (const badges of Array.from(card.querySelectorAll('.lcCardMediaBadges:not(.lcCardMediaBadges--right)'))) {
+      if (!badges.querySelector('.f95fr-inline-flag')) createFlag(badges, null, 24);
+    }
+  }
 
-    const titleColumn = card.querySelector('.card__mediaBadges');
-    if (!titleColumn) continue;
-
-    createFlag(titleColumn);
-    card.classList.add('flag-inserted');
+  const log = `${cards.length} cartes, ${matched} traduites`;
+  if (log !== lcLastLog) {
+    lcLastLog = log;
+    console.info(`[F95ListFR] LewdCorner latest-updates : ${log}`);
   }
 };
 
-const createFlag = (parent: Element, tlink: GameType['tlink'] = null) => {
+const createFlag = (parent: Element, tlink: GameType['tlink'] = null, size = 32) => {
   const anchor: HTMLAnchorElement = document.createElement('a');
   const img: HTMLImageElement = document.createElement('img');
 
   anchor.target = '_BLANK';
   if (tlink) anchor.href = tlink;
 
-  img.style.width = '32px';
-  img.style.minWidth = '32px';
+  img.style.width = `${size}px`;
+  img.style.minWidth = `${size}px`;
   img.style.marginRight = '4px';
   img.style.borderRadius = '4px';
   img.style.float = 'inherit';
   img.style.verticalAlign = 'middle';
+  anchor.className = 'f95fr-inline-flag';
   img.src = FLAG_SRC;
 
   anchor.append(img);
