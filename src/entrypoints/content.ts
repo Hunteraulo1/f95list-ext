@@ -25,7 +25,7 @@ const insert = (games: GameType[]) => {
   } else if (pathname.startsWith('/latest-updates.php')) {
     latestLewdCorner(games);
   } else if (pathname.startsWith('/threads/')) {
-    const tileId = Number(window.location.pathname.split('/')[2].split('.')[1]);
+    const tileId = Number(window.location.pathname.split('/')[2]?.split('.')[1]);
 
     for (const game of games) {
       if (game.threadId !== tileId || game.hostname !== hostname) continue;
@@ -84,15 +84,15 @@ const latest = (query: string, games: GameType[]) => {
     const tileId =
       hostname === 'f95zone.to'
         ? Number((tile as HTMLAnchorElement).pathname.split('/')[2])
-        : Number((tile as HTMLAnchorElement).pathname.split('/')[2].split('.')[1]);
+        : Number((tile as HTMLAnchorElement).pathname.split('/')[2]?.split('.')[1]);
 
     if (tile.classList.contains('flag-inserted')) return;
 
     if (games.find((game) => game.threadId === tileId && game.hostname === hostname)) {
       const element =
         hostname === 'f95zone.to'
-          ? tile.children[1].children[0]
-          : tile.parentElement?.parentElement?.children[1].children[0];
+          ? tile.children[1]?.children[0]
+          : tile.parentElement?.parentElement?.children[1]?.children[0];
 
       if (!element) return;
 
